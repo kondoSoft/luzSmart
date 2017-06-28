@@ -5,7 +5,10 @@ export default {
   header:{
     backgroundColor: 'green',
   },
-  header__left__title:{
+  header__body__title:{
     color: 'white',
   },
+  header__icon:{
+    color: 'white'
+  }
 };

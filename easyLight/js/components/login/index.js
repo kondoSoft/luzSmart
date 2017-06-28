@@ -124,7 +124,7 @@ class Login extends Component {
                 <Button
                   block
                   style={styles.btn}
-                  onPress={() => this.props.navigation.navigate("Home")}
+                  onPress={() => this.props.navigation.navigate("SignIn")}
                 >
                   <Text>Crear Cuenta</Text>
                 </Button>
@@ -133,18 +133,17 @@ class Login extends Component {
             <Row size={30}>
               <Col style={styles.btnView}>
                 <TouchableOpacity
-                  style={{ borderBottomWidth: 2, borderBottomColor: 'lightgray'}}
+                  style={styles.link}
                   onPress={() => this.props.navigation.navigate("Home")}>
                   <Text>Recuperar Contraseña</Text>
                 </TouchableOpacity>
               </Col>
             </Row>
           </Grid>
-          <Footer style={{height: 80, borderTopWidth: 0, backgroundColor: '#FBFAFA'}}>
-            <Thumbnail source={{uri: 'https://facebook.github.io/react/img/logo_og.png' }} />
+          <Footer style={styles.footer}>
+            <Thumbnail source={ require('../../../images/easylight.png') } />
           </Footer>
         </View>
-
       </Container>
     );
   }
