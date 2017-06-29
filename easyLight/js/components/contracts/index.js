@@ -69,7 +69,7 @@ class Contracts extends Component {
             <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
           </Fab>
         </View>
-        <Footer />
+        <Footer navigation={this.props.navigation}/>
       </Container>
     )
   }

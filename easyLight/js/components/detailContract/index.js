@@ -12,21 +12,26 @@ import {
   Text,
   Body,
   View,
+  Fab,
 } from 'native-base';
 import Swipeout from 'react-native-swipeout';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
+import Footer from '../footer/index';
 import styles from './styles';
+
 
 var swipeoutBtns = [
   {
     component: <Icon style={styles.icon} name="information-circle"/>,
     // component: <Icon style={styles.icon} name="information-circle"/>,
     backgroundColor: 'transparent',
-    onPress: function(){ alert('button pressed') },
-  },
+    onPress: function(){
 
+    },
+  },
 ]
+
 class DetailContract extends Component {
   static navigationOptions = {
     header: null
@@ -36,18 +41,18 @@ class DetailContract extends Component {
       <Container>
         <Header navigation={this.props.navigation}/>
         <Content>
-          <Grid style={{}}>
-            <Row style={{backgroundColor: 'gray',height: 30, padding: 5, justifyContent: 'center'}}>
-              <Text style={{color: '#fff'}}>Mi Oficina</Text>
+          <Grid>
+            <Row style={styles.detailContract__row__top}>
+              <Text style={styles.detailContract__row__top__text}>Mi Oficina</Text>
             </Row>
             <Col>
               <List style={styles.list}>
-                <ListItem avatar onPress={() => this.props.navigation.navigate("")} style={styles.listItem}>
+                <ListItem avatar onPress={() => this.props.navigation.navigate("Measurements")} style={styles.listItem}>
                   <Body style={styles.listItem__body}>
                     <Text style={styles.listItem__body__text}>Marzo 17</Text>
                     <Swipeout
                       backgroundColor={ 'transparent' }
-                      style={{ flex: .5}}
+                      style={{ flex: .5 }}
                       buttonWidth={75}
                       right={swipeoutBtns}
                       autoClose={true}>
@@ -58,7 +63,7 @@ class DetailContract extends Component {
                     </Swipeout>
                   </Body>
                 </ListItem>
-                <ListItem avatar onPress={() => this.props.navigation.navigate("")} style={styles.listItem}>
+                <ListItem avatar onPress={() => this.props.navigation.navigate("Measurements")} style={styles.listItem}>
                   <Body style={styles.listItem__body}>
                     <Text style={styles.listItem__body__text}>Abril 17</Text>
                     <Swipeout
@@ -78,6 +83,17 @@ class DetailContract extends Component {
             </Col>
           </Grid>
         </Content>
+        <View style={{ flex: 1}}>
+          <Fab
+            active={true}
+            direction="up"
+            style={{ backgroundColor: 'steelblue'}}
+            position="bottomRight"
+            >
+            <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
+          </Fab>
+        </View>
+        <Footer/>
       </Container>
     )
   }

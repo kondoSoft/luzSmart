@@ -19,7 +19,7 @@ class FooterGlobal extends Component {
             <Button vertical>
               <Thumbnail source={ require('../../../images/easylight.png') } style={styles.footer__logo} />
             </Button>
-            <Button vertical active style={styles.footer__btn__resultados}>
+            <Button vertical active style={styles.footer__btn__resultados} onPress={() => this.props.navigation.navigate("Results")}>
               <Icon style={styles.footer__icon} active name="trending-up" />
               <Text style={styles.footer__text__resultados}>Resultados</Text>
             </Button>

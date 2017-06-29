@@ -8,6 +8,15 @@ export default {
   header__left__title:{
     color: 'white',
   },
+  detailContract__row__top:{
+    backgroundColor: 'gray',
+    height: 30,
+    padding: 5,
+    justifyContent: 'center',
+  },
+  detailContract__row__top__:{
+    color: '#fff',
+  },
   list:{
 
   },
@@ -44,6 +53,7 @@ export default {
     color: 'blue',
     textAlign: 'center',
     flex: 1,
+    alignItems: 'center',
+    padding: 6
   }
-
 };

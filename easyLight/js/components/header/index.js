@@ -13,7 +13,6 @@ import styles from './styles';
 
 class HeaderGlobal extends Component {
   render(){
-    console.log(this.props.navigation);
     return(
       <Header style={styles.header}>
         <Left>
@@ -22,7 +21,7 @@ class HeaderGlobal extends Component {
           </Button>
         </Left>
         <Body style={styles.header__body}>
-          <Title style={styles.header__body__title}>EASYLIGHT</Title>
+          {(this.props.title) ? <Title style={styles.header__body__title}>{this.props.title}</Title> : <Title style={styles.header__body__title}>EASYLIGHT</Title>}
         </Body>
         <Right>
           <Button transparent>
