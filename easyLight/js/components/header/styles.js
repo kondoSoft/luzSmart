@@ -7,8 +7,12 @@ export default {
   },
   header__body__title:{
     color: 'white',
+    fontSize: 16,
   },
   header__icon:{
     color: 'white'
+  },
+  header__body:{
+    flex: 4
   }
 };

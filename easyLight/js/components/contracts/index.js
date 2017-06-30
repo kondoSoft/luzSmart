@@ -65,6 +65,7 @@ class Contracts extends Component {
             direction="up"
             style={{ backgroundColor: 'steelblue'}}
             position="bottomRight"
+            onPress={() => this.props.navigation.navigate("AddContracts")}
             >
             <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
           </Fab>

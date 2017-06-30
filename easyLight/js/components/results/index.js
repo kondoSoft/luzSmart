@@ -4,6 +4,8 @@ import {
   Content,
   View,
   Text,
+  Fab,
+  Icon
 } from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -19,7 +21,7 @@ class Results  extends Component {
     console.log(this.props.navigation);
     return(
       <Container>
-        <Header title={this.props.navigation.state.routeName}/>
+        <Header title={this.props.navigation.state.routeName} navigation={this.props.navigation}/>
           <Grid style={{  }}>
             <Row size={50} style={styles.row__top}>
               <Select
@@ -42,7 +44,7 @@ class Results  extends Component {
                     >Gasto Energetico</Option>
               </Select>
             </Row>
-            <Row size={25} style={styles.row__center}>
+            <Row size={10} style={styles.row__center}>
               <Select
                 selectStyle={{ }}
                 padding={10}
@@ -77,6 +79,14 @@ class Results  extends Component {
               </Select>
             </Row>
           </Grid>
+          <Fab
+            active={true}
+            direction="up"
+            style={{ backgroundColor: 'steelblue', bottom: 60}}
+            position="bottomRight"
+            >
+            <Icon active name="md-share" style={{fontSize: 28, lineHeight: 0}}/>
+          </Fab>
         <Footer/>
       </Container>
     )

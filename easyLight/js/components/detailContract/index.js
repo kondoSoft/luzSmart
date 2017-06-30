@@ -89,6 +89,7 @@ class DetailContract extends Component {
             direction="up"
             style={{ backgroundColor: 'steelblue'}}
             position="bottomRight"
+            onPress={() => this.props.navigation.navigate("Receipt")}
             >
             <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
           </Fab>
