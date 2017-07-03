@@ -12,6 +12,9 @@ import Measurements from '../components/measurements';
 import Results from '../components/results';
 import AddContracts from '../components/addContract';
 import Receipt from '../components/receipt';
+import History from '../components/history';
+import Tips from '../components/tips';
+import Contact from '../components/contact';
 
 HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
   header: null
@@ -28,4 +31,7 @@ export default (StackNav = StackNavigator({
   Results: { screen: Results },
   AddContracts: { screen: AddContracts },
   Receipt: { screen: Receipt },
+  History: { screen: History },
+  Tips: { screen: Tips },
+  Contact: { screen:  Contact },
 }));

@@ -11,6 +11,7 @@ import {
 } from 'native-base';
 import {
   TouchableOpacity,
+  AlertIOS,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -18,31 +19,61 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 
+
 class Receipt extends Component {
   static navigationOptions = {
     header: null
   };
+  showAlert(){
+    AlertIOS.alert(
+      'Contrato',
+     'Desea agregar un historial al contrato Mi Casa',
+     [
+       {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+       {text: 'Si', onPress: () => console.log('Install Pressed')},
+     ],
+    )
+  }
   render(){
     return(
       <Container>
         <Header navigation={this.props.navigation} title="RECIBO CFE"/>
-        <Grid style={{flexDirection: 'column'}}>
+        <Grid style={styles.grid}>
           <Col size={75}>
-            <Form style={{paddingLeft: 15, paddingRight: 15}}>
-              <Item inlineLabel last style={{borderBottomColor: 'green', borderBottomWidth: 3}}>
-                <Label>Password</Label>
-                <Input />
+            <Form style={styles.form}>
+              <Item inlineLabel last style={styles.form__item__title}>
+                <Label style={styles.form__item__label}>Contrato #85976431</Label>
+              </Item>
+              <Item last style={styles.form__item__inputs}>
+                <Input placeholder="Fecha Limite de Pago" />
+              </Item>
+              <Item last style={styles.form__item__inputs}>
+                <Input placeholder="Monto a Pagar" />
+              </Item>
+              <Item last style={styles.form__item__title}>
+                <Label style={styles.form__item__label}>Medición de Consumo</Label>
+              </Item>
+              <Item last style={styles.form__item__inputs}>
+                <Input placeholder="Lectura Actual" />
+              </Item>
+              <Item last style={styles.form__item__inputs}>
+                <Input placeholder="Lectura Anterior" />
               </Item>
             </Form>
           </Col>
-          <Col size={25} style={{ alignItems: 'center'}}>
+          <Col size={25} style={styles.col__bottom}>
             <TouchableOpacity
               style={styles.link}
-              onPress={() => this.props.navigation.navigate("Receipt")}>
-              <Text style={{color: 'green'}}>Agregar Historial</Text>
+              // onPress={()=> this.showAlert()}
+              onPress={()=> this.props.navigation.navigate("History")}
+              >
+              <Text style={styles.touchable__text}>Agregar Historial</Text>
             </TouchableOpacity>
-            <Row style={{ paddingTop: 20 }}>
-              <Button small >
+            <Row style={styles.col__bottom__row__bottom}>
+              <Button
+                small
+                onPress={() => this.props.navigation.navigate("Contracts")}
+                >
                 <Text>Agregar</Text>
               </Button>
             </Row>
