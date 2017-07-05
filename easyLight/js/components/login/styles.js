@@ -53,9 +53,19 @@ export default {
     padding: 30,
     marginTop: 50,
     display: 'flex',
-    alignItems: 'flex-end'
+    alignItems: 'center'
   },
   btn: {
     marginTop: 4,
+  },
+  link:{
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgray',
+    alignItems: 'center'
+  },
+  footer: {
+    height: 80,
+    borderTopWidth: 0,
+    backgroundColor: '#FBFAFA'
   },
 };

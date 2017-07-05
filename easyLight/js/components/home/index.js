@@ -114,6 +114,7 @@ const DrawNav = DrawerNavigator(
     BlankPage2: { screen: BlankPage2 }
   },
   {
+    drawerPosition: 'right',
     contentComponent: props => <DrawBar {...props} />
   }
 );

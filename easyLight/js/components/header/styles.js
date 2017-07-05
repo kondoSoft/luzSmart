@@ -5,7 +5,14 @@ export default {
   header:{
     backgroundColor: 'green',
   },
-  header__left__title:{
+  header__body__title:{
     color: 'white',
+    fontSize: 16,
   },
+  header__icon:{
+    color: 'white'
+  },
+  header__body:{
+    flex: 4
+  }
 };
