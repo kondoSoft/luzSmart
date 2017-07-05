@@ -11,7 +11,7 @@ class SignIn extends Component {
   render(){
     return(
         <Container>
-          <Header navigation={this.props.navigation}/>
+          <Header navigation={this.props.navigation} title="NUEVO REGISTRO"/>
             <Grid>
               <Row size={15} style={styles.row__top}>
                 <Col style={styles.row__top__col__left}>
@@ -26,35 +26,35 @@ class SignIn extends Component {
               <Col size={75}>
                 <Form>
                   <Item inlineLabel last>
-                    <Label>Nombres</Label>
+                    <Label>Nombres:</Label>
                     <Input />
                   </Item>
                   <Item inlineLabel last>
-                    <Label>Apellidos</Label>
+                    <Label>Apellidos:</Label>
                     <Input />
                   </Item>
                   <Item inlineLabel last>
-                    <Label>Correo electrónico</Label>
+                    <Label>Correo electrónico:</Label>
                     <Input />
                   </Item>
                   <Item inlineLabel last>
-                    <Label>Contraseña</Label>
+                    <Label>Contraseña:</Label>
                     <Input />
                   </Item>
                   <Item inlineLabel last>
-                    <Label>Confirmar contraseña</Label>
+                    <Label>Confirmar contraseña:</Label>
                     <Input />
                   </Item>
                   <Item inlineLabel last>
-                    <Label>F. nacimiento</Label>
+                    <Label>F. nacimiento:</Label>
                     <Input />
                   </Item>
                   <Item inlineLabel last>
-                    <Label>Celular</Label>
+                    <Label>Celular:</Label>
                     <Input />
                   </Item>
                   <Item inlineLabel last>
-                    <Label>C.P.</Label>
+                    <Label>C.P.:</Label>
                     <Input />
                   </Item>
                 </Form>

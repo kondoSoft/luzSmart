@@ -47,5 +47,9 @@ export default {
     row__bottom:{
       justifyContent: 'center',
       paddingTop: 30
-    }
+    },
+    select__option:{
+      height: 30,
+      borderBottomWidth: 0
+    },
 }

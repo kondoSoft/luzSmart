@@ -30,7 +30,7 @@ class Receipt extends Component {
      'Desea agregar un historial al contrato Mi Casa',
      [
        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-       {text: 'Si', onPress: () => console.log('Install Pressed')},
+       {text: 'Si', onPress: () => this.props.navigation.navigate('Contracts')},
      ],
     )
   }
@@ -62,24 +62,17 @@ class Receipt extends Component {
             </Form>
           </Col>
           <Col size={25} style={styles.col__bottom}>
-            <TouchableOpacity
-              style={styles.link}
-              // onPress={()=> this.showAlert()}
-              onPress={()=> this.props.navigation.navigate("History")}
-              >
-              <Text style={styles.touchable__text}>Agregar Historial</Text>
-            </TouchableOpacity>
             <Row style={styles.col__bottom__row__bottom}>
               <Button
                 small
-                onPress={() => this.props.navigation.navigate("Contracts")}
+                onPress={()=> this.showAlert()}
                 >
                 <Text>Agregar</Text>
               </Button>
             </Row>
           </Col>
         </Grid>
-        <Footer/>
+        <Footer navigation={this.props.navigation}/>
       </Container>
     )
   }

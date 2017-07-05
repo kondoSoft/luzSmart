@@ -56,10 +56,12 @@ class AddContracts extends Component {
               >
               <Option
                 value={1}
+                optionStyle={styles.select__option}
                 >Villahermosa</Option>
-                <Option
-                  value={2}
-                  >Veracruz</Option>
+              <Option
+                value={2}
+                optionStyle={styles.select__option}
+                >Veracruz</Option>
             </Select>
             <Select
               selectStyle={styles.select}
@@ -69,10 +71,12 @@ class AddContracts extends Component {
               >
               <Option
                 value={1}
+                optionStyle={styles.select__option}
                 >Centro</Option>
-                <Option
-                  value={2}
-                  >Cardenas</Option>
+              <Option
+                value={2}
+                optionStyle={styles.select__option}
+                >Cardenas</Option>
             </Select>
             <Select
               selectStyle={styles.select}
@@ -82,10 +86,12 @@ class AddContracts extends Component {
               >
               <Option
                 value={1}
+                optionStyle={styles.select__option}
                 >Tarifa</Option>
-                <Option
-                  value={2}
-                  >$5000</Option>
+              <Option
+                value={2}
+                optionStyle={styles.select__option}
+                >$5000</Option>
             </Select>
             <Select
               selectStyle={styles.select}
@@ -95,10 +101,12 @@ class AddContracts extends Component {
               >
               <Option
                 value={1}
+                optionStyle={styles.select__option}
                 >Periodo</Option>
-                <Option
-                  value={2}
-                  >Ene - Feb</Option>
+              <Option
+                value={2}
+                optionStyle={styles.select__option}
+                >Ene - Feb</Option>
             </Select>
             <Row>
               <View style={styles.row__bottom__view__top}>
@@ -122,7 +130,7 @@ class AddContracts extends Component {
             </Button>
           </Row>
         </Grid>
-        <Footer/>
+        <Footer navigation={this.props.navigation}/>
       </Container>
     )
   }

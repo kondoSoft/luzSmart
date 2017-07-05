@@ -7,6 +7,9 @@ import {
   Button,
   View,
 } from 'native-base';
+import {
+  TextInput
+} from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
@@ -45,9 +48,15 @@ class Contact extends Component{
             </Select>
           </Col>
           <Col size={60} style={styles.row__bottom}>
-            <Item regular last style={styles.col__bottom__item}>
+            {/* <Item regular last style={styles.col__bottom__item}>
               <Input />
-            </Item>
+            </Item> */}
+            <TextInput
+              style={styles.col__bottom__item}
+              editable = {true}
+              maxLength = {300}
+              multiline={true}
+            />
             <View style={styles.col__view__bottom}>
               <Button small primary style={{}}>
                 <Text>Agregar</Text>

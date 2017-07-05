@@ -29,6 +29,15 @@ export default {
   },
   col__bottom__item:{
     backgroundColor: 'lightgrey',
-    height: '65%'
+    height: '65%',
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 14,
+  },
+  select__option:{
+    height: 31,
+    borderBottomWidth: 0
   }
 }

@@ -21,7 +21,7 @@ class Results  extends Component {
     console.log(this.props.navigation);
     return(
       <Container>
-        <Header title={this.props.navigation.state.routeName} navigation={this.props.navigation}/>
+        <Header title="RESULTADOS" navigation={this.props.navigation}/>
           <Grid style={{  }}>
             <Row size={50} style={styles.row__top}>
               <Select
@@ -87,7 +87,7 @@ class Results  extends Component {
             >
             <Icon active name="md-share" style={{fontSize: 28, lineHeight: 0}}/>
           </Fab>
-        <Footer/>
+        <Footer navigation={this.props.navigation}/>
       </Container>
     )
   }

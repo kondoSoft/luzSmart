@@ -42,6 +42,6 @@ export default {
     color: 'blue',
     textAlign: 'center',
     flex: 1,
-  }
-
+    alignItems: 'center'
+   }
 };

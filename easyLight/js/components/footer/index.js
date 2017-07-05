@@ -9,14 +9,14 @@ class FooterGlobal extends Component {
       <Footer>
           <FooterTab>
             <Button vertical>
-              <Icon style={styles.footer__icon} name="home" onPress={() => this.props.navigation.navigate("Contracts")} />
+              <Icon style={styles.footer__icon} name="home" onPress={() => this.props.navigation.navigate("Home")} />
               <Text style={styles.footer__text}>Inicio</Text>
             </Button>
             <Button vertical onPress={() => this.props.navigation.navigate("Contact")}>
               <Icon style={styles.footer__icon} name="calendar" />
               <Text style={styles.footer__text}>Periodos</Text>
             </Button>
-            <Button vertical onPress={() => this.props.navigation.navigate("Contracts")}>
+            <Button vertical onPress={() => this.props.navigation.navigate("Measurements")}>
               <Thumbnail source={ require('../../../images/easylight.png') } style={styles.footer__logo} />
             </Button>
             <Button vertical active style={styles.footer__btn__resultados} onPress={() => this.props.navigation.navigate("Results")}>

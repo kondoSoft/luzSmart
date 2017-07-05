@@ -60,7 +60,7 @@ class Tips extends Component{
             </Col>
           </Swiper>
         </Grid>
-        <Footer/>
+        <Footer navigation={this.props.navigation}/>
       </Container>
     )
   }
