@@ -8,14 +8,32 @@ import {
   Left,
   Body,
   Right,
+  Fab,
+  Icon
 } from 'native-base';
+import {
+  Modal,
+  View,
+} from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 
-
 class History extends Component{
+  constructor(props){
+    super(props)
+
+    this.state = {
+      modal: <ModalForm/>,
+    }
+  }
+  setModalVisible(){
+    this.setState({
+      modal: <ModalForm/>
+    })
+    console.log("hello world");
+  }
   static navigationOptions = {
     header: null
   };
@@ -24,6 +42,7 @@ class History extends Component{
       <Container>
         <Header navigation={this.props.navigation} title="HISTORIAL" />
         <Content>
+          {this.state.modal}
           <Grid>
             <Col>
               <List>
@@ -64,8 +83,32 @@ class History extends Component{
             </Col>
           </Grid>
         </Content>
+        <View style={{ flex: 1}}>
+          <Fab
+            active={true}
+            direction="up"
+            style={{ backgroundColor: 'steelblue'}}
+            position="bottomRight"
+            // onPress={() => this.props.navigation.navigate("Receipt")}
+            onPress={()=> this.setModalVisible.bind(this)}
+            >
+            <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
+          </Fab>
+        </View>
         <Footer navigation={this.props.navigation} />
       </Container>
+    )
+  }
+}
+
+class ModalForm extends Component {
+  render(){
+    return(
+      <View>
+        <Modal>
+          <Text>Hello world</Text>
+        </Modal>
+      </View>
     )
   }
 }
