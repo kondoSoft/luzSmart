@@ -72,6 +72,17 @@ class Receipt extends Component {
             </Row>
           </Col>
         </Grid>
+        <View style={{ flex: 1}}>
+          <Fab
+            active={true}
+            direction="up"
+            style={{ backgroundColor: 'steelblue'}}
+            position="bottomRight"
+            onPress={() => this.props.navigation.navigate("Receipt")}
+            >
+            <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
+          </Fab>
+        </View>
         <Footer navigation={this.props.navigation}/>
       </Container>
     )

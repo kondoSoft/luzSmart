@@ -39,9 +39,23 @@ export default {
     textAlign: 'right',
   },
   icon:{
-    color: 'blue',
+    color: 'red',
     textAlign: 'center',
     flex: 1,
     alignItems: 'center'
-   }
+  },
+  rowBack: {
+		alignItems: 'center',
+		backgroundColor: '#FFF',
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingLeft: 15,
+	},
+  rowFront: {
+		alignItems: 'center',
+		backgroundColor: '#FFF',
+		justifyContent: 'center',
+		height: 50,
+	},
 };
