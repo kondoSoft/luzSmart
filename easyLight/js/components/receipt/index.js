@@ -30,7 +30,7 @@ class Receipt extends Component {
      'Desea agregar un historial al contrato Mi Casa',
      [
        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-       {text: 'Si', onPress: () => this.props.navigation.navigate('Contracts')},
+       {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
      ],
     )
   }
@@ -72,17 +72,6 @@ class Receipt extends Component {
             </Row>
           </Col>
         </Grid>
-        <View style={{ flex: 1}}>
-          <Fab
-            active={true}
-            direction="up"
-            style={{ backgroundColor: 'steelblue'}}
-            position="bottomRight"
-            onPress={() => this.props.navigation.navigate("Receipt")}
-            >
-            <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
-          </Fab>
-        </View>
         <Footer navigation={this.props.navigation}/>
       </Container>
     )
