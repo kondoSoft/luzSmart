@@ -5,14 +5,17 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import { Container, Content, Header, Body, Left, List, ListItem, Thumbnail, Text, Title, Button, Icon, Right, Image} from 'native-base';
 import styles from "./styles";
 import Swipeout from 'react-native-swipeout';
+import Footer from '../footer/index';
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
+import SwipeItem from '../listSwipe/index';
 
 var swipeoutBtns = [
   {
-    component: <Icon style={styles.icon} name="information-circle"/>,
+    component: <Icon style={styles.icon,{backgroundColor: 'red', marginTop: 9, textAlign: 'center' }} name="information-circle"/>,
     backgroundColor: 'transparent'
   }
 ]
-
+// const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 class Contracts extends Component {
 
   static navigationOptions = {
@@ -33,27 +36,45 @@ class Contracts extends Component {
           <Grid>
             <Col>
               <List style={styles.list}>
-                <ListItem avatar style={styles.listItem}>
-                  <Left>
-                    <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} />
-                  </Left>
-                  <Body style={styles.listItem__body}>
-                    <Text style={styles.listItem__body__text}>Mi Oficina</Text>
-                    <Swipeout
-                      backgroundColor={ 'transparent' }
-                      style={{ flex: 1 }}
-                      buttonWidth={70}
-                      right={swipeoutBtns}>
-                      <View style={styles.listItem__body__view}>
-                        <Text style={styles.listItem__body__view__text}>$300.00</Text>
-                      </View>
-                    </Swipeout>
-                  </Body>
-                </ListItem>
+                <SwipeItem
+                  navigation={this.props.navigation}
+                  component={
+                    <View style={{ flex: 1, flexDirection: 'row'}}>
+                      <Left style={{ alignItems: 'center' }}>
+                        <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} />
+                      </Left>
+                      <Body style={{ alignItems: 'center' }}>
+                        <Text style={styles.listItem__body__text,{}}>Mi Oficina</Text>
+                      </Body>
+                      <Right style={{ alignItems: 'center' }}>
+                        <Text style={styles.listItem__body__view__text,{}}>$300.00</Text>
+                      </Right>
+                    </View>
+                  }
+                  icon={<Icon style={styles.icon,{ marginTop: 9, textAlign: 'center', color: 'blue' }} name="information-circle"/>}
+                />
+                <SwipeItem
+                  navigation={this.props.navigation}
+                  component={
+                    <View style={{ flex: 1, flexDirection: 'row'}}>
+                      <Left style={{alignItems: 'center'}}>
+                        <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} />
+                      </Left>
+                      <Body style={{alignItems: 'center'}}>
+                        <Text style={styles.listItem__body__text,{}}>Mi Oficina</Text>
+                      </Body>
+                      <Right style={{alignItems: 'center'}}>
+                        <Text style={styles.listItem__body__view__text,{}}>$300.00</Text>
+                      </Right>
+                    </View>
+                  }
+                  icon={<Icon style={styles.icon,{ marginTop: 9, textAlign: 'center', color: 'blue' }} name="information-circle"/>}
+                />
               </List>
             </Col>
           </Grid>
         </Content>
+        <Footer navigation={this.props.navigation}/>
       </Container>
     )
   }
