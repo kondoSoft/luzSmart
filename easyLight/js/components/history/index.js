@@ -9,12 +9,17 @@ import {
   Body,
   Right,
   Fab,
-  Icon
+  Icon,
+  Form,
+  Item,
+  Label,
+  Input,
+  Button,
 } from 'native-base';
 import {
-  Modal,
   View,
 } from 'react-native';
+import Modal from 'react-native-modalbox';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import Footer from '../footer/index';
@@ -24,25 +29,26 @@ class History extends Component{
   constructor(props){
     super(props)
 
+    this.openModal = this.openModal.bind(this)
+
     this.state = {
-      modal: <ModalForm/>,
+      open: false
     }
-  }
-  setModalVisible(){
-    this.setState({
-      modal: <ModalForm/>
-    })
-    console.log("hello world");
   }
   static navigationOptions = {
     header: null
   };
+  openModal(){
+    this.setState({
+      open: !this.state.open
+    })
+  }
   render(){
     return(
       <Container>
+        <ModalForm visible={this.state.open}/>
         <Header navigation={this.props.navigation} title="HISTORIAL" />
         <Content>
-          {this.state.modal}
           <Grid>
             <Col>
               <List>
@@ -90,7 +96,7 @@ class History extends Component{
             style={{ backgroundColor: 'steelblue'}}
             position="bottomRight"
             // onPress={() => this.props.navigation.navigate("Receipt")}
-            onPress={()=> this.setModalVisible.bind(this)}
+            onPress={()=> this.openModal()}
             >
             <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
           </Fab>
@@ -104,11 +110,45 @@ class History extends Component{
 class ModalForm extends Component {
   render(){
     return(
-      <View>
-        <Modal>
-          <Text>Hello world</Text>
+        <Modal
+          position={'center'}
+          backdrop={true}
+          isOpen={this.props.visible}
+          entry={'bottom'}
+          backdropOpacity={0.8}
+          animationDuration={10000}
+          style={{height: 300, width: 300, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
+          >
+          <Grid>
+            <Row size={10} style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ alignItems: 'center'}}>AGREGA UN NUEVO HISTORIAL</Text>
+            </Row>
+            <Col size={60}>
+              <Form>
+                <Item fixedLabel last>
+                  <Label style={{ flex: 2 }}>Periodo:</Label>
+                  <Input />
+                </Item>
+                <Item fixedLabel last>
+                  <Label style={{ flex: 2 }}>Consumo:</Label>
+                  <Input />
+                </Item>
+                <Item fixedLabel last>
+                  <Label style={{ flex: 2 }}>Pago:</Label>
+                  <Input />
+                </Item>
+              </Form>
+            </Col>
+            <Row size={30} style={{justifyContent: 'space-between'}}>
+              <Button small danger>
+                <Text>Cancelar</Text>
+              </Button>
+              <Button small success>
+                <Text>Guardar</Text>
+              </Button>
+            </Row>
+          </Grid>
         </Modal>
-      </View>
     )
   }
 }

@@ -47,7 +47,7 @@ class ListItemSwipe extends React.Component{
           var x = parseInt(JSON.stringify(this.state.pan.x))
           console.log('onRelease',x);
           if ( x == 0 ){
-            this.props.onTap('History')
+            this.props.onTap('DetailContract')
           }
           if (gesture.dx < -75) {
             console.log('funciona funciona');
