@@ -24,28 +24,31 @@ export default {
     alignItems: 'center',
     flex: 1,
     paddingBottom: 5,
-    marginBottom: 5,
+    marginTop: 5,
+
   },
   grid__col__select__row__bottom:{
     alignItems: 'center',
     flex: 1,
     paddingBottom: 5,
     marginTop: 5,
-    alignItems: 'flex-end'
   },
   col__row__top__select:{
     width: 150,
-    height: 34,
+    height: 30,
     backgroundColor: 'transparent',
     borderTopWidth: .5,
     borderBottomWidth: .5,
     borderLeftWidth: .5,
     borderRightWidth: .5,
-    padding: 0
+    padding: 0,
+    paddingTop:5,
+
   },
   col__row__select__option:{
-    height: 30,
-    borderBottomWidth: 0
+    height: 34,
+    borderBottomWidth: 0,
+
   },
   row__bottom__list:{
     flex: 1

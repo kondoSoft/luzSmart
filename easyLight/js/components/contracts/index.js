@@ -38,36 +38,12 @@ class Contracts extends Component {
               <List style={styles.list}>
                 <SwipeItem
                   navigation={this.props.navigation}
-                  component={
-                    <View style={{ flex: 1, flexDirection: 'row'}}>
-                      <Left style={{ alignItems: 'center' }}>
-                        <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} />
-                      </Left>
-                      <Body style={{ alignItems: 'center' }}>
-                        <Text style={styles.listItem__body__text,{}}>Mi Oficina</Text>
-                      </Body>
-                      <Right style={{ alignItems: 'center' }}>
-                        <Text style={styles.listItem__body__view__text,{}}>$300.00</Text>
-                      </Right>
-                    </View>
-                  }
+                  component={<ItemComponent url={require('../../../images/office.png')}/>}
                   icon={<Icon style={styles.icon,{ marginTop: 9, textAlign: 'center', color: 'blue' }} name="information-circle"/>}
                 />
                 <SwipeItem
                   navigation={this.props.navigation}
-                  component={
-                    <View style={{ flex: 1, flexDirection: 'row'}}>
-                      <Left style={{alignItems: 'center'}}>
-                        <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} />
-                      </Left>
-                      <Body style={{alignItems: 'center'}}>
-                        <Text style={styles.listItem__body__text,{}}>Mi Oficina</Text>
-                      </Body>
-                      <Right style={{alignItems: 'center'}}>
-                        <Text style={styles.listItem__body__view__text,{}}>$300.00</Text>
-                      </Right>
-                    </View>
-                  }
+                  component={<ItemComponent url={require('../../../images/home.png')}/>}
                   icon={<Icon style={styles.icon,{ marginTop: 9, textAlign: 'center', color: 'blue' }} name="information-circle"/>}
                 />
               </List>
@@ -76,6 +52,24 @@ class Contracts extends Component {
         </Content>
         <Footer navigation={this.props.navigation}/>
       </Container>
+    )
+  }
+}
+
+class ItemComponent extends Component{
+  render(){
+    return(
+      <View style={{ flex: 1, flexDirection: 'row'}}>
+        <Left style={{alignItems: 'center'}}>
+          <Thumbnail source={this.props.url} />
+        </Left>
+        <Body style={{alignItems: 'center'}}>
+          <Text style={styles.listItem__body__text,{}}>Mi Oficina</Text>
+        </Body>
+        <Right style={{alignItems: 'center'}}>
+          <Text style={styles.listItem__body__view__text,{}}>$300.00</Text>
+        </Right>
+      </View>
     )
   }
 }

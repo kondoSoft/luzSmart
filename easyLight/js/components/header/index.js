@@ -9,6 +9,7 @@ import {
   Icon,
   Right,
 } from 'native-base';
+import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
 
 class HeaderGlobal extends Component {
@@ -20,24 +21,29 @@ class HeaderGlobal extends Component {
   };
   render(){
     return(
-      <Header style={styles.header}>
-        <Left>
-          <Button transparent onPress={() => this.props.navigation.goBack()}>
-            <Icon style={styles.header__icon} name="ios-arrow-back" />
-          </Button>
-        </Left>
-        <Body style={styles.header__body}>
-          {(this.props.title) ? <Title style={styles.header__body__title}>{this.props.title}</Title> : <Title style={styles.header__body__title}>EASYLIGHT</Title>}
-        </Body>
-        <Right>
-          <Button
-            transparent
-            onPress={() => this.props.navigation.navigate('Contracts')}
-            >
-            <Icon active style={styles.header__icon} name="menu"/>
-          </Button>
-        </Right>
-      </Header>
+      // <Header style={styles.header}>
+        <LinearGradient
+          colors={['#00CA61', '#007050']}
+          style={{ flexDirection: 'row'}}
+          >
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon style={styles.header__icon} name="ios-arrow-back" />
+            </Button>
+          </Left>
+          <Body style={styles.header__body}>
+            {(this.props.title) ? <Title style={styles.header__body__title}>{this.props.title}</Title> : <Title style={styles.header__body__title}>EASYLIGHT</Title>}
+          </Body>
+          <Right>
+            <Button
+              transparent
+              onPress={() => this.props.navigation.navigate('Contracts')}
+              >
+              <Icon active style={styles.header__icon} name="menu"/>
+            </Button>
+          </Right>
+        </LinearGradient>
+      // </Header>
     )
   }
 }
