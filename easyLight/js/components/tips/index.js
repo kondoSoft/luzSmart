@@ -28,7 +28,7 @@ class Tips extends Component{
             <Col style={styles.slide1}>
               <View style={styles.swipper__col__top__image}>
                 <Image
-                  source={ require('../../../images/easylight.png')}
+                  source={ require('../../../images/foco.png')}
                   style={styles.image}
                 />
               </View>
@@ -39,7 +39,7 @@ class Tips extends Component{
             <Col style={styles.slide1}>
               <View style={styles.swipper__col__top__image}>
                 <Image
-                  source={ require('../../../images/easylight.png')}
+                  source={ require('../../../images/foco.png')}
                   style={styles.image}
                 />
               </View>
@@ -50,7 +50,7 @@ class Tips extends Component{
             <Col style={styles.slide1}>
               <View style={styles.swipper__col__top__image}>
                 <Image
-                  source={ require('../../../images/easylight.png')}
+                  source={ require('../../../images/foco.png')}
                   style={styles.image}
                 />
               </View>

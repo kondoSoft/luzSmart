@@ -18,6 +18,7 @@ import {
 } from 'native-base';
 import {
   View,
+  Dimensions,
 } from 'react-native';
 import Modal from 'react-native-modalbox';
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -25,11 +26,15 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 
+
+let Window = Dimensions.get('window');
+
 class History extends Component{
   constructor(props){
     super(props)
 
     this.openModal = this.openModal.bind(this)
+    this.onClose = this.onClose.bind(this)
 
     this.state = {
       open: false
@@ -43,10 +48,15 @@ class History extends Component{
       open: !this.state.open
     })
   }
+  onClose(){
+    this.setState({
+      open: !this.state.open
+    })
+  }
   render(){
     return(
       <Container>
-        <ModalForm visible={this.state.open}/>
+        <ModalForm visible={this.state.open} onClose={this.onClose} navigation={this.props.navigation}/>
         <Header navigation={this.props.navigation} title="HISTORIAL" />
         <Content>
           <Grid>
@@ -116,35 +126,44 @@ class ModalForm extends Component {
           isOpen={this.props.visible}
           entry={'bottom'}
           backdropOpacity={0.8}
-          animationDuration={10000}
-          style={{height: 300, width: 300, justifyContent: 'center',alignItems: 'center', borderRadius: 10}}
+          animationDuration={600}
+          onClosed={this.props.onClose}
+          style={{ height: '40%', borderRadius: 10, width: '80%'}}
           >
           <Grid>
             <Row size={10} style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ alignItems: 'center'}}>AGREGA UN NUEVO HISTORIAL</Text>
             </Row>
-            <Col size={60}>
+            <Col size={75}>
               <Form>
                 <Item fixedLabel last>
-                  <Label style={{ flex: 2 }}>Periodo:</Label>
+                  <Label style={{ flex: 0.7 }}>Periodo:</Label>
                   <Input />
                 </Item>
                 <Item fixedLabel last>
-                  <Label style={{ flex: 2 }}>Consumo:</Label>
+                  <Label style={{ flex: 0.9 }}>Consumo:</Label>
                   <Input />
                 </Item>
                 <Item fixedLabel last>
-                  <Label style={{ flex: 2 }}>Pago:</Label>
-                  <Input />
+                  <Label style={{ flex: 0.5 }}>Pago:</Label>
+                  <Input keyboardType={'numeric'} />
                 </Item>
               </Form>
             </Col>
-            <Row size={30} style={{justifyContent: 'space-between'}}>
-              <Button small danger>
-                <Text>Cancelar</Text>
+            <Row size={15} style={{ }}>
+              <Button
+                small
+                style={{ flex: 1,height: '100%', backgroundColor: 'transparent', borderTopWidth: 1, borderRadius: 0, borderColor: 'lightgrey'}}
+                onPress={()=>this.props.navigation.navigate('History')}
+                >
+                <Text style={{color: '#007aff', textAlign: 'center', flex: 1}}>Cancelar</Text>
               </Button>
-              <Button small success>
-                <Text>Guardar</Text>
+              <Button
+                small
+                style={{ flex: 1, height: '100%', backgroundColor: 'transparent', borderTopWidth: 1, borderLeftWidth: 1, borderRadius: 0, borderColor: 'lightgrey'}}
+                onPress={()=>this.props.navigation.navigate('History')}
+                >
+                <Text style={{color: '#007aff', textAlign: 'center', flex: 1}}>Guardar</Text>
               </Button>
             </Row>
           </Grid>

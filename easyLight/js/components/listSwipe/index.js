@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity} from 'react-native';
 
+let Window = Dimensions.get('window');
+
 class ListItemSwipe extends React.Component{
   static propTypes = {
     tension: React.PropTypes.number,
@@ -85,7 +87,7 @@ class ListItemSwipe extends React.Component{
         <Animated.View
          {...this.panResponder.panHandlers}
 
-          style={[this.state.pan.getLayout(),{ backgroundColor:'lightgrey', height: 65, width: 375, position: 'absolute', top: 0, right: 0} ]}>
+          style={[this.state.pan.getLayout(),{ backgroundColor:'lightgrey', height: 65, width: Window.width, position: 'absolute', top: 0, right: 0}]}>
                 {this.props.component}
         </Animated.View>
     )
@@ -132,7 +134,7 @@ class SwipeItem extends React.Component {
 }
 export default SwipeItem;
 
-let Window = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

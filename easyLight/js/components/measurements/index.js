@@ -10,7 +10,9 @@ import {
   Picker,
   Fab,
   Icon,
+  Button,
 } from 'native-base';
+import { Image, TextInput } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
@@ -28,19 +30,19 @@ class Measurements extends Component {
       <Container>
         <Header navigation={this.props.navigation}/>
         <Grid>
-          <Row size={10} style={styles.grid__row__top}>
+          <Row size={9} style={styles.grid__row__top}>
             <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
             <View style={styles.grid__row__top__view}>
               <Text>$2,150</Text>
               <Text>Proyectado</Text>
             </View>
           </Row>
-          <Col size={10} style={styles.grid__col__select}>
+          <Col size={11} style={styles.grid__col__select}>
             <Row style={styles.grid__col__select__row__top}>
               <Text style={styles.grid__row__top__view}>Contrato</Text>
               <Select
                 selectStyle={styles.col__row__top__select}
-                padding={10}
+                padding={5}
                 listHeight={100}
                 caretSize={0}
                 >
@@ -62,7 +64,7 @@ class Measurements extends Component {
               <Text style={styles.grid__row__top__view}>Periodo</Text>
               <Select
                 selectStyle={styles.col__row__top__select}
-                padding={10}
+                padding={5}
                 listHeight={100}
                 caretSize={0}
                 >
@@ -97,8 +99,18 @@ class Measurements extends Component {
               </ListItem>
             </List>
           </Row>
-          <Row size={36} style={{ }}>
-
+          <Row size={36} style={{ alignItems: 'center', justifyContent: 'center'}}>
+            <Image resizeMode={'stretch'} source={require('../../../images/medidor.png')} style={{width: '65%', height: '85%'}}>
+              <View style={{ flex: 1, backgroundColor: 'transparent', justifyContent: 'space-around', flexDirection: 'column'}}>
+                <TextInput keyboardType={'numeric'} style={{ height: 27 ,backgroundColor: 'lightgrey', marginTop: 58, flex: 0, width: '50%', marginLeft: 65, borderWidth:2, borderColor: 'grey'}}/>
+                <Button
+                  small
+                  style={{marginLeft: 95, marginBottom: 33, backgroundColor: 'green'}}
+                  >
+                  <Text>Enter</Text>
+                </Button>
+              </View>
+            </Image>
           </Row>
         </Grid>
         <Footer navigation={this.props.navigation}/>

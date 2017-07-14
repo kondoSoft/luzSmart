@@ -117,7 +117,7 @@ class Login extends Component {
                 <Button
                   block
                   style={styles.btn}
-                  onPress={() => this.props.navigation.navigate("Home")}
+                  onPress={() => this.props.navigation.navigate("Contracts")}
                 >
                   <Text>Entrar</Text>
                 </Button>

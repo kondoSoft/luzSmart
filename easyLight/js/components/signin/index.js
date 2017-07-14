@@ -15,7 +15,7 @@ class SignIn extends Component {
             <Grid>
               <Row size={15} style={styles.row__top}>
                 <Col style={styles.row__top__col__left}>
-                  <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} />
+                  <Thumbnail source={ require('../../../images/profile.png')} />
                 </Col>
                 <Col style={styles.row__top__col__right}>
                   {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}> */}
