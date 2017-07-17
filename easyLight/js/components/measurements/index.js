@@ -18,6 +18,7 @@ import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
+import AnimatedView from '../animatedView/index';
 
 
 class Measurements extends Component {
@@ -25,7 +26,6 @@ class Measurements extends Component {
     header: null
   };
   render(){
-
     return(
       <Container>
         <Header navigation={this.props.navigation}/>
@@ -99,29 +99,30 @@ class Measurements extends Component {
               </ListItem>
             </List>
           </Row>
-          <Row size={36} style={{ alignItems: 'center', justifyContent: 'center'}}>
-            <Image resizeMode={'stretch'} source={require('../../../images/medidor.png')} style={{width: '65%', height: '85%'}}>
-              <View style={{ flex: 1, backgroundColor: 'transparent', justifyContent: 'space-around', flexDirection: 'column'}}>
-                <TextInput keyboardType={'numeric'} style={{ height: 27 ,backgroundColor: 'lightgrey', marginTop: 58, flex: 0, width: '50%', marginLeft: 65, borderWidth:2, borderColor: 'grey'}}/>
+          <AnimatedView>
+            <Image resizeMode={'stretch'} source={require('../../../images/medidor.png')} style={styles.animatedView__image}>
+              <View style={styles.animatedView__image__view}>
+                <TextInput keyboardType={'numbers-and-punctuation'} style={styles.animatedView__image__view__input}/>
                 <Button
                   small
-                  style={{marginLeft: 95, marginBottom: 33, backgroundColor: 'green'}}
+                  style={styles.animatedView__image__view__btn}
+                  onPress={() => this.props.navigation.navigate("Contact")}
                   >
                   <Text>Enter</Text>
                 </Button>
               </View>
             </Image>
-          </Row>
+          </AnimatedView>
         </Grid>
         <Footer navigation={this.props.navigation}/>
         <View>
           <Fab
             active={true}
             direction="up"
-            style={{ backgroundColor: 'steelblue', bottom: 60}}
+            style={styles.fab}
             position="bottomRight"
             >
-            <Icon active name="md-share" style={{fontSize: 28, lineHeight: 0}}/>
+            <Icon active name="md-share" style={styles.icon}/>
           </Fab>
         </View>
       </Container>

@@ -4,18 +4,9 @@ import { View } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Container, Content, Header, Body, Left, List, ListItem, Thumbnail, Text, Title, Button, Icon, Right, Image} from 'native-base';
 import styles from "./styles";
-import Swipeout from 'react-native-swipeout';
 import Footer from '../footer/index';
-import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import SwipeItem from '../listSwipe/index';
 
-var swipeoutBtns = [
-  {
-    component: <Icon style={styles.icon,{backgroundColor: 'red', marginTop: 9, textAlign: 'center' }} name="information-circle"/>,
-    backgroundColor: 'transparent'
-  }
-]
-// const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 class Contracts extends Component {
 
   static navigationOptions = {
@@ -39,12 +30,13 @@ class Contracts extends Component {
                 <SwipeItem
                   navigation={this.props.navigation}
                   component={<ItemComponent url={require('../../../images/office.png')}/>}
-                  icon={<Icon style={styles.icon,{ marginTop: 9, textAlign: 'center', color: 'blue' }} name="information-circle"/>}
+                  icon={<Icon style={styles.icon} name="information-circle"/>}
                 />
                 <SwipeItem
+                  navigateTo={'History'}
                   navigation={this.props.navigation}
                   component={<ItemComponent url={require('../../../images/home.png')}/>}
-                  icon={<Icon style={styles.icon,{ marginTop: 9, textAlign: 'center', color: 'blue' }} name="information-circle"/>}
+                  icon={<Icon style={styles.icon} name="information-circle"/>}
                 />
               </List>
             </Col>
@@ -59,14 +51,14 @@ class Contracts extends Component {
 class ItemComponent extends Component{
   render(){
     return(
-      <View style={{ flex: 1, flexDirection: 'row'}}>
-        <Left style={{alignItems: 'center'}}>
+      <View style={styles.ItemComponent.view}>
+        <Left style={styles.ItemComponent.align}>
           <Thumbnail source={this.props.url} />
         </Left>
-        <Body style={{alignItems: 'center'}}>
-          <Text style={styles.listItem__body__text,{}}>Mi Oficina</Text>
+        <Body style={styles.ItemComponent.align}>
+          <Text style={styles.listItem__body__text}>Mi Oficina</Text>
         </Body>
-        <Right style={{alignItems: 'center'}}>
+        <Right style={styles.ItemComponent.align}>
           <Text style={styles.listItem__body__view__text,{}}>$300.00</Text>
         </Right>
       </View>

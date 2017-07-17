@@ -39,10 +39,11 @@ export default {
     textAlign: 'right',
   },
   icon:{
-    color: 'red',
-    textAlign: 'center',
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 9,
+    textAlign: 'center',
+    color: 'blue'
   },
   rowBack: {
 		alignItems: 'center',
@@ -58,4 +59,13 @@ export default {
 		justifyContent: 'center',
 		height: 50,
 	},
+  ItemComponent:{
+    view:{
+      flex: 1,
+      flexDirection: 'row'
+    },
+    align:{
+      alignItems: 'center',
+    },
+  },
 };

@@ -33,5 +33,5 @@ export default (StackNav = StackNavigator({
   Receipt: { screen: Receipt },
   History: { screen: History },
   Tips: { screen: Tips },
-  Contact: { screen:  Contact },
+  Contact: { screen:  Contact }
 }));

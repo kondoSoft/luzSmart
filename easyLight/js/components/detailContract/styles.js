@@ -55,5 +55,22 @@ export default {
     flex: 1,
     alignItems: 'center',
     padding: 6
-  }
+  },
+  ItemComponent:{
+    view:{
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    align:{
+      alignItems: 'center',
+    },
+  },
+  icon:{
+    flex: 1,
+    textAlign: 'center',
+    paddingTop: 15,
+    color: 'blue',
+    lineHeight: 0,
+  },
 };
