@@ -43,7 +43,6 @@ export default {
     borderRightWidth: .5,
     padding: 0,
     paddingTop:5,
-
   },
   col__row__select__option:{
     height: 34,
@@ -61,5 +60,38 @@ export default {
   },
   row__bottom__list__listItem__textBottom:{
     flex: 1
+  },
+  animatedView__image:{
+    width: '65%',
+    height: '85%'
+  },
+  animatedView__image__view:{
+    flex: 1,
+    backgroundColor: 'transparent',
+    justifyContent: 'space-around',
+    flexDirection: 'column',
+  },
+  animatedView__image__view__input:{
+    height: 25,
+    backgroundColor: 'lightgrey',
+    marginTop: 54,
+    flex: 0,
+    width: '50%',
+    marginLeft: 65,
+    borderWidth:2,
+    borderColor: 'grey',
+  },
+  animatedView__image__view__btn:{
+    marginLeft: 95,
+    marginBottom: 33,
+    backgroundColor: 'green',
+  },
+  fab:{
+    backgroundColor: 'steelblue',
+    bottom: 60,
+  },
+  icon:{
+    fontSize: 28,
+    lineHeight: 0,
   },
 }

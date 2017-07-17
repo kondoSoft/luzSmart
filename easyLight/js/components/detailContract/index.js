@@ -11,26 +11,18 @@ import {
   Thumbnail,
   Text,
   Body,
-  View,
   Fab,
 } from 'native-base';
+import {
+  View
+} from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
+import SwipeItem from '../listSwipe/index';
 
-
-var swipeoutBtns = [
-  {
-    component: <Icon style={styles.icon} name="information-circle"/>,
-    // component: <Icon style={styles.icon} name="information-circle"/>,
-    backgroundColor: 'transparent',
-    onPress: function(){
-
-    },
-  },
-]
 
 class DetailContract extends Component {
   static navigationOptions = {
@@ -47,38 +39,16 @@ class DetailContract extends Component {
             </Row>
             <Col>
               <List style={styles.list}>
-                <ListItem avatar onPress={() => this.props.navigation.navigate("Measurements")} style={styles.listItem}>
-                  <Body style={styles.listItem__body}>
-                    <Text style={styles.listItem__body__text}>Marzo 17</Text>
-                    <Swipeout
-                      backgroundColor={ 'transparent' }
-                      style={{ flex: .5 }}
-                      buttonWidth={75}
-                      right={swipeoutBtns}
-                      autoClose={true}>
-                      <View style={styles.listItem__body__view}>
-                        <Text style={styles.listItem__body__view__text}>$2,150</Text>
-                        <Text style={styles.listItem__body__view__text, {fontSize: 10}}>Pagado</Text>
-                      </View>
-                    </Swipeout>
-                  </Body>
-                </ListItem>
-                <ListItem avatar onPress={() => this.props.navigation.navigate("Measurements")} style={styles.listItem}>
-                  <Body style={styles.listItem__body}>
-                    <Text style={styles.listItem__body__text}>Abril 17</Text>
-                    <Swipeout
-                      backgroundColor={ 'transparent' }
-                      style={{ flex: .4}}
-                      buttonWidth={75}
-                      right={swipeoutBtns}
-                      autoClose={true}>
-                      <View style={styles.listItem__body__view}>
-                        <Text style={styles.listItem__body__view__text}>$1,750</Text>
-                        <Text style={styles.listItem__body__view__text, {fontSize: 10}}>Proyectado</Text>
-                      </View>
-                    </Swipeout>
-                  </Body>
-                </ListItem>
+                <SwipeItem
+                  navigation={this.props.navigation}
+                  component={<ItemComponent url={require('../../../images/office.png')}/>}
+                  icon={<Icon style={styles.icon} name="information-circle"/>}
+                />
+                <SwipeItem
+                  navigation={this.props.navigation}
+                  component={<ItemComponent url={require('../../../images/home.png')}/>}
+                  icon={<Icon style={styles.icon} name="information-circle"/>}
+                />
               </List>
             </Col>
           </Grid>
@@ -87,7 +57,7 @@ class DetailContract extends Component {
           <Fab
             active={true}
             direction="up"
-            style={{ backgroundColor: 'steelblue'}}
+            style={{ backgroundColor: 'steelblue', borderTopWidth:4,borderBottomWidth:4,borderLeftWidth:4,borderRightWidth:4, borderColor: '#fff'}}
             position="bottomRight"
             onPress={() => this.props.navigation.navigate("Receipt")}
             >
@@ -96,6 +66,25 @@ class DetailContract extends Component {
         </View>
         <Footer navigation={this.props.navigation}/>
       </Container>
+    )
+  }
+}
+
+class ItemComponent extends Component{
+  render(){
+    return(
+      <View style={styles.ItemComponent.view}>
+        <Left style={styles.ItemComponent.align}>
+          <Text style={styles.listItem__body__text,{}}>Marzo 17</Text>
+        </Left>
+        <Body style={styles.ItemComponent.align}>
+
+        </Body>
+        <Right style={styles.ItemComponent.align}>
+          <Text style={styles.listItem__body__view__text,{}}>$2150</Text>
+          <Text style={styles.listItem__body__view__text,{}}>Pagado</Text>
+        </Right>
+      </View>
     )
   }
 }

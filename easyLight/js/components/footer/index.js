@@ -8,7 +8,7 @@ class FooterGlobal extends Component {
     return (
       <Footer>
           <FooterTab>
-            <Button vertical onPress={() => this.props.navigation.navigate("Home")}>
+            <Button vertical onPress={() => this.props.navigation.navigate("Contracts")}>
               <Icon style={styles.footer__icon} name="home" />
               <Text style={styles.footer__text}>Inicio</Text>
             </Button>
