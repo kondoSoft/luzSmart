@@ -110,13 +110,13 @@ class AddContracts extends Component {
             </Select>
             <Row>
               <View style={styles.row__bottom__view__top}>
-                <CheckBox checked={true} style={styles.CheckBox} />
+                <CheckBox checked={false} style={styles.CheckBox} />
                 <Body style={{ flex: 0 }}>
                   <Text>Mensual</Text>
                 </Body>
               </View>
               <View style={ styles.row__bottom__view__bottom }>
-                <CheckBox checked={true} style={styles.CheckBox} />
+                <CheckBox checked={false} style={styles.CheckBox} />
                 <Body style={{ flex: 0 }}>
                   <Text>Bimestral</Text>
                 </Body>
@@ -125,7 +125,11 @@ class AddContracts extends Component {
             </Form>
           </Col>
           <Row size={15} style={styles.row__bottom}>
-            <Button small primary>
+            <Button
+              small
+              primary
+              onPress={() => this.props.navigation.navigate('Contracts')}
+              >
               <Text>Agregar</Text>
             </Button>
           </Row>

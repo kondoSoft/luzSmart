@@ -25,6 +25,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
+import FabButton from '../fabButton/index';
 
 
 let Window = Dimensions.get('window');
@@ -99,8 +100,7 @@ class History extends Component{
             </Col>
           </Grid>
         </Content>
-        <View style={{ flex: 1}}>
-          <Fab
+          {/* <Fab
             active={true}
             direction="up"
             style={{ backgroundColor: 'steelblue'}}
@@ -109,8 +109,14 @@ class History extends Component{
             onPress={()=> this.openModal()}
             >
             <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
-          </Fab>
-        </View>
+          </Fab> */}
+        <FabButton
+          navigation={this.props.navigation}
+          onTap={()=> this.openModal()}
+          >
+          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+        </FabButton>
+
         <Footer navigation={this.props.navigation} />
       </Container>
     )

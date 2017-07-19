@@ -49,7 +49,7 @@ class ListItemSwipe extends React.Component{
           var x = parseInt(JSON.stringify(this.state.pan.x))
           console.log('onRelease',x);
           if ( x == 0 ){
-            this.props.onTap(this.props.navigateTo)
+            this.props.onTap('DetailContract')
           }
           if (gesture.dx < -75) {
             console.log('funciona funciona');
@@ -82,12 +82,10 @@ class ListItemSwipe extends React.Component{
   }
 
   render(){
-    console.log('this props',this.props);
     return(
         <Animated.View
          {...this.panResponder.panHandlers}
-
-          style={[this.state.pan.getLayout(),{ backgroundColor:'lightgrey', height: 65, width: Window.width, position: 'absolute', top: 0, right: 0}]}>
+          style={[this.state.pan.getLayout(),{ backgroundColor:'lightgrey', height: 65, width: Window.width, position: 'absolute', top: 0, right: 0, alignItems: 'center',justifyContent: 'center'}]}>
                 {this.props.component}
         </Animated.View>
     )
@@ -105,7 +103,6 @@ class SwipeItem extends React.Component {
   }
   render(){
     // console.log('this is navigate props' , this.props);
-
     return(
       <View>
         <View style={styles.swipeBack}>
@@ -158,7 +155,8 @@ const styles = StyleSheet.create({
   },
   swipeBack:{
     height: 65,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   swipeBack__left:{
     backgroundColor: 'lightgrey',

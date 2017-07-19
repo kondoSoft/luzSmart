@@ -3,6 +3,9 @@ const { StyleSheet, Dimensions } = React;
 
 export default {
   header:{
+    paddingTop: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
     backgroundColor: 'green',
   },
   header__body__title:{

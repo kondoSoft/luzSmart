@@ -25,18 +25,16 @@ export default {
     borderBottomWidth: 0
   },
   listItem__body__text:{
-    flex: 1,
-    padding: 5,
+    justifyContent: 'center',
   },
   listItem__body__view:{
     flexDirection: 'row',
-
+    alignItems: 'center',
     padding: 5,
     flex: 2,
   },
   listItem__body__view__text:{
-    flex: 1,
-    textAlign: 'right',
+
   },
   icon:{
     flex: 1,
@@ -61,7 +59,6 @@ export default {
 	},
   ItemComponent:{
     view:{
-      flex: 1,
       flexDirection: 'row'
     },
     align:{
