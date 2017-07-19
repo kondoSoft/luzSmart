@@ -22,7 +22,7 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import SwipeItem from '../listSwipe/index';
-
+import FabButton from '../fabButton/index';
 
 class DetailContract extends Component {
   static navigationOptions = {
@@ -53,7 +53,7 @@ class DetailContract extends Component {
             </Col>
           </Grid>
         </Content>
-        <View style={{ flex: 1}}>
+        {/* <View style={{ flex: 1}}>
           <Fab
             active={true}
             direction="up"
@@ -63,7 +63,13 @@ class DetailContract extends Component {
             >
             <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
           </Fab>
-        </View>
+        </View> */}
+        <FabButton
+          navigation={this.props.navigation}
+          navigateTo={'Receipt'}
+          >
+          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+        </FabButton>
         <Footer navigation={this.props.navigation}/>
       </Container>
     )

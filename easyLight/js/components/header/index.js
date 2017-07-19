@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import {
   Body,
   Header,
@@ -13,18 +12,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
 
 class HeaderGlobal extends Component {
-  static navigationOptions = {
-    header: null
-  };
-  static propTypes = {
-    openDrawer: React.PropTypes.func
-  };
   render(){
     return(
-      // <Header style={styles.header}>
+      <Header style={styles.header}>
         <LinearGradient
-          colors={['#00CA61', '#007050']}
-          style={{ flexDirection: 'row'}}
+          colors={['#4c669f', '#3b5998']}
+          style={{ flexDirection: 'row', borderColor: 'transparent', height: '100%', width: '100%', paddingTop: 10}}
           >
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
@@ -37,22 +30,15 @@ class HeaderGlobal extends Component {
           <Right>
             <Button
               transparent
-              onPress={() => this.props.navigation.navigate('Contracts')}
+              onPress={() => alert('im the menu button')}
               >
               <Icon active style={styles.header__icon} name="menu"/>
             </Button>
           </Right>
         </LinearGradient>
-      // </Header>
+      </Header>
     )
   }
 }
-
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer())
-  };
-}
-
 
 export default HeaderGlobal;

@@ -68,7 +68,10 @@ class Home extends Component {
           <Right>
             <Button
               transparent
-              onPress={() => DrawerNav.navigate("DrawerOpen")}
+              onPress={() => {
+                console.log('>>> ', DrawerNav);
+                return DrawerNav.navigate("DrawerOpen")
+              }}
             >
               <Icon active name="menu" />
             </Button>

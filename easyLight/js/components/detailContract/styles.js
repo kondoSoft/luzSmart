@@ -60,7 +60,8 @@ export default {
     view:{
       flex: 1,
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     align:{
       alignItems: 'center',
