@@ -1,7 +1,10 @@
 const React = require('react-native');
-const { StyleSheet, Dimensions } = React;
+const { Platform, StyleSheet, Dimensions } = React;
 
 export default {
+  footer:{
+    backgroundColor: (Platform.OS === 'ios')? null : 'green',
+  },
   footer__icon:{
     fontSize: 23
   },
@@ -9,7 +12,7 @@ export default {
     fontSize: 7
   },
   footer__logo:{
-    
+
   },
   footer__text__resultados:{
     fontSize: 7,
