@@ -4,12 +4,13 @@ import {
   Text,
   View,
 } from 'native-base';
-import { Image } from 'react-native';
+import { Platform, Image } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Swiper from 'react-native-swiper';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
+
 
 class Tips extends Component{
   static navigationOptions = {
@@ -19,13 +20,14 @@ class Tips extends Component{
     return(
       <Container>
         <Header navigation={ this.props.navigation } title="TIPS" />
+        {(Platform.OS == 'android') ? <Footer navigation={this.props.navigation}/>  : null}
         <Grid>
           <Swiper
             style={styles.wrapper}
             showsButtons={true}
             buttonWrapperStyle={styles.arrow__buttons}
             >
-            <Col style={styles.slide1}>
+            <Col style={styles.slide1,{ marginTop: 50, alignItems: 'center'}}>
               <View style={styles.swipper__col__top__image}>
                 <Image
                   source={ require('../../../images/foco.png')}
@@ -60,7 +62,7 @@ class Tips extends Component{
             </Col>
           </Swiper>
         </Grid>
-        <Footer navigation={this.props.navigation}/>
+        {(Platform.OS == 'ios') ? <Footer navigation={this.props.navigation}/>  : null}
       </Container>
     )
   }

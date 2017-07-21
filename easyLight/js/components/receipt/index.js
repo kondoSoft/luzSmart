@@ -12,6 +12,8 @@ import {
 import {
   TouchableOpacity,
   AlertIOS,
+  Platform,
+  Alert,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -24,20 +26,31 @@ class Receipt extends Component {
   static navigationOptions = {
     header: null
   };
-  showAlert(){
+  showAlertIOS(){
     AlertIOS.alert(
       'Contrato',
-     'Desea agregar un historial al contrato Mi Casa',
+     'Desea agregar un historial al contrato Mi Casa?',
      [
        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
        {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
      ],
     )
   }
+  showAlertA(){
+    Alert.alert(
+      'Contrato',
+      'Desea agregar un historial al contrato Mi Casa?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
+      ],
+    )
+  }
   render(){
     return(
       <Container>
         <Header navigation={this.props.navigation} title="RECIBO CFE"/>
+
         <Grid style={styles.grid}>
           <Col size={75}>
             <Form style={styles.form}>
@@ -65,7 +78,7 @@ class Receipt extends Component {
             <Row style={styles.col__bottom__row__bottom}>
               <Button
                 small
-                onPress={()=> this.showAlert()}
+                onPress={(Platform.OS === 'ios')? ()=> this.showAlertIOS() : this.showAlertA()}
                 >
                 <Text>Agregar</Text>
               </Button>
