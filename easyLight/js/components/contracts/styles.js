@@ -1,5 +1,5 @@
 const React = require('react-native');
-const { StyleSheet, Dimensions } = React;
+const { StyleSheet, Dimensions, Platform } = React;
 
 export default {
   header:{
@@ -7,9 +7,16 @@ export default {
   },
   header__left__title:{
     color: 'white',
+    fontSize: (Platform.OS === 'ios')? 14 : 22,
   },
-  list:{
-
+  fab:{
+    backgroundColor: 'steelblue',
+    elevation: 10,
+    width: 65,
+    height: 65,
+    borderRadius: 50,
+    position: 'absolute',
+    bottom: (Platform.OS === 'ios')? 60 : 0,
   },
   listItem:{
     flex: 1,
@@ -37,11 +44,11 @@ export default {
 
   },
   icon:{
-    flex: 1,
-    alignItems: 'center',
-    marginTop: 9,
+    width: '70%',
+    height: '70%',
+    color: '#fff',
+    fontSize: 30,
     textAlign: 'center',
-    color: 'blue'
   },
   rowBack: {
 		alignItems: 'center',

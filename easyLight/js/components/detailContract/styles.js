@@ -1,5 +1,5 @@
 const React = require('react-native');
-const { StyleSheet, Dimensions } = React;
+const { StyleSheet, Dimensions, Platform } = React;
 
 export default {
   header:{
@@ -69,9 +69,17 @@ export default {
   },
   icon:{
     flex: 1,
-    textAlign: 'center',
-    paddingTop: 15,
-    color: 'blue',
-    lineHeight: 0,
+    alignItems: 'center',
+    marginTop: 18,
+    color: '#fff',
+    fontSize: 30,
+  },
+  fab:{
+    backgroundColor: 'steelblue',
+    elevation: 10,
+    width: 65,
+    height: 65,
+    borderRadius: 50,
+    paddingBottom: (Platform.OS === 'ios')? 80 : 0,
   },
 };
