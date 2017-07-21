@@ -17,6 +17,7 @@ class ListItemSwipe extends React.Component{
     }
   }
   componentWillMount(){
+    console.log('list item swipe',this.props.onTap);
   var springConfig = {
     tension: (this.props.tension)? this.props.tension : 40,
     friction: (this.props.friction)? this.props.friction : 15,
@@ -78,11 +79,10 @@ class SwipeItem extends React.Component {
     super(props)
     this.navigateTo = this.navigateTo.bind(this)
   }
-  navigateTo(route, i){
-    this.props.navigation.navigate(route, i)
+  navigateTo(route,i){
+    this.props.navigation.navigate(route,i)
   }
   render(){
-
     return(
       <View>
         <View style={styles.swipeBack}>

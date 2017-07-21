@@ -8,27 +8,25 @@ import {
   Icon,
   Right,
 } from 'native-base';
+import {
+  Platform,
+} from 'react-native';
 import styles from './styles';
 
 class HeaderGlobal extends Component {
   render(){
     return(
       <Header style={styles.header}>
-          <Left>
+          <Left style={styles.left}>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon style={styles.header__icon} name="ios-arrow-back" />
+              <Icon style={styles.header__icon} name={(Platform.OS === 'ios')? "ios-arrow-back" : "arrow-back"} />
             </Button>
           </Left>
           <Body style={styles.header__body}>
-            {(this.props.title) ? <Title style={styles.header__body__title}>{this.props.title}</Title> : <Title style={styles.header__body__title}>EASYLIGHT</Title>}
+            {(Platform.OS === 'ios')? <Title style={styles.header__body__title}>{this.props.title}</Title> : null }
           </Body>
-          <Right>
-            <Button
-              transparent
-              onPress={() => alert('im the menu button')}
-              >
-              <Icon active style={styles.header__icon} name="menu"/>
-            </Button>
+          <Right style={{flex: 4, justifyContent: 'flex-end',paddingRight: 25}}>
+            { (Platform.OS === 'ios')? <Button transparent onPress={() => alert('im the menu button')}> <Icon active style={styles.header__icon} name="menu"/> </Button> : <Title style={styles.header__body__title}>{this.props.title}</Title> }
           </Right>
       </Header>
     )

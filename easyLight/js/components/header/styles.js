@@ -1,5 +1,5 @@
 const React = require('react-native');
-const { StyleSheet, Dimensions } = React;
+const { StyleSheet, Dimensions, Platform } = React;
 
 export default {
   header:{
@@ -10,12 +10,22 @@ export default {
   },
   header__body__title:{
     color: 'white',
-    fontSize: 16,
+    fontSize: 23,
   },
   header__icon:{
-    color: 'white'
+    color: 'white',
+    fontSize: 26,
+    paddingLeft: 3,
   },
   header__body:{
-    flex: 4
-  }
+    flex: 4,
+  },
+  left:{
+    flex: (Platform.OS === 'ios')? 0 : 4,
+  },
+  right:{
+    flex: (Platform.OS === 'ios')? 0 : 4,
+    justifyContent: (Platform.OS === 'ios')? '' : 'flex-end',
+    paddingRight: (Platform.OS === 'ios')? 0 : 25,
+  },
 };
