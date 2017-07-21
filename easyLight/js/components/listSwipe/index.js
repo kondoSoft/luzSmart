@@ -24,25 +24,15 @@ class ListItemSwipe extends React.Component{
   }
     this.panResponder = PanResponder.create({
         onStartShouldSetPanResponder : () => {
-          console.log('start',this.state.pan.x)
                                               return true
         },
         onPanResponderMove            :(e,gestureState)=>{
-          // console.log('gesture state dx>',gestureState.dx);
-          // console.log('onMove',gestureState.dx);
-          console.log('events on responderMove',e);
           if (gestureState.dx < 0){
             Animated.event([null,{
               dx : this.state.pan.x>0 ? 0 : this.state.pan.x,
               dy : 0
             }])(e, gestureState);
           }
-          // else if (gestureState.dx > 0) {
-          //   Animated.event([null,{
-          //     dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
-          //     dy : 0
-          //   }])(e, gestureState);
-          // }
 
         },
         onPanResponderRelease        : (e, gesture) => {
@@ -58,15 +48,6 @@ class ListItemSwipe extends React.Component{
               {toValue:{x:-120,y:0}},
             ).start();
           }
-          // else if(gesture.dx > 75) {
-          //   Animated.spring(
-          //     this.state.pan,
-          //     {
-          //       ...springConfig,
-          //       toValue:{x:120,y:0}
-          //     },
-          //   ).start();
-          // }
           else {
             Animated.spring(
               this.state.pan,
@@ -97,18 +78,16 @@ class SwipeItem extends React.Component {
     super(props)
     this.navigateTo = this.navigateTo.bind(this)
   }
-  navigateTo(route){
-    console.log('this is Route' ,route);
-    this.props.navigation.navigate(route)
+  navigateTo(route, i){
+    this.props.navigation.navigate(route, i)
   }
   render(){
-    // console.log('this is navigate props' , this.props);
+
     return(
       <View>
         <View style={styles.swipeBack}>
           <TouchableOpacity
             style={styles.swipeBack__left}
-            onPress={()=> console.log("soy el boton derecho")}
             activeOpacity={0.9}
           >
             <Text style={{ flex: 1 , textAlign: 'center'}}>hi there</Text>
@@ -118,7 +97,6 @@ class SwipeItem extends React.Component {
           </View>
           <TouchableOpacity
             style={styles.swipeBack__right}
-            onPress={()=> console.log("soy el boton derecho")}
             activeOpacity={0.7}
           >
             {this.props.icon}

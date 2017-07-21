@@ -100,16 +100,6 @@ class History extends Component{
             </Col>
           </Grid>
         </Content>
-          {/* <Fab
-            active={true}
-            direction="up"
-            style={{ backgroundColor: 'steelblue'}}
-            position="bottomRight"
-            // onPress={() => this.props.navigation.navigate("Receipt")}
-            onPress={()=> this.openModal()}
-            >
-            <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
-          </Fab> */}
         <FabButton
           navigation={this.props.navigation}
           onTap={()=> this.openModal()}
