@@ -25,10 +25,32 @@ import SwipeItem from '../listSwipe/index';
 import FabButton from '../fabButton/index';
 
 class DetailContract extends Component {
+  constructor(props){
+    super(props)
+      this.state = {
+        receipts: {
+          "receipt": {
+            "payday_limit" : "05 Nov 16",
+            "amount_payable" : 525,
+            "current_reading" : '06283',
+            "previous_reading" : '06160',
+            "current_data" : '06283',
+          },
+          "receipt1" : {
+            "payday_limit" : "06 Ene 17",
+            "amount_payable" : 213,
+            "current_reading" : '06302',
+            "previous_reading" : '06283',
+            "current_data" : '06302',
+          }
+        }
+      }
+    }
   static navigationOptions = {
     header: null
   };
   render(){
+    const { receipts } = this.state
     return(
       <Container>
         <Header navigation={this.props.navigation}/>
@@ -39,31 +61,16 @@ class DetailContract extends Component {
             </Row>
             <Col>
               <List style={styles.list}>
-                <SwipeItem
+                {Object.keys(receipts).map((receipt, i )=><SwipeItem
+                  key={i}
                   navigation={this.props.navigation}
-                  component={<ItemComponent url={require('../../../images/office.png')}/>}
+                  component={<ItemComponent data={receipts[receipt]}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}
-                />
-                <SwipeItem
-                  navigation={this.props.navigation}
-                  component={<ItemComponent url={require('../../../images/home.png')}/>}
-                  icon={<Icon style={styles.icon} name="information-circle"/>}
-                />
+                />)}
               </List>
             </Col>
           </Grid>
         </Content>
-        {/* <View style={{ flex: 1}}>
-          <Fab
-            active={true}
-            direction="up"
-            style={{ backgroundColor: 'steelblue', borderTopWidth:4,borderBottomWidth:4,borderLeftWidth:4,borderRightWidth:4, borderColor: '#fff'}}
-            position="bottomRight"
-            onPress={() => this.props.navigation.navigate("Receipt")}
-            >
-            <Icon active name="add" style={{fontSize: 35, lineHeight: 0}}/>
-          </Fab>
-        </View> */}
         <FabButton
           navigation={this.props.navigation}
           navigateTo={'Receipt'}
@@ -78,16 +85,17 @@ class DetailContract extends Component {
 
 class ItemComponent extends Component{
   render(){
+    const receipt = this.props.data
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__text,{}}>Marzo 17</Text>
+          <Text style={styles.listItem__body__text,{}}>{receipt.payday_limit.substring(2)}</Text>
         </Left>
         <Body style={styles.ItemComponent.align}>
 
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{}}>$2150</Text>
+          <Text style={styles.listItem__body__view__text,{}}>{receipt.current_reading}</Text>
           <Text style={styles.listItem__body__view__text,{}}>Pagado</Text>
         </Right>
       </View>

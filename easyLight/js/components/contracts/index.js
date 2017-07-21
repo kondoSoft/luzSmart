@@ -15,11 +15,45 @@ import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
 
 class Contracts extends Component {
+  constructor(props){
+    super(props)
+      this.state = {
+        contracts: {
+          'contract': {
+            "name" : "Oficina",
+            "number_contract" : 324151,
+            "state" : "Tabasco",
+            "municipality" : "Centro",
+            "rate" : "Tarifa 1D",
+            "period_summer" : "Mar-Ago",
+            "type_payment" : "Bimestral",
+            "receipt" : undefined,
+            "cost" : "$1500",
+            "image" : require('../../../images/office.png')
+          },
+          "contract1" : {
+            "name" : "Casa",
+            "number_contract" : 986756,
+            "state" : "Tabasco",
+            "municipality" : "Centro",
+            "rate" : "Tarifa 1D",
+            "period_summer" : "Mar-Ago",
+            "type_payment" : "Mensual",
+            "receipt" : undefined,
+            "cost" : "$300",
+            "image" : require('../../../images/home.png')
+          },
+        }
+      }
+
+
+  }
   static navigationOptions = {
     header: null
   };
   render(){
     const { navigation } = this.props
+    const { contracts } = this.state
     return(
       <Container>
         <Header style={styles.header}>
@@ -34,16 +68,14 @@ class Contracts extends Component {
           <Grid>
             <Col>
               <List style={styles.list}>
-                <SwipeItem
+                {Object.keys(contracts).map((contract, i )=><SwipeItem
+                  key={i}
+                  index={i}
                   navigation={navigation}
-                  component={<ItemComponent url={require('../../../images/office.png')}/>}
+                  component={<ItemComponent data={contracts[contract]}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}
-                />
-                <SwipeItem
-                  navigation={navigation}
-                  component={<ItemComponent url={require('../../../images/home.png')}/>}
-                  icon={<Icon style={styles.icon} name="information-circle"/>}
-                />
+                />)}
+
               </List>
             </Col>
           </Grid>
@@ -62,16 +94,17 @@ class Contracts extends Component {
 
 class ItemComponent extends Component{
   render(){
+    const contract = this.props.data
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-          <Thumbnail source={this.props.url} />
+          <Thumbnail source={contract.image} />
         </Left>
         <Body style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__text}>Mi Oficina</Text>
+          <Text style={styles.listItem__body__text}>{contract.name}</Text>
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{}}>$300.00</Text>
+          <Text style={styles.listItem__body__view__text,{}}>{contract.cost}</Text>
         </Right>
       </View>
     )
@@ -80,131 +113,3 @@ class ItemComponent extends Component{
 
 
 export default Contracts
-// import React, { Component } from "react";
-// import { TouchableOpacity } from "react-native";
-// import { connect } from "react-redux";
-// import DetailContract from "../detailContract";
-// import BlankPage2 from "../blankPage2";
-// import DrawBar from "../DrawBar";
-// import { DrawerNavigator, NavigationActions } from "react-navigation";
-// import {
-//   Container,
-//   Header,
-//   Title,
-//   Content,
-//   Text,
-//   Button,
-//   Icon,
-//   Left,
-//   Body,
-//   Right
-// } from "native-base";
-// import { Grid, Row } from "react-native-easy-grid";
-//
-// import { setIndex } from "../../actions/list";
-// import { openDrawer } from "../../actions/drawer";
-// import styles from "./styles";
-//
-// class Contracts extends Component {
-//   static navigationOptions = {
-//     header: null
-//   };
-//   static propTypes = {
-//     name: React.PropTypes.string,
-//     setIndex: React.PropTypes.func,
-//     list: React.PropTypes.arrayOf(React.PropTypes.string),
-//     openDrawer: React.PropTypes.func
-//   };
-//
-//   newPage(index) {
-//     this.props.setIndex(index);
-//     Actions.blankPage();
-//   }
-//
-//   render() {
-//     console.log(DrawNav, "786785786");
-//     return (
-//       <Container style={styles.container}>
-//         <Header>
-//           <Left>
-//
-//             <Button
-//               transparent
-//               onPress={() => {
-//                 DrawerNav.dispatch(
-//                   NavigationActions.reset({
-//                     index: 0,
-//                     actions: [NavigationActions.navigate({ routeName: "Home" })]
-//                   })
-//                 );
-//                 DrawerNav.goBack();
-//               }}
-//             >
-//               <Icon active name="power" />
-//             </Button>
-//           </Left>
-//
-//           <Body>
-//             <Title>Home</Title>
-//           </Body>
-//
-//           <Right>
-//             <Button
-//               transparent
-//               onPress={() => DrawerNav.navigate("DrawerOpen")}
-//             >
-//               <Icon active name="menu" />
-//             </Button>
-//           </Right>
-//         </Header>
-//         <Content>
-//           <Grid style={styles.mt}>
-//             {this.props.list.map((item, i) => (
-//               <Row key={i}>
-//                 <TouchableOpacity
-//                   style={styles.row}
-//                   onPress={() =>
-//                     this.props.navigation.navigate("BlankPage", {
-//                       name: { item }
-//                     })}
-//                 >
-//                   <Text style={styles.text}>{item}</Text>
-//                 </TouchableOpacity>
-//               </Row>
-//             ))}
-//           </Grid>
-//         </Content>
-//       </Container>
-//     );
-//   }
-// }
-//
-// function bindAction(dispatch) {
-//   return {
-//     setIndex: index => dispatch(setIndex(index)),
-//     openDrawer: () => dispatch(openDrawer())
-//   };
-// }
-// const mapStateToProps = state => ({
-//   name: state.user.name,
-//   list: state.list.list
-// });
-//
-// const HomeSwagger = connect(mapStateToProps, bindAction)(Contracts);
-// const DrawNav = DrawerNavigator(
-//   {
-//     Home: { screen: HomeSwagger },
-//     BlankPage2: { screen: DetailContract }
-//   },
-//   {
-//     contentComponent: props => <DrawBar {...props} />
-//   }
-// );
-// const DrawerNav = null;
-// DrawNav.navigationOptions = ({ navigation }) => {
-//   DrawerNav = navigation;
-//   return {
-//     header: null
-//   };
-// };
-// export default DrawNav;
