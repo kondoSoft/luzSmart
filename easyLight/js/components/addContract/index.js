@@ -15,6 +15,9 @@ import {
   View,
   CheckBox,
 } from 'native-base';
+import {
+  Platform
+} from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
@@ -27,9 +30,11 @@ class AddContracts extends Component {
     header: null
   };
   render(){
+    const { navigation } = this.props
     return(
       <Container>
         <Header title="AGREGAR CONTRATO" navigation={this.props.navigation}/>
+        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Grid>
           <Row size={15}>
             <Left style={ styles.row__top__left__right }>
@@ -134,7 +139,7 @@ class AddContracts extends Component {
             </Button>
           </Row>
         </Grid>
-        <Footer navigation={this.props.navigation}/>
+        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )
   }

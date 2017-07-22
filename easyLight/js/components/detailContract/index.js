@@ -15,7 +15,8 @@ import {
   Fab,
 } from 'native-base';
 import {
-  View
+  View,
+  Platform,
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -51,11 +52,14 @@ class DetailContract extends Component {
     header: null
   };
   render(){
-    console.log(this.props.receipts);
-    const { receipts } = this.props
+
+    const { receipts } = this.state
+    const { navigation } = this.props
+
     return(
       <Container>
-        <Header navigation={this.props.navigation}/>
+        <Header navigation={navigation} title="Periodos"/>
+        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Content>
           <Grid>
             <Row style={styles.detailContract__row__top}>
@@ -65,7 +69,7 @@ class DetailContract extends Component {
               <List style={styles.list}>
                 {Object.keys(receipts).map((receipt, i )=><SwipeItem
                   key={i}
-                  navigation={this.props.navigation}
+                  navigation={navigation}
                   component={<ItemComponent data={receipts[receipt]}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}
                 />)}
@@ -73,13 +77,16 @@ class DetailContract extends Component {
             </Col>
           </Grid>
         </Content>
-        <FabButton
-          navigation={this.props.navigation}
-          navigateTo={'Receipt'}
+        <Fab
+          active={true}
+          direction="up"
+          style={styles.fab}
+          position="bottomRight"
+          onPress={()=>{navigation.navigate("Receipt")}}
           >
-          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
-        </FabButton>
-        <Footer navigation={this.props.navigation}/>
+          <Icon active name="md-add" style={styles.icon}/>
+        </Fab>
+        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )
   }

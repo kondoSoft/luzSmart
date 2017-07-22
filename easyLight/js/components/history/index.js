@@ -19,6 +19,7 @@ import {
 import {
   View,
   Dimensions,
+  Platform,
 } from 'react-native';
 import Modal from 'react-native-modalbox';
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -55,10 +56,12 @@ class History extends Component{
     })
   }
   render(){
+    const { navigation } = this.props
     return(
       <Container>
         <ModalForm visible={this.state.open} onClose={this.onClose} navigation={this.props.navigation}/>
         <Header navigation={this.props.navigation} title="HISTORIAL" />
+        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Content>
           <Grid>
             <Col>
@@ -106,8 +109,7 @@ class History extends Component{
           >
           <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
-
-        <Footer navigation={this.props.navigation} />
+        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )
   }

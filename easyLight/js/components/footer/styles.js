@@ -6,10 +6,11 @@ export default {
     backgroundColor: (Platform.OS === 'ios')? null : 'green',
   },
   footer__icon:{
-    fontSize: 23
+    fontSize: (Platform.OS === 'ios')? 23 : 32,
+    color: (Platform.OS === 'ios')? 'grey' : '#fff',
   },
   footer__text:{
-    fontSize: 7
+    fontSize: 8
   },
   footer__logo:{
 

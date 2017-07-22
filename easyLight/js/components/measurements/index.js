@@ -12,7 +12,7 @@ import {
   Icon,
   Button,
 } from 'native-base';
-import { Image, TextInput } from 'react-native';
+import { Image, TextInput, Platform } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
@@ -29,6 +29,7 @@ class Measurements extends Component {
     return(
       <Container>
         <Header navigation={this.props.navigation}/>
+        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Grid>
           <Row size={9} style={styles.grid__row__top}>
             <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
@@ -114,7 +115,7 @@ class Measurements extends Component {
             </Image>
           </AnimatedView>
         </Grid>
-        <Footer navigation={this.props.navigation}/>
+        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
         <View>
           <Fab
             active={true}

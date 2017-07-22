@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
-import { Container, Content, Header, Body, Left, List, ListItem, Thumbnail, Text, Title, Button, Icon, Right, Image} from 'native-base';
+import { Container, Fab , Content, Header, Body, Left, List, ListItem, Thumbnail, Text, Title, Button, Icon, Right, Image} from 'native-base';
 import styles from "./styles";
 import Footer from '../footer/index';
 import SwipeItem from '../listSwipe/index';
-import FabButton from '../fabButton/index';
 import DrawBar from '../DrawBar';
 import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
@@ -26,12 +25,13 @@ class Contracts extends Component {
       <Container>
         <Header style={styles.header}>
           <Left>
-            <Title style={styles.header__left__title}>EASYLIGHT</Title>
+            {(Platform.OS === 'ios')? <Title style={styles.header__left__title}>EASYLIGHT</Title> : null }
           </Left>
           <Right>
-            <Icon name="menu" active style={{ color: 'white' }} onPress={()=>this.props.navigation.navigate('DrawerOpen')} />
+            {(Platform.OS === 'ios')? <Icon name="menu" active style={{ color: 'white' }} onPress={()=>this.props.navigation.navigate('DrawerOpen')} /> : <Title style={styles.header__left__title}>EASYLIGHT</Title> }
           </Right>
         </Header>
+        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Content>
           <Grid>
             <Col>
@@ -43,18 +43,20 @@ class Contracts extends Component {
                   component={<ItemComponent data={contracts[contract]}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}
                 />)}
-
               </List>
             </Col>
           </Grid>
         </Content>
-        <FabButton
-          navigateTo={'AddContracts'}
-          navigation={navigation}
+        <Fab
+          active={true}
+          direction="up"
+          style={styles.fab}
+          position="bottomRight"
+          onPress={()=>{navigation.navigate("AddContracts")}}
           >
-          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
-        </FabButton>
-        <Footer navigation={navigation}/>
+          <Icon active name="md-add" style={styles.icon}/>
+        </Fab>
+        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )
   }

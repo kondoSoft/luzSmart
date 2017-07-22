@@ -18,6 +18,7 @@ export default {
     backgroundColor: 'green',
   },
   header__body:{
+    alignItems: 'center',
   },
   header__body__title:{
     color: 'white',
@@ -41,7 +42,6 @@ export default {
     height: null,
   },
   bg: {
-    // display: 'flex',
     flex: 1,
     padding: 0,
     bottom: 0,
@@ -57,6 +57,7 @@ export default {
   },
   btn: {
     marginTop: 4,
+    backgroundColor: '#007aff',
   },
   link:{
     borderBottomWidth: 2,

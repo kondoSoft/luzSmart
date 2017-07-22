@@ -82,10 +82,11 @@ class Receipt extends Component {
 
   }
   render(){
+    const { navigation } = this.props
     return(
       <Container>
-        {/* <Header navigation={this.props.navigation} title="RECIBO CFE"/> */}
-
+        <Header navigation={this.props.navigation} title="RECIBO CFE"/>
+        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Grid style={styles.grid}>
           <Col size={75}>
             <Form style={styles.form}>
@@ -120,7 +121,7 @@ class Receipt extends Component {
             </Row>
           </Col>
         </Grid>
-        <Footer navigation={this.props.navigation}/>
+        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )
   }
