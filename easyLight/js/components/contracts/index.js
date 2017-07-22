@@ -9,51 +9,19 @@ import SwipeItem from '../listSwipe/index';
 import FabButton from '../fabButton/index';
 import DrawBar from '../DrawBar';
 import { DrawerNavigator, NavigationActions } from "react-navigation";
-
-
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
 
 class Contracts extends Component {
-  constructor(props){
-    super(props)
-      this.state = {
-        contracts: {
-          'contract': {
-            "name" : "Oficina",
-            "number_contract" : 324151,
-            "state" : "Tabasco",
-            "municipality" : "Centro",
-            "rate" : "Tarifa 1D",
-            "period_summer" : "Mar-Ago",
-            "type_payment" : "Bimestral",
-            "receipt" : undefined,
-            "cost" : "$1500",
-            "image" : require('../../../images/office.png')
-          },
-          "contract1" : {
-            "name" : "Casa",
-            "number_contract" : 986756,
-            "state" : "Tabasco",
-            "municipality" : "Centro",
-            "rate" : "Tarifa 1D",
-            "period_summer" : "Mar-Ago",
-            "type_payment" : "Mensual",
-            "receipt" : undefined,
-            "cost" : "$300",
-            "image" : require('../../../images/home.png')
-          },
-        }
-      }
-
-
-  }
+  // constructor(props){
+  //   super(props)
+  // }
   static navigationOptions = {
     header: null
   };
   render(){
     const { navigation } = this.props
-    const { contracts } = this.state
+    const { contracts } = this.props
     return(
       <Container>
         <Header style={styles.header}>
@@ -111,5 +79,7 @@ class ItemComponent extends Component{
   }
 }
 
-
-export default Contracts
+const mapStateToProps = state => ({
+  contracts: state.list_contracts.contracts
+})
+export default connect(mapStateToProps)(Contracts)

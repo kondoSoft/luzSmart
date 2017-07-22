@@ -37,12 +37,10 @@ class ListItemSwipe extends React.Component{
         },
         onPanResponderRelease        : (e, gesture) => {
           var x = parseInt(JSON.stringify(this.state.pan.x))
-          console.log('onRelease',x);
           if ( x == 0 ){
             this.props.onTap('DetailContract')
           }
           if (gesture.dx < -75) {
-            console.log('funciona funciona');
             Animated.spring(
               this.state.pan,
               {toValue:{x:-120,y:0}},
@@ -59,7 +57,6 @@ class ListItemSwipe extends React.Component{
           }
         }
     });
-    console.log(...this.panResponder.panHandlers);
   }
 
   render(){

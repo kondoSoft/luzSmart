@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import {
   Button,
   Container,
@@ -20,18 +21,43 @@ import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
+import { setContract } from '../../actions/contracts'
 
 
 class Receipt extends Component {
+  constructor(props){
+    super(props)
+      this.state = {
+        payday_limit: '',
+        amount_payable: 0,
+        current_reading: 0,
+        previous_reading: 0,
+      }
+    }
   static navigationOptions = {
     header: null
   };
+  static propType = {
+    setContract: React.PropTypes.func
+  }
+  handlePaydayLimit(event){
+    this.setState({payday_limit: event.nativeEvent.text});
+  }
+  handleAmountPayable(event){
+    this.setState({amount_payable: event.nativeEvent.text});
+  }
+  handleCurrentReading(event){
+    this.setState({current_reading: event.nativeEvent.text});
+  }
+  handlePreviousReading(event){
+    this.setState({previous_reading: event.nativeEvent.text});
+  }
   showAlertIOS(){
     AlertIOS.alert(
       'Contrato',
      'Desea agregar un historial al contrato Mi Casa?',
      [
-       {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+       {text: 'No', onPress: () => this.props.navigation.navigate('DetailContract')},
        {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
      ],
     )
@@ -46,10 +72,19 @@ class Receipt extends Component {
       ],
     )
   }
+  sendData(){
+    this.props.setContract(this.state.payday_limit,this.state.amount_payable,this.state.current_reading,this.state.previous_reading)
+    if(Platform.OS === 'ios') {
+      this.showAlertIOS()
+    }else{
+      this.showAlertA()
+    }
+
+  }
   render(){
     return(
       <Container>
-        <Header navigation={this.props.navigation} title="RECIBO CFE"/>
+        {/* <Header navigation={this.props.navigation} title="RECIBO CFE"/> */}
 
         <Grid style={styles.grid}>
           <Col size={75}>
@@ -58,19 +93,19 @@ class Receipt extends Component {
                 <Label style={styles.form__item__label}>Contrato #85976431</Label>
               </Item>
               <Item last style={styles.form__item__inputs}>
-                <Input placeholder="Fecha Limite de Pago" />
+                <Input placeholder="Fecha Limite de Pago" onChange={event => this.handlePaydayLimit(event)} />
               </Item>
               <Item last style={styles.form__item__inputs}>
-                <Input placeholder="Monto a Pagar" />
+                <Input placeholder="Monto a Pagar" onChange={event => this.handleAmountPayable(event)} />
               </Item>
               <Item last style={styles.form__item__title}>
                 <Label style={styles.form__item__label}>Medición de Consumo</Label>
               </Item>
               <Item last style={styles.form__item__inputs}>
-                <Input placeholder="Lectura Actual" />
+                <Input placeholder="Lectura Actual" onChange={event => this.handleCurrentReading(event)} />
               </Item>
               <Item last style={styles.form__item__inputs}>
-                <Input placeholder="Lectura Anterior" />
+                <Input placeholder="Lectura Anterior" onChange={event => this.handlePreviousReading(event)} />
               </Item>
             </Form>
           </Col>
@@ -78,7 +113,7 @@ class Receipt extends Component {
             <Row style={styles.col__bottom__row__bottom}>
               <Button
                 small
-                onPress={(Platform.OS === 'ios')? ()=> this.showAlertIOS() : this.showAlertA()}
+                onPress={()=>this.sendData()}
                 >
                 <Text>Agregar</Text>
               </Button>
@@ -90,5 +125,13 @@ class Receipt extends Component {
     )
   }
 }
+function bindAction(dispatch) {
+  return {
+    setContract: (payday_limit, amount_payable, current_reading, previous_reading) => dispatch(setContract(payday_limit, amount_payable, current_reading, previous_reading)),
+  }
+}
+const mapStateToProps = state => ({
+  receipts: state.list_contracts.receipts
+})
 
-export default Receipt;
+export default connect(mapStateToProps, bindAction)(Receipt);

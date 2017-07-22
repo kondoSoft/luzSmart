@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import {
   Container,
   Content,
@@ -50,7 +51,8 @@ class DetailContract extends Component {
     header: null
   };
   render(){
-    const { receipts } = this.state
+    console.log(this.props.receipts);
+    const { receipts } = this.props
     return(
       <Container>
         <Header navigation={this.props.navigation}/>
@@ -86,10 +88,13 @@ class DetailContract extends Component {
 class ItemComponent extends Component{
   render(){
     const receipt = this.props.data
+    console.log(receipt);
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__text,{}}>{receipt.payday_limit.substring(2)}</Text>
+          {/* <Text style={styles.listItem__body__text,{}}>{(receipt != undefined )? receipt.payday_limit.substring(2) : null}</Text> */}
+          <Text style={styles.listItem__body__text,{}}>{receipt.payday_limit}</Text>
+
         </Left>
         <Body style={styles.ItemComponent.align}>
 
@@ -102,5 +107,7 @@ class ItemComponent extends Component{
     )
   }
 }
-
-export default DetailContract;
+const mapStateToProps = state => ({
+  receipts: state.list_contracts.receipts
+});
+export default connect(mapStateToProps)(DetailContract)
