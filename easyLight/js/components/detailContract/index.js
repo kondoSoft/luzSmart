@@ -13,6 +13,7 @@ import {
   Text,
   Body,
   Fab,
+  Header,
 } from 'native-base';
 import {
   View,
@@ -20,7 +21,7 @@ import {
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Col, Row, Grid } from "react-native-easy-grid";
-import Header from '../header/index';
+// import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import SwipeItem from '../listSwipe/index';
@@ -53,13 +54,13 @@ class DetailContract extends Component {
   };
   render(){
 
-    const { receipts } = this.state
-    const { navigation } = this.props
+    // const { receipts } = this.props
+    const { navigation, receipts } = this.props
 
     return(
       <Container>
-        <Header navigation={navigation} title="Periodos"/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+        <Header/>
+        {/* {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null} */}
         <Content>
           <Grid>
             <Row style={styles.detailContract__row__top}>
