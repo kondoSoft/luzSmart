@@ -60,7 +60,7 @@ class History extends Component{
     return(
       <Container>
         <ModalForm visible={this.state.open} onClose={this.onClose} navigation={this.props.navigation}/>
-        <Header navigation={this.props.navigation} title="HISTORIAL" />
+        <Header navigation={this.props.navigation} title="Historial" />
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Content>
           <Grid>

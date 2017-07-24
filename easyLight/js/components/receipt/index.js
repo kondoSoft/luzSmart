@@ -86,7 +86,7 @@ class Receipt extends Component {
     const { navigation } = this.props
     return(
       <Container>
-        <Header navigation={this.props.navigation} title="RECIBO CFE"/>
+        <Header navigation={this.props.navigation} title="Recibo CFE"/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Grid style={styles.grid}>
           <Col size={75}>

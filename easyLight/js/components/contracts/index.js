@@ -7,6 +7,7 @@ import styles from "./styles";
 import Footer from '../footer/index';
 import SwipeItem from '../listSwipe/index';
 import DrawBar from '../DrawBar';
+import FabButton from '../fabButton';
 import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
@@ -47,15 +48,12 @@ class Contracts extends Component {
             </Col>
           </Grid>
         </Content>
-        <Fab
-          active={true}
-          direction="up"
-          style={styles.fab}
-          position="bottomRight"
-          onPress={()=>{navigation.navigate("AddContracts")}}
+        <FabButton
+          navigation={this.props.navigation}
+          onTap={()=>{navigation.navigate("AddContracts")}}
           >
-          <Icon active name="md-add" style={styles.icon}/>
-        </Fab>
+          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+        </FabButton>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )

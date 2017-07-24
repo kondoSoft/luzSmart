@@ -19,7 +19,7 @@ class Tips extends Component{
   render(){
     return(
       <Container>
-        <Header navigation={ this.props.navigation } title="TIPS" />
+        <Header navigation={ this.props.navigation } title="Tips" />
         {(Platform.OS == 'android') ? <Footer navigation={this.props.navigation}/>  : null}
         <Grid>
           <Swiper
