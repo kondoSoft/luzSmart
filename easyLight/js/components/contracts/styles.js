@@ -7,7 +7,8 @@ export default {
   },
   header__left__title:{
     color: 'white',
-    fontSize: (Platform.OS === 'ios')? 14 : 22,
+    fontSize: (Platform.OS === 'ios')? 20 : 22,
+    paddingLeft: 15,
   },
   fab:{
     backgroundColor: 'steelblue',
@@ -44,11 +45,10 @@ export default {
 
   },
   icon:{
-    width: '70%',
-    height: '70%',
-    color: '#fff',
-    fontSize: 30,
+    color: 'steelblue',
+    fontSize: 40,
     textAlign: 'center',
+    paddingTop: 15,
   },
   rowBack: {
 		alignItems: 'center',
@@ -66,7 +66,10 @@ export default {
 	},
   ItemComponent:{
     view:{
-      flexDirection: 'row'
+      flexDirection: 'row',
+      height: 80,
+      borderBottomWidth: 0.5,
+      borderColor: 'lightgrey',
     },
     align:{
       alignItems: 'center',

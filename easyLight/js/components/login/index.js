@@ -144,9 +144,9 @@ class Login extends Component {
                 </Row>
               </Grid>
           </KeyboardAvoidingView>
-          <Footer style={styles.footer}>
+          <View style={styles.footer,{ alignItems:'center' }}>
             <Thumbnail source={ require('../../../images/easylight.png') } />
-          </Footer>
+          </View>
         </View>
       </Container>
     );

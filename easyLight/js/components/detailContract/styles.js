@@ -50,29 +50,19 @@ export default {
     textAlign: 'right',
   },
   icon:{
-    color: 'blue',
+    color: 'steelblue',
+    fontSize: 40,
     textAlign: 'center',
-    flex: 1,
-    alignItems: 'center',
-    padding: 6
+    paddingTop: 15,
   },
   ItemComponent:{
     view:{
-      flex: 1,
       flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
+      height: 80,
     },
     align:{
       alignItems: 'center',
     },
-  },
-  icon:{
-    flex: 1,
-    alignItems: 'center',
-    marginTop: 18,
-    color: '#fff',
-    fontSize: 30,
   },
   fab:{
     backgroundColor: 'steelblue',

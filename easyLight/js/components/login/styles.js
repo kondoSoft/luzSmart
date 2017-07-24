@@ -51,7 +51,7 @@ export default {
   },
   btnView:{
     padding: 30,
-    marginTop: 50,
+    marginTop: 20,
     display: 'flex',
     alignItems: 'center'
   },
