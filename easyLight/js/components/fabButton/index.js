@@ -15,8 +15,6 @@ export default class FabButton extends Component{
     this.props.navigation.navigate(this.props.navigateTo)
   }
   render(){
-    console.log('this is the navigateTo prop',this.props.navigateTo);
-    console.log('this is the onTap prop', this.props.onTap);
     return(
       <View style={{ backgroundColor: 'steelblue', width: 60, height: 60, borderRadius: 50, alignItems: 'center', justifyContent: 'center', position: 'absolute', bottom: (Platform.OS === 'ios')? 80 : 30, right: 10}}>
         <TouchableOpacity

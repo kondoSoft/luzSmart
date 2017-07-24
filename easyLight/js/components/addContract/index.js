@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import {
   Container,
   Left,
@@ -23,12 +24,60 @@ import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
+import { setContract } from '../../actions/contracts';
 
 
 class AddContracts extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+        "name" : "",
+        "number_contract" : 0,
+        "state" : "",
+        "municipality" : "",
+        "rate" : "",
+        "period_summer" : "",
+        "type_payment" : "",
+        "receipt" : undefined,
+        "cost" : 0,
+        "image" : require('../../../images/office.png')
+    }
+  }
   static navigationOptions = {
     header: null
   };
+  handleName(event){
+    this.setState({name: event.nativeEvent.text});
+  }
+  handleNumberContract(event){
+    this.setState({number_contract: event.nativeEvent.text});
+  }
+  handleState(event){
+    console.log('event', event);
+    // this.setState({state: event.nativeEvent.text});
+  }
+  handleMunicipality(event){
+    this.setState({municipality: event.nativeEvent.text});
+  }
+  handleRate(event){
+    this.setState({rate: event.nativeEvent.text});
+  }
+  handlePeriodSummer(event){
+    this.setState({period_summer: event.nativeEvent.text});
+  }
+  handleTypePayment(event){
+    this.setState({type_payment: event.nativeEvent.text});
+  }
+  handleCost(event){
+    this.setState({cost: event.nativeEvent.text});
+  }
+  sendData(){
+    this.props.setContract(this.state)
+    this.props.navigation.navigate('Contracts')
+  }
+  static propType = {
+    setContract: React.PropTypes.func
+  }
   render(){
     const { navigation } = this.props
     return(
@@ -41,7 +90,8 @@ class AddContracts extends Component {
               <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} />
             </Left>
             <Body>
-              <Text>Mi Casa</Text>
+              {/* <Text>Mi Casa</Text> */}
+              <Input placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
             </Body>
             <Right style={ styles.row__top__left__right }>
               <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
@@ -51,18 +101,19 @@ class AddContracts extends Component {
             <Form>
               <Item fixedLabel style={styles.col__form__item}>
               <Label>No Contrato</Label>
-              <Input />
+              <Input onChange={event => this.handleNumberContract(event)}/>
             </Item>
             <Select
               selectStyle={styles.select}
               padding={10}
               listHeight={100}
               caretSize={0}
+              onChange={event => this.handleState(event)}
               >
               <Option
                 value={1}
                 optionStyle={styles.select__option}
-                >Villahermosa</Option>
+                >Tabasco</Option>
               <Option
                 value={2}
                 optionStyle={styles.select__option}
@@ -73,6 +124,7 @@ class AddContracts extends Component {
               padding={10}
               listHeight={100}
               caretSize={0}
+              onChange={event => this.handleMunicipality(event)}
               >
               <Option
                 value={1}
@@ -88,6 +140,7 @@ class AddContracts extends Component {
               padding={10}
               listHeight={100}
               caretSize={0}
+              onChange={event => this.handleRate(event)}
               >
               <Option
                 value={1}
@@ -96,13 +149,14 @@ class AddContracts extends Component {
               <Option
                 value={2}
                 optionStyle={styles.select__option}
-                >$5000</Option>
+                >Tarifa 1A</Option>
             </Select>
             <Select
               selectStyle={styles.select}
               padding={10}
               listHeight={100}
               caretSize={0}
+              onChange={event => this.handlePeriodSummer(event)}
               >
               <Option
                 value={1}
@@ -111,7 +165,7 @@ class AddContracts extends Component {
               <Option
                 value={2}
                 optionStyle={styles.select__option}
-                >Ene - Feb</Option>
+                >Feb - Julio</Option>
             </Select>
             </Form>
           </Col>
@@ -133,7 +187,7 @@ class AddContracts extends Component {
             <Button
               small
               primary
-              onPress={() => this.props.navigation.navigate('Contracts')}
+              onPress={() => this.sendData()}
               >
               <Text>Agregar</Text>
             </Button>
@@ -144,5 +198,12 @@ class AddContracts extends Component {
     )
   }
 }
-
-export default AddContracts;
+function bindAction(dispatch){
+  return {
+    setContract: name =>dispatch(setContract(name)),
+  }
+}
+const mapStateToProps = state => ({
+  contracts: state.list_contracts.contracts
+})
+export default connect(mapStateToProps, bindAction)(AddContracts);

@@ -22,6 +22,7 @@ class Contracts extends Component {
   render(){
     const { navigation } = this.props
     const { contracts } = this.props
+    console.log('this is contract', contracts);
     return(
       <Container>
         <Header style={styles.header}>

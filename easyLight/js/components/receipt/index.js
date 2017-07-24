@@ -22,7 +22,7 @@ import { Select, Option } from 'react-native-select-list';
 // import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import { setContract } from '../../actions/contracts'
+import { setBill } from '../../actions/contracts'
 
 
 class Receipt extends Component {
@@ -39,7 +39,7 @@ class Receipt extends Component {
     header: null
   };
   static propType = {
-    setContract: React.PropTypes.func
+    setBill: React.PropTypes.func
   }
   handlePaydayLimit(event){
     this.setState({payday_limit: event.nativeEvent.text});
@@ -74,7 +74,7 @@ class Receipt extends Component {
     )
   }
   sendData(){
-    this.props.setContract(this.state.payday_limit,this.state.amount_payable,this.state.current_reading,this.state.previous_reading)
+    this.props.setBill(this.state.payday_limit,this.state.amount_payable,this.state.current_reading,this.state.previous_reading)
     if(Platform.OS === 'ios') {
       this.showAlertIOS()
     }else{
@@ -129,7 +129,7 @@ class Receipt extends Component {
 }
 function bindAction(dispatch) {
   return {
-    setContract: (payday_limit, amount_payable, current_reading, previous_reading) => dispatch(setContract(payday_limit, amount_payable, current_reading, previous_reading)),
+    setBill: (payday_limit, amount_payable, current_reading, previous_reading) => dispatch(setBill(payday_limit, amount_payable, current_reading, previous_reading)),
   }
 }
 const mapStateToProps = state => ({
