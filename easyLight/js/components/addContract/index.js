@@ -82,7 +82,7 @@ class AddContracts extends Component {
     const { navigation } = this.props
     return(
       <Container>
-        <Header title="AGREGAR CONTRATO" navigation={this.props.navigation}/>
+        <Header title="Agregar Contrato" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Grid>
           <Row size={15}>
@@ -97,7 +97,7 @@ class AddContracts extends Component {
               <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
             </Right>
           </Row>
-          <Col size={70} style={styles.col__form}>
+          <Col size={70} style={ styles.col__form }>
             <Form>
               <Item fixedLabel style={styles.col__form__item}>
               <Label>No Contrato</Label>
@@ -167,23 +167,23 @@ class AddContracts extends Component {
                 optionStyle={styles.select__option}
                 >Feb - Julio</Option>
             </Select>
-            <Row>
-              <View style={styles.row__bottom__view__top}>
-                <CheckBox checked={false} style={styles.CheckBox} />
-                <Body style={{ flex: 0 }}>
-                  <Text>Mensual</Text>
-                </Body>
-              </View>
-              <View style={ styles.row__bottom__view__bottom }>
-                <CheckBox checked={false} style={styles.CheckBox} />
-                <Body style={{ flex: 0 }}>
-                  <Text>Bimestral</Text>
-                </Body>
-              </View>
-            </Row>
             </Form>
           </Col>
-          <Row size={15} style={styles.row__bottom}>
+          <Row size={8}>
+            <View style={styles.row__bottom__view__top}>
+              <CheckBox checked={false} style={styles.CheckBox} />
+              <Body style={{ flex: 0 }}>
+                <Text>Mensual</Text>
+              </Body>
+            </View>
+            <View style={ styles.row__bottom__view__bottom }>
+              <CheckBox checked={false} style={styles.CheckBox} />
+              <Body style={{ flex: 0 }}>
+                <Text>Bimestral</Text>
+              </Body>
+            </View>
+          </Row>
+          <Row size={7} style={[styles.row__bottom,{ paddingBottom: 10 }]}>
             <Button
               small
               primary

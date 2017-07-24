@@ -1,5 +1,5 @@
 const React = require('react-native');
-const { StyleSheet, Dimensions } = React;
+const { StyleSheet, Dimensions, Platform } = React;
 
 export default {
     row__top__left__right:{
@@ -9,7 +9,8 @@ export default {
 
     },
     col__form:{
-      marginTop: 10,
+      marginTop: 5,
+      justifyContent: 'center',
       alignItems: 'center',
     },
     row__top__col__right__icon:{
@@ -17,10 +18,10 @@ export default {
     },
     col__form__item:{
       paddingLeft: 10,
-      marginTop: 10,
-      marginRight: 10,
-      marginBottom: 10,
-      marginLeft: 10,
+      marginTop: (Platform.OS === 'ios')? 10 : 5,
+      marginRight: (Platform.OS === 'ios')? 10 : 5,
+      marginBottom: (Platform.OS === 'ios')? 10 : 5,
+      marginLeft: (Platform.OS === 'ios')? 10 : 5,
       backgroundColor: 'lightgray'
     },
     select:{
@@ -28,7 +29,7 @@ export default {
       margin: 10,
     },
     row__bottom__view__top:{
-      marginTop: 5,
+      marginTop: 0,
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
@@ -36,7 +37,7 @@ export default {
       paddingRight: 25
     },
     row__bottom__view__bottom:{
-      marginTop: 5,
+      marginTop: 0,
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center'
@@ -46,7 +47,7 @@ export default {
     },
     row__bottom:{
       justifyContent: 'center',
-      paddingTop: 30
+      paddingTop: 10
     },
     select__option:{
       height: 30,

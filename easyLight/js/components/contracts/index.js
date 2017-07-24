@@ -34,7 +34,7 @@ class Contracts extends Component {
           </Right>
         </Header>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <Content>
+        <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Col>
               <List style={styles.list}>
@@ -53,7 +53,7 @@ class Contracts extends Component {
           navigation={this.props.navigation}
           onTap={()=>{navigation.navigate("AddContracts")}}
           >
-          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+          <Text style={{ width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>

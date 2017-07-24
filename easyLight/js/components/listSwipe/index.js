@@ -64,7 +64,7 @@ class ListItemSwipe extends React.Component{
     return(
         <Animated.View
          {...this.panResponder.panHandlers}
-          style={[this.state.pan.getLayout(),{ backgroundColor:'lightgrey', height: 65, width: Window.width, position: 'absolute', top: 0, right: 0, alignItems: 'center',justifyContent: 'center'}]}>
+          style={[this.state.pan.getLayout(),{ backgroundColor:'#fff', height: 75, width: Window.width, position: 'absolute', top: 0, right: 0, alignItems: 'center',justifyContent: 'center'},this.props.style]}>
                 {this.props.component}
         </Animated.View>
     )
@@ -99,7 +99,7 @@ class SwipeItem extends React.Component {
             {this.props.icon}
           </TouchableOpacity>
         </View>
-        <ListItemSwipe onTap={this.navigateTo} component={this.props.component}/>
+        <ListItemSwipe style={this.props.style} onTap={this.navigateTo} component={this.props.component}/>
       </View>
     )
   }
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   swipeBack:{
-    height: 65,
+    height: 75,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -144,8 +144,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   swipeBack__right:{
-    backgroundColor: 'transparent',
     flex: 1,
+    flexDirection: 'row',
+    height: 75,
     justifyContent: 'center',
     alignContent: 'center',
   },

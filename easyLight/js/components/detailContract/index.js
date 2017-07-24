@@ -55,6 +55,7 @@ class DetailContract extends Component {
                   navigation={navigation}
                   component={<ItemComponent data={receipts[receipt]}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}
+                  style={{backgroundColor: 'lightgrey'}}
                 />)}
               </List>
             </Col>
