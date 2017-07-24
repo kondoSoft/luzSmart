@@ -47,15 +47,6 @@ export default function(state: State = initialState, action: Action): State {
     return {
       ...state,
       newState
-      // ...state,
-      // receipts: {...state.receipts,
-      //   ${myKey}:{
-      //   payday_limit: action.payday_limit,
-      //   amount_payable: action.amount_payable,
-      //   current_reading: action.current_reading,
-      //   previous_reading: action.previous_reading
-      // }
-      // }
     };
   }
   return state;
