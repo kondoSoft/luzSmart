@@ -34,7 +34,8 @@ export default {
     marginBottom: 3
   },
   col__bottom:{
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 100,
   },
   col__bottom__row__bottom:{
     paddingTop: 20,

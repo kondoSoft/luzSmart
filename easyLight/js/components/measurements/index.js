@@ -19,6 +19,7 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import AnimatedView from '../animatedView/index';
+import FabButton from '../fabButton';
 
 
 class Measurements extends Component {
@@ -26,9 +27,10 @@ class Measurements extends Component {
     header: null
   };
   render(){
+    const { navigation } = this.props
     return(
       <Container>
-        <Header navigation={this.props.navigation}/>
+        <Header navigation={this.props.navigation} title="Mediciones"/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Grid>
           <Row size={9} style={styles.grid__row__top}>
@@ -117,14 +119,12 @@ class Measurements extends Component {
         </Grid>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
         <View>
-          <Fab
-            active={true}
-            direction="up"
-            style={styles.fab}
-            position="bottomRight"
+          <FabButton
+            navigation={this.props.navigation}
+            onTap={()=>{navigation.navigate("Receipt")}}
             >
-            <Icon active name="md-share" style={styles.icon}/>
-          </Fab>
+            <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+          </FabButton>
         </View>
       </Container>
     )

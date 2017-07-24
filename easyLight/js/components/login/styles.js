@@ -24,7 +24,7 @@ export default {
     color: 'white',
   },
   form:{
-    marginTop: 70,
+    marginTop: 40,
     paddingLeft: 15,
     paddingRight: 15,
   },

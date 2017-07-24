@@ -10,7 +10,7 @@ export default {
   },
   header__body__title:{
     color: 'white',
-    fontSize: 23,
+    fontSize: 22,
   },
   header__icon:{
     color: 'white',

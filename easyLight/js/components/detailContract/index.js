@@ -25,7 +25,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import Footer from '../footer/index';
 import styles from './styles';
 import SwipeItem from '../listSwipe/index';
-import FabButton from '../fabButton/index';
+import FabButton from '../fabButton';
 
 class DetailContract extends Component {
   constructor(props){
@@ -59,7 +59,7 @@ class DetailContract extends Component {
 
     return(
       <Container>
-        <Header/>
+        <Header title="Periodos"/>
         {/* {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null} */}
         <Content>
           <Grid>
@@ -78,15 +78,12 @@ class DetailContract extends Component {
             </Col>
           </Grid>
         </Content>
-        <Fab
-          active={true}
-          direction="up"
-          style={styles.fab}
-          position="bottomRight"
-          onPress={()=>{navigation.navigate("Receipt")}}
+        <FabButton
+          navigation={this.props.navigation}
+          onTap={()=>{navigation.navigate("Receipt")}}
           >
-          <Icon active name="md-add" style={styles.icon}/>
-        </Fab>
+          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+        </FabButton>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity, TextInput, KeyboardAvoidingView } from "react-native";
 import { connect } from "react-redux";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import {
@@ -19,7 +19,6 @@ import {
   Footer,
   Label,
   Right,
-
 } from "native-base";
 import { Field, reduxForm } from "redux-form";
 import { setUser } from "../../actions/user";
@@ -105,41 +104,46 @@ class Login extends Component {
               <Title style={styles.header__body__title}>INICIO DE SESIÓN</Title>
             </Body>
           </Header>
-          <Grid>
-            <Row  size={40}>
-              <Col style={{justifyContent: 'flex-end', paddingLeft: 15}}>
-                <Field style={{backgroundColor: '#fff'}} name="email" component={this.renderInput} />
-                <Field name="password" component={this.renderInput} />
-              </Col>
-            </Row>
-            <Row size={30}>
-              <Col style={styles.form}>
-                <Button
-                  block
-                  style={styles.btn}
-                  onPress={() => this.props.navigation.navigate("Contracts")}
-                >
-                  <Text>Entrar</Text>
-                </Button>
-                <Button
-                  block
-                  style={styles.btn}
-                  onPress={() => this.props.navigation.navigate("SignIn")}
-                >
-                  <Text>Crear Cuenta</Text>
-                </Button>
-              </Col>
-            </Row>
-            <Row size={30}>
-              <Col style={styles.btnView}>
-                <TouchableOpacity
-                  style={styles.link}
-                  onPress={() => this.props.navigation.navigate("Home")}>
-                  <Text>Recuperar Contraseña</Text>
-                </TouchableOpacity>
-              </Col>
-            </Row>
-          </Grid>
+          <KeyboardAvoidingView
+            style={{flex: 1}}
+            behavior="padding"
+            >
+              <Grid>
+                <Row  size={40}>
+                  <Col style={{justifyContent: 'flex-end', paddingLeft: 15}}>
+                    <Field style={{backgroundColor: '#fff'}} name="email" component={this.renderInput} />
+                    <Field name="password" component={this.renderInput} />
+                  </Col>
+                </Row>
+                <Row size={30}>
+                  <Col style={styles.form}>
+                    <Button
+                      block
+                      style={styles.btn}
+                      onPress={() => this.props.navigation.navigate("Contracts")}
+                    >
+                      <Text>Entrar</Text>
+                    </Button>
+                    <Button
+                      block
+                      style={styles.btn}
+                      onPress={() => this.props.navigation.navigate("SignIn")}
+                    >
+                      <Text>Crear Cuenta</Text>
+                    </Button>
+                  </Col>
+                </Row>
+                <Row size={30}>
+                  <Col style={styles.btnView}>
+                    <TouchableOpacity
+                      style={styles.link}
+                      onPress={() => this.props.navigation.navigate("Home")}>
+                      <Text>Recuperar Contraseña</Text>
+                    </TouchableOpacity>
+                  </Col>
+                </Row>
+              </Grid>
+          </KeyboardAvoidingView>
           <Footer style={styles.footer}>
             <Thumbnail source={ require('../../../images/easylight.png') } />
           </Footer>
