@@ -15,6 +15,8 @@ import styles from './styles';
 
 class HeaderGlobal extends Component {
   render(){
+    var button = <Button transparent onPress={() => alert('im the menu button')}><Icon active style={styles.header__icon} name="menu"/></Button>
+
     return(
       <Header style={styles.header}>
           <Left style={styles.left}>
@@ -26,7 +28,8 @@ class HeaderGlobal extends Component {
             {(Platform.OS === 'ios')? <Title style={styles.header__body__title}>{this.props.title}</Title> : null }
           </Body>
           <Right style={{flex: 20, justifyContent: 'flex-end',paddingRight: 15}}>
-            { (Platform.OS === 'ios')? <Button transparent onPress={() => alert('im the menu button')}> <Icon active style={styles.header__icon} name="menu"/> </Button> : <Title style={styles.header__body__title}>{this.props.title}</Title> }
+            { (Platform.OS === 'ios')? button : <Title style={styles.header__body__title}>{this.props.title}</Title> }
+
           </Right>
       </Header>
     )

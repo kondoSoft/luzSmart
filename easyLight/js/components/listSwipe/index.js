@@ -17,7 +17,7 @@ class ListItemSwipe extends React.Component{
     }
   }
   componentWillMount(){
-    console.log('list item swipe',this.props.onTap);
+
   var springConfig = {
     tension: (this.props.tension)? this.props.tension : 40,
     friction: (this.props.friction)? this.props.friction : 15,

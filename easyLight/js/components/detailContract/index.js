@@ -13,7 +13,7 @@ import {
   Text,
   Body,
   Fab,
-  Header,
+
 } from 'native-base';
 import {
   View,
@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Col, Row, Grid } from "react-native-easy-grid";
-// import Header from '../header/index';
+import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import SwipeItem from '../listSwipe/index';
@@ -30,25 +30,7 @@ import FabButton from '../fabButton';
 class DetailContract extends Component {
   constructor(props){
     super(props)
-      this.state = {
-        receipts: {
-          "receipt": {
-            "payday_limit" : "05 Nov 16",
-            "amount_payable" : 525,
-            "current_reading" : '06283',
-            "previous_reading" : '06160',
-            "current_data" : '06283',
-          },
-          "receipt1" : {
-            "payday_limit" : "06 Ene 17",
-            "amount_payable" : 213,
-            "current_reading" : '06302',
-            "previous_reading" : '06283',
-            "current_data" : '06302',
-          }
-        }
-      }
-    }
+  }
   static navigationOptions = {
     header: null
   };
@@ -59,8 +41,8 @@ class DetailContract extends Component {
 
     return(
       <Container>
-        <Header title="Periodos"/>
-        {/* {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null} */}
+        <Header navigation={navigation} title="Periodos"/>
+        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Content>
           <Grid>
             <Row style={styles.detailContract__row__top}>
@@ -79,7 +61,7 @@ class DetailContract extends Component {
           </Grid>
         </Content>
         <FabButton
-          navigation={this.props.navigation}
+          navigation={navigation}
           onTap={()=>{navigation.navigate("Receipt")}}
           >
           <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
