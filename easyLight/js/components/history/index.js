@@ -27,7 +27,6 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import FabButton from '../fabButton/index';
-import DatePickerC from '../datePicker';
 
 
 let Window = Dimensions.get('window');
