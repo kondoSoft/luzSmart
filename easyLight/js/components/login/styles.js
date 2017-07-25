@@ -12,7 +12,6 @@ export default {
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#FBFAFA',
   },
   header:{
     backgroundColor: 'green',

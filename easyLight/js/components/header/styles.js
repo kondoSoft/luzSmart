@@ -7,10 +7,13 @@ export default {
     paddingLeft: 0,
     paddingRight: 0,
     backgroundColor: 'green',
+    flexDirection: 'row',
+    paddingTop: (Platform.OS === 'ios')? 15 : 0,
+    height: (Platform.OS === 'ios')? '9%' : '10%',
   },
   header__body__title:{
     color: 'white',
-    fontSize: 22,
+    fontSize: 20,
   },
   header__icon:{
     color: 'white',
@@ -22,8 +25,14 @@ export default {
   },
   left:{
     flex: (Platform.OS === 'ios')? 0 : 4,
+    height: '45%',
+    justifyContent: 'center'
   },
   right:{
+    height: '45%',
+    flex: (Platform.OS === 'ios')? 0 : 20,
+    justifyContent: 'center',
+    paddingRight: (Platform.OS === 'ios')? 0 : 15 ,
     // paddingRight: (Platform.OS === 'ios')? 0 : 25,
   },
 };
