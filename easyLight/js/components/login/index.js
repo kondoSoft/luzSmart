@@ -20,11 +20,13 @@ import {
   Label,
   Right,
 } from "native-base";
+import { Dimensions, Platform } from 'react-native';
 import { Field, reduxForm } from "redux-form";
 import { setUser } from "../../actions/user";
 import styles from "./styles";
 
 const background = require("../../../images/shadow.png");
+const Screen = Dimensions.get('window');
 
 const validate = values => {
   const error = {};
@@ -84,7 +86,7 @@ class Login extends Component {
         <Input
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
           {...input}
-          onFocus={() => this.refs['scroll'].scrollTo({y: 0})}
+          onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
         />
         {hasError
           ? <Item style={{ borderColor: "transparent" }}>
@@ -105,47 +107,42 @@ class Login extends Component {
               <Title style={styles.header__body__title}>INICIO DE SESIÓN</Title>
             </Body>
           </Header>
-          <KeyboardAvoidingView
-            style={{ height: '115%' }}
-            behavior="padding"
-            >
-              <Grid>
-                <Row  size={40}>
-                  <Col style={{justifyContent: 'flex-end', paddingLeft: 15}}>
-                    <Field style={{backgroundColor: '#fff'}} name="email" component={this.renderInput} />
-                    <Field name="password" component={this.renderInput} />
-                  </Col>
-                </Row>
-                <Row size={30}>
-                  <Col style={styles.form}>
-                    <Button
-                      block
-                      style={styles.btn}
-                      onPress={() => this.props.navigation.navigate("Contracts")}
-                    >
-                      <Text>Entrar</Text>
-                    </Button>
-                    <Button
-                      block
-                      style={styles.btn}
-                      onPress={() => this.props.navigation.navigate("SignIn")}
-                    >
-                      <Text>Crear Cuenta</Text>
-                    </Button>
-                  </Col>
-                </Row>
-                <Row size={30}>
-                  <Col style={styles.btnView}>
-                    <TouchableOpacity
-                      style={styles.link}
-                      onPress={() => this.props.navigation.navigate("Home")}>
-                      <Text>Recuperar Contraseña</Text>
-                    </TouchableOpacity>
-                  </Col>
-                </Row>
-              </Grid>
-          </KeyboardAvoidingView>
-          <View style={styles.footer,{ alignItems:'center', backgroundColor: 'steelblue'}}>
+            <Grid style={{ height: Screen.height - 140 }}>
+              <Row  size={40}>
+                <Col style={{justifyContent: 'flex-end', paddingLeft: 15}}>
+                  <Field style={{backgroundColor: '#fff'}} name="email" component={this.renderInput} />
+                  <Field name="password" component={this.renderInput} />
+                </Col>
+              </Row>
+              <Row size={30}>
+                <Col style={styles.form}>
+                  <Button
+                    block
+                    style={styles.btn}
+                    onPress={() => this.props.navigation.navigate("Contracts")}
+                  >
+                    <Text>Entrar</Text>
+                  </Button>
+                  <Button
+                    block
+                    style={styles.btn}
+                    onPress={() => this.props.navigation.navigate("SignIn")}
+                  >
+                    <Text>Crear Cuenta</Text>
+                  </Button>
+                </Col>
+              </Row>
+              <Row size={30}>
+                <Col style={styles.btnView}>
+                  <TouchableOpacity
+                    style={styles.link}
+                    onPress={() => this.props.navigation.navigate("Home")}>
+                    <Text>Recuperar Contraseña</Text>
+                  </TouchableOpacity>
+                </Col>
+              </Row>
+            </Grid>
+          <View style={styles.footer,{ alignItems:'center' }}>
             <Thumbnail source={ require('../../../images/easylight.png') } />
           </View>
         </ScrollView>

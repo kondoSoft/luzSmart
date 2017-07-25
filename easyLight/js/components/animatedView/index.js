@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   Keyboard,
   Animated,
-
+  Platform,
 } from 'react-native';
 
 
@@ -31,7 +31,7 @@ class AnimatedView extends Component{
     Animated.spring(
       this.state.animatedVal,
       {
-        toValue:{x:0,y:-150}
+        toValue:{x:0,y:(Platform.OS === 'ios')? -180 : -100}
       },
     ).start();
   }
@@ -46,7 +46,7 @@ class AnimatedView extends Component{
   }
   render(){
     return(
-      <Animated.View style={[this.state.animatedVal.getLayout(),{backgroundColor: 'transparent', width: '100%', height: '40%', marginBottom: 40, justifyContent: 'center', alignItems: 'center'}]}>
+      <Animated.View style={[this.state.animatedVal.getLayout(),{ flex: 1, zIndex: 0 }]}>
           {this.props.children}
       </Animated.View>
     )

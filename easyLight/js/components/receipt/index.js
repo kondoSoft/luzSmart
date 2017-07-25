@@ -9,7 +9,6 @@ import {
   Item,
   Label,
   Input,
-  Header,
 } from 'native-base';
 import {
   TouchableOpacity,
@@ -19,7 +18,7 @@ import {
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
-// import Header from '../header/index';
+import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import { setBill } from '../../actions/contracts'
@@ -114,7 +113,7 @@ class Receipt extends Component {
           <Col size={25} style={styles.col__bottom}>
             <Row style={styles.col__bottom__row__bottom}>
               <Button
-                small
+                style={{ height: 35}}
                 onPress={()=>this.sendData()}
                 >
                 <Text>Agregar</Text>

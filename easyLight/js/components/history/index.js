@@ -27,6 +27,7 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import FabButton from '../fabButton/index';
+import DatePickerC from '../datePicker';
 
 
 let Window = Dimensions.get('window');
@@ -100,6 +101,7 @@ class History extends Component{
                   </Right>
                 </ListItem>
               </List>
+              {/* <DatePickerC/> */}
             </Col>
           </Grid>
         </Content>
@@ -130,19 +132,19 @@ class ModalForm extends Component {
           >
           <Grid>
             <Row size={10} style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ alignItems: 'center'}}>AGREGA UN NUEVO HISTORIAL</Text>
+              <Text style={{ alignItems: 'center'}}>Agrega un nuevo historial</Text>
             </Row>
             <Col size={75}>
               <Form>
-                <Item fixedLabel last>
+                <Item fixedLabel style={{marginRight: 15}}>
                   <Label style={{ flex: 0.7 }}>Periodo:</Label>
                   <Input />
                 </Item>
-                <Item fixedLabel last>
+                <Item fixedLabel style={{marginRight: 15}}>
                   <Label style={{ flex: 0.9 }}>Consumo:</Label>
                   <Input />
                 </Item>
-                <Item fixedLabel last>
+                <Item fixedLabel style={{marginRight: 15}}>
                   <Label style={{ flex: 0.5 }}>Pago:</Label>
                   <Input keyboardType={'numeric'} />
                 </Item>
