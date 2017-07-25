@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, TouchableOpacity, TextInput, KeyboardAvoidingView } from "react-native";
+import { Image, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import {
@@ -84,6 +84,7 @@ class Login extends Component {
         <Input
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
           {...input}
+          onFocus={() => this.refs['scroll'].scrollTo({y: 0})}
         />
         {hasError
           ? <Item style={{ borderColor: "transparent" }}>
@@ -98,14 +99,14 @@ class Login extends Component {
     console.log(this.props);
     return (
       <Container scrollEnabled={false}>
-        <View style={styles.container} >
+        <ScrollView style={styles.container} ref='scroll'>
           <Header style={styles.header}>
             <Body style={styles.header__body}>
               <Title style={styles.header__body__title}>INICIO DE SESIÓN</Title>
             </Body>
           </Header>
           <KeyboardAvoidingView
-            style={{flex: 1}}
+            style={{ height: '115%' }}
             behavior="padding"
             >
               <Grid>
@@ -144,10 +145,10 @@ class Login extends Component {
                 </Row>
               </Grid>
           </KeyboardAvoidingView>
-          <View style={styles.footer,{ alignItems:'center' }}>
+          <View style={styles.footer,{ alignItems:'center', backgroundColor: 'steelblue'}}>
             <Thumbnail source={ require('../../../images/easylight.png') } />
           </View>
-        </View>
+        </ScrollView>
       </Container>
     );
   }

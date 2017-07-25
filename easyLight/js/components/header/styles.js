@@ -24,8 +24,6 @@ export default {
     flex: (Platform.OS === 'ios')? 0 : 4,
   },
   right:{
-    flex: (Platform.OS === 'ios')? 0 : 4,
-    justifyContent: (Platform.OS === 'ios')? '' : 'flex-end',
-    paddingRight: (Platform.OS === 'ios')? 0 : 25,
+    // paddingRight: (Platform.OS === 'ios')? 0 : 25,
   },
 };
