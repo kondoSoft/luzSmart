@@ -1,5 +1,5 @@
 const React = require('react-native');
-const { StyleSheet, Dimensions } = React;
+const { StyleSheet, Dimensions, Platform } = React;
 
 export default {
   grid__row__top:{
@@ -63,7 +63,7 @@ export default {
   },
   animatedView__image:{
     width: '65%',
-    height: '85%'
+    height: (Platform.OS === 'ios')? '85%' : '95%', 
   },
   animatedView__image__view:{
     flex: 1,
@@ -72,9 +72,9 @@ export default {
     flexDirection: 'column',
   },
   animatedView__image__view__input:{
-    height: 25,
+    height: (Platform.OS === 'ios')? 25 : 10,
     backgroundColor: 'lightgrey',
-    marginTop: 54,
+    marginTop: 57,
     flex: 0,
     width: '50%',
     marginLeft: 65,
@@ -82,7 +82,8 @@ export default {
     borderColor: 'grey',
   },
   animatedView__image__view__btn:{
-    marginLeft: 95,
+    marginLeft: 96,
+    marginTop: 12 ,
     marginBottom: 33,
     backgroundColor: 'green',
   },
