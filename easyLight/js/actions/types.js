@@ -11,6 +11,8 @@ export type Action =
     | { type: 'SET_LIST', list: string}
     | { type: 'SET_CONTRACT', list: string}
     | { type: 'SET_BILL', list: string}
+    | { type: 'GET_STATES', list: string}
+    | { type: 'GET_MUNICIPALITY', list: string}
 
 export type Dispatch = (action:Action | Array<Action>) => any;
 export type GetState = () => Object;

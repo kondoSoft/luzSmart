@@ -11,6 +11,7 @@ import FabButton from '../fabButton';
 import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
+import { getStates } from "../../actions/list_states_mx";
 
 class Contracts extends Component {
   // constructor(props){
@@ -19,6 +20,12 @@ class Contracts extends Component {
   static navigationOptions = {
     header: null
   };
+  componentWillMount(){
+    this.props.getStates()
+  }
+  static propType = {
+    getStates: React.PropTypes.func
+  }
   render(){
     const { navigation } = this.props
     const { contracts } = this.props
@@ -79,8 +86,12 @@ class ItemComponent extends Component{
     )
   }
 }
-
+function bindAction(dispatch){
+  return {
+    getStates: () => dispatch(getStates()),
+  }
+}
 const mapStateToProps = state => ({
   contracts: state.list_contracts.contracts
 })
-export default connect(mapStateToProps)(Contracts)
+export default connect(mapStateToProps, bindAction)(Contracts)

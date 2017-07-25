@@ -15,9 +15,11 @@ import {
   Form,
   View,
   CheckBox,
+  Image,
 } from 'native-base';
 import {
-  Platform
+  Platform,
+  TouchableOpacity,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -25,10 +27,15 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import { setContract } from '../../actions/contracts';
+import { getMunicipality, resetMunicipality } from '../../actions/list_states_mx'
+import ImagePicker from 'react-native-image-picker';
 
 
 class AddContracts extends Component {
+
   constructor(props){
+    var optionsStates;
+
     super(props)
     this.state = {
         "name" : "",
@@ -40,32 +47,77 @@ class AddContracts extends Component {
         "type_payment" : "",
         "receipt" : undefined,
         "cost" : 0,
-        "image" : require('../../../images/office.png')
+        "image" : require('../../../images/office.png'),
+        "checkedMen": false,
+        "checkedBi": false,
+        "avatarSource" : null,
     }
+  }
+  static propType = {
+    setContract: React.PropTypes.func,
+    getMunicipality: React.PropTypes.func,
+    resetMunicipality: React.PropTypes.func,
+
   }
   static navigationOptions = {
     header: null
   };
+  selectPhotoTapped() {
+    const options = {
+      quality: 1.0,
+      maxWidth: 500,
+      maxHeight: 500,
+      storageOptions: {
+        skipBackup: true
+      }
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        let source = { uri: response.origURL };
+
+        // You can also display the image using data:
+        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+          avatarSource: source
+        });
+      }
+    });
+  }
   handleName(event){
     this.setState({name: event.nativeEvent.text});
   }
   handleNumberContract(event){
     this.setState({number_contract: event.nativeEvent.text});
   }
-  handleState(event){
-    console.log('event', event);
-    // this.setState({state: event.nativeEvent.text});
+  handleState(value){
+    this.props.resetMunicipality()
+    this.props.getMunicipality(value+1)
+
   }
   handleMunicipality(event){
-    this.setState({municipality: event.nativeEvent.text});
+    this.setState({municipality: value});
   }
-  handleRate(event){
-    this.setState({rate: event.nativeEvent.text});
+  handleRate(value){
+    this.setState({rate: value});
   }
   handlePeriodSummer(event){
-    this.setState({period_summer: event.nativeEvent.text});
+    this.setState({period_summer: value});
   }
   handleTypePayment(event){
+    console.log(event.nativeEvent.text);
     this.setState({type_payment: event.nativeEvent.text});
   }
   handleCost(event){
@@ -75,11 +127,40 @@ class AddContracts extends Component {
     this.props.setContract(this.state)
     this.props.navigation.navigate('Contracts')
   }
-  static propType = {
-    setContract: React.PropTypes.func
+  handleCheckedMen(){
+    this.setState({checkedMen: !this.state.checkedMen})
+  }
+  handleCheckedBi(){
+    this.setState({checkedBi: !this.state.checkedBi})
+  }
+  componentWillMount(){
+    optionsStates = this.props.states_mx.map((item,i)=>{
+      return (<Option
+        key={i}
+        value={i}
+        optionStyle={styles.select__option}
+        >{item.state}</Option>)
+    })
   }
   render(){
-    const { navigation } = this.props
+    console.log(this.state.avatarSource);
+    const { navigation, states_mx, municipality_mx } = this.props
+    const selectMun =
+    <Select
+      selectStyle={styles.select}
+      padding={10}
+      listHeight={100}
+      caretSize={0}
+      // onSelect={event => this.handleMunicipality(event)}
+      >
+        {this.props.municipality_mx.map((item,i)=>{
+          return (<Option
+            key={i}
+            value={i}
+            optionStyle={styles.select__option}
+            >{item.name_mun}</Option>)
+        })}
+    </Select>
     return(
       <Container>
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
@@ -87,7 +168,14 @@ class AddContracts extends Component {
         <Grid>
           <Row size={15}>
             <Left style={ styles.row__top__left__right }>
-              <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} />
+              <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                <View style={{marginBottom: 20}}>
+                { this.state.avatarSource === null && <Text>Select a Photo</Text>
+                  // {/* <Image  source={this.state.avatarSource} /> */}
+                }
+                </View>
+              </TouchableOpacity>
+              {/* <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} /> */}
             </Left>
             <Body>
               {/* <Text>Mi Casa</Text> */}
@@ -108,55 +196,53 @@ class AddContracts extends Component {
               padding={10}
               listHeight={100}
               caretSize={0}
-              onChange={event => this.handleState(event)}
+              onSelect={value => this.handleState(value)}
               >
-              <Option
-                value={1}
-                optionStyle={styles.select__option}
-                >Tabasco</Option>
-              <Option
-                value={2}
-                optionStyle={styles.select__option}
-                >Veracruz</Option>
+              {optionsStates}
             </Select>
+            {(municipality_mx.length == 0) ? <View/> : selectMun}
             <Select
               selectStyle={styles.select}
               padding={10}
               listHeight={100}
               caretSize={0}
-              onChange={event => this.handleMunicipality(event)}
+              onSelect={value => this.handleRate(value)}
               >
               <Option
                 value={1}
                 optionStyle={styles.select__option}
-                >Centro</Option>
-              <Option
-                value={2}
-                optionStyle={styles.select__option}
-                >Cardenas</Option>
-            </Select>
-            <Select
-              selectStyle={styles.select}
-              padding={10}
-              listHeight={100}
-              caretSize={0}
-              onChange={event => this.handleRate(event)}
-              >
-              <Option
-                value={1}
-                optionStyle={styles.select__option}
-                >Tarifa</Option>
+                >Tarifa 1</Option>
               <Option
                 value={2}
                 optionStyle={styles.select__option}
                 >Tarifa 1A</Option>
+              <Option
+                value={3}
+                optionStyle={styles.select__option}
+                >Tarifa 1B</Option>
+              <Option
+                value={4}
+                optionStyle={styles.select__option}
+                >Tarifa 1C</Option>
+              <Option
+                value={5}
+                optionStyle={styles.select__option}
+                >Tarifa 1D</Option>
+              <Option
+                value={6}
+                optionStyle={styles.select__option}
+                >Tarifa 1E</Option>
+              <Option
+                value={7}
+                optionStyle={styles.select__option}
+                >Tarifa 1F</Option>
             </Select>
             <Select
               selectStyle={styles.select}
               padding={10}
               listHeight={100}
               caretSize={0}
-              onChange={event => this.handlePeriodSummer(event)}
+              onSelect={event => this.handlePeriodSummer(event)}
               >
               <Option
                 value={1}
@@ -171,13 +257,13 @@ class AddContracts extends Component {
           </Col>
           <Row size={8}>
             <View style={styles.row__bottom__view__top}>
-              <CheckBox checked={false} style={styles.CheckBox} />
+              <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen()}/>
               <Body style={{ flex: 0 }}>
                 <Text>Mensual</Text>
               </Body>
             </View>
             <View style={ styles.row__bottom__view__bottom }>
-              <CheckBox checked={false} style={styles.CheckBox} />
+              <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} onPress={()=>this.handleCheckedBi()}/>
               <Body style={{ flex: 0 }}>
                 <Text>Bimestral</Text>
               </Body>
@@ -201,9 +287,12 @@ class AddContracts extends Component {
 function bindAction(dispatch){
   return {
     setContract: name =>dispatch(setContract(name)),
+    getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
+    resetMunicipality: () => dispatch(resetMunicipality()),
   }
 }
 const mapStateToProps = state => ({
-  contracts: state.list_contracts.contracts
+  states_mx: state.list_states_mx.results,
+  municipality_mx: state.list_mun_mx.results
 })
 export default connect(mapStateToProps, bindAction)(AddContracts);
