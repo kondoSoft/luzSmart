@@ -27,9 +27,8 @@ class HeaderGlobal extends Component {
           <Body style={styles.header__body}>
             {(Platform.OS === 'ios')? <Title style={styles.header__body__title}>{this.props.title}</Title> : null }
           </Body>
-          <Right style={{flex: 20, justifyContent: 'flex-end',paddingRight: 15}}>
+          <Right style={{flex: (Platform.OS === 'ios')? 0 : 20, justifyContent: 'flex-end',paddingRight: (Platform.OS === 'ios')? 0 : 15 }}>
             { (Platform.OS === 'ios')? button : <Title style={styles.header__body__title}>{this.props.title}</Title> }
-
           </Right>
       </Header>
     )

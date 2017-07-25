@@ -27,7 +27,7 @@ class Tips extends Component{
             showsButtons={true}
             buttonWrapperStyle={styles.arrow__buttons}
             >
-            <Col style={styles.slide1,{ marginTop: 50, alignItems: 'center'}}>
+            <Col style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
               <View style={styles.swipper__col__top__image}>
                 <Image
                   source={ require('../../../images/foco.png')}

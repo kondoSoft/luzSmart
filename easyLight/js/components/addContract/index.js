@@ -97,7 +97,7 @@ class AddContracts extends Component {
               <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
             </Right>
           </Row>
-          <Col size={70} style={ styles.col__form }>
+          <Col size={(Platform.OS === 'ios')? 40 : 70} style={ styles.col__form }>
             <Form>
               <Item fixedLabel style={styles.col__form__item}>
               <Label>No Contrato</Label>
@@ -183,7 +183,7 @@ class AddContracts extends Component {
               </Body>
             </View>
           </Row>
-          <Row size={7} style={[styles.row__bottom,{ paddingBottom: 10 }]}>
+          <Row size={7} style={[styles.row__bottom,{ paddingBottom: (Platform.OS === 'ios')? 30 : 10 }]}>
             <Button
               small
               primary
