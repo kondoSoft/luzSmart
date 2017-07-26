@@ -1,9 +1,6 @@
-package com.nativestarterkit;
+package com.easylight;
 
 import com.facebook.react.ReactActivity;
-import com.BV.LinearGradient.LinearGradientPackage;
-import com.imagepicker.ImagePickerPackage;
-import com.microsoft.codepush.react.CodePush;
 
 public class MainActivity extends ReactActivity {
 
@@ -13,6 +10,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "NativeStarterKit";
+        return "EasyLight";
     }
 }

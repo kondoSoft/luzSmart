@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "NativeStarterKit.app"
-               BlueprintName = "NativeStarterKit"
-               ReferencedContainer = "container:NativeStarterKit.xcodeproj">
+               BuildableName = "EasyLight.app"
+               BlueprintName = "EasyLight"
+               ReferencedContainer = "container:EasyLight.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "NativeStarterKitTests.xctest"
-               BlueprintName = "NativeStarterKitTests"
-               ReferencedContainer = "container:NativeStarterKit.xcodeproj">
+               BuildableName = "EasyLightTests.xctest"
+               BlueprintName = "EasyLightTests"
+               ReferencedContainer = "container:EasyLight.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "NativeStarterKitTests.xctest"
-               BlueprintName = "NativeStarterKitTests"
-               ReferencedContainer = "container:NativeStarterKit.xcodeproj">
+               BuildableName = "EasyLightTests.xctest"
+               BlueprintName = "EasyLightTests"
+               ReferencedContainer = "container:EasyLight.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "NativeStarterKit.app"
-            BlueprintName = "NativeStarterKit"
-            ReferencedContainer = "container:NativeStarterKit.xcodeproj">
+            BuildableName = "EasyLight.app"
+            BlueprintName = "EasyLight"
+            ReferencedContainer = "container:EasyLight.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "NativeStarterKit.app"
-            BlueprintName = "NativeStarterKit"
-            ReferencedContainer = "container:NativeStarterKit.xcodeproj">
+            BuildableName = "EasyLight.app"
+            BlueprintName = "EasyLight"
+            ReferencedContainer = "container:EasyLight.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "NativeStarterKit.app"
-            BlueprintName = "NativeStarterKit"
-            ReferencedContainer = "container:NativeStarterKit.xcodeproj">
+            BuildableName = "EasyLight.app"
+            BlueprintName = "EasyLight"
+            ReferencedContainer = "container:EasyLight.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
