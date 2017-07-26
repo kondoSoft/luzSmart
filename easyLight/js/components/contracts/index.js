@@ -27,12 +27,15 @@ class Contracts extends Component {
   }
   static propType = {
     getRateUnique: React.PropTypes.func,
-    getStates: React.PropTypes.func
+    getStates: React.PropTypes.func,
   }
+
   render(){
     const { navigation } = this.props
     const { contracts } = this.props
-    console.log('this is contract', contracts);
+
+    const {state} = navigation
+    console.log('this is navigation', state);
     return(
       <Container>
         <Header style={styles.header}>
@@ -96,6 +99,7 @@ function bindAction(dispatch){
   }
 }
 const mapStateToProps = state => ({
-  contracts: state.list_contracts.contracts
+  contracts: state.list_contracts.contracts,
+  selectedIndex: state.list_contracts.selectedIndex
 })
 export default connect(mapStateToProps, bindAction)(Contracts)

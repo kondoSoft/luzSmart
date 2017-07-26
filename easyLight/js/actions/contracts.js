@@ -14,7 +14,6 @@ export function setBill(payday_limit:string,amount_payable:number,current_readin
 }
 
 export function setContract(list):Action{
-  console.log(list);
   return {
     type: SET_CONTRACT,
     payload: list

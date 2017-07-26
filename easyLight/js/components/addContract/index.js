@@ -101,17 +101,19 @@ class AddContracts extends Component {
   handleNumberContract(event){
     this.setState({number_contract: event.nativeEvent.text});
   }
-  handleState(value){
+  handleState(value, item){
     this.props.resetMunicipality()
     this.props.getMunicipality(value+1)
+    this.setState({state: item});
   }
-  handleMunicipality(value){
-    this.setState({municipality: value});
+  handleMunicipality(value, item){
+    console.log('valor municipio', value, item);
+    this.setState({municipality: item});
   }
-  handleRate(value){
-    this.setState({rate: value});
+  handleRate(value, item){
+    this.setState({rate: item});
   }
-  handlePeriodSummer(event){
+  handlePeriodSummer(value){
     this.setState({period_summer: value});
   }
   handleTypePayment(event){
@@ -122,14 +124,20 @@ class AddContracts extends Component {
   }
   sendData(){
     this.props.setContract(this.state)
+
     this.props.navigation.navigate('Contracts')
+    console.log(this.state);
   }
+  // falta condicion para hacer check en uno u otro
   handleCheckedMen(){
-    this.setState({checkedMen: !this.state.checkedMen})
+    this.setState({checkedMen: !this.state.checkedMen,
+    type_payment: 'Mensual'})
   }
   handleCheckedBi(){
-    this.setState({checkedBi: !this.state.checkedBi})
+    this.setState({checkedBi: !this.state.checkedBi,
+    type_payment: 'Bimestral'})
   }
+  // ******************************************
   componentWillMount(){
     optionsStates = this.props.states_mx.map((item,i)=>{
       return (<Option
@@ -138,6 +146,7 @@ class AddContracts extends Component {
         optionStyle={styles.select__option}
         >{item.state}</Option>)
     })
+
     optionsRates = this.props.list_rate.map((item,i)=>{
       return (
         <Option
@@ -149,7 +158,6 @@ class AddContracts extends Component {
     })
   }
   render(){
-    // console.log(this.props.municipality_mx.length);
     const { navigation, states_mx, municipality_mx } = this.props
     const selectMun =
     <Select
@@ -157,7 +165,7 @@ class AddContracts extends Component {
       padding={10}
       listHeight={100}
       caretSize={0}
-      onSelect={value => this.handleMunicipality(value)}
+      onSelect={(value, key) => this.handleMunicipality(value, key)}
       >
         {this.props.municipality_mx.map((item,i)=>{
           return (<Option
@@ -202,7 +210,7 @@ class AddContracts extends Component {
               padding={10}
               listHeight={100}
               caretSize={0}
-              onSelect={value => this.handleState(value)}
+              onSelect={(value, key) => this.handleState(value, key)}
               >
               {optionsStates}
             </Select>
@@ -212,7 +220,7 @@ class AddContracts extends Component {
               padding={10}
               listHeight={100}
               caretSize={0}
-              onSelect={value => this.handleRate(value)}
+              onSelect={(value, key) => this.handleRate(value, key)}
               >
               {optionsRates}
             </Select>
@@ -221,26 +229,26 @@ class AddContracts extends Component {
               padding={10}
               listHeight={100}
               caretSize={0}
-              onSelect={event => this.handlePeriodSummer(event)}
+              onSelect={value => this.handlePeriodSummer(value)}
               >
               <Option
-                value={0}
+                value={1}
                 optionStyle={styles.select__option}
                 >Periodo</Option>
               <Option
-                value={1}
+                value={2}
                 optionStyle={styles.select__option}
                 >Feb - Jul</Option>
               <Option
-                value={1}
+                value={3}
                 optionStyle={styles.select__option}
                 >Mar - Ago</Option>
               <Option
-                value={1}
+                value={4}
                 optionStyle={styles.select__option}
                 >Abr - Sep</Option>
               <Option
-                value={1}
+                value={5}
                 optionStyle={styles.select__option}
                 >Mayo - Oct</Option>
             </Select>
