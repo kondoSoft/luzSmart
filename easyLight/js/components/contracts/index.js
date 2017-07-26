@@ -11,7 +11,7 @@ import FabButton from '../fabButton';
 import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
-import { getStates } from "../../actions/list_states_mx";
+import { getStates, getRateUnique } from "../../actions/list_states_mx";
 
 class Contracts extends Component {
   // constructor(props){
@@ -22,8 +22,11 @@ class Contracts extends Component {
   };
   componentWillMount(){
     this.props.getStates()
+    this.props.getRateUnique()
+
   }
   static propType = {
+    getRateUnique: React.PropTypes.func,
     getStates: React.PropTypes.func
   }
   render(){
@@ -89,6 +92,7 @@ class ItemComponent extends Component{
 function bindAction(dispatch){
   return {
     getStates: () => dispatch(getStates()),
+    getRateUnique: list => dispatch(getRateUnique(list)),
   }
 }
 const mapStateToProps = state => ({

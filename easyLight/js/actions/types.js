@@ -13,6 +13,8 @@ export type Action =
     | { type: 'SET_BILL', list: string}
     | { type: 'GET_STATES', list: string}
     | { type: 'GET_MUNICIPALITY', list: string}
+    | { type: 'GET_RATE', list: string}
+    | { type: 'GET_RATE_UNIQUE', list: string}
 
 export type Dispatch = (action:Action | Array<Action>) => any;
 export type GetState = () => Object;
