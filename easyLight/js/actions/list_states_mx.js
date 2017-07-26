@@ -5,6 +5,7 @@ export const GET_MUNICIPALITY = 'GET_MUNICIPALITY';
 export const RESET_MUNICIPALITY = 'RESET_MUNICIPALITY'
 export const GET_RATE = 'GET_RATE'
 export const GET_RATE_UNIQUE = 'GET_RATE_UNIQUE'
+export const SET_INDEX = 'SET_INDEX';
 
 
 export function printStates(list):Action{
@@ -12,6 +13,13 @@ export function printStates(list):Action{
     type: GET_STATES,
     payload: list.results,
   }
+}
+
+export function setIndex(index:number):Action {
+  return {
+    type: SET_INDEX,
+    payload: index,
+  };
 }
 
 export function printMunicipality(list):Action{
