@@ -18,10 +18,10 @@ export default {
     textAlign: 'right'
   },
   row__botttom: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   row__botttom__btn: {
-    width: 80,
-    justifyContent: 'center'
+    width: 150,
+    justifyContent: 'center',
   }
 }
