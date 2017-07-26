@@ -30,11 +30,11 @@ import { setContract } from '../../actions/contracts';
 import { getMunicipality, resetMunicipality } from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
 
-
 class AddContracts extends Component {
 
   constructor(props){
     var optionsStates;
+    var optionsRates;
 
     super(props)
     this.state = {
@@ -57,7 +57,6 @@ class AddContracts extends Component {
     setContract: React.PropTypes.func,
     getMunicipality: React.PropTypes.func,
     resetMunicipality: React.PropTypes.func,
-
   }
   static navigationOptions = {
     header: null
@@ -105,9 +104,8 @@ class AddContracts extends Component {
   handleState(value){
     this.props.resetMunicipality()
     this.props.getMunicipality(value+1)
-
   }
-  handleMunicipality(event){
+  handleMunicipality(value){
     this.setState({municipality: value});
   }
   handleRate(value){
@@ -117,7 +115,6 @@ class AddContracts extends Component {
     this.setState({period_summer: value});
   }
   handleTypePayment(event){
-    console.log(event.nativeEvent.text);
     this.setState({type_payment: event.nativeEvent.text});
   }
   handleCost(event){
@@ -141,9 +138,18 @@ class AddContracts extends Component {
         optionStyle={styles.select__option}
         >{item.state}</Option>)
     })
+    optionsRates = this.props.list_rate.map((item,i)=>{
+      return (
+        <Option
+          key={i}
+          value={i}
+          optionStyle={styles.select__option}
+          >{item.name_rate}</Option>
+      )
+    })
   }
   render(){
-    console.log(this.state.avatarSource);
+    // console.log(this.props.municipality_mx.length);
     const { navigation, states_mx, municipality_mx } = this.props
     const selectMun =
     <Select
@@ -151,7 +157,7 @@ class AddContracts extends Component {
       padding={10}
       listHeight={100}
       caretSize={0}
-      // onSelect={event => this.handleMunicipality(event)}
+      onSelect={value => this.handleMunicipality(value)}
       >
         {this.props.municipality_mx.map((item,i)=>{
           return (<Option
@@ -200,7 +206,7 @@ class AddContracts extends Component {
               >
               {optionsStates}
             </Select>
-            {(municipality_mx.length == 0) ? <View/> : selectMun}
+            { (municipality_mx.length == 0) ? <View/> : selectMun}
             <Select
               selectStyle={styles.select}
               padding={10}
@@ -208,34 +214,7 @@ class AddContracts extends Component {
               caretSize={0}
               onSelect={value => this.handleRate(value)}
               >
-              <Option
-                value={1}
-                optionStyle={styles.select__option}
-                >Tarifa 1</Option>
-              <Option
-                value={2}
-                optionStyle={styles.select__option}
-                >Tarifa 1A</Option>
-              <Option
-                value={3}
-                optionStyle={styles.select__option}
-                >Tarifa 1B</Option>
-              <Option
-                value={4}
-                optionStyle={styles.select__option}
-                >Tarifa 1C</Option>
-              <Option
-                value={5}
-                optionStyle={styles.select__option}
-                >Tarifa 1D</Option>
-              <Option
-                value={6}
-                optionStyle={styles.select__option}
-                >Tarifa 1E</Option>
-              <Option
-                value={7}
-                optionStyle={styles.select__option}
-                >Tarifa 1F</Option>
+              {optionsRates}
             </Select>
             <Select
               selectStyle={styles.select}
@@ -245,13 +224,25 @@ class AddContracts extends Component {
               onSelect={event => this.handlePeriodSummer(event)}
               >
               <Option
-                value={1}
+                value={0}
                 optionStyle={styles.select__option}
                 >Periodo</Option>
               <Option
-                value={2}
+                value={1}
                 optionStyle={styles.select__option}
-                >Feb - Julio</Option>
+                >Feb - Jul</Option>
+              <Option
+                value={1}
+                optionStyle={styles.select__option}
+                >Mar - Ago</Option>
+              <Option
+                value={1}
+                optionStyle={styles.select__option}
+                >Abr - Sep</Option>
+              <Option
+                value={1}
+                optionStyle={styles.select__option}
+                >Mayo - Oct</Option>
             </Select>
             </Form>
           </Col>
@@ -293,6 +284,7 @@ function bindAction(dispatch){
 }
 const mapStateToProps = state => ({
   states_mx: state.list_states_mx.results,
-  municipality_mx: state.list_mun_mx.results
+  municipality_mx: state.list_mun_mx.results,
+  list_rate: state.list_rate.list_rate,
 })
 export default connect(mapStateToProps, bindAction)(AddContracts);
