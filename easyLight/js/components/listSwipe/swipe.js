@@ -155,7 +155,7 @@ export default class SwipeAccordion extends Component{
             onPress={this.toggle.bind(this)}
             activeOpacity={0.6}
           >
-            <Text style={{ textAlign: 'center', width: '50%',color: '#fff',backgroundColor: 'lightblue'}}>Click Me!</Text>
+            {this.props.icon} 
           </TouchableOpacity>
         </View>
         <ListItemSwipe component={this.props.component}  onLayout={this._setMinHeight.bind(this)}  />
