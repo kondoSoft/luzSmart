@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Platform } from 'react-native';
+import { View, Platform, Image} from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
-import { Container, Fab , Content, Header, Body, Left, List, ListItem, Thumbnail, Text, Title, Button, Icon, Right, Image} from 'native-base';
+import { Container, Fab , Content, Body, Left, List, ListItem, Thumbnail, Text, Title, Button, Icon, Right} from 'native-base';
+import Header from '../header/index';
 import styles from "./styles";
 import Footer from '../footer/index';
 import SwipeItem from '../listSwipe/index';
@@ -13,12 +14,15 @@ import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
 import { getStates, getRateUnique } from "../../actions/list_states_mx";
 
+// var gradientImage = require('../../../images/header.png')
+
 class Contracts extends Component {
-  // constructor(props){
-  //   super(props)
-  // }
+  constructor(props){
+
+    super(props)
+  }
   static navigationOptions = {
-    header: null
+    header: null,
   };
   componentWillMount(){
     this.props.getStates()
@@ -35,17 +39,9 @@ class Contracts extends Component {
     const { contracts } = this.props
 
     const {state} = navigation
-    console.log('this is navigation', state);
     return(
       <Container>
-        <Header style={styles.header}>
-          <Left>
-            {(Platform.OS === 'ios')? <Title style={styles.header__left__title}>EASYLIGHT</Title> : null }
-          </Left>
-          <Right>
-            {(Platform.OS === 'ios')? <Icon name="menu" active style={{ color: 'white' }} onPress={()=>this.props.navigation.navigate('DrawerOpen')} /> : <Title style={styles.header__left__title}>EASYLIGHT</Title> }
-          </Right>
-        </Header>
+        <Header navigation={navigation} title={"EASYLIGHT"}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>

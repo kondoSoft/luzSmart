@@ -10,10 +10,12 @@ export default {
     flexDirection: 'row',
     paddingTop: (Platform.OS === 'ios')? 15 : 0,
     height: (Platform.OS === 'ios')? '9%' : '10%',
+    resizeMode: 'cover',
   },
   header__body__title:{
     color: 'white',
     fontSize: 20,
+    backgroundColor: 'transparent',
   },
   header__icon:{
     color: 'white',

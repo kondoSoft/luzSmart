@@ -85,12 +85,12 @@ class AddContracts extends Component {
       }
       else {
         let source = { uri: response.origURL };
-
+        console.log('source', typeof(source.uri), source.uri);
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
         this.setState({
-          avatarSource: source
+          avatarSource: source.uri
         });
       }
     });
@@ -175,6 +175,7 @@ class AddContracts extends Component {
             >{item.name_mun}</Option>)
         })}
     </Select>
+    console.log('avatar',this.state.avatarSource);
     return(
       <Container>
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
@@ -185,7 +186,7 @@ class AddContracts extends Component {
               <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                 <View style={{marginBottom: 20}}>
                 { this.state.avatarSource === null && <Text>Select a Photo</Text>
-                  // {/* <Image  source={this.state.avatarSource} /> */}
+                    // <Image  source={this.state.avatarSource} />
                 }
                 </View>
               </TouchableOpacity>
