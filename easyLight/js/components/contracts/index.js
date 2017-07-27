@@ -6,6 +6,7 @@ import { Container, Fab , Content, Header, Body, Left, List, ListItem, Thumbnail
 import styles from "./styles";
 import Footer from '../footer/index';
 import SwipeItem from '../listSwipe/index';
+import SwipeAccordion from '../listSwipe/swipe';
 import DrawBar from '../DrawBar';
 import FabButton from '../fabButton';
 import { DrawerNavigator, NavigationActions } from "react-navigation";
@@ -51,13 +52,15 @@ class Contracts extends Component {
           <Grid>
             <Col>
               <List style={styles.list}>
-                {Object.keys(contracts).map((contract, i )=><SwipeItem
+                {Object.keys(contracts).map((contract, i )=><SwipeAccordion
                   key={i}
                   index={i}
                   navigation={navigation}
                   component={<ItemComponent data={contracts[contract]}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}
                 />)}
+                {/* <SwipeAccordion component={<ItemComponent/>}/>
+                <SwipeAccordion/> */}
               </List>
             </Col>
           </Grid>
