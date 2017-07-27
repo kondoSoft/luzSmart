@@ -5,7 +5,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import {
   Container,
   Content,
-  Header,
+  // Header,
   Body,
   Button,
   Item,
@@ -24,7 +24,7 @@ import { Dimensions, Platform } from 'react-native';
 import { Field, reduxForm } from "redux-form";
 import { setUser } from "../../actions/user";
 import styles from "./styles";
-
+import Header from '../header/index';
 const background = require("../../../images/shadow.png");
 const Screen = Dimensions.get('window');
 
@@ -98,15 +98,11 @@ class Login extends Component {
     );
   }
   render() {
-    console.log(this.props);
+
     return (
       <Container scrollEnabled={false}>
         <ScrollView style={styles.container} ref='scroll'>
-          <Header style={styles.header}>
-            <Body style={styles.header__body}>
-              <Title style={styles.header__body__title}>INICIO DE SESIÓN</Title>
-            </Body>
-          </Header>
+          <Header title={"INICIO DE SESIÓN"} navigation={this.props.navigation}/>
             <Grid style={{ height: Screen.height - 140 }}>
               <Row  size={40}>
                 <Col style={{justifyContent: 'flex-end', paddingLeft: 15}}>

@@ -3,7 +3,7 @@ const { StyleSheet, Dimensions, Platform } = React;
 
 export default {
   header:{
-    backgroundColor: 'green',
+    backgroundColor: 'transparent',
   },
   header__left__title:{
     color: 'white',
