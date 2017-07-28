@@ -165,6 +165,7 @@ class AddContracts extends Component {
       padding={10}
       listHeight={100}
       caretSize={0}
+      defaultValue={'Estados'}
       onSelect={(value, key) => this.handleMunicipality(value, key)}
       >
         {this.props.municipality_mx.map((item,i)=>{

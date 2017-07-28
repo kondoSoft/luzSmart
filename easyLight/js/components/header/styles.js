@@ -16,6 +16,7 @@ export default {
     color: 'white',
     fontSize: 20,
     backgroundColor: 'transparent',
+    fontWeight: '400',
   },
   header__icon:{
     color: 'white',

@@ -34,7 +34,6 @@ class Contracts extends Component {
     getRateUnique: React.PropTypes.func,
     getStates: React.PropTypes.func,
   }
-
   render(){
     const { navigation } = this.props
     const { contracts } = this.props
@@ -55,8 +54,6 @@ class Contracts extends Component {
                   component={<ItemComponent data={contracts[contract]}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}
                 />)}
-                {/* <SwipeAccordion component={<ItemComponent/>}/>
-                <SwipeAccordion/> */}
               </List>
             </Col>
           </Grid>

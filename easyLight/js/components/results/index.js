@@ -25,7 +25,7 @@ class Results  extends Component {
     const {  navigation } = this.props;
     return(
       <Container>
-        <Header title="RESULTADOS" navigation={this.props.navigation}/>
+        <Header title="Resultados" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Grid style={{  }}>
           <Row size={50} style={styles.row__top}>

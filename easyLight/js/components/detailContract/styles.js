@@ -14,7 +14,7 @@ export default {
     padding: 5,
     justifyContent: 'center',
   },
-  detailContract__row__top__:{
+  detailContract__row__top__text:{
     color: '#fff',
   },
   list:{

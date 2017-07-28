@@ -25,6 +25,7 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import SwipeItem from '../listSwipe/index';
+import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
 
 class DetailContract extends Component {
@@ -35,10 +36,10 @@ class DetailContract extends Component {
     header: null
   };
   render(){
-
     // const { receipts } = this.props
     const { navigation, receipts } = this.props
-
+    console.log('this is the route name',this.props.navigation.state.routeName);
+    const colors = ['lightgrey','#fff']
     return(
       <Container>
         <Header navigation={navigation} title="Periodos"/>
@@ -50,12 +51,12 @@ class DetailContract extends Component {
             </Row>
             <Col>
               <List style={styles.list}>
-                {Object.keys(receipts).map((receipt, i )=><SwipeItem
+                {Object.keys(receipts).map((receipt, i )=><SwipeAccordion
                   key={i}
                   navigation={navigation}
+                  style={{backgroundColor: colors[i % colors.length]}}
                   component={<ItemComponent data={receipts[receipt]}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}
-                  style={{backgroundColor: 'lightgrey'}}
                 />)}
               </List>
             </Col>

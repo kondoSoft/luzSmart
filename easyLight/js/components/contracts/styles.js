@@ -17,7 +17,7 @@ export default {
     height: 65,
     borderRadius: 50,
     position: 'absolute',
-    bottom: (Platform.OS === 'ios')? 60 : 0,
+    bottom: (Platform.OS === 'ios')? 40 : 0,
   },
   listItem:{
     flex: 1,
@@ -45,10 +45,10 @@ export default {
 
   },
   icon:{
-    color: 'steelblue',
+    color: '#007aff',
     fontSize: 40,
     textAlign: 'center',
-    paddingTop: 15,
+    paddingTop: 5,
   },
   rowBack: {
 		alignItems: 'center',
