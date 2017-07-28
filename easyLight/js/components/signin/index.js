@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import  { Text, Container, Content, Icon, Thumbnail, Button, Form, Item, Label, Input } from 'native-base';
-import { Platform, ScrollView, Dimensions, Keyboard } from 'react-native';
+import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import styles from './styles';
@@ -11,6 +11,11 @@ class SignIn extends Component {
   static navigationOptions = {
     header: null
   };
+  constructor(props){
+    super(props)
+
+    this._keyboardDidHide = this._keyboardDidHide.bind(this)
+  }
   componentWillMount () {
    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
@@ -23,7 +28,7 @@ class SignIn extends Component {
 
   }
   _keyboardDidHide () {
-
+    this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   render(){
     console.log(Screen.height);
@@ -33,6 +38,7 @@ class SignIn extends Component {
           <ScrollView
             style={{height: Screen.height - 40}}
             ref='scroll'
+            // style={{flex:1}}
             >
             <Grid style={{flex: 1}}>
               <Row style={styles.row__top}>
@@ -51,37 +57,43 @@ class SignIn extends Component {
                     <Label style={styles.text}>Nombres:</Label>
                     <Input
                       style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })} />
+                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
+                    />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Apellidos:</Label>
                     <Input
                       style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })} />
+                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
+                    />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Email:</Label>
                     <Input
                       style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })} />
+                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })}
+                    />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Contraseña:</Label>
                     <Input
                       style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 90 : 90 })} />
+                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 90 : 90 })}
+                    />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Confirmar contraseña:</Label>
                     <Input
                       style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 100 : 100 })} />
+                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 100 : 100 })}
+                    />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>F. nacimiento:</Label>
                     <Input
                       style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 160 : 160 })} />
+                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 160 : 160 })}
+                    />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Celular:</Label>

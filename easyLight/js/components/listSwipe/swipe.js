@@ -1,8 +1,25 @@
 import React,{ Component } from 'react';
-import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity } from 'react-native';
 
 let Window = Dimensions.get('window');
-
+var contentExpandedView = {
+  'first':{
+    title: 'Período de Consumo',
+    value: '29 FEB 17 al 29 ABR 17',
+  },
+  'second':{
+    title: 'Período de Consumo',
+    value: '5,000',
+  },
+  'third':{
+    title: 'Última Lectura Diaria',
+    value: '5,200',
+  },
+  'four':{
+    title: 'Consumo kWh',
+    value: '200',
+  }
+}
 
 class ListItemSwipe extends React.Component {
   static propTypes = {
@@ -26,12 +43,12 @@ class ListItemSwipe extends React.Component {
     }
   this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder : () => {
-        console.log('start',this.state.pan.x)
+
                                             return true
       },
       onPanResponderMove            :(e,gestureState)=>{
         // console.log('gesture state dx>',gestureState.dx);
-        console.log('onMove',gestureState.dx);
+
         if (gestureState.dx < 0){
           Animated.event([null,{
             dx : this.state.pan.x>0 ? 0 : this.state.pan.x,
@@ -48,12 +65,11 @@ class ListItemSwipe extends React.Component {
       },
       onPanResponderRelease        : (e, gesture) => {
         var x = parseInt(JSON.stringify(this.state.pan.x))
-        console.log('onRelease',x);
         if ( x == 0 ){
-          console.log('onTap>',this.props.onTap)
+          this.props.onTap('DetailContract')
+          console.log('DetailContract',this.props.navigate.state.routeName)
         }
         if (gesture.dx < -75) {
-          console.log('funciona funciona');
           Animated.spring(
             this.state.pan,
             {toValue:{x:-120,y:0}},
@@ -79,14 +95,12 @@ class ListItemSwipe extends React.Component {
         }
       }
   });
-    console.log(...this.panResponder.panHandlers);
   }
   render(){
-    console.log('props for list swipe component',this.props);
     return(
         <Animated.View
          {...this.panResponder.panHandlers}
-          style={[this.state.pan.getLayout(),{backgroundColor: 'lightgrey',height: 80, width: Window.width, position: 'absolute', top: 0, right: 0} ]}
+          style={[this.state.pan.getLayout(),{backgroundColor: '#fff',height: 80, width: Window.width, position: 'absolute', top: 0, right: 0},this.props.style]}
           onLayout={this.props.onLayout}
           >
             {this.props.component}
@@ -103,12 +117,11 @@ export default class SwipeAccordion extends Component{
       maxHeight: 0,
       expanded : false,
     }
+    this.navigateTo = this.navigateTo.bind(this)
   }
   toggle(){
     let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
        finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
-       console.log('initialValue',initialValue);
-       console.log('finalValue',finalValue);
     this.setState({
       expanded : !this.state.expanded
     });
@@ -136,13 +149,16 @@ export default class SwipeAccordion extends Component{
       maxHeight: event.nativeEvent.layout.height
     })
   }
+  navigateTo(route,i){
+    this.props.navigation.navigate(route,i)
+  }
   render(){
+    console.log(this.props.style);
     return(
-      <Animated.View style={[{backgroundColor:'lightgrey',height: this.state.animation}]}>
+      <Animated.View style={[{height: this.state.animation}]}>
         <View style={styles.swipeBack} >
           <TouchableOpacity
             style={styles.swipeBack__left}
-            onPress={()=> console.log("soy el boton derecho")}
             activeOpacity={0.9}
           >
             <Text style={{ flex: 1 , textAlign: 'center'}}>hi there</Text>
@@ -155,10 +171,10 @@ export default class SwipeAccordion extends Component{
             onPress={this.toggle.bind(this)}
             activeOpacity={0.6}
           >
-            {this.props.icon} 
+            {this.props.icon}
           </TouchableOpacity>
         </View>
-        <ListItemSwipe component={this.props.component}  onLayout={this._setMinHeight.bind(this)}  />
+        <ListItemSwipe navigate={this.props.navigation} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
         <OpacityAnimatedView toggle={this.state.expanded} func={this._setMaxHeight.bind(this)}/>
       </Animated.View>
     )
@@ -173,7 +189,6 @@ class OpacityAnimatedView extends Component{
       animation: new Animated.Value(0)
     }
   }
-
   render(){
     if (this.props.toggle === true) {
       Animated.timing(
@@ -194,22 +209,15 @@ class OpacityAnimatedView extends Component{
     }
     return(
       <Animated.View onLayout={this.props.func} style={{opacity: this.state.animation}}>
-        <View style={{flexDirection: 'row',alignItems: 'center', height: 70}}>
-          <Text style={{flex: 2,textAlign: 'center', }}>Período de Consumo</Text>
-          <Text style={{flex: 1,padding: 15, textAlign: 'center'}}>29 FEB 17 al 29 ABR 17</Text>
-        </View>
-        <View style={{flexDirection: 'row',alignItems: 'center', height: 70}}>
-          <Text style={{flex: 2, textAlign: 'center', }}>Período de Consumo</Text>
-          <Text style={{flex: 1,padding: 15, textAlign: 'center'}}>5,000</Text>
-        </View>
-        <View style={{flexDirection: 'row',alignItems: 'center', height: 70}}>
-          <Text style={{flex: 2, textAlign: 'center', }}>Última Lectura Diaria</Text>
-          <Text style={{flex: 1,padding: 15, textAlign: 'center'}}>5,200</Text>
-        </View>
-        <View style={{flexDirection: 'row',alignItems: 'center', height: 70}}>
-          <Text style={{flex: 2, textAlign: 'center', }}>Consumo kWh</Text>
-          <Text style={{flex: 1,padding: 15, textAlign: 'center'}}>200</Text>
-        </View>
+        {Object.keys(contentExpandedView).map((current,i)=>{
+          let colors = ['#fff', 'lightgrey']
+          return(
+            <View key={i} style={{flexDirection: 'row',alignItems: 'center', height: 70, backgroundColor: colors[i % colors.length]}}>
+              <Text style={{flex: 2, textAlign: 'center', }}>{contentExpandedView[current].title}</Text>
+              <Text style={{flex: 1,padding: 15, textAlign: 'center'}}>{contentExpandedView[current].value}</Text>
+            </View>
+          )
+        })}
       </Animated.View>
     )
   }

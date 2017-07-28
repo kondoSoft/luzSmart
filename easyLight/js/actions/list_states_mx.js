@@ -7,6 +7,8 @@ export const GET_RATE = 'GET_RATE'
 export const GET_RATE_UNIQUE = 'GET_RATE_UNIQUE'
 export const SET_INDEX = 'SET_INDEX';
 
+const endPoint = 'http://192.168.1.72:8080';
+
 
 export function printStates(list):Action{
   return {
@@ -48,7 +50,7 @@ export function printRateUnique(list):Action {
 
 export function getStates(list):Action {
   return dispatch => {
-    return fetch ('http://192.168.1.75:8080/states', {
+    return fetch (endPoint+'/states', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -63,7 +65,7 @@ export function getStates(list):Action {
 
 export function getMunicipality(state_id):Action{
   return dispatch => {
-    return fetch ('http://192.168.1.75:8080/municipality/?state_id=' + state_id, {
+    return fetch (endPoint+'/municipality/?state_id=' + state_id, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -77,7 +79,7 @@ export function getMunicipality(state_id):Action{
 }
 export function getRate(list):Action{
   return dispatch => {
-    return fetch ('http://192.168.1.75:8080/rate', {
+    return fetch (endPoint+':8080/rate', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -91,7 +93,7 @@ export function getRate(list):Action{
 }
 export function getRateUnique(list):Action{
   return dispatch => {
-    return fetch ('http://192.168.1.75:8080/rate_unique', {
+    return fetch (endPoint+'/rate_unique', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
