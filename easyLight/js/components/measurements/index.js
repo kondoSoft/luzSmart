@@ -26,6 +26,11 @@ class Measurements extends Component {
   static navigationOptions = {
     header: null
   };
+  constructor(props){
+    super(props)
+
+    this.state = { active: false }
+  }
   render(){
     const { navigation } = this.props
     return(
@@ -119,13 +124,21 @@ class Measurements extends Component {
             </View>
           </Grid>
         </AnimatedView>
+        <View>
+          <Fab
+            active={this.state.active}
+            direction="up"
+            containerStyle={{ }}
+            style={{ backgroundColor: '#5067FF' }}
+            position="bottomRight"
+            onPress={() => this.setState({ active: !this.state.active })}>
+            <Icon name="share" />
+            <Button style={{ backgroundColor: '#3B5998' }}>
+              <Icon name="logo-facebook" />
+            </Button>
+          </Fab>
+        </View>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
-        {/* <FabButton
-          navigation={this.props.navigation}
-          onTap={()=>{navigation.navigate("Receipt")}}
-          >
-          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
-        </FabButton> */}
       </Container>
     )
   }

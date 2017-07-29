@@ -35,7 +35,7 @@ export default {
   },
   col__bottom:{
     alignItems: 'center',
-    marginTop: 100,
+    marginTop: 20,
   },
   col__bottom__row__bottom:{
     paddingTop: 20,

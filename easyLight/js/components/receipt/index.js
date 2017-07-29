@@ -15,6 +15,8 @@ import {
   AlertIOS,
   Platform,
   Alert,
+  ScrollView,
+  Keyboard,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -33,12 +35,22 @@ class Receipt extends Component {
         current_reading: 0,
         previous_reading: 0,
       }
+      this._keyboardDidHide = this._keyboardDidHide.bind(this)
     }
   static navigationOptions = {
     header: null
   };
   static propType = {
     setBill: React.PropTypes.func
+  }
+  componentWillMount () {
+   this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+  componentWillUnmount () {
+    this.keyboardDidHideListener.remove();
+  }
+  _keyboardDidHide () {
+    this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   handlePaydayLimit(event){
     this.setState({payday_limit: event.nativeEvent.text});
@@ -79,7 +91,6 @@ class Receipt extends Component {
     }else{
       this.showAlertA()
     }
-
   }
   render(){
     const { navigation } = this.props
@@ -87,40 +98,58 @@ class Receipt extends Component {
       <Container>
         <Header navigation={this.props.navigation} title="Recibo CFE"/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <Grid style={styles.grid}>
-          <Col size={75}>
-            <Form style={styles.form}>
-              <Item inlineLabel last style={styles.form__item__title}>
-                <Label style={styles.form__item__label}>Contrato #85976431</Label>
-              </Item>
-              <Item last style={styles.form__item__inputs}>
-                <Input placeholder="Fecha Limite de Pago" onChange={event => this.handlePaydayLimit(event)} />
-              </Item>
-              <Item last style={styles.form__item__inputs}>
-                <Input placeholder="Monto a Pagar" onChange={event => this.handleAmountPayable(event)} />
-              </Item>
-              <Item last style={styles.form__item__title}>
-                <Label style={styles.form__item__label}>Medición de Consumo</Label>
-              </Item>
-              <Item last style={styles.form__item__inputs}>
-                <Input placeholder="Lectura Actual" onChange={event => this.handleCurrentReading(event)} />
-              </Item>
-              <Item last style={styles.form__item__inputs}>
-                <Input placeholder="Lectura Anterior" onChange={event => this.handlePreviousReading(event)} />
-              </Item>
-            </Form>
-          </Col>
-          <Col size={25} style={styles.col__bottom}>
-            <Row style={styles.col__bottom__row__bottom}>
-              <Button
-                style={{ height: 35}}
-                onPress={()=>this.sendData()}
-                >
-                <Text>Agregar</Text>
-              </Button>
-            </Row>
-          </Col>
-        </Grid>
+        <ScrollView
+          ref='scroll'
+          >
+          <Grid style={styles.grid}>
+            <Col size={75}>
+              <Form style={styles.form}>
+                <Item inlineLabel last style={styles.form__item__title}>
+                  <Label style={styles.form__item__label}>Contrato #85976431</Label>
+                </Item>
+                <Item last style={styles.form__item__inputs}>
+                  <Input
+                    placeholder="Fecha Limite de Pago"
+                    onChange={event => this.handlePaydayLimit(event)}
+                  />
+                </Item>
+                <Item last style={styles.form__item__inputs}>
+                  <Input
+                    placeholder="Monto a Pagar"
+                    onChange={event => this.handleAmountPayable(event)}
+                  />
+                </Item>
+                <Item last style={styles.form__item__title}>
+                  <Label style={styles.form__item__label}>Medición de Consumo</Label>
+                </Item>
+                <Item last style={styles.form__item__inputs}>
+                  <Input
+                    placeholder="Lectura Actual"
+                    onChange={event => this.handleCurrentReading(event)}
+                    onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 40 : 0 })}
+                  />
+                </Item>
+                <Item last style={styles.form__item__inputs}>
+                  <Input
+                    placeholder="Lectura Anterior"
+                    onChange={event => this.handlePreviousReading(event)}
+                    onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 40 : 0 })}
+                  />
+                </Item>
+              </Form>
+            </Col>
+            <Col size={25} style={styles.col__bottom}>
+              <Row style={styles.col__bottom__row__bottom}>
+                <Button
+                  style={{ height: 35}}
+                  onPress={()=>this.sendData()}
+                  >
+                  <Text>Agregar</Text>
+                </Button>
+              </Row>
+            </Col>
+          </Grid>
+        </ScrollView>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )

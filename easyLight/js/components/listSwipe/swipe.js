@@ -67,7 +67,6 @@ class ListItemSwipe extends React.Component {
         var x = parseInt(JSON.stringify(this.state.pan.x))
         if ( x == 0 ){
           this.props.onTap('DetailContract')
-          console.log('DetailContract',this.props.navigate.state.routeName)
         }
         if (gesture.dx < -75) {
           Animated.spring(
@@ -150,10 +149,13 @@ export default class SwipeAccordion extends Component{
     })
   }
   navigateTo(route,i){
-    this.props.navigation.navigate(route,i)
+    if (this.props.navigation.state.routeName === 'DetailContract') {
+
+    }else {
+      this.props.navigation.navigate(route,i)
+    }
   }
   render(){
-    console.log(this.props.style);
     return(
       <Animated.View style={[{height: this.state.animation}]}>
         <View style={styles.swipeBack} >
@@ -174,7 +176,7 @@ export default class SwipeAccordion extends Component{
             {this.props.icon}
           </TouchableOpacity>
         </View>
-        <ListItemSwipe navigate={this.props.navigation} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
+        <ListItemSwipe style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
         <OpacityAnimatedView toggle={this.state.expanded} func={this._setMaxHeight.bind(this)}/>
       </Animated.View>
     )
