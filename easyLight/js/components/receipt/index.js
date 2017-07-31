@@ -64,33 +64,30 @@ class Receipt extends Component {
   handlePreviousReading(event){
     this.setState({previous_reading: event.nativeEvent.text});
   }
-  showAlertIOS(){
-    AlertIOS.alert(
-      'Contrato',
-     'Desea agregar un historial al contrato Mi Casa?',
-     [
-       {text: 'No', onPress: () => this.props.navigation.navigate('DetailContract')},
-       {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
-     ],
-    )
-  }
-  showAlertA(){
-    Alert.alert(
-      'Contrato',
-      'Desea agregar un historial al contrato Mi Casa?',
-      [
-        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
-      ],
-    )
+  showAlert(){
+    if (Platform.OS === 'ios') {
+      AlertIOS.alert(
+        'Contrato',
+       'Desea agregar un historial al contrato Mi Casa?',
+       [
+         {text: 'No', onPress: () => this.props.navigation.navigate('Contracts')},
+         {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
+       ],
+      )
+    }else{
+      Alert.alert(
+        'Contrato',
+        'Desea agregar un historial al contrato Mi Casa?',
+        [
+          {text: 'No', onPress: () => this.props.navigation.navigate('Contracts')},
+          {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
+        ],
+      )
+    }
   }
   sendData(){
     this.props.setBill(this.state.payday_limit,this.state.amount_payable,this.state.current_reading,this.state.previous_reading)
-    if(Platform.OS === 'ios') {
-      this.showAlertIOS()
-    }else{
-      this.showAlertA()
-    }
+    this.showAlert()
   }
   render(){
     const { navigation } = this.props
@@ -100,6 +97,7 @@ class Receipt extends Component {
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <ScrollView
           ref='scroll'
+          style={{backgroundColor: '#fff'}}
           >
           <Grid style={styles.grid}>
             <Col size={75}>

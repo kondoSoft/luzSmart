@@ -31,7 +31,7 @@ class SignIn extends Component {
         <Container style={{height:Screen.height}}>
           <Header zIndex navigation={this.props.navigation} title="Nuevo Registro"/>
           <ScrollView
-            style={{height: Screen.height - 40}}
+            style={{backgroundColor: '#fff'}}
             ref='scroll'
             // style={{flex:1}}
             >

@@ -3,13 +3,14 @@ const { StyleSheet, Dimensions, Platform } = React;
 
 export default {
     row__top__left__right:{
-      paddingLeft: 30,
+      paddingLeft: 0,
+      flex: 1,
     },
-    row__top__right__icon:{
-
+    row__top__left__right:{
+      flex: 1,
     },
     col__form:{
-      marginTop: 5,
+      marginTop: 0,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -27,6 +28,12 @@ export default {
     select:{
       width: 310,
       margin: 10,
+      backgroundColor: '#fff',
+      borderColor: 'lightgrey',
+      borderBottomWidth:1,
+      borderTopWidth:1,
+      borderLeftWidth:1,
+      borderRightWidth:1,
     },
     row__bottom__view__top:{
       marginTop: 0,
@@ -43,7 +50,7 @@ export default {
       alignItems: 'center'
     },
     CheckBox:{
-      marginRight: 15
+      marginRight: 15,
     },
     row__bottom:{
       justifyContent: 'center',

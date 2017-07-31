@@ -27,7 +27,7 @@ class Results  extends Component {
       <Container>
         <Header title="Resultados" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <Grid style={{  }}>
+        <Grid style={{ backgroundColor: '#fff' }}>
           <Row size={50} style={styles.row__top}>
             <Select
               selectStyle={{ width: 300}}

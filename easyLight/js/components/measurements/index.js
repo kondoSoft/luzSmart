@@ -34,11 +34,11 @@ class Measurements extends Component {
   render(){
     const { navigation } = this.props
     return(
-      <Container>
+      <Container style={{backgroundColor: '#fff'}}>
         <Header navigation={this.props.navigation} zIndex title="Mediciones"/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <AnimatedView>
-          <Grid>
+          <Grid style={{backgroundColor: '#fff'}}>
             <Row size={9} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
               <View style={styles.grid__row__top__view}>

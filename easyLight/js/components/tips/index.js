@@ -21,7 +21,7 @@ class Tips extends Component{
       <Container>
         <Header navigation={ this.props.navigation } title="Tips" />
         {(Platform.OS == 'android') ? <Footer navigation={this.props.navigation}/>  : null}
-        <Grid>
+        <Grid style={{backgroundColor: '#fff'}}>
           <Swiper
             style={styles.wrapper}
             showsButtons={true}

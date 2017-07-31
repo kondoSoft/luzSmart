@@ -62,7 +62,7 @@ class History extends Component{
         <ModalForm visible={this.state.open} onClose={this.onClose} navigation={this.props.navigation}/>
         <Header navigation={this.props.navigation} title="Historial" />
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <Content>
+        <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Col>
               <List>

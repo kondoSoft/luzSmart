@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity,Platform } from 'react-native';
 
 let Window = Dimensions.get('window');
 var contentExpandedView = {
@@ -157,7 +157,7 @@ export default class SwipeAccordion extends Component{
   }
   render(){
     return(
-      <Animated.View style={[{height: this.state.animation}]}>
+      <Animated.View style={[{height: this.state.animation, overflow:'hidden'}]}>
         <View style={styles.swipeBack} >
           <TouchableOpacity
             style={styles.swipeBack__left}
@@ -177,54 +177,30 @@ export default class SwipeAccordion extends Component{
           </TouchableOpacity>
         </View>
         <ListItemSwipe style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
-        <OpacityAnimatedView toggle={this.state.expanded} func={this._setMaxHeight.bind(this)}/>
+        <ExpandedView func={this._setMaxHeight.bind(this)}/>
       </Animated.View>
     )
   }
 }
 
-class OpacityAnimatedView extends Component{
-  constructor(props){
-    super(props)
-
-    this.state = {
-      animation: new Animated.Value(0)
-    }
-  }
+class ExpandedView extends Component{
   render(){
-    if (this.props.toggle === true) {
-      Animated.timing(
-        this.state.animation,
-        {
-          toValue: 1,
-          duration: 2000,
-        }
-      ).start();
-    }else {
-      Animated.timing(
-        this.state.animation,
-        {
-          toValue: 0,
-          duration: 1,
-        }
-      ).start();
-    }
+    let colors = ['#fff', 'lightgrey']
     return(
-      <Animated.View onLayout={this.props.func} style={{opacity: this.state.animation}}>
+      <View onLayout={this.props.func}>
         {Object.keys(contentExpandedView).map((current,i)=>{
           let colors = ['#fff', 'lightgrey']
           return(
             <View key={i} style={{flexDirection: 'row',alignItems: 'center', height: 70, backgroundColor: colors[i % colors.length]}}>
-              <Text style={{flex: 2, textAlign: 'center', }}>{contentExpandedView[current].title}</Text>
-              <Text style={{flex: 1,padding: 15, textAlign: 'center'}}>{contentExpandedView[current].value}</Text>
+              <Text style={{flex: 2, textAlign: 'center'}}>{contentExpandedView[current].title}</Text>
+              <Text style={{flex: .7,padding: 15, textAlign: 'center'}}>{contentExpandedView[current].value}</Text>
             </View>
           )
         })}
-      </Animated.View>
+      </View>
     )
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
