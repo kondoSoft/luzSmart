@@ -46,7 +46,7 @@ class AnimatedView extends Component{
   }
   render(){
     return(
-      <Animated.View style={[this.state.animatedVal.getLayout(),{ flex: 1, zIndex: 0 }]}>
+      <Animated.View style={[this.state.animatedVal.getLayout(),{ flex: 1, zIndex: 0, backgroundColor: '#fff'}]}>
           {this.props.children}
       </Animated.View>
     )

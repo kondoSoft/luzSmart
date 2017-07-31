@@ -12,8 +12,11 @@ import {
   Platform,
   View,
   Image,
+  Dimensions,
 } from 'react-native';
 import styles from './styles';
+
+const Screen = Dimensions.get('window');
 
 class HeaderGlobal extends Component {
 
@@ -27,7 +30,8 @@ class HeaderGlobal extends Component {
 
     return(
 
-        <Image source={require('../../../images/header.png')}
+        <Image
+          source={require('../../../images/header.png')}
           style={[styles.header,{ zIndex: (this.props.zIndex)? 1000 : 0}]}
         >
           <Left style={styles.left}>

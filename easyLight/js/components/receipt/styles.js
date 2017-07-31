@@ -4,7 +4,8 @@ const { StyleSheet, Dimensions } = React;
 
 export default {
   grid:{
-    flexDirection: 'column'
+    flexDirection: 'column',
+    paddingTop: 15,
   },
   form:{
     paddingLeft: 15,

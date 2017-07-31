@@ -125,7 +125,7 @@ class AddContracts extends Component {
   sendData(){
     this.props.setContract(this.state)
 
-    this.props.navigation.navigate('Contracts')
+    this.props.navigation.navigate('Receipt')
     console.log(this.state);
   }
   // falta condicion para hacer check en uno u otro
@@ -163,7 +163,7 @@ class AddContracts extends Component {
     <Select
       selectStyle={styles.select}
       padding={10}
-      listHeight={100}
+      listHeight={250}
       caretSize={0}
       defaultValue={'Estados'}
       onSelect={(value, key) => this.handleMunicipality(value, key)}
@@ -178,39 +178,39 @@ class AddContracts extends Component {
     </Select>
     console.log('avatar',this.state.avatarSource);
     return(
-      <Container>
+      <Container style={{backgroundColor:'#fff'}}>
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <Grid>
-          <Row size={15}>
-            <Left style={ styles.row__top__left__right }>
+        <Grid style={{alignItems: 'center'}}>
+          <Row size={10}>
+            <Left style={ {marginLeft: 30 } }>
               <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                <View style={{marginBottom: 20}}>
-                { this.state.avatarSource === null && <Text>Select a Photo</Text>
+                <View style={{marginBottom: 0,height: 65,width: '100%'}}>
+                { this.state.avatarSource === null && <Text style={{textAlign: 'center'}}>Select a Photo</Text>
                     // <Image  source={this.state.avatarSource} />
                 }
                 </View>
               </TouchableOpacity>
               {/* <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} /> */}
             </Left>
-            <Body>
+            <Body style={{ flex:3,height: '35%' }}>
               {/* <Text>Mi Casa</Text> */}
-              <Input placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
+              <Input style={{textAlign: 'center', paddingRight: 30}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
             </Body>
             <Right style={ styles.row__top__left__right }>
               <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
             </Right>
           </Row>
+          <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
           <Col size={(Platform.OS === 'ios')? 40 : 70} style={ styles.col__form }>
             <Form>
               <Item fixedLabel style={styles.col__form__item}>
-              <Label>No Contrato</Label>
-              <Input onChange={event => this.handleNumberContract(event)}/>
+              <Input placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
             </Item>
             <Select
               selectStyle={styles.select}
               padding={10}
-              listHeight={100}
+              listHeight={200}
               caretSize={0}
               onSelect={(value, key) => this.handleState(value, key)}
               >
@@ -220,7 +220,7 @@ class AddContracts extends Component {
             <Select
               selectStyle={styles.select}
               padding={10}
-              listHeight={100}
+              listHeight={200}
               caretSize={0}
               onSelect={(value, key) => this.handleRate(value, key)}
               >
@@ -229,7 +229,7 @@ class AddContracts extends Component {
             <Select
               selectStyle={styles.select}
               padding={10}
-              listHeight={100}
+              listHeight={200}
               caretSize={0}
               onSelect={value => this.handlePeriodSummer(value)}
               >
