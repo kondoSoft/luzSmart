@@ -33,7 +33,6 @@ class SignIn extends Component {
           <ScrollView
             style={{backgroundColor: '#fff'}}
             ref='scroll'
-            // style={{flex:1}}
             >
             <Grid style={{flex: 1}}>
               <Row style={styles.row__top}>

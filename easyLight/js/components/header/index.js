@@ -22,14 +22,13 @@ const Screen = Dimensions.get('window');
 class HeaderGlobal extends Component {
 
   render(){
-    console.log('estoy rendereado');
     const { state } = this.props.navigation
     const button = <Button transparent onPress={() => alert('im the menu button')}><Icon active style={styles.header__icon} name="menu"/></Button>
     const iconBack =  <Button transparent onPress={() => this.props.navigation.goBack()}>
         <Icon style={styles.header__icon} name={(Platform.OS === 'ios')? "ios-arrow-back" : "arrow-back"} />
       </Button>
     var platformHeader = (
-      <Header style={{backgroundColor: '#069b1c',height: 70 }}>
+      <Header style={{backgroundColor: '#069b1c',height: 60 }}>
         <Left style={[styles.left,{flex: (Platform.OS === 'ios')? 0 : (state.routeName === 'Login')? 0 : 4 }]}>
           {(state.routeName != "Login" && state.routeName != "Contracts") ? iconBack : <View style={{paddingLeft: (state.routeName != "Login" )? '20%' : 0}}/>}
         </Left>
