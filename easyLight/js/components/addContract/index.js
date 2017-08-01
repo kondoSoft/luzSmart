@@ -111,8 +111,7 @@ class AddContracts extends Component {
     this.setState({state: value});
   }
   handleMunicipality(value, item){
-    console.log(value.key_mun);
-    this.setState({municipality: value.key_mun});
+    this.setState({municipality: value.id});
   }
   handleRate(value, item){
     this.setState({rate: item});

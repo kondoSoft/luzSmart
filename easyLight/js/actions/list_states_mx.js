@@ -141,10 +141,7 @@ export function postContract(list):Action{
       })
     })
     .then(res => {return res.json()})
-    .then(res => {
-      console.log(res);
-      dispatch(successContract(res))
-      })
+    .then(res => dispatch(successContract(res)))
     .catch(err => console.log(err))
   }
 }

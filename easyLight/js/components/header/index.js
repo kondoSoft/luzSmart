@@ -22,7 +22,6 @@ const Screen = Dimensions.get('window');
 class HeaderGlobal extends Component {
 
   render(){
-    console.log('estoy rendereado');
     const { state } = this.props.navigation
     const button = <Button transparent onPress={() => alert('im the menu button')}><Icon active style={styles.header__icon} name="menu"/></Button>
     const iconBack =  <Button transparent onPress={() => this.props.navigation.goBack()}>
