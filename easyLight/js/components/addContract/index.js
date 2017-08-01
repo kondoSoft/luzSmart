@@ -108,10 +108,11 @@ class AddContracts extends Component {
   handleState(value, item){
     this.props.resetMunicipality()
     this.props.getMunicipality(value+1)
-    this.setState({state: item});
+    this.setState({state: value});
   }
   handleMunicipality(value, item){
-    this.setState({municipality: item});
+    console.log(value.key_mun);
+    this.setState({municipality: value.key_mun});
   }
   handleRate(value, item){
     this.setState({rate: item});
@@ -128,7 +129,6 @@ class AddContracts extends Component {
   sendData(){
     this.props.postContract(this.state)
     this.props.navigation.navigate('Receipt')
-    // console.log(this.state);
   }
   // falta condicion para hacer check en uno u otro
   handleCheckedMen(){
@@ -173,7 +173,7 @@ class AddContracts extends Component {
         {this.props.municipality_mx.map((item,i)=>{
           return (<Option
             key={i}
-            value={i}
+            value={item}
             optionStyle={styles.select__option}
             >{item.name_mun}</Option>)
         })}
@@ -244,7 +244,7 @@ class AddContracts extends Component {
                 <Option
                   value={2}
                   optionStyle={styles.select__option}
-                  >Feb - Jul</Option>
+                  >Febrero - Julio</Option>
                 <Option
                   value={3}
                   optionStyle={styles.select__option}

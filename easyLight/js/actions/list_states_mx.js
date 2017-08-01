@@ -122,7 +122,6 @@ export function getRateUnique(list):Action{
 export function postContract(list):Action{
   console.log('postContract', list, list.name);
   return dispatch => {
-    console.log('se despacho');
     return fetch(endPoint+'/contract/',{
       method: 'POST',
       headers: {
@@ -131,11 +130,19 @@ export function postContract(list):Action{
      },
      body: JSON.stringify({
         name_contract: list.name,
+        number_contract: list.number_contract,
+        state: list.state,
+        municipality: list.municipality,
+        rate: list.rate,
+        period_summer: list.period_summer,
+        type_payment: list.type_payment,
+        // image: list.image,
+
       })
     })
     .then(res => {return res.json()})
     .then(res => {
-      console.log('res',res);
+      console.log(res);
       dispatch(successContract(res))
       })
     .catch(err => console.log(err))
