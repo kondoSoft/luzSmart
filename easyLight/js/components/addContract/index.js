@@ -149,7 +149,8 @@ class AddContracts extends Component {
         key={i}
         value={i}
         optionStyle={styles.select__option}
-        >{item.state}</Option>)
+        >{item.state}</Option>
+      )
     })
 
     optionsRates = this.props.list_rate.map((item,i)=>{
@@ -184,14 +185,11 @@ class AddContracts extends Component {
     console.log('avatar',this.state.avatarSource);
     return(
       <Container style={{backgroundColor:'#fff'}}>
-
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <ScrollView
-          >
-          <View style={{alignItems: 'center'}}>
+          <Grid style={{alignItems: 'center',flex:1}}>
             <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
-              <Left style={ {marginLeft: 30 } }>
+              <Left style={ {marginLeft: 30} }>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                   <View style={{marginBottom: 0,height: 65,width: '100%'}}>
                   { this.state.avatarSource === null && <Text style={{textAlign: 'center'}}>Select a Photo</Text>
@@ -220,6 +218,7 @@ class AddContracts extends Component {
                 padding={10}
                 listHeight={200}
                 caretSize={0}
+                defaultValue={'Estados'}
                 onSelect={(value, key) => this.handleState(value, key)}
                 >
                 {optionsStates}
@@ -228,7 +227,7 @@ class AddContracts extends Component {
               <Select
                 selectStyle={styles.select}
                 padding={10}
-                listHeight={200}
+                // listHeight={200}
                 caretSize={0}
                 onSelect={(value, key) => this.handleRate(value, key)}
                 >
@@ -237,7 +236,7 @@ class AddContracts extends Component {
               <Select
                 selectStyle={styles.select}
                 padding={10}
-                listHeight={200}
+                // listHeight={200}
                 caretSize={0}
                 onSelect={value => this.handlePeriodSummer(value)}
                 >
@@ -287,8 +286,7 @@ class AddContracts extends Component {
                 <Text>Agregar</Text>
               </Button>
             </Row>
-          </View>
-        </ScrollView>
+          </Grid>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )

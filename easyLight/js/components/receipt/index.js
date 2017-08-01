@@ -93,7 +93,7 @@ class Receipt extends Component {
     const { navigation } = this.props
     return(
       <Container>
-        <Header navigation={this.props.navigation} title="Recibo CFE"/>
+        <Header zIndex navigation={this.props.navigation} title="Recibo CFE"/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <ScrollView
           ref='scroll'
@@ -115,6 +115,7 @@ class Receipt extends Component {
                   <Input
                     placeholder="Monto a Pagar"
                     onChange={event => this.handleAmountPayable(event)}
+                    onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 100 })}
                   />
                 </Item>
                 <Item last style={styles.form__item__title}>
@@ -124,14 +125,14 @@ class Receipt extends Component {
                   <Input
                     placeholder="Lectura Actual"
                     onChange={event => this.handleCurrentReading(event)}
-                    onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 40 : 0 })}
+                    onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 40 : 160 })}
                   />
                 </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
                     placeholder="Lectura Anterior"
                     onChange={event => this.handlePreviousReading(event)}
-                    onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 40 : 0 })}
+                    onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 40 : 250 })}
                   />
                 </Item>
               </Form>
