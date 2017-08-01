@@ -20,6 +20,9 @@ import {
 import {
   Platform,
   TouchableOpacity,
+  Picker,
+  Dimensions,
+  ScrollView,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -29,6 +32,8 @@ import styles from './styles';
 import { setContract } from '../../actions/contracts';
 import { getMunicipality, resetMunicipality } from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
+
+let Screen = Dimensions.get('window')
 
 class AddContracts extends Component {
 
@@ -179,107 +184,111 @@ class AddContracts extends Component {
     console.log('avatar',this.state.avatarSource);
     return(
       <Container style={{backgroundColor:'#fff'}}>
+
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <Grid style={{alignItems: 'center'}}>
-          <Row size={10}>
-            <Left style={ {marginLeft: 30 } }>
-              <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                <View style={{marginBottom: 0,height: 65,width: '100%'}}>
-                { this.state.avatarSource === null && <Text style={{textAlign: 'center'}}>Select a Photo</Text>
-                    // <Image  source={this.state.avatarSource} />
-                }
-                </View>
-              </TouchableOpacity>
-              {/* <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} /> */}
-            </Left>
-            <Body style={{ flex:3,height: '35%' }}>
-              {/* <Text>Mi Casa</Text> */}
-              <Input style={{textAlign: 'center', paddingRight: 30}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
-            </Body>
-            <Right style={ styles.row__top__left__right }>
-              <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
-            </Right>
-          </Row>
-          <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
-          <Col size={(Platform.OS === 'ios')? 40 : 70} style={ styles.col__form }>
-            <Form>
-              <Item fixedLabel style={styles.col__form__item}>
-              <Input placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
-            </Item>
-            <Select
-              selectStyle={styles.select}
-              padding={10}
-              listHeight={200}
-              caretSize={0}
-              onSelect={(value, key) => this.handleState(value, key)}
-              >
-              {optionsStates}
-            </Select>
-            { (municipality_mx.length == 0) ? <View/> : selectMun}
-            <Select
-              selectStyle={styles.select}
-              padding={10}
-              listHeight={200}
-              caretSize={0}
-              onSelect={(value, key) => this.handleRate(value, key)}
-              >
-              {optionsRates}
-            </Select>
-            <Select
-              selectStyle={styles.select}
-              padding={10}
-              listHeight={200}
-              caretSize={0}
-              onSelect={value => this.handlePeriodSummer(value)}
-              >
-              <Option
-                value={1}
-                optionStyle={styles.select__option}
-                >Periodo</Option>
-              <Option
-                value={2}
-                optionStyle={styles.select__option}
-                >Feb - Jul</Option>
-              <Option
-                value={3}
-                optionStyle={styles.select__option}
-                >Mar - Ago</Option>
-              <Option
-                value={4}
-                optionStyle={styles.select__option}
-                >Abr - Sep</Option>
-              <Option
-                value={5}
-                optionStyle={styles.select__option}
-                >Mayo - Oct</Option>
-            </Select>
-            </Form>
-          </Col>
-          <Row size={8}>
-            <View style={styles.row__bottom__view__top}>
-              <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen()}/>
-              <Body style={{ flex: 0 }}>
-                <Text>Mensual</Text>
+        <ScrollView
+          >
+          <View style={{alignItems: 'center'}}>
+            <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
+              <Left style={ {marginLeft: 30 } }>
+                <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                  <View style={{marginBottom: 0,height: 65,width: '100%'}}>
+                  { this.state.avatarSource === null && <Text style={{textAlign: 'center'}}>Select a Photo</Text>
+                      // <Image  source={this.state.avatarSource} />
+                  }
+                  </View>
+                </TouchableOpacity>
+                {/* <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} /> */}
+              </Left>
+              <Body style={{ flex:3,height: '35%'}}>
+                {/* <Text>Mi Casa</Text> */}
+                <Input style={{textAlign: 'center', paddingRight: 30,width: '100%', paddingTop: 0, paddingBottom: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
               </Body>
-            </View>
-            <View style={ styles.row__bottom__view__bottom }>
-              <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} onPress={()=>this.handleCheckedBi()}/>
-              <Body style={{ flex: 0 }}>
-                <Text>Bimestral</Text>
-              </Body>
-            </View>
-          </Row>
-          <Row size={7} style={[styles.row__bottom,{ paddingBottom: (Platform.OS === 'ios')? 30 : 10 }]}>
-            <Button
-              small
-              primary
-              onPress={() => this.sendData()}
-              >
-              <Text>Agregar</Text>
-            </Button>
-          </Row>
-        </Grid>
+              <Right style={ styles.row__top__left__right }>
+                <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
+              </Right>
+            </Row>
+            <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
+            <Col size={(Platform.OS === 'ios')? 40 : 30} style={ styles.col__form }>
+              <Form>
+                <Item fixedLabel style={styles.col__form__item}>
+                <Input placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
+              </Item>
+              <Select
+                selectStyle={styles.select}
+                padding={10}
+                listHeight={200}
+                caretSize={0}
+                onSelect={(value, key) => this.handleState(value, key)}
+                >
+                {optionsStates}
+              </Select>
+              { (municipality_mx.length == 0) ? <View/> : selectMun}
+              <Select
+                selectStyle={styles.select}
+                padding={10}
+                listHeight={200}
+                caretSize={0}
+                onSelect={(value, key) => this.handleRate(value, key)}
+                >
+                {optionsRates}
+              </Select>
+              <Select
+                selectStyle={styles.select}
+                padding={10}
+                listHeight={200}
+                caretSize={0}
+                onSelect={value => this.handlePeriodSummer(value)}
+                >
+                <Option
+                  value={1}
+                  optionStyle={styles.select__option}
+                  >Periodo</Option>
+                <Option
+                  value={2}
+                  optionStyle={styles.select__option}
+                  >Feb - Jul</Option>
+                <Option
+                  value={3}
+                  optionStyle={styles.select__option}
+                  >Mar - Ago</Option>
+                <Option
+                  value={4}
+                  optionStyle={styles.select__option}
+                  >Abr - Sep</Option>
+                <Option
+                  value={5}
+                  optionStyle={styles.select__option}
+                  >Mayo - Oct</Option>
+              </Select>
+              </Form>
+            </Col>
+            <Row size={6}>
+              <View style={styles.row__bottom__view__top}>
+                <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen()}/>
+                <Body style={{ flex: 0 }}>
+                  <Text>Mensual</Text>
+                </Body>
+              </View>
+              <View style={ styles.row__bottom__view__bottom }>
+                <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} onPress={()=>this.handleCheckedBi()}/>
+                <Body style={{ flex: 0 }}>
+                  <Text>Bimestral</Text>
+                </Body>
+              </View>
+            </Row>
+            <Row size={5} style={[styles.row__bottom,{ paddingBottom: (Platform.OS === 'ios')? 30 : 0}]}>
+              <Button
+                small
+                primary
+                onPress={() => this.sendData()}
+                >
+                <Text>Agregar</Text>
+              </Button>
+            </Row>
+          </View>
+        </ScrollView>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )

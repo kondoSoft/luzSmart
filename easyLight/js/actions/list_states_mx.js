@@ -7,7 +7,7 @@ export const GET_RATE = 'GET_RATE'
 export const GET_RATE_UNIQUE = 'GET_RATE_UNIQUE'
 export const SET_INDEX = 'SET_INDEX';
 
-const endPoint = 'http://192.168.1.64:8080';
+const endPoint = 'http://192.168.1.82:8080';
 
 
 export function printStates(list):Action{

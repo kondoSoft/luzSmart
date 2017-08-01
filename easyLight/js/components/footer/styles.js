@@ -3,7 +3,7 @@ const { Platform, StyleSheet, Dimensions } = React;
 
 export default {
   footer:{
-    backgroundColor: (Platform.OS === 'ios')? null : 'green',
+    backgroundColor: (Platform.OS === 'ios')? null : '#069b1c',
   },
   footer__icon:{
     fontSize: (Platform.OS === 'ios')? 23 : 32,

@@ -62,11 +62,11 @@ export default {
   link:{
     borderBottomWidth: 2,
     borderBottomColor: 'lightgray',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   footer: {
     height: 80,
     borderTopWidth: 0,
-    backgroundColor: '#FBFAFA'
+    backgroundColor: '#FBFAFA',
   },
 };

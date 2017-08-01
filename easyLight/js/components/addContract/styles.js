@@ -10,8 +10,7 @@ export default {
       flex: 1,
     },
     col__form:{
-      marginTop: 0,
-      justifyContent: 'center',
+      marginTop: 20,
       alignItems: 'center',
     },
     row__top__col__right__icon:{
@@ -29,11 +28,6 @@ export default {
       width: 310,
       margin: 10,
       backgroundColor: '#fff',
-      borderColor: 'lightgrey',
-      borderBottomWidth:1,
-      borderTopWidth:1,
-      borderLeftWidth:1,
-      borderRightWidth:1,
     },
     row__bottom__view__top:{
       marginTop: 0,
