@@ -66,7 +66,6 @@ class Login extends Component {
     };
     this.renderInput = this.renderInput.bind(this);
   }
-
   setUser(name) {
     this.props.setUser(name);
   }
@@ -86,7 +85,7 @@ class Login extends Component {
         <Input
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
           {...input}
-          onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
+          onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0 })}
         />
         {hasError
           ? <Item style={{ borderColor: "transparent" }}>
@@ -101,9 +100,9 @@ class Login extends Component {
 
     return (
       <Container scrollEnabled={false}>
+        <Header title={"INICIO DE SESIÓN"} zIndex navigation={this.props.navigation}/>
         <ScrollView style={styles.container} ref='scroll'>
-          <Header title={"INICIO DE SESIÓN"} navigation={this.props.navigation}/>
-            <Grid style={{ height: Screen.height - 140 }}>
+            <Grid style={{ height: Screen.height - 140, paddingTop: (Platform.OS === 'ios')? 100 : 120 }}>
               <Row  size={40}>
                 <Col style={{justifyContent: 'flex-end', paddingLeft: 15}}>
                   <Field style={{backgroundColor: '#fff'}} name="email" component={this.renderInput} />
