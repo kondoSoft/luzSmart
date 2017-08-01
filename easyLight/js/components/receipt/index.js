@@ -91,10 +91,11 @@ class Receipt extends Component {
   }
   render(){
     const { navigation } = this.props
-    return(
+
+    var receiptView = (
       <Container>
         <Header zIndex navigation={this.props.navigation} title="Recibo CFE"/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+        <Footer navigation={navigation}/>
         <ScrollView
           ref='scroll'
           style={{backgroundColor: '#fff'}}
@@ -115,7 +116,7 @@ class Receipt extends Component {
                   <Input
                     placeholder="Monto a Pagar"
                     onChange={event => this.handleAmountPayable(event)}
-                    onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 100 })}
+                    onFocus={() => this.refs['scroll'].scrollTo({y: 80 })}
                   />
                 </Item>
                 <Item last style={styles.form__item__title}>
@@ -125,14 +126,14 @@ class Receipt extends Component {
                   <Input
                     placeholder="Lectura Actual"
                     onChange={event => this.handleCurrentReading(event)}
-                    onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 40 : 160 })}
+                    onFocus={() => this.refs['scroll'].scrollTo({y: 140 })}
                   />
                 </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
                     placeholder="Lectura Anterior"
                     onChange={event => this.handlePreviousReading(event)}
-                    onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 40 : 250 })}
+                    onFocus={() => this.refs['scroll'].scrollTo({y: 140 })}
                   />
                 </Item>
               </Form>
@@ -149,9 +150,72 @@ class Receipt extends Component {
             </Col>
           </Grid>
         </ScrollView>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )
+    if (Platform.OS === 'ios') {
+      var receiptView = (
+        <Container>
+          <Header zIndex navigation={this.props.navigation} title="Recibo CFE"/>
+          {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+          <ScrollView
+            ref='scroll'
+            style={{backgroundColor: '#fff'}}
+            >
+            <Grid style={styles.grid}>
+              <Col size={75}>
+                <Form style={styles.form}>
+                  <Item inlineLabel last style={styles.form__item__title}>
+                    <Label style={styles.form__item__label}>Contrato #85976431</Label>
+                  </Item>
+                  <Item last style={styles.form__item__inputs}>
+                    <Input
+                      placeholder="Fecha Limite de Pago"
+                      onChange={event => this.handlePaydayLimit(event)}
+                    />
+                  </Item>
+                  <Item last style={styles.form__item__inputs}>
+                    <Input
+                      placeholder="Monto a Pagar"
+                      onChange={event => this.handleAmountPayable(event)}
+                      onFocus={() => this.refs['scroll'].scrollTo({y: 0 })}
+                    />
+                  </Item>
+                  <Item last style={styles.form__item__title}>
+                    <Label style={styles.form__item__label}>Medición de Consumo</Label>
+                  </Item>
+                  <Item last style={styles.form__item__inputs}>
+                    <Input
+                      placeholder="Lectura Actual"
+                      onChange={event => this.handleCurrentReading(event)}
+                      onFocus={() => this.refs['scroll'].scrollTo({y: 40})}
+                    />
+                  </Item>
+                  <Item last style={styles.form__item__inputs}>
+                    <Input
+                      placeholder="Lectura Anterior"
+                      onChange={event => this.handlePreviousReading(event)}
+                      onFocus={() => this.refs['scroll'].scrollTo({y: 40})}
+                    />
+                  </Item>
+                </Form>
+              </Col>
+              <Col size={25} style={styles.col__bottom}>
+                <Row style={styles.col__bottom__row__bottom}>
+                  <Button
+                    style={{ height: 35}}
+                    onPress={()=>this.sendData()}
+                    >
+                    <Text>Agregar</Text>
+                  </Button>
+                </Row>
+              </Col>
+            </Grid>
+          </ScrollView>
+          <Footer navigation={navigation}/>
+        </Container>
+      )
+    }
+    return receiptView
   }
 }
 function bindAction(dispatch) {
