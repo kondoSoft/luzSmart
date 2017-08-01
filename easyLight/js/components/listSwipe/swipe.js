@@ -148,11 +148,11 @@ export default class SwipeAccordion extends Component{
       maxHeight: event.nativeEvent.layout.height
     })
   }
-  navigateTo(route,i){
+  navigateTo(route){
     if (this.props.navigation.state.routeName === 'DetailContract') {
 
     }else {
-      this.props.navigation.navigate(route,i)
+      this.props.navigation.navigate(route, { params: this.props.index})
     }
   }
   render(){

@@ -6,7 +6,6 @@ import { Container, Fab , Content, Body, Left, List, ListItem, Thumbnail, Text, 
 import Header from '../header/index';
 import styles from "./styles";
 import Footer from '../footer/index';
-import SwipeItem from '../listSwipe/index';
 import SwipeAccordion from '../listSwipe/swipe';
 import DrawBar from '../DrawBar';
 import FabButton from '../fabButton';
@@ -41,7 +40,6 @@ class Contracts extends Component {
     const { contracts } = this.props
 
     const {state} = navigation
-    console.log(contracts);
     return(
       <Container>
         <Header navigation={navigation} title={"EASYLIGHT"}/>
@@ -75,7 +73,6 @@ class Contracts extends Component {
 
 class ItemComponent extends Component{
   render(){
-    console.log(this.props.data);
     const contract = this.props.data
     return(
       <View style={styles.ItemComponent.view}>
