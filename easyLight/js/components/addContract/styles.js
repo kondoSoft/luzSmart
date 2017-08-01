@@ -62,4 +62,14 @@ export default {
       height: 30,
       borderBottomWidth: 0
     },
+    selectPicker:{
+      borderTopWidth:1,
+      borderBottomWidth:1,
+      borderLeftWidth:1,
+      borderRightWidth:1,
+      borderColor:'lightgray',
+      marginLeft:5,
+      marginRight:5,
+      marginTop:10,
+    },
 }

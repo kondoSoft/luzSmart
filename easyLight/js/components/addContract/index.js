@@ -148,7 +148,6 @@ class AddContracts extends Component {
         >{item.state}</Option>
       )
     })
-
     optionsRates = this.props.list_rate.map((item,i)=>{
       return (
         <Option
@@ -158,10 +157,52 @@ class AddContracts extends Component {
           >{item.name_rate}</Option>
       )
     })
+    if (Platform.OS === 'android') {
+      optionsStates = this.props.states_mx.map((item,i)=>{
+        return(
+          <Picker.Item key={i} label={item.state} value={i}/>
+        )
+      })
+      optionsRates = this.props.list_rate.map((item,i)=>{
+        return(
+          <Picker.Item key={i} label={item.name_rate} value={i}/>
+        )
+      })
+    }
   }
   render(){
     const { navigation, states_mx, municipality_mx } = this.props
-    const selectMun =
+    var periodSummer = (
+      <Select
+        selectStyle={styles.select}
+        padding={10}
+        listHeight={200}
+        caretSize={0}
+        onSelect={value => this.handlePeriodSummer(value)}
+        >
+        <Option
+          value={1}
+          optionStyle={styles.select__option}
+          >Periodo de Verano</Option>
+        <Option
+          value={2}
+          optionStyle={styles.select__option}
+          >Feb - Jul</Option>
+        <Option
+          value={3}
+          optionStyle={styles.select__option}
+          >Mar - Ago</Option>
+        <Option
+          value={4}
+          optionStyle={styles.select__option}
+          >Abr - Sep</Option>
+        <Option
+          value={5}
+          optionStyle={styles.select__option}
+          >Mayo - Oct</Option>
+      </Select>
+    )
+    var selectMun = (
     <Select
       selectStyle={styles.select}
       padding={10}
@@ -178,7 +219,23 @@ class AddContracts extends Component {
             >{item.name_mun}</Option>)
         })}
     </Select>
-    // console.log('avatar',this.state.avatarSource);
+
+    )
+    if (Platform.OS === 'android') {
+      selectMun = (
+      <View style={styles.selectPicker}>
+        <Picker
+          onValueChange={(value, key) => this.handleMunicipality(value, key)}
+        >
+        {this.props.municipality_mx.map((item,i)=>{
+          return <Picker.Item key={i} label={item.name_mun} value={i} />
+        })
+        }
+        </Picker>
+      </View>
+      )
+    }
+
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
@@ -204,22 +261,32 @@ class AddContracts extends Component {
               </Right>
             </Row>
             <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
-            <Col size={(Platform.OS === 'ios')? 40 : 30} style={ styles.col__form }>
+            <Col size={(Platform.OS === 'ios')? 40 : 35} style={ styles.col__form }>
               <Form>
                 <Item fixedLabel style={styles.col__form__item}>
                 <Input placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
               </Item>
-              <Select
-                selectStyle={styles.select}
-                padding={10}
-                listHeight={200}
-                caretSize={0}
-                defaultValue={'Estados'}
-                onSelect={(value, key) => this.handleState(value, key)}
-                >
-                {optionsStates}
-              </Select>
+              { (Platform.OS === 'ios')?
+                <Select
+                  selectStyle={styles.select}
+                  padding={10}
+                  listHeight={200}
+                  caretSize={0}
+                  onSelect={(value, key) => this.handleState(value, key)}
+                  >
+                  {optionsStates}
+                </Select> :
+                <View style={styles.selectPicker}>
+                  <Picker
+                    selectedValue={this.state.state}
+                    onValueChange={(value, key) => this.handleState(value, key)}
+                    >
+                    {optionsStates}
+                  </Picker>
+                </View>
+              }
               { (municipality_mx.length == 0) ? <View/> : selectMun}
+              { (Platform.OS === 'ios')?
               <Select
                 selectStyle={styles.select}
                 padding={10}
@@ -228,35 +295,18 @@ class AddContracts extends Component {
                 onSelect={(value, key) => this.handleRate(value, key)}
                 >
                 {optionsRates}
-              </Select>
-              <Select
-                selectStyle={styles.select}
-                padding={10}
-                listHeight={200}
-                caretSize={0}
-                onSelect={value => this.handlePeriodSummer(value)}
-                >
-                <Option
-                  value={1}
-                  optionStyle={styles.select__option}
-                  >Periodo</Option>
-                <Option
-                  value={2}
-                  optionStyle={styles.select__option}
-                  >Febrero - Julio</Option>
-                <Option
-                  value={3}
-                  optionStyle={styles.select__option}
-                  >Mar - Ago</Option>
-                <Option
-                  value={4}
-                  optionStyle={styles.select__option}
-                  >Abr - Sep</Option>
-                <Option
-                  value={5}
-                  optionStyle={styles.select__option}
-                  >Mayo - Oct</Option>
-              </Select>
+              </Select> :
+              <View style={styles.selectPicker}>
+                <Picker
+                  selectedValue={this.state.rate}
+                  onValueChange={(value, key) => this.handleRate(value, key)}
+                  >
+                  {optionsRates}
+                </Picker>
+              </View>
+              }
+              { periodSummer }
+
               </Form>
             </Col>
             <Row size={6}>
