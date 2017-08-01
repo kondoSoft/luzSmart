@@ -24,7 +24,6 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import SwipeItem from '../listSwipe/index';
 import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
 
@@ -36,9 +35,9 @@ class DetailContract extends Component {
     header: null
   };
   render(){
+    console.log( this.props.navigation.state.params);
     // const { receipts } = this.props
     const { navigation, receipts } = this.props
-    console.log('this is the route name',this.props.navigation.state.routeName);
     const colors = ['lightgrey','#fff']
     return(
       <Container>
@@ -77,7 +76,6 @@ class DetailContract extends Component {
 class ItemComponent extends Component{
   render(){
     const receipt = this.props.data
-    console.log(receipt);
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>

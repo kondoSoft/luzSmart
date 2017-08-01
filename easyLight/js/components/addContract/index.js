@@ -29,8 +29,7 @@ import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import { setContract } from '../../actions/contracts';
-import { getMunicipality, resetMunicipality } from '../../actions/list_states_mx'
+import { getMunicipality, resetMunicipality, postContract } from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
 
 let Screen = Dimensions.get('window')
@@ -59,7 +58,7 @@ class AddContracts extends Component {
     }
   }
   static propType = {
-    setContract: React.PropTypes.func,
+    postContract: React.PropTypes.func,
     getMunicipality: React.PropTypes.func,
     resetMunicipality: React.PropTypes.func,
   }
@@ -109,11 +108,10 @@ class AddContracts extends Component {
   handleState(value, item){
     this.props.resetMunicipality()
     this.props.getMunicipality(value+1)
-    this.setState({state: item});
+    this.setState({state: value});
   }
   handleMunicipality(value, item){
-    console.log('valor municipio', value, item);
-    this.setState({municipality: item});
+    this.setState({municipality: value.id});
   }
   handleRate(value, item){
     this.setState({rate: item});
@@ -128,10 +126,8 @@ class AddContracts extends Component {
     this.setState({cost: event.nativeEvent.text});
   }
   sendData(){
-    this.props.setContract(this.state)
-
+    this.props.postContract(this.state)
     this.props.navigation.navigate('Receipt')
-    console.log(this.state);
   }
   // falta condicion para hacer check en uno u otro
   handleCheckedMen(){
@@ -218,11 +214,12 @@ class AddContracts extends Component {
         {this.props.municipality_mx.map((item,i)=>{
           return (<Option
             key={i}
-            value={i}
+            value={item}
             optionStyle={styles.select__option}
             >{item.name_mun}</Option>)
         })}
     </Select>
+
     )
     if (Platform.OS === 'android') {
       selectMun = (
@@ -238,7 +235,7 @@ class AddContracts extends Component {
       </View>
       )
     }
-    console.log('avatar',this.state.avatarSource);
+
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
@@ -309,6 +306,7 @@ class AddContracts extends Component {
               </View>
               }
               { periodSummer }
+
               </Form>
             </Col>
             <Row size={6}>
@@ -342,7 +340,7 @@ class AddContracts extends Component {
 }
 function bindAction(dispatch){
   return {
-    setContract: name =>dispatch(setContract(name)),
+    postContract: list =>dispatch(postContract(list)),
     getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
     resetMunicipality: () => dispatch(resetMunicipality()),
   }

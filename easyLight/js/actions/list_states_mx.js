@@ -6,8 +6,10 @@ export const RESET_MUNICIPALITY = 'RESET_MUNICIPALITY'
 export const GET_RATE = 'GET_RATE'
 export const GET_RATE_UNIQUE = 'GET_RATE_UNIQUE'
 export const SET_INDEX = 'SET_INDEX';
+export const GET_CONTRACT = 'GET_CONTRACT'
+export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
-const endPoint = 'http://192.168.1.82:8080';
+const endPoint = 'http://192.168.1.85:8080';
 
 
 export function printStates(list):Action{
@@ -47,6 +49,18 @@ export function printRateUnique(list):Action {
     payload: list
   }
 }
+export function printContract(list):Action {
+  return {
+    type: GET_CONTRACT,
+    payload: list
+  }
+}
+export function successContract(list):Action {
+  return {
+    type: SUCCES_CONTRACT,
+    payload: list
+  }
+}
 
 export function getStates(list):Action {
   return dispatch => {
@@ -79,7 +93,7 @@ export function getMunicipality(state_id):Action{
 }
 export function getRate(list):Action{
   return dispatch => {
-    return fetch (endPoint+':8080/rate', {
+    return fetch (endPoint+'/rate', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -102,6 +116,46 @@ export function getRateUnique(list):Action{
     })
     .then(res => {return res.json()})
     .then(res=> dispatch(printRateUnique(res)))
+    .catch(err => console.log(err))
+  }
+}
+export function postContract(list):Action{
+  console.log('postContract', list, list.name);
+  return dispatch => {
+    return fetch(endPoint+'/contract/',{
+      method: 'POST',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+     },
+     body: JSON.stringify({
+        name_contract: list.name,
+        number_contract: list.number_contract,
+        state: list.state,
+        municipality: list.municipality,
+        rate: list.rate,
+        period_summer: list.period_summer,
+        type_payment: list.type_payment,
+        // image: list.image,
+
+      })
+    })
+    .then(res => {return res.json()})
+    .then(res => dispatch(successContract(res)))
+    .catch(err => console.log(err))
+  }
+}
+export function getContract(list):Action{
+  return dispatch => {
+    return fetch (endPoint+'/contract', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(res => {return res.json()})
+    .then(res=> dispatch(printContract(res)))
     .catch(err => console.log(err))
   }
 }

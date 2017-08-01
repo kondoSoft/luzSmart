@@ -6,14 +6,13 @@ import { Container, Fab , Content, Body, Left, List, ListItem, Thumbnail, Text, 
 import Header from '../header/index';
 import styles from "./styles";
 import Footer from '../footer/index';
-import SwipeItem from '../listSwipe/index';
 import SwipeAccordion from '../listSwipe/swipe';
 import DrawBar from '../DrawBar';
 import FabButton from '../fabButton';
 import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
-import { getStates, getRateUnique } from "../../actions/list_states_mx";
+import { getStates, getRateUnique, getContract } from "../../actions/list_states_mx";
 
 // var gradientImage = require('../../../images/header.png')
 
@@ -28,10 +27,12 @@ class Contracts extends Component {
   componentWillMount(){
     this.props.getStates()
     this.props.getRateUnique()
+    this.props.getContract()
 
   }
   static propType = {
     getRateUnique: React.PropTypes.func,
+    getContract: React.PropTypes.func,
     getStates: React.PropTypes.func,
   }
   render(){
@@ -47,11 +48,11 @@ class Contracts extends Component {
           <Grid>
             <Col>
               <List style={styles.list}>
-                {Object.keys(contracts).map((contract, i )=><SwipeAccordion
+                {contracts.map((contract, i )=><SwipeAccordion
                   key={i}
                   index={i}
                   navigation={navigation}
-                  component={<ItemComponent data={contracts[contract]}/>}
+                  component={<ItemComponent data={contract}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}
                 />)}
               </List>
@@ -79,10 +80,10 @@ class ItemComponent extends Component{
           <Thumbnail source={contract.image} />
         </Left>
         <Body style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__text}>{contract.name}</Text>
+          <Text style={styles.listItem__body__text}>{contract.name_contract}</Text>
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{}}>{contract.cost}</Text>
+          <Text style={styles.listItem__body__view__text}>{contract.cost}</Text>
         </Right>
       </View>
     )
@@ -92,6 +93,7 @@ function bindAction(dispatch){
   return {
     getStates: () => dispatch(getStates()),
     getRateUnique: list => dispatch(getRateUnique(list)),
+    getContract: () => dispatch(getContract()),
   }
 }
 const mapStateToProps = state => ({
