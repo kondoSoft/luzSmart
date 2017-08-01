@@ -29,8 +29,7 @@ import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import { setContract } from '../../actions/contracts';
-import { getMunicipality, resetMunicipality } from '../../actions/list_states_mx'
+import { getMunicipality, resetMunicipality, postContract } from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
 
 let Screen = Dimensions.get('window')
@@ -59,7 +58,7 @@ class AddContracts extends Component {
     }
   }
   static propType = {
-    setContract: React.PropTypes.func,
+    postContract: React.PropTypes.func,
     getMunicipality: React.PropTypes.func,
     resetMunicipality: React.PropTypes.func,
   }
@@ -112,7 +111,6 @@ class AddContracts extends Component {
     this.setState({state: item});
   }
   handleMunicipality(value, item){
-    console.log('valor municipio', value, item);
     this.setState({municipality: item});
   }
   handleRate(value, item){
@@ -128,10 +126,9 @@ class AddContracts extends Component {
     this.setState({cost: event.nativeEvent.text});
   }
   sendData(){
-    this.props.setContract(this.state)
-
+    this.props.postContract(this.state)
     this.props.navigation.navigate('Receipt')
-    console.log(this.state);
+    // console.log(this.state);
   }
   // falta condicion para hacer check en uno u otro
   handleCheckedMen(){
@@ -181,10 +178,9 @@ class AddContracts extends Component {
             >{item.name_mun}</Option>)
         })}
     </Select>
-    console.log('avatar',this.state.avatarSource);
+    // console.log('avatar',this.state.avatarSource);
     return(
       <Container style={{backgroundColor:'#fff'}}>
-
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <ScrollView
@@ -296,7 +292,7 @@ class AddContracts extends Component {
 }
 function bindAction(dispatch){
   return {
-    setContract: name =>dispatch(setContract(name)),
+    postContract: list =>dispatch(postContract(list)),
     getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
     resetMunicipality: () => dispatch(resetMunicipality()),
   }
