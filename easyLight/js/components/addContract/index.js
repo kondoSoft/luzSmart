@@ -227,7 +227,7 @@ class AddContracts extends Component {
               <Select
                 selectStyle={styles.select}
                 padding={10}
-                // listHeight={200}
+                listHeight={200}
                 caretSize={0}
                 onSelect={(value, key) => this.handleRate(value, key)}
                 >
@@ -236,7 +236,7 @@ class AddContracts extends Component {
               <Select
                 selectStyle={styles.select}
                 padding={10}
-                // listHeight={200}
+                listHeight={200}
                 caretSize={0}
                 onSelect={value => this.handlePeriodSummer(value)}
                 >
