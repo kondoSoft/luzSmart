@@ -12,10 +12,3 @@ export function setBill(payday_limit:string,amount_payable:number,current_readin
     previous_reading: previous_reading,
   };
 }
-
-export function setContract(list):Action{
-  return {
-    type: SET_CONTRACT,
-    payload: list
-  }
-}
