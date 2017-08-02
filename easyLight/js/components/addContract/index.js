@@ -108,7 +108,7 @@ class AddContracts extends Component {
   handleState(value, item){
     this.props.resetMunicipality()
     this.props.getMunicipality(value+1)
-    this.setState({state: value});
+    this.setState({state: value+1});
   }
   handleMunicipality(value, item){
     this.setState({municipality: value.id});

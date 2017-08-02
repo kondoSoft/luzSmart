@@ -21,7 +21,6 @@ class Results  extends Component {
     header: null
   };
   render(){
-    console.log(this.props.navigation);
     const {  navigation } = this.props;
     return(
       <Container>

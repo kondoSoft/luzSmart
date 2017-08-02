@@ -35,10 +35,10 @@ class DetailContract extends Component {
     header: null
   };
   render(){
-    console.log( this.props.navigation.state.params);
-    // const { receipts } = this.props
-    const { navigation, receipts } = this.props
+    const { navigation, receipts, receipt } = this.props
+    const bill = navigation.state.params.params
     const colors = ['lightgrey','#fff']
+
     return(
       <Container>
         <Header navigation={navigation} title="Periodos"/>
@@ -50,13 +50,14 @@ class DetailContract extends Component {
             </Row>
             <Col>
               <List style={styles.list}>
-                {Object.keys(receipts).map((receipt, i )=><SwipeAccordion
-                  key={i}
-                  navigation={navigation}
-                  style={{backgroundColor: colors[i % colors.length]}}
-                  component={<ItemComponent data={receipts[receipt]}/>}
-                  icon={<Icon style={styles.icon} name="information-circle"/>}
-                />)}
+                {bill.map((item, i )=><SwipeAccordion
+                    key={i}
+                    navigation={navigation}
+                    style={{backgroundColor: colors[i % colors.length]}}
+                    component={<ItemComponent data={item}/>}
+                    icon={<Icon style={styles.icon} name="information-circle"/>}
+                  />
+                  )}
               </List>
             </Col>
           </Grid>
@@ -95,6 +96,7 @@ class ItemComponent extends Component{
   }
 }
 const mapStateToProps = state => ({
-  receipts: state.list_contracts.receipts
+  receipts: state.list_contracts.receipts,
+  receipt: state.list_contracts.contracts,
 });
 export default connect(mapStateToProps)(DetailContract)

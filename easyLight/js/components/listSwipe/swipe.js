@@ -152,7 +152,7 @@ export default class SwipeAccordion extends Component{
     if (this.props.navigation.state.routeName === 'DetailContract') {
 
     }else {
-      this.props.navigation.navigate(route, { params: this.props.index})
+      this.props.navigation.navigate(route, { params: this.props.receipts})
     }
   }
   render(){
