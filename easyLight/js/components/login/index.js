@@ -5,7 +5,6 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import {
   Container,
   Content,
-  // Header,
   Body,
   Button,
   Item,
@@ -25,8 +24,12 @@ import { Field, reduxForm } from "redux-form";
 import { setUser } from "../../actions/user";
 import styles from "./styles";
 import Header from '../header/index';
+
+
 const background = require("../../../images/shadow.png");
 const Screen = Dimensions.get('window');
+const logoFooter = require('../../../images/easylight.png');
+
 
 const validate = values => {
   const error = {};
@@ -102,10 +105,10 @@ class Login extends Component {
       <Container scrollEnabled={false}>
         <Header title={"INICIO DE SESIÓN"} zIndex navigation={this.props.navigation}/>
         <ScrollView style={styles.container} ref='scroll'>
-            <Grid style={{ height: Screen.height - 140, paddingTop: (Platform.OS === 'ios')? 100 : 120 }}>
+            <Grid style={styles.grid}>
               <Row  size={40}>
-                <Col style={{justifyContent: 'flex-end', paddingLeft: 15}}>
-                  <Field style={{backgroundColor: '#fff'}} name="email" component={this.renderInput} />
+                <Col style={styles.col__inputs__login}>
+                  <Field style={styles.field__email} name="email" component={this.renderInput} />
                   <Field name="password" component={this.renderInput} />
                 </Col>
               </Row>
@@ -137,8 +140,8 @@ class Login extends Component {
                 </Col>
               </Row>
             </Grid>
-          <View style={styles.footer,{ alignItems:'center' }}>
-            <Thumbnail source={ require('../../../images/easylight.png') } />
+          <View style={styles.footer}>
+            <Thumbnail source={ logoFooter } />
           </View>
         </ScrollView>
       </Container>

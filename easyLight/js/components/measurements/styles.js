@@ -63,7 +63,7 @@ export default {
   },
   animatedView__image:{
     width: '65%',
-    height: (Platform.OS === 'ios')? '85%' : '95%', 
+    height: (Platform.OS === 'ios')? '85%' : '95%',
   },
   animatedView__image__view:{
     flex: 1,
@@ -74,8 +74,7 @@ export default {
   animatedView__image__view__input:{
     height: (Platform.OS === 'ios')? 25 : 10,
     backgroundColor: 'lightgrey',
-    marginTop: 57,
-    flex: 0,
+    marginTop: 58,
     width: '50%',
     marginLeft: 65,
     borderWidth:2,
@@ -83,7 +82,6 @@ export default {
   },
   animatedView__image__view__btn:{
     marginLeft: 96,
-    marginTop: 12 ,
     marginBottom: 33,
     backgroundColor: 'green',
   },

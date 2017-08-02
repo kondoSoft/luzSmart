@@ -1,9 +1,9 @@
 
 const React = require('react-native');
 
-const { StyleSheet, Dimensions } = React;
+const { StyleSheet, Dimensions, Platform } = React;
 
-const deviceHeight = Dimensions.get('window').height;
+const Screen = Dimensions.get('window');
 
 export default {
   container: {
@@ -13,6 +13,10 @@ export default {
     left: 0,
     right: 0,
     backgroundColor: '#fff',
+  },
+  grid:{
+    height: Screen.height - 140,
+    paddingTop: (Platform.OS === 'ios')? 100 : 120,
   },
   header:{
     backgroundColor: 'green',
@@ -67,6 +71,13 @@ export default {
   footer: {
     height: 80,
     borderTopWidth: 0,
-    backgroundColor: '#FBFAFA',
+    alignItems:'center',
+  },
+  col__inputs__login: {
+    justifyContent: 'flex-end',
+    paddingLeft: 15,
+  },
+  field__email: {
+    backgroundColor: '#fff',
   },
 };

@@ -108,7 +108,7 @@ class Measurements extends Component {
                 </ListItem>
               </List>
             </Row>
-            <View style={{width: '100%', height: (Platform.OS === 'ios')? '40%' : '50%', alignItems: 'center', justifyContent: (Platform.OS === 'ios')? null : 'center' }}>
+            <View style={{width: '100%', height: (Platform.OS === 'ios')? '45%' : '50%', alignItems: 'center', justifyContent: (Platform.OS === 'ios')? 'center' : 'center' }}>
               <Image resizeMode={'stretch'} source={require('../../../images/medidor.png')} style={styles.animatedView__image}>
                 <View style={styles.animatedView__image__view}>
                   <TextInput keyboardType={'numbers-and-punctuation'} style={styles.animatedView__image__view__input}/>
