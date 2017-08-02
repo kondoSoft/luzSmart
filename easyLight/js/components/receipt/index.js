@@ -23,7 +23,7 @@ import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import { setBill } from '../../actions/contracts'
+import { postReceipt } from '../../actions/contracts'
 
 
 class Receipt extends Component {
@@ -86,12 +86,12 @@ class Receipt extends Component {
     }
   }
   sendData(){
-    this.props.setBill(this.state.payday_limit,this.state.amount_payable,this.state.current_reading,this.state.previous_reading)
+    this.props.postReceipt(this.state)
     this.showAlert()
   }
   render(){
     const { navigation } = this.props
-
+    const contract = navigation.state.params.contract
     var receiptView = (
       <Container>
         <Header zIndex navigation={this.props.navigation} title="Recibo CFE"/>
@@ -104,7 +104,7 @@ class Receipt extends Component {
             <Col size={75}>
               <Form style={styles.form}>
                 <Item inlineLabel last style={styles.form__item__title}>
-                  <Label style={styles.form__item__label}>Contrato #85976431</Label>
+                  <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                 </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
@@ -165,7 +165,7 @@ class Receipt extends Component {
               <Col size={75}>
                 <Form style={styles.form}>
                   <Item inlineLabel last style={styles.form__item__title}>
-                    <Label style={styles.form__item__label}>Contrato #85976431</Label>
+                    <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                   </Item>
                   <Item last style={styles.form__item__inputs}>
                     <Input
@@ -220,7 +220,7 @@ class Receipt extends Component {
 }
 function bindAction(dispatch) {
   return {
-    setBill: (payday_limit, amount_payable, current_reading, previous_reading) => dispatch(setBill(payday_limit, amount_payable, current_reading, previous_reading)),
+    postReceipt: list => dispatch(postReceipt(list)),
   }
 }
 const mapStateToProps = state => ({
