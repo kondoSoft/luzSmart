@@ -9,7 +9,7 @@ export const SET_INDEX = 'SET_INDEX';
 export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
-const endPoint = 'http://192.168.1.85:8080';
+const endPoint = 'http://192.168.1.82:8080';
 
 
 export function printStates(list):Action{
@@ -141,7 +141,10 @@ export function postContract(list):Action{
       })
     })
     .then(res => {return res.json()})
-    .then(res => dispatch(successContract(res)))
+    .then(res =>{
+      console.log('respuesta',res)
+      dispatch(successContract(res))
+    })
     .catch(err => console.log(err))
   }
 }
