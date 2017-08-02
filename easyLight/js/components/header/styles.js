@@ -16,6 +16,7 @@ export default {
     color: 'white',
     fontSize: 20,
     fontWeight: '400',
+    paddingLeft: (Platform.OS === 'ios')? 0 : 28,
   },
   header__icon:{
     color: 'white',

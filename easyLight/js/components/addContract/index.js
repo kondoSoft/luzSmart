@@ -225,6 +225,7 @@ class AddContracts extends Component {
       selectMun = (
       <View style={styles.selectPicker}>
         <Picker
+          selectedValue={this.state.municipality}
           onValueChange={(value, key) => this.handleMunicipality(value, key)}
         >
         {this.props.municipality_mx.map((item,i)=>{
@@ -234,13 +235,25 @@ class AddContracts extends Component {
         </Picker>
       </View>
       )
+      periodSummer = (
+        <View style={styles.selectPicker}>
+          <Picker
+            selectedValue={this.state.language}
+            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+            <Picker.Item label="Java" value="java" />
+            <Picker.Item label="JavaScript" value="js" />
+          </Picker>
+        </View>
+      )
     }
-
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-          <Grid style={{alignItems: 'center',flex:1}}>
+        <ScrollView
+          style={{flex:1}}
+          >
+          <Grid style={{alignItems: 'center'}}>
             <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
               <Left style={ {marginLeft: 30} }>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
@@ -261,10 +274,10 @@ class AddContracts extends Component {
               </Right>
             </Row>
             <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
-            <Col size={(Platform.OS === 'ios')? 40 : 35} style={ styles.col__form }>
+            <Col size={ (Platform.OS === 'ios')? 40 : 29 } style={ styles.col__form }>
               <Form>
                 <Item fixedLabel style={styles.col__form__item}>
-                <Input placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
+                <Input style={{paddingTop:10}} placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
               </Item>
               { (Platform.OS === 'ios')?
                 <Select
@@ -306,10 +319,10 @@ class AddContracts extends Component {
               </View>
               }
               { periodSummer }
-
               </Form>
             </Col>
-            <Row size={6}>
+            {(Platform.OS === 'ios')? null : <View style={{height: 20}}></View>}
+            <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 0 : 20}}>
               <View style={styles.row__bottom__view__top}>
                 <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen()}/>
                 <Body style={{ flex: 0 }}>
@@ -333,6 +346,7 @@ class AddContracts extends Component {
               </Button>
             </Row>
           </Grid>
+        </ScrollView>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )

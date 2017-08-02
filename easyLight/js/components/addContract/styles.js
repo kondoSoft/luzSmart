@@ -10,8 +10,9 @@ export default {
       flex: 1,
     },
     col__form:{
-      marginTop: 20,
+      marginTop: 10,
       alignItems: 'center',
+
     },
     row__top__col__right__icon:{
       paddingRight: 30
@@ -22,7 +23,8 @@ export default {
       marginRight: (Platform.OS === 'ios')? 10 : 5,
       marginBottom: (Platform.OS === 'ios')? 10 : 5,
       marginLeft: (Platform.OS === 'ios')? 10 : 5,
-      backgroundColor: 'lightgray'
+      backgroundColor: 'lightgray',
+      width: (Platform.OS === 'ios')? 0 : '85%',
     },
     select:{
       width: 310,
@@ -70,6 +72,6 @@ export default {
       borderColor:'lightgray',
       marginLeft:5,
       marginRight:5,
-      marginTop:10,
+      marginTop:5,
     },
 }

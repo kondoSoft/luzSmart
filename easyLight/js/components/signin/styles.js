@@ -25,7 +25,7 @@ export default {
   row__botttom: {
     justifyContent: 'center',
     height:'10%',
-    paddingTop: (Platform.OS === 'ios')? 0 : (Screen.height > 592)? 15 : 10,
+    paddingTop: (Platform.OS === 'ios')? 0 : (Screen.height > 592)? 7 : 10,
     paddingBottom:5,
   },
   row__botttom__btn: {
