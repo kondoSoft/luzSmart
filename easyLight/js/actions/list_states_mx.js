@@ -120,7 +120,6 @@ export function getRateUnique(list):Action{
   }
 }
 export function postContract(list):Action{
-  console.log('postContract', list, list.name);
   return dispatch => {
     return fetch(endPoint+'/contract/',{
       method: 'POST',
