@@ -64,8 +64,8 @@ export default {
     flex: 1,
   },
   animatedView__image:{
-    width: (Screen.height <= 640)? '65%' : '70%',
-    height: (Platform.OS === 'ios')? '85%' : (Screen.height <= 640)? '65%' : '68%',
+    width: (Platform.OS === 'android' && Screen.height <= 640)? '65%' : '70%',
+    height: (Platform.OS === 'ios')? '65%' : (Screen.height <= 640)? '65%' : '68%',
   },
   animatedView__image__view:{
     flex: 1,
@@ -75,17 +75,17 @@ export default {
   },
   animatedView__image__view__input: {
     backgroundColor:'lightgrey',
-    height: '13%',
+    height: (Platform.OS === 'ios')? '10%' : '13%',
     width: '60%',
-    marginTop: 62,
+    marginTop: (Platform.OS === 'ios')? 70 : 62,
     marginBottom: 0,
-    marginLeft:50,
-    paddingBottom: 5,
+    marginLeft: (Platform.OS === 'ios')? 57 : 50,
+    paddingBottom: (Platform.OS === 'ios')? 0 : 5,
     textAlign: 'center',
   },
   animatedView__image__view__btn:{
     marginBottom: 40,
-    marginLeft: 85,
+    marginLeft: (Platform.OS === 'ios')? 105 : 85,
     backgroundColor: 'green',
     height: 30,
   },

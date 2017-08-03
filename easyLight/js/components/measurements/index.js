@@ -150,13 +150,13 @@ class Measurements extends Component {
                 </ListItem>
               </List>
             </Row>
-            <Row size={30} style={{alignItems: 'flex-start', justifyContent: (Platform.OS === 'ios')? 'center' : 'center',paddingTop: (Screen.height <= 640)? 30 : 0}}>
+            <Row size={30} style={{alignItems: 'flex-start', justifyContent: 'center',paddingTop: (Platform.OS === 'android' && Screen.height <= 640)? 30 : 0}}>
               <Image resizeMode={'stretch'} source={require('../../../images/medidor.png')} style={styles.animatedView__image}>
                 <View style={styles.animatedView__image__view}>
                   <TextInput
                     keyboardType={'numbers-and-punctuation'}
                     style={styles.animatedView__image__view__input}
-                    onFocus={ (Platform.OS === 'android')? () => this.refs['scroll'].scrollTo({y: 300 }) : null }
+                    onFocus={ () => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 185 : 300 }) }
                   />
                   <Button
                     small
