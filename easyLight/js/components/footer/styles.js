@@ -14,7 +14,6 @@ export default {
     fontSize: 8
   },
   footer__logo:{
-
   },
   footer__text__resultados:{
     fontSize: 7,
