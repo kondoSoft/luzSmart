@@ -38,7 +38,6 @@ class Contracts extends Component {
   render(){
     const { navigation } = this.props
     const { contracts } = this.props
-
     const {state} = navigation
     return(
       <Container>

@@ -16,10 +16,10 @@ export function postReceipt(list):Action{
         amount_payable: list.amount_payable,
         current_reading: list.current_reading,
         previous_reading: list.previous_reading,
+        contract: list.contract_id,
       })
     })
     .then(res => {return res.json()})
-    .then(res=>console.log(res))
     .catch(err => console.log(err))
   }
 }

@@ -34,6 +34,7 @@ class Receipt extends Component {
         amount_payable: 0,
         current_reading: 0,
         previous_reading: 0,
+        contract_id: 0,
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
     }
@@ -45,6 +46,16 @@ class Receipt extends Component {
   }
   componentWillMount () {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+   if (this.props.navigation.state.params != undefined){
+     this.setState({contract_id: this.props.navigation.state.params.contract.id})
+     console.log('contract',this.state.contract_id);
+   }
+
+  }
+  componentDidMount(){
+    if(this.props.navigation.state.params == undefined){
+      this.setState({contract_id: this.props.newContract.id})
+    }
   }
   componentWillUnmount () {
     this.keyboardDidHideListener.remove();
@@ -90,8 +101,15 @@ class Receipt extends Component {
     this.showAlert()
   }
   render(){
+    console.log('contract id',this.state.contract_id);
     const { navigation } = this.props
-    const contract = navigation.state.params.contract
+    var contract;
+    if (navigation.state.params == undefined) {
+      contract = this.props.newContract
+    }else{
+      contract = navigation.state.params.contract
+    }
+
     var receiptView = (
       <Container>
         <Header zIndex navigation={this.props.navigation} title="Recibo CFE"/>
@@ -224,7 +242,7 @@ function bindAction(dispatch) {
   }
 }
 const mapStateToProps = state => ({
-  receipts: state.list_contracts.receipts
+  newContract: state.list_contracts.newContract
 })
 
 export default connect(mapStateToProps, bindAction)(Receipt);
