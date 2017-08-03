@@ -1,6 +1,8 @@
 const React = require('react-native');
 const { StyleSheet, Dimensions, Platform } = React;
 
+let Screen = Dimensions.get('window')
+
 export default {
   grid__row__top:{
     alignItems: 'center',
@@ -8,30 +10,31 @@ export default {
     backgroundColor: 'lightgray'
   },
   grid__row__top__text:{
-    flex: 2
+    flex: 1,
   },
   grid__row__top__view:{
-    flex: 1
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingRight: 9,
   },
   grid__col__select:{
     alignItems: 'center',
     paddingLeft: 30,
     paddingRight: 5,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   grid__col__select__row__top:{
     alignItems: 'center',
-    flex: 1,
+    flex: 2,
     paddingBottom: 5,
-    marginTop: 5,
-
   },
   grid__col__select__row__bottom:{
     alignItems: 'center',
-    flex: 1,
-    paddingBottom: 5,
-    marginTop: 5,
+    flex: 2,
+    paddingBottom: (Platform.OS === 'ios')? 5 : 0,
+    marginTop: (Platform.OS === 'ios')? 5 : 0,
   },
   col__row__top__select:{
     width: 150,
@@ -47,23 +50,22 @@ export default {
   col__row__select__option:{
     height: 34,
     borderBottomWidth: 0,
-
   },
   row__bottom__list:{
-    flex: 1
+    flex: 1,
   },
   row__bottom__list__listItem:{
     backgroundColor: 'lightgrey'
   },
   row__bottom__list__listItem__textTop: {
-    flex: 4
+    flex: 4,
   },
   row__bottom__list__listItem__textBottom:{
-    flex: 1
+    flex: 1,
   },
   animatedView__image:{
-    width: '65%',
-    height: (Platform.OS === 'ios')? '85%' : '95%',
+    width: (Screen.height <= 640)? '65%' : '70%',
+    height: (Platform.OS === 'ios')? '85%' : (Screen.height <= 640)? '65%' : '68%',
   },
   animatedView__image__view:{
     flex: 1,
@@ -71,19 +73,21 @@ export default {
     justifyContent: 'space-around',
     flexDirection: 'column',
   },
-  animatedView__image__view__input:{
-    height: (Platform.OS === 'ios')? 25 : 10,
-    backgroundColor: 'lightgrey',
-    marginTop: 58,
-    width: '50%',
-    marginLeft: 65,
-    borderWidth:2,
-    borderColor: 'grey',
+  animatedView__image__view__input: {
+    backgroundColor:'lightgrey',
+    height: '13%',
+    width: '60%',
+    marginTop: 62,
+    marginBottom: 0,
+    marginLeft:50,
+    paddingBottom: 5,
+    textAlign: 'center',
   },
   animatedView__image__view__btn:{
-    marginLeft: 96,
-    marginBottom: 33,
+    marginBottom: 40,
+    marginLeft: 85,
     backgroundColor: 'green',
+    height: 30,
   },
   fab:{
     backgroundColor: 'steelblue',
@@ -92,5 +96,16 @@ export default {
   icon:{
     fontSize: 28,
     lineHeight: 0,
+  },
+  selectPicker:{
+    borderTopWidth:1,
+    borderBottomWidth:1,
+    borderLeftWidth:1,
+    borderRightWidth:1,
+    borderColor:'lightgray',
+    marginLeft:5,
+    marginRight:5,
+    height: '100%',
+    width: '50%',
   },
 }

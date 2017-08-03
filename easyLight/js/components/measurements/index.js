@@ -11,8 +11,9 @@ import {
   Fab,
   Icon,
   Button,
+  Input,
 } from 'native-base';
-import { Image, TextInput, Platform } from 'react-native';
+import { Image, TextInput, Platform, ScrollView, Dimensions, Keyboard } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
@@ -20,6 +21,8 @@ import Footer from '../footer/index';
 import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
+
+let Screen = Dimensions.get('window')
 
 
 class Measurements extends Component {
@@ -29,7 +32,20 @@ class Measurements extends Component {
   constructor(props){
     super(props)
 
-    this.state = { active: false }
+    this.state = {
+      active: false,
+      scroll: false,
+    }
+    this._keyboardDidHide = this._keyboardDidHide.bind(this)
+  }
+  componentWillMount () {
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+  componentWillUnmount () {
+    this.keyboardDidHideListener.remove();
+  }
+  _keyboardDidHide () {
+    this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   render(){
     const { navigation } = this.props
@@ -37,18 +53,23 @@ class Measurements extends Component {
       <Container style={{backgroundColor: '#fff'}}>
         <Header navigation={this.props.navigation} zIndex title="Mediciones"/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <AnimatedView>
-          <Grid style={{backgroundColor: '#fff'}}>
-            <Row size={9} style={styles.grid__row__top}>
+        <ScrollView
+          ref='scroll'
+          style={{height: Screen.height}}
+          scrollEnabled={this.state.scroll}
+          >
+          <Grid style={{height:Screen.height}}>
+            <Row size={4} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
               <View style={styles.grid__row__top__view}>
                 <Text>$2,150</Text>
                 <Text>Proyectado</Text>
               </View>
             </Row>
-            <Col size={11} style={styles.grid__col__select}>
+            <Col size={6} style={styles.grid__col__select}>
               <Row style={styles.grid__col__select__row__top}>
                 <Text style={styles.grid__row__top__view}>Contrato</Text>
+                {(Platform.OS === 'ios')?
                 <Select
                   selectStyle={styles.col__row__top__select}
                   padding={5}
@@ -67,10 +88,21 @@ class Measurements extends Component {
                     value={3}
                     optionStyle={styles.col__row__select__option}
                     >List Item 3</Option>
-                </Select>
+                </Select> :
+                <View style={styles.selectPicker}>
+                  <Picker
+                    style={{flex:1}}
+                    selectedValue={this.state.language}
+                    onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+                    <Picker.Item label="Java" value="java" />
+                    <Picker.Item label="JavaScript" value="js" />
+                  </Picker>
+                </View>
+              }
               </Row>
               <Row style={styles.grid__col__select__row__bottom}>
                 <Text style={styles.grid__row__top__view}>Periodo</Text>
+                {(Platform.OS === 'ios')?
                 <Select
                   selectStyle={styles.col__row__top__select}
                   padding={5}
@@ -89,10 +121,20 @@ class Measurements extends Component {
                     value={3}
                     optionStyle={styles.col__row__select__option}
                     >List Item 3</Option>
-                </Select>
+                </Select> :
+                <View style={styles.selectPicker}>
+                  <Picker
+                    style={{flex:1}}
+                    selectedValue={this.state.language}
+                    onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+                    <Picker.Item label="Java" value="java" />
+                    <Picker.Item label="JavaScript" value="js" />
+                  </Picker>
+                </View>
+              }
               </Row>
             </Col>
-            <Row size={20}>
+            <Row size={12}>
               <List style={styles.row__bottom__list}>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Lectura Inicial</Text>
@@ -108,10 +150,14 @@ class Measurements extends Component {
                 </ListItem>
               </List>
             </Row>
-            <View style={{width: '100%', height: (Platform.OS === 'ios')? '45%' : '50%', alignItems: 'center', justifyContent: (Platform.OS === 'ios')? 'center' : 'center' }}>
+            <Row size={30} style={{alignItems: 'flex-start', justifyContent: (Platform.OS === 'ios')? 'center' : 'center',paddingTop: (Screen.height <= 640)? 30 : 0}}>
               <Image resizeMode={'stretch'} source={require('../../../images/medidor.png')} style={styles.animatedView__image}>
                 <View style={styles.animatedView__image__view}>
-                  <TextInput keyboardType={'numbers-and-punctuation'} style={styles.animatedView__image__view__input}/>
+                  <TextInput
+                    keyboardType={'numbers-and-punctuation'}
+                    style={styles.animatedView__image__view__input}
+                    onFocus={ (Platform.OS === 'android')? () => this.refs['scroll'].scrollTo({y: 300 }) : null }
+                  />
                   <Button
                     small
                     style={styles.animatedView__image__view__btn}
@@ -121,14 +167,14 @@ class Measurements extends Component {
                   </Button>
                 </View>
               </Image>
-            </View>
+            </Row>
           </Grid>
-        </AnimatedView>
+        </ScrollView>
         <View>
           <Fab
             active={this.state.active}
             direction="up"
-            containerStyle={{ }}
+            containerStyle={{ right: 10 }}
             style={{ backgroundColor: '#5067FF' }}
             position="bottomRight"
             onPress={() => this.setState({ active: !this.state.active })}>
