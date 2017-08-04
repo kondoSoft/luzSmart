@@ -170,8 +170,10 @@ class AddContracts extends Component {
       })
     }
   }
+
   render(){
     const { navigation, states_mx, municipality_mx } = this.props
+
     var periodSummer = (
       <Select
         selectStyle={styles.select}

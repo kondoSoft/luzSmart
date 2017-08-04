@@ -38,7 +38,6 @@ class Contracts extends Component {
   render(){
     const { navigation } = this.props
     const { contracts } = this.props
-
     const {state} = navigation
     return(
       <Container>
@@ -50,7 +49,8 @@ class Contracts extends Component {
               <List style={styles.list}>
                 {contracts.map((contract, i )=><SwipeAccordion
                   key={i}
-                  index={i}
+                  index={contract.id}
+                  receipts={contract.receipt}
                   navigation={navigation}
                   component={<ItemComponent data={contract}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}

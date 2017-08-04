@@ -23,7 +23,7 @@ import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import { setBill } from '../../actions/contracts'
+import { postReceipt } from '../../actions/contracts'
 
 
 class Receipt extends Component {
@@ -34,6 +34,7 @@ class Receipt extends Component {
         amount_payable: 0,
         current_reading: 0,
         previous_reading: 0,
+        contract_id: 0,
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
     }
@@ -45,6 +46,16 @@ class Receipt extends Component {
   }
   componentWillMount () {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+   if (this.props.navigation.state.params != undefined){
+     this.setState({contract_id: this.props.navigation.state.params.contract.id})
+     console.log('contract',this.state.contract_id);
+   }
+
+  }
+  componentDidMount(){
+    if(this.props.navigation.state.params == undefined){
+      this.setState({contract_id: this.props.newContract.id})
+    }
   }
   componentWillUnmount () {
     this.keyboardDidHideListener.remove();
@@ -86,11 +97,18 @@ class Receipt extends Component {
     }
   }
   sendData(){
-    this.props.setBill(this.state.payday_limit,this.state.amount_payable,this.state.current_reading,this.state.previous_reading)
+    this.props.postReceipt(this.state)
     this.showAlert()
   }
   render(){
+    console.log('contract id',this.state.contract_id);
     const { navigation } = this.props
+    var contract;
+    if (navigation.state.params == undefined) {
+      contract = this.props.newContract
+    }else{
+      contract = navigation.state.params.contract
+    }
 
     var receiptView = (
       <Container>
@@ -104,7 +122,7 @@ class Receipt extends Component {
             <Col size={75}>
               <Form style={styles.form}>
                 <Item inlineLabel last style={styles.form__item__title}>
-                  <Label style={styles.form__item__label}>Contrato #85976431</Label>
+                  <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                 </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
@@ -165,7 +183,7 @@ class Receipt extends Component {
               <Col size={75}>
                 <Form style={styles.form}>
                   <Item inlineLabel last style={styles.form__item__title}>
-                    <Label style={styles.form__item__label}>Contrato #85976431</Label>
+                    <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                   </Item>
                   <Item last style={styles.form__item__inputs}>
                     <Input
@@ -220,11 +238,11 @@ class Receipt extends Component {
 }
 function bindAction(dispatch) {
   return {
-    setBill: (payday_limit, amount_payable, current_reading, previous_reading) => dispatch(setBill(payday_limit, amount_payable, current_reading, previous_reading)),
+    postReceipt: list => dispatch(postReceipt(list)),
   }
 }
 const mapStateToProps = state => ({
-  receipts: state.list_contracts.receipts
+  newContract: state.list_contracts.newContract
 })
 
 export default connect(mapStateToProps, bindAction)(Receipt);

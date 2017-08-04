@@ -26,7 +26,6 @@ class SignIn extends Component {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   render(){
-    console.log(Screen.height);
     return(
         <Container style={{height:Screen.height}}>
           <Header zIndex navigation={this.props.navigation} title="Nuevo Registro"/>

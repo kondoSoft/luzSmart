@@ -30,15 +30,23 @@ import FabButton from '../fabButton';
 class DetailContract extends Component {
   constructor(props){
     super(props)
+
   }
   static navigationOptions = {
     header: null
   };
   render(){
-    console.log( this.props.navigation.state.params);
-    // const { receipts } = this.props
-    const { navigation, receipts } = this.props
+    const { navigation } = this.props
+    const bill = navigation.state.params.receipt
+    const index = navigation.state.params.index
     const colors = ['lightgrey','#fff']
+    var numContract = []
+    const contract = this.props.contracts.map((item,i)=>{
+      if (item.id == navigation.state.params.index){
+        numContract.push(item)
+        return numContract
+      }
+    })
     return(
       <Container>
         <Header navigation={navigation} title="Periodos"/>
@@ -46,24 +54,25 @@ class DetailContract extends Component {
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Row style={styles.detailContract__row__top}>
-              <Text style={styles.detailContract__row__top__text}>Mi Oficina</Text>
+              <Text style={styles.detailContract__row__top__text}>{numContract[0].name_contract}</Text>
             </Row>
             <Col>
               <List style={styles.list}>
-                {Object.keys(receipts).map((receipt, i )=><SwipeAccordion
-                  key={i}
-                  navigation={navigation}
-                  style={{backgroundColor: colors[i % colors.length]}}
-                  component={<ItemComponent data={receipts[receipt]}/>}
-                  icon={<Icon style={styles.icon} name="information-circle"/>}
-                />)}
+                {bill.map((item, i )=><SwipeAccordion
+                    key={i}
+                    navigation={navigation}
+                    style={{backgroundColor: colors[i % colors.length]}}
+                    component={<ItemComponent data={item}/>}
+                    icon={<Icon style={styles.icon} name="information-circle"/>}
+                  />
+                  )}
               </List>
             </Col>
           </Grid>
         </Content>
         <FabButton
           navigation={navigation}
-          onTap={()=>{navigation.navigate("Receipt")}}
+          onTap={()=>{navigation.navigate("Receipt", {contract: numContract[0]})}}
           >
           <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
@@ -79,9 +88,7 @@ class ItemComponent extends Component{
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-          {/* <Text style={styles.listItem__body__text,{}}>{(receipt != undefined )? receipt.payday_limit.substring(2) : null}</Text> */}
-          <Text style={styles.listItem__body__text,{}}>{receipt.payday_limit}</Text>
-
+          <Text style={styles.listItem__body__text}>{receipt.payday_limit.substring(3)}</Text>
         </Left>
         <Body style={styles.ItemComponent.align}>
 
@@ -95,6 +102,6 @@ class ItemComponent extends Component{
   }
 }
 const mapStateToProps = state => ({
-  receipts: state.list_contracts.receipts
+  contracts: state.list_contracts.contracts,
 });
 export default connect(mapStateToProps)(DetailContract)
