@@ -219,7 +219,6 @@ class AddContracts extends Component {
             >{item.name_mun}</Option>)
         })}
     </Select>
-
     )
     if (Platform.OS === 'android') {
       selectMun = (
@@ -321,8 +320,8 @@ class AddContracts extends Component {
               { periodSummer }
               </Form>
             </Col>
-            {(Platform.OS === 'ios')? null : <View style={{height: 20}}></View>}
-            <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 0 : 20}}>
+            {(Platform.OS === 'ios')? <View style={{height:40}}></View> : <View style={{height: 20}}></View>}
+            <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 20 : 20}}>
               <View style={styles.row__bottom__view__top}>
                 <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen()}/>
                 <Body style={{ flex: 0 }}>

@@ -24,7 +24,7 @@ export default {
       marginBottom: (Platform.OS === 'ios')? 10 : 5,
       marginLeft: (Platform.OS === 'ios')? 10 : 5,
       backgroundColor: 'lightgray',
-      width: (Platform.OS === 'ios')? 0 : '85%',
+      width: (Platform.OS === 'ios')? '82%' : '85%',
     },
     select:{
       width: 310,
