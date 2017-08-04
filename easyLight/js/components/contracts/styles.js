@@ -19,19 +19,6 @@ export default {
     position: 'absolute',
     bottom: (Platform.OS === 'ios')? 40 : 0,
   },
-  listItem:{
-    flex: 1,
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginLeft: 0,
-    borderBottomWidth: 1,
-    paddingLeft: 15,
-  },
-  listItem__body:{
-    display: 'flex',
-    flexDirection: 'row',
-    borderBottomWidth: 0
-  },
   listItem__body__text:{
     justifyContent: 'center',
   },
@@ -48,7 +35,7 @@ export default {
     color: '#007aff',
     fontSize: 40,
     textAlign: 'center',
-    paddingTop: 5,
+    paddingTop: 0,
   },
   rowBack: {
 		alignItems: 'center',

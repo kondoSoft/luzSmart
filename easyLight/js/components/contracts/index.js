@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Platform, Image} from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
-import { Container, Fab , Content, Body, Left, List, ListItem, Thumbnail, Text, Title, Button, Icon, Right} from 'native-base';
+import { Container, Fab , Content, Body, Left, List, Thumbnail, Text, Title, Button, Icon, Right} from 'native-base';
 import Header from '../header/index';
 import styles from "./styles";
 import Footer from '../footer/index';
@@ -63,7 +63,7 @@ class Contracts extends Component {
           navigation={this.props.navigation}
           onTap={()=>{navigation.navigate("AddContracts")}}
           >
-          <Text style={{ width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+          <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>

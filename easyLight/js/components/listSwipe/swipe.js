@@ -192,8 +192,8 @@ class ExpandedView extends Component{
           let colors = ['#fff', 'lightgrey']
           return(
             <View key={i} style={{flexDirection: 'row',alignItems: 'center', height: 70, backgroundColor: colors[i % colors.length]}}>
-              <Text style={{flex: 2, textAlign: 'center'}}>{contentExpandedView[current].title}</Text>
-              <Text style={{flex: .7,padding: 15, textAlign: 'center'}}>{contentExpandedView[current].value}</Text>
+              <Text style={{flex: 2, textAlign: 'center',color:'black'}}>{contentExpandedView[current].title}</Text>
+              <Text style={{flex: .7,padding: 15, textAlign: 'center',color: 'black'}}>{contentExpandedView[current].value}</Text>
             </View>
           )
         })}
@@ -240,5 +240,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderColor: 'lightgrey',
   },
 });
