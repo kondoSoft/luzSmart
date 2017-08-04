@@ -22,6 +22,7 @@ import {
   Platform,
 } from 'react-native';
 import Modal from 'react-native-modalbox';
+import ModalWrapper from 'react-native-modal-wrapper';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import Footer from '../footer/index';
@@ -59,7 +60,7 @@ class History extends Component{
     const { navigation } = this.props
     return(
       <Container>
-        <ModalForm visible={this.state.open} onClose={this.onClose} navigation={this.props.navigation}/>
+        {(Platform.OS === 'ios')? <ModalForm visible={this.state.open} onClose={this.onClose} navigation={this.props.navigation}/> : <ModalAndroid visible={this.state.open} navigation={this.props.navigation} onCancel={this.onClose}/>}
         <Header navigation={this.props.navigation} title="Historial" />
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <Content style={{backgroundColor: '#fff'}}>
@@ -108,7 +109,7 @@ class History extends Component{
           navigation={this.props.navigation}
           onTap={()=> this.openModal()}
           >
-          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+          <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
@@ -171,5 +172,42 @@ class ModalForm extends Component {
   }
 }
 
+class ModalAndroid extends Component {
+  render(){
+    return(
+      <ModalWrapper
+        style={{ width: 300, height: 280, paddingLeft: 24, paddingRight: 24, justifyContent: 'flex-start', paddingTop: 20, alignItems: 'center' }}
+        visible={this.props.visible}
+        >
+        <Text style={{fontSize:18}}>Agrega un nuevo historial</Text>
+        <Form style={{width: '100%',marginTop:10}}>
+          <Item fixedLabel style={{marginRight: 15,borderColor: 'green'}}>
+            <Input placeholder={"Periodo:"} style={{paddingTop:10}} />
+          </Item>
+          <Item fixedLabel style={{marginRight: 15,borderColor: 'green'}}>
+            <Input placeholder={"Consumo:"} style={{paddingTop:10}} />
+          </Item>
+          <Item fixedLabel style={{marginRight: 15,borderColor: 'green'}}>
+            <Input placeholder={"Pago:"} style={{paddingTop:10}} keyboardType={'numeric'} />
+          </Item>
+        </Form>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around', width:'110%', marginTop:20}}>
+          <Button
+            style={{ height: 35,backgroundColor: 'red'}}
+            onPress={this.props.onCancel}
+            >
+            <Text>Cancelar</Text>
+          </Button>
+          <Button
+            style={{ height: 35,backgroundColor: 'green'}}
+            onPress={()=>this.props.navigation.navigate('History')}
+            >
+            <Text>Agregar</Text>
+          </Button>
+        </View>
+      </ModalWrapper>
+    )
+  }
+}
 
 export default History;
