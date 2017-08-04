@@ -15,6 +15,7 @@ import Receipt from '../components/receipt';
 import History from '../components/history';
 import Tips from '../components/tips';
 import Contact from '../components/contact';
+import Configuration from '../components/configuration';
 
 HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
   header: null
@@ -31,5 +32,6 @@ export default (StackNav = StackNavigator({
   Receipt: { screen: Receipt },
   History: { screen: History },
   Tips: { screen: Tips },
-  Contact: { screen:  Contact }
+  Contact: { screen:  Contact },
+  Configuration: { screen: Configuration },
 }));
