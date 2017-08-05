@@ -63,7 +63,8 @@ class DetailContract extends Component {
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
                     component={<ItemComponent data={item}/>}
-                    icon={<Icon style={styles.icon} name="information-circle"/>}
+                    dataAccordion={item}
+                    icon={<Icon style={styles.icon} name="information-circle" />}
                   />
                   )}
               </List>

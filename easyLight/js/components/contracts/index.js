@@ -52,6 +52,7 @@ class Contracts extends Component {
                   index={contract.id}
                   receipts={contract.receipt}
                   navigation={navigation}
+                  dataAccordionContract={contract}
                   component={<ItemComponent data={contract}/>}
                   icon={<Icon style={styles.icon} name="information-circle"/>}
                 />)}
