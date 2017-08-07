@@ -9,7 +9,7 @@ export const SET_INDEX = 'SET_INDEX';
 export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
-const endPoint = 'http://192.168.1.85:8080';
+const endPoint = 'http://192.168.1.69:8080';
 
 
 export function printStates(list):Action{
@@ -149,15 +149,17 @@ export function postContract(list):Action{
 }
 export function getContract(list):Action{
   return dispatch => {
-    return fetch (endPoint+'/contract', {
+    return fetch (endPoint+'/contract/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       }
     })
     .then(res => {return res.json()})
-    .then(res=> dispatch(printContract(res)))
+    .then(res=> {
+      console.log(res);
+      dispatch(printContract(res))})
     .catch(err => console.log(err))
   }
 }

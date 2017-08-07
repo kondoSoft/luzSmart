@@ -182,11 +182,11 @@ class ExpandedView extends Component{
       },
       'third':{
         title: 'Última Lectura Diaria',
-        value: data.payday_limit,
+        value: data.previous_reading + 200,
       },
       'four':{
         title: 'Consumo kWh',
-        value: data.current_data,
+        value: data.current_dataclea,
       }
     }
 
