@@ -48,13 +48,11 @@ class Receipt extends Component {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
    if (this.props.navigation.state.params != undefined){
      this.setState({contract_id: this.props.navigation.state.params.contract.id})
-     console.log('contract',this.state.contract_id);
    }
-
   }
-  componentDidMount(){
+  componentWillReceiveProps(nextProps){
     if(this.props.navigation.state.params == undefined){
-      this.setState({contract_id: this.props.newContract.id})
+      this.setState({contract_id: nextProps.newContract.id})
     }
   }
   componentWillUnmount () {
@@ -101,7 +99,6 @@ class Receipt extends Component {
     this.showAlert()
   }
   render(){
-    console.log('contract id',this.state.contract_id);
     const { navigation } = this.props
     var contract;
     if (navigation.state.params == undefined) {

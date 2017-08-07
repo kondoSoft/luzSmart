@@ -51,10 +51,11 @@ class AddContracts extends Component {
         "type_payment" : "",
         "receipt" : undefined,
         "cost" : 0,
-        "image" : require('../../../images/office.png'),
+        // "image" : require('../../../images/office.png'),
         "checkedMen": false,
         "checkedBi": false,
         "avatarSource" : null,
+        "file" : null,
     }
   }
   static propType = {
@@ -88,13 +89,14 @@ class AddContracts extends Component {
         console.log('User tapped custom button: ', response.customButton);
       }
       else {
-        let source = { uri: response.origURL };
-        console.log('source', typeof(source.uri), source.uri);
+        // let source = { uri: response.uri };
+
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
         this.setState({
-          avatarSource: source.uri
+          avatarSource: response.uri,
+          file: response
         });
       }
     });
@@ -173,7 +175,6 @@ class AddContracts extends Component {
 
   render(){
     const { navigation, states_mx, municipality_mx } = this.props
-
     var periodSummer = (
       <Select
         selectStyle={styles.select}
@@ -259,15 +260,11 @@ class AddContracts extends Component {
               <Left style={ {marginLeft: 30} }>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                   <View style={{marginBottom: 0,height: 65,width: '100%'}}>
-                  { this.state.avatarSource === null && <Text style={{textAlign: 'center'}}>Select a Photo</Text>
-                      // <Image  source={this.state.avatarSource} />
-                  }
+                  { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Select a Photo</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
                   </View>
                 </TouchableOpacity>
-                {/* <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} /> */}
               </Left>
               <Body style={{ flex:3,height: '35%'}}>
-                {/* <Text>Mi Casa</Text> */}
                 <Input style={{textAlign: 'center', paddingRight: 30,width: '100%', paddingTop: 0, paddingBottom: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
               </Body>
               <Right style={ styles.row__top__left__right }>
