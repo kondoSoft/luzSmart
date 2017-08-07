@@ -21,10 +21,7 @@ class FooterGlobal extends Component {
               {(Platform.OS === 'ios')? <Text style={styles.footer__text}>Periodos</Text> : <View/> }
             </Button>
             <Button vertical onPress={() => this.props.navigation.navigate("Measurements")}>
-              {(Platform.OS === 'ios')?
-              <Thumbnail source={ require('../../../images/logogray.png') } style={styles.footer__logo} /> :
-              <Thumbnail source={ require('../../../images/Tunder.png') } style={styles.footer__logo} />
-              }
+              <Thumbnail source={ require('../../../images/logogray.png') } style={styles.footer__logo} /> 
             </Button>
             <Button vertical style={styles.footer__btn__resultados} onPress={() => this.props.navigation.navigate("Results")}>
               <Icon style={styles.footer__icon} active name="trending-up" />
