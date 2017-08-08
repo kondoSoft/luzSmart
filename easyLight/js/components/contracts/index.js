@@ -12,7 +12,7 @@ import FabButton from '../fabButton';
 import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
-import { getStates, getRateUnique, getContract } from "../../actions/list_states_mx";
+import { getRateUnique, getContract } from "../../actions/list_states_mx";
 
 // var gradientImage = require('../../../images/header.png')
 
@@ -25,9 +25,15 @@ class Contracts extends Component {
     header: null,
   };
   componentWillMount(){
-    this.props.getStates()
+    // this.props.getStates()
     this.props.getRateUnique()
-    this.props.getContract()
+
+  }
+  componentWillReceiveProps(nextProps){
+    console.log('this is token', this.props);
+    if(this.props.token == ""){
+      this.props.getContract(nextProps.token)
+    }
 
   }
   static propType = {
@@ -36,6 +42,7 @@ class Contracts extends Component {
     getStates: React.PropTypes.func,
   }
   render(){
+    console.log(this.props);
     const { navigation } = this.props
     const { contracts } = this.props
     const {state} = navigation
@@ -92,13 +99,14 @@ class ItemComponent extends Component{
 }
 function bindAction(dispatch){
   return {
-    getStates: () => dispatch(getStates()),
+    // getStates: () => dispatch(getStates()),
     getRateUnique: list => dispatch(getRateUnique(list)),
-    getContract: () => dispatch(getContract()),
+    getContract: token => dispatch(getContract(token)),
   }
 }
 const mapStateToProps = state => ({
   contracts: state.list_contracts.contracts,
-  selectedIndex: state.list_contracts.selectedIndex
+  selectedIndex: state.list_contracts.selectedIndex,
+  token: state.user.token
 })
 export default connect(mapStateToProps, bindAction)(Contracts)

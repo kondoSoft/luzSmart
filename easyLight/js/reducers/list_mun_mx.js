@@ -1,5 +1,6 @@
 import type { Action } from "../actions/types";
 import { GET_MUNICIPALITY, RESET_MUNICIPALITY} from "../actions/list_states_mx";
+import {REHYDRATE} from 'redux-persist/constants'
 
 export type State = {
   list: string
@@ -22,6 +23,11 @@ export default function(state: State = initialState, action: Action): State {
       ...state,
       results: []
     }
+  }
+  else if(action.type === REHYDRATE){
+    var incoming = action.payload.list_mun_mx
+    if (incoming) return {...state, ...incoming}
+    return state
   }
 
   return state;

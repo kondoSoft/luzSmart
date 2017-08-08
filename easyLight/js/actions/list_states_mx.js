@@ -11,7 +11,6 @@ export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 const endPoint = 'http://192.168.1.69:8080';
 
-
 export function printStates(list):Action{
   return {
     type: GET_STATES,
@@ -64,7 +63,7 @@ export function successContract(list):Action {
 
 export function getStates(list):Action {
   return dispatch => {
-    return fetch (endPoint+'/states', {
+    return fetch (endPoint+'/states/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -93,7 +92,7 @@ export function getMunicipality(state_id):Action{
 }
 export function getRate(list):Action{
   return dispatch => {
-    return fetch (endPoint+'/rate', {
+    return fetch (endPoint+'/rate/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -107,7 +106,7 @@ export function getRate(list):Action{
 }
 export function getRateUnique(list):Action{
   return dispatch => {
-    return fetch (endPoint+'/rate_unique', {
+    return fetch (endPoint+'/rate_unique/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -119,7 +118,8 @@ export function getRateUnique(list):Action{
     .catch(err => console.log(err))
   }
 }
-export function postContract(list):Action{
+export function postContract(list, token):Action{
+  console.log('fetch', token);
   return dispatch => {
     const data = new FormData();
     data.append('name_contract', list.name)
@@ -139,27 +139,27 @@ export function postContract(list):Action{
       headers: {
        'Accept': 'application/json',
        'Content-Type': 'multipart/form-data',
+       'Authorization': 'Token '+token
      },
      body: data
     })
     .then(res => {return res.json()})
-    .then(res =>dispatch(successContract(res)))
+    .then(res => dispatch(successContract(res)))
     .catch(err => console.log(err))
   }
 }
-export function getContract(list):Action{
+export function getContract(token):Action{
   return dispatch => {
     return fetch (endPoint+'/contract/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'multipart/form-data',
+        'Authorization': 'Token '+token
       }
     })
     .then(res => {return res.json()})
-    .then(res=> {
-      console.log(res);
-      dispatch(printContract(res))})
+    .then(res=> dispatch(printContract(res)))
     .catch(err => console.log(err))
   }
 }

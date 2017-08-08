@@ -128,7 +128,8 @@ class AddContracts extends Component {
     this.setState({cost: event.nativeEvent.text});
   }
   sendData(){
-    this.props.postContract(this.state)
+    console.log('index',this.props.token);
+    this.props.postContract(this.state, this.props.token)
     this.props.navigation.navigate('Receipt')
   }
   // falta condicion para hacer check en uno u otro
@@ -352,7 +353,7 @@ class AddContracts extends Component {
 }
 function bindAction(dispatch){
   return {
-    postContract: list =>dispatch(postContract(list)),
+    postContract: (list, token) =>dispatch(postContract(list, token)),
     getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
     resetMunicipality: () => dispatch(resetMunicipality()),
   }
@@ -361,5 +362,6 @@ const mapStateToProps = state => ({
   states_mx: state.list_states_mx.results,
   municipality_mx: state.list_mun_mx.results,
   list_rate: state.list_rate.list_rate,
+  token: state.user.token
 })
 export default connect(mapStateToProps, bindAction)(AddContracts);
