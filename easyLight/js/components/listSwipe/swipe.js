@@ -119,15 +119,19 @@ export default class SwipeAccordion extends Component{
     this.navigateTo = this.navigateTo.bind(this)
   }
   toggle(){
+    console.log('props of swipe accordion',this.props);
+    this.props.func()
     let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
-       finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
+        finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
+
     this.setState({
       expanded : !this.state.expanded
-    });
+     });
+
     var Config = {
-      tension: (this.props.tension)? this.props.tension : 40,
-      friction: (this.props.friction)? this.props.friction : 15,
-      velocity: (this.props.velocity)? this.props.velocity : 12
+     tension: (this.props.tension)? this.props.tension : 40,
+     friction: (this.props.friction)? this.props.friction : 15,
+     velocity: (this.props.velocity)? this.props.velocity : 12
     }
     this.state.animation.setValue(initialValue);
     Animated.spring(
@@ -136,7 +140,7 @@ export default class SwipeAccordion extends Component{
           ...Config,
           toValue: finalValue
         }
-    ).start();
+      ).start();
   }
   _setMinHeight(event){
     this.setState({
