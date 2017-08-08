@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import HomeDrawerRouter from "./HomeDrawerRouter";
 import { StackNavigator } from "react-navigation";
-
 import { Header, Left, Button, Icon, Body, Title, Right } from "native-base";
 import Login from "../components/login/";
 import BlankPage from "../components/blankPage";
@@ -15,10 +14,14 @@ import Receipt from '../components/receipt';
 import History from '../components/history';
 import Tips from '../components/tips';
 import Contact from '../components/contact';
+import Configuration from '../components/configuration';
+import EditProfile from '../components/editProfile';
+
 
 HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
   header: null
 });
+
 
 export default (StackNav = StackNavigator({
   // Login: { screen: Login },
@@ -31,5 +34,7 @@ export default (StackNav = StackNavigator({
   Receipt: { screen: Receipt },
   History: { screen: History },
   Tips: { screen: Tips },
-  Contact: { screen:  Contact }
+  Contact: { screen:  Contact },
+  Configuration: { screen: Configuration },
+  EditProfile: { screen: EditProfile },
 }));

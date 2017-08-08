@@ -9,7 +9,9 @@ export const SET_INDEX = 'SET_INDEX';
 export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
-const endPoint = 'http://192.168.1.69:8080';
+
+const endPoint = 'http://192.168.1.85:8080';
+
 
 export function printStates(list):Action{
   return {

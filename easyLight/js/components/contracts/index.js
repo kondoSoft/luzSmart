@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Platform, Image} from 'react-native';
+import { View, Platform, Image, ScrollView } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Container, Fab , Content, Body, Left, List, Thumbnail, Text, Title, Button, Icon, Right} from 'native-base';
 import Header from '../header/index';
@@ -17,10 +17,6 @@ import { getRateUnique, getContract } from "../../actions/list_states_mx";
 // var gradientImage = require('../../../images/header.png')
 
 class Contracts extends Component {
-  constructor(props){
-
-    super(props)
-  }
   static navigationOptions = {
     header: null,
   };
@@ -30,19 +26,18 @@ class Contracts extends Component {
 
   }
   componentWillReceiveProps(nextProps){
-    console.log('this is token', this.props);
+  
     if(this.props.token == ""){
       this.props.getContract(nextProps.token)
     }
-
   }
   static propType = {
     getRateUnique: React.PropTypes.func,
     getContract: React.PropTypes.func,
     getStates: React.PropTypes.func,
   }
+
   render(){
-    console.log(this.props);
     const { navigation } = this.props
     const { contracts } = this.props
     const {state} = navigation
@@ -50,23 +45,10 @@ class Contracts extends Component {
       <Container>
         <Header navigation={navigation} title={"EASYLIGHT"}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <Content style={{backgroundColor: '#fff'}}>
-          <Grid>
-            <Col>
-              <List style={styles.list}>
-                {contracts.map((contract, i )=><SwipeAccordion
-                  key={i}
-                  index={contract.id}
-                  receipts={contract.receipt}
-                  navigation={navigation}
-                  dataAccordionContract={contract}
-                  component={<ItemComponent data={contract}/>}
-                  icon={<Icon style={styles.icon} name="information-circle"/>}
-                />)}
-              </List>
-            </Col>
-          </Grid>
-        </Content>
+        <ParentSwipeContracts
+          getContract={contracts}
+          navigation={navigation}
+        />
         <FabButton
           navigation={this.props.navigation}
           onTap={()=>{navigation.navigate("AddContracts")}}
@@ -75,6 +57,41 @@ class Contracts extends Component {
         </FabButton>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
+    )
+  }
+}
+class ParentSwipeContracts extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      key: null
+    }
+    this.onOpenSwipe = this.onOpenSwipe.bind(this)
+  }
+  onOpenSwipe(i){
+    this.setState({
+      key: i,
+    })
+  }
+  render(){
+    const { navigation } = this.props
+    var { getContract } = this.props
+    return(
+      <ScrollView
+        style={{backgroundColor: '#fff'}}
+        >
+        {getContract.map((contract, i )=><SwipeAccordion
+          func={()=>this.onOpenSwipe(i)}
+          indexOpen={this.state.key}
+          keyVal={i}
+          key={i}
+          index={contract.id}
+          receipts={contract.receipt}
+          navigation={navigation}
+          component={<ItemComponent data={contract}/>}
+          icon={<Icon style={styles.icon} name="information-circle"/>}
+        />)}
+      </ScrollView>
     )
   }
 }
