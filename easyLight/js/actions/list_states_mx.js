@@ -9,7 +9,8 @@ export const SET_INDEX = 'SET_INDEX';
 export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
-const endPoint = 'http://192.168.1.68:8080';
+
+const endPoint = 'http://192.168.1.85:8080';
 
 
 export function printStates(list):Action{
@@ -121,29 +122,29 @@ export function getRateUnique(list):Action{
 }
 export function postContract(list):Action{
   return dispatch => {
+    const data = new FormData();
+    data.append('name_contract', list.name)
+    data.append('number_contract', list.number_contract)
+    data.append('state', list.state)
+    data.append('municipality', list.municipality)
+    data.append('rate', list.rate)
+    data.append('period_summer', list.period_summer)
+    data.append('type_payment', list.type_payment)
+    data.append('image',{
+      uri: list.file.uri,
+      type: 'image/png',
+      name: list.file.fileName
+    })
     return fetch(endPoint+'/contract/',{
       method: 'POST',
       headers: {
        'Accept': 'application/json',
-       'Content-Type': 'application/json',
+       'Content-Type': 'multipart/form-data',
      },
-     body: JSON.stringify({
-        name_contract: list.name,
-        number_contract: list.number_contract,
-        state: list.state,
-        municipality: list.municipality,
-        rate: list.rate,
-        period_summer: list.period_summer,
-        type_payment: list.type_payment,
-        // image: list.image,
-
-      })
+     body: data
     })
     .then(res => {return res.json()})
-    .then(res =>{
-      console.log('respuesta',res)
-      dispatch(successContract(res))
-    })
+    .then(res =>dispatch(successContract(res)))
     .catch(err => console.log(err))
   }
 }
