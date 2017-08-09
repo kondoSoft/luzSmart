@@ -8,7 +8,6 @@ export default {
     paddingRight: 0,
     backgroundColor:'transparent',
     flexDirection: 'row',
-    paddingTop: (Platform.OS === 'ios')? 15 : 0,
     height: (Platform.OS === 'ios')? '9%' : '10%',
     resizeMode: 'cover',
   },
@@ -22,6 +21,8 @@ export default {
     color: 'white',
     fontSize: 26,
     paddingLeft: 3,
+    width: '120%',
+    height: '80%'
   },
   header__body:{
     flex: 4,

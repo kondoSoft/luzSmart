@@ -46,7 +46,7 @@ class HeaderGlobal extends Component {
       platformHeader = (
         <Image
         source={require('../../../images/header.png')}
-        style={[styles.header,{ zIndex: (this.props.zIndex)? 1000 : 0,width: Screen.width}]}
+        style={[styles.header,{ zIndex: (this.props.zIndex)? 1000 : 0 , width: Screen.width}]}
         >
           <Left style={styles.left}>
             {(state.routeName != "Login" && state.routeName != "Contracts") ? iconBack : <View style={{paddingLeft: (state.routeName != "Login" )? '20%' : 0}}/>}

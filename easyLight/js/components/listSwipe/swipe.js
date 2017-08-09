@@ -68,10 +68,10 @@ class ListItemSwipe extends React.Component {
         if ( x == 0 ){
           this.props.onTap('DetailContract')
         }
-        if (gesture.dx < -75) {
+        if (gesture.dx < -45) {
           Animated.spring(
             this.state.pan,
-            {toValue:{x:-120,y:0}},
+            {toValue:{x:-100,y:0}},
           ).start();
         }
         // else if(gesture.dx > 75) {
@@ -99,7 +99,7 @@ class ListItemSwipe extends React.Component {
     return(
         <Animated.View
          {...this.panResponder.panHandlers}
-          style={[this.state.pan.getLayout(),{backgroundColor: '#fff',height: 80, width: Window.width, position: 'absolute', top: 0, right: 0},this.props.style]}
+          style={[this.state.pan.getLayout(),{backgroundColor: '#fff',height: 70, width: Window.width, position: 'absolute', top: 0, right: 0},this.props.style]}
           onLayout={this.props.onLayout}
           >
             {this.props.component}
@@ -111,7 +111,7 @@ export default class SwipeAccordion extends Component{
   constructor(props){
     super(props)
     this.state = {
-      animation: new Animated.Value(80),
+      animation: new Animated.Value(70),
       minHeight: 0,
       maxHeight: 0,
       expanded : false,
@@ -195,9 +195,9 @@ class ExpandedView extends Component{
         {Object.keys(contentExpandedView).map((current,i)=>{
           let colors = ['#fff', 'lightgrey']
           return(
-            <View key={i} style={{flexDirection: 'row',alignItems: 'center', height: 70, backgroundColor: colors[i % colors.length]}}>
+            <View key={i} style={{flexDirection: 'row',alignItems: 'center', height: 50, backgroundColor: colors[i % colors.length]}}>
               <Text style={{flex: 2, textAlign: 'center',color:'black'}}>{contentExpandedView[current].title}</Text>
-              <Text style={{flex: .7,padding: 15, textAlign: 'center',color: 'black'}}>{contentExpandedView[current].value}</Text>
+              <Text style={{flex: .7,padding: (i === 0)? 0 : 15,paddingRight: (i === 0)? 15 : 0, textAlign: 'center',color: 'black'}}>{contentExpandedView[current].value}</Text>
             </View>
           )
         })}
@@ -228,9 +228,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   swipeBack:{
-    height: 80,
+    height: 70,
     flexDirection: 'row',
-    backgroundColor: '#fff',
   },
   swipeBack__left:{
     flex: 1,

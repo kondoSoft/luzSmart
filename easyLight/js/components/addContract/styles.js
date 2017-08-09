@@ -10,9 +10,8 @@ export default {
       flex: 1,
     },
     col__form:{
-      marginTop: 10,
       alignItems: 'center',
-
+      backgroundColor:'orange',
     },
     row__top__col__right__icon:{
       paddingRight: 30
@@ -20,15 +19,16 @@ export default {
     col__form__item:{
       paddingLeft: 10,
       marginTop: (Platform.OS === 'ios')? 10 : 5,
-      marginRight: (Platform.OS === 'ios')? 10 : 5,
-      marginBottom: (Platform.OS === 'ios')? 10 : 5,
-      marginLeft: (Platform.OS === 'ios')? 10 : 5,
+      marginRight: (Platform.OS === 'ios')? 22 : 5,
+      marginBottom: (Platform.OS === 'ios')? 5 : 5,
+      marginLeft: (Platform.OS === 'ios')? 7 : 5,
       backgroundColor: 'lightgray',
-      width: (Platform.OS === 'ios')? '82%' : '85%',
+      width: (Platform.OS === 'ios')? '80%' : '85%',
     },
     select:{
-      width: 310,
-      margin: 10,
+      width: '90%',
+      margin: 5,
+      height: 30,
       backgroundColor:'#fff',
       borderBottomWidth:1,
       borderTopWidth:1,

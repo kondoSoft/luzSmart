@@ -31,10 +31,19 @@ class DetailContract extends Component {
   constructor(props){
     super(props)
 
+    this.state = {
+      key: null,
+    }
+    this.onOpenSwipe = this.onOpenSwipe.bind(this)
   }
   static navigationOptions = {
     header: null
   };
+  onOpenSwipe(i){
+    this.setState({
+      key: i,
+    })
+  }
   render(){
     const { navigation } = this.props
     const bill = navigation.state.params.receipt
@@ -59,6 +68,9 @@ class DetailContract extends Component {
             <Col>
               <List style={styles.list}>
                 {bill.map((item, i )=><SwipeAccordion
+                    func={()=>this.onOpenSwipe(i)}
+                    indexOpen={this.state.key}
+                    keyVal={i}
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}

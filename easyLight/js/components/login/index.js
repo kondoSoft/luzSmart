@@ -112,7 +112,7 @@ class Login extends Component {
                   <Field name="password" component={this.renderInput} />
                 </Col>
               </Row>
-              <Row size={30}>
+              <Row size={40}>
                 <Col style={styles.form}>
                   <Button
                     block

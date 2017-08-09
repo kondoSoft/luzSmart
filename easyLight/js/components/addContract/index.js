@@ -257,15 +257,15 @@ class AddContracts extends Component {
           >
           <Grid style={{alignItems: 'center'}}>
             <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
-              <Left style={ {marginLeft: 30} }>
+              <Left style={ {marginLeft: 19} }>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                  <View style={{marginBottom: 0,height: 65,width: '100%'}}>
+                  <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
                   { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Select a Photo</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
                   </View>
                 </TouchableOpacity>
               </Left>
-              <Body style={{ flex:3,height: '35%'}}>
-                <Input style={{textAlign: 'center', paddingRight: 30,width: '100%', paddingTop: 0, paddingBottom: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
+              <Body style={{height: 30,flex:2}}>
+                <Input style={{textAlign: 'center',width: '100%',padding: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
               </Body>
               <Right style={ styles.row__top__left__right }>
                 <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
@@ -275,8 +275,8 @@ class AddContracts extends Component {
             <Col size={ (Platform.OS === 'ios')? 40 : 29 } style={ styles.col__form }>
               <Form>
                 <Item fixedLabel style={styles.col__form__item}>
-                <Input style={{paddingTop:10}} placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
-              </Item>
+                  <Input placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
+                </Item>
               { (Platform.OS === 'ios')?
                 <Select
                   selectStyle={styles.select}
@@ -319,7 +319,7 @@ class AddContracts extends Component {
               { periodSummer }
               </Form>
             </Col>
-            {(Platform.OS === 'ios')? <View style={{height:40}}></View> : <View style={{height: 20}}></View>}
+            {(Platform.OS === 'ios')? <View style={{height:15}}></View> : <View style={{height: 20}}></View>}
             <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 20 : 20}}>
               <View style={styles.row__bottom__view__top}>
                 <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen()}/>

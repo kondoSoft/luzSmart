@@ -17,5 +17,9 @@ export default {
   },
   footer__text__resultados:{
     fontSize: 7,
+    width: '130%',
+    textAlign: 'center'
+  },
+  footer__btn__resultados:{
   }
 }
