@@ -68,10 +68,10 @@ class ListItemSwipe extends React.Component {
         if ( x == 0 ){
           this.props.onTap('DetailContract')
         }
-        if (gesture.dx < -45) {
+        if (gesture.dx < -25) {
           Animated.spring(
             this.state.pan,
-            {toValue:{x:-100,y:0}},
+            {toValue:{x:-120,y:0}},
           ).start();
         }
         // else if(gesture.dx > 75) {

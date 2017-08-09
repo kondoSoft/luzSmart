@@ -13,11 +13,13 @@ export default {
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#fff',
+    backgroundColor: 'red',
   },
   grid:{
     flex:1,
+    height: Screen.height,
     paddingTop: (Platform.OS === 'ios')? 100 : 120,
+    backgroundColor: '#fff'
   },
   header:{
     backgroundColor: 'green',

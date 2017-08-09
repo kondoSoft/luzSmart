@@ -11,24 +11,24 @@ export default {
     },
     col__form:{
       alignItems: 'center',
-      backgroundColor:'orange',
+      justifyContent:'center',
+      width:'100%'
     },
     row__top__col__right__icon:{
       paddingRight: 30
     },
     col__form__item:{
       paddingLeft: 10,
-      marginTop: (Platform.OS === 'ios')? 10 : 5,
-      marginRight: (Platform.OS === 'ios')? 22 : 5,
-      marginBottom: (Platform.OS === 'ios')? 5 : 5,
-      marginLeft: (Platform.OS === 'ios')? 7 : 5,
+      marginTop: 5,
+      marginRight: (Platform.OS === 'ios')? 0 : 5,
+      marginBottom: 5,
+      marginLeft: (Platform.OS === 'ios')? 0 : 5,
       backgroundColor: 'lightgray',
-      width: (Platform.OS === 'ios')? '80%' : '85%',
+      width: '85%',
     },
     select:{
-      width: '90%',
-      margin: 5,
-      height: 30,
+      width: '94%',
+      margin: 10,
       backgroundColor:'#fff',
       borderBottomWidth:1,
       borderTopWidth:1,

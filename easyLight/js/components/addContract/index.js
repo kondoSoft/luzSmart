@@ -252,12 +252,10 @@ class AddContracts extends Component {
       <Container style={{backgroundColor:'#fff'}}>
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <ScrollView
-          style={{flex:1}}
-          >
-          <Grid style={{alignItems: 'center'}}>
-            <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
-              <Left style={ {marginLeft: 19} }>
+        <ScrollView>
+          <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
+            <Row size={12} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
+              <Left style={{marginLeft:19}}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                   <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
                   { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Select a Photo</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }

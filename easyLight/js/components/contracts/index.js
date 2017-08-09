@@ -13,6 +13,7 @@ import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
 import { getStates, getRateUnique, getContract } from "../../actions/list_states_mx";
+import DrawNav from '../home';
 
 class Contracts extends Component {
   static navigationOptions = {
@@ -30,6 +31,7 @@ class Contracts extends Component {
   }
 
   render(){
+    console.log('drawnav',DrawNav);
     const { navigation } = this.props
     const { contracts } = this.props
     const {state} = navigation
