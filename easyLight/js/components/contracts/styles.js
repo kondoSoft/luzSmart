@@ -54,8 +54,9 @@ export default {
   ItemComponent:{
     view:{
       flexDirection: 'row',
-      height: 80,
+      height: 70,
       borderBottomWidth: 0.5,
+      borderRightWidth:0.5,
       borderColor: 'lightgrey',
     },
     align:{

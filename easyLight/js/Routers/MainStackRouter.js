@@ -3,7 +3,6 @@ import HomeDrawerRouter from "./HomeDrawerRouter";
 import { StackNavigator } from "react-navigation";
 import { Header, Left, Button, Icon, Body, Title, Right } from "native-base";
 import Login from "../components/login/";
-import BlankPage from "../components/blankPage";
 import SignIn from "../components/signin"
 import Contracts from '../components/contracts';
 import Measurements from '../components/measurements';

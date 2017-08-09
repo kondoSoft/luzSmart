@@ -104,7 +104,11 @@ class Login extends Component {
     return (
       <Container scrollEnabled={false}>
         <Header title={"INICIO DE SESIÓN"} zIndex navigation={this.props.navigation}/>
-        <ScrollView style={styles.container} ref='scroll'>
+        <ScrollView
+          style={styles.container}
+          ref='scroll'
+          scrollEnabled={false}
+          >
             <Grid style={styles.grid}>
               <Row  size={40}>
                 <Col style={styles.col__inputs__login}>
@@ -112,7 +116,7 @@ class Login extends Component {
                   <Field name="password" component={this.renderInput} />
                 </Col>
               </Row>
-              <Row size={30}>
+              <Row size={40}>
                 <Col style={styles.form}>
                   <Button
                     block
@@ -139,10 +143,10 @@ class Login extends Component {
                   </TouchableOpacity>
                 </Col>
               </Row>
+              <View style={styles.footer}>
+                <Thumbnail source={ logoFooter } />
+              </View>
             </Grid>
-          <View style={styles.footer}>
-            <Thumbnail source={ logoFooter } />
-          </View>
         </ScrollView>
       </Container>
     );
