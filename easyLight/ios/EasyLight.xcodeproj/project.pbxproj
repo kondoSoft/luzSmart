@@ -75,6 +75,7 @@
 		EC09A72DE7B94C7EA24AD1AB /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6C8FE0B3E1C044DFB21DCC29 /* Octicons.ttf */; };
 		FB7FE701F2AD41F39998D6A2 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3716D26653CB4247ADF461DD /* Rubik-Bold.ttf */; };
 		FEED45D4E3A8444C95F02497 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B9FBCE56480B4E7A800F6A7F /* MaterialIcons.ttf */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -253,6 +254,7 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -267,20 +269,25 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+
 		B754513E1F3A0D0D006704CA /* PBXContainerItemProxy */ = {
+
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 139D7ECE1E25DB7D00323FB7;
 			remoteInfo = "third-party";
 		};
+
 		B75451401F3A0D0D006704CA /* PBXContainerItemProxy */ = {
+
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 139D7E881E25C6D100323FB7;
 			remoteInfo = "double-conversion";
 		};
+
 		B75451501F3A0E0F006704CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AA386474FAE04046BAD368AB /* CodePush.xcodeproj */;
@@ -288,9 +295,11 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = CodePush;
 		};
+
 		B75451981F3A0E15006704CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8D86FF5979A4EBEA5B1976A /* RNImagePicker.xcodeproj */;
+
 			proxyType = 2;
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
@@ -533,10 +542,12 @@
 				3DAD3EAF1DF850E9000B6D8A /* libjschelpers.a */,
 				B754513F1F3A0D0D006704CA /* libthird-party.a */,
 				B75451411F3A0D0D006704CA /* libdouble-conversion.a */,
+
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
+
 		25C1E90E771D4B918DDB0C13 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -554,6 +565,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -580,6 +592,7 @@
 				AA386474FAE04046BAD368AB /* CodePush.xcodeproj */,
 				F8D86FF5979A4EBEA5B1976A /* RNImagePicker.xcodeproj */,
 				A959D26A8A8E4388AC300535 /* BVLinearGradient.xcodeproj */,
+
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -602,6 +615,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				25C1E90E771D4B918DDB0C13 /* Frameworks */,
 				A2148B30DAA644EA8E31BEC0 /* Resources */,
+
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -656,6 +670,7 @@
 				2E6E6BC06D4A44C1A34A02E9 /* Skia.ttf */,
 				ABFDC1A6B1D14AF09E3C6366 /* Times New Roman.ttf */,
 				24CD1F2180EC4442960CCF25 /* Zocial.ttf */,
+
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -772,9 +787,6 @@
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
-					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = JU5Q9F8CVN;
-					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
@@ -799,12 +811,14 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+
 					ProductGroup = B754519A1F3A0E15006704CA /* Products */;
 					ProjectRef = A959D26A8A8E4388AC300535 /* BVLinearGradient.xcodeproj */;
 				},
 				{
 					ProductGroup = B754514D1F3A0E0F006704CA /* Products */;
 					ProjectRef = AA386474FAE04046BAD368AB /* CodePush.xcodeproj */;
+
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -851,8 +865,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+
 					ProductGroup = B75451791F3A0E15006704CA /* Products */;
 					ProjectRef = F8D86FF5979A4EBEA5B1976A /* RNImagePicker.xcodeproj */;
+
 				},
 			);
 			projectRoot = "";
@@ -1027,6 +1043,7 @@
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1308,7 +1325,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = JU5Q9F8CVN;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
@@ -1334,7 +1350,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JU5Q9F8CVN;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",

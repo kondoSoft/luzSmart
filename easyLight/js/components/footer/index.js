@@ -12,7 +12,7 @@ class FooterGlobal extends Component {
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
           <FooterTab style={styles.footer}>
-            <Button vertical onPress={() => this.props.navigation.navigate("Contracts")}>
+            <Button vertical onPress={() => (this.props.navigation.state.routeName == "Contracts") ? null : this.props.navigation.navigate("Contracts")}>
               <Icon style={styles.footer__icon} name="home" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text}>Inicio</Text> : <View/> }
             </Button>

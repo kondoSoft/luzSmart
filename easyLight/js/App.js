@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import CodePush from "react-native-code-push";
-
+import { connect } from "react-redux";
 import { Container, Content, Text, View } from "native-base";
 import Modal from "react-native-modalbox";
 import MainStackRouter from "./Routers/MainStackRouter";
@@ -127,8 +127,10 @@ class App extends Component {
       );
     }
 
-    return <MainStackRouter />;
+    return <MainStackRouter screenProps={this.props.token}/>;
   }
 }
-
-export default App;
+const mapStateToProps = state => ({
+  token: state.user.token
+})
+export default connect(mapStateToProps)(App);

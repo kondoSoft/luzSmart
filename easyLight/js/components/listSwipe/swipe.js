@@ -2,24 +2,7 @@ import React,{ Component } from 'react';
 import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity,Platform } from 'react-native';
 
 let Window = Dimensions.get('window');
-var contentExpandedView = {
-  'first':{
-    title: 'Período de Consumo',
-    value: '29 FEB 17 al 29 ABR 17',
-  },
-  'second':{
-    title: 'Período de Consumo',
-    value: '5,000',
-  },
-  'third':{
-    title: 'Última Lectura Diaria',
-    value: '5,200',
-  },
-  'four':{
-    title: 'Consumo kWh',
-    value: '200',
-  }
-}
+
 
 class ListItemSwipe extends React.Component {
   static propTypes = {
@@ -181,14 +164,36 @@ export default class SwipeAccordion extends Component{
           </TouchableOpacity>
         </View>
         <ListItemSwipe style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
-        <ExpandedView func={this._setMaxHeight.bind(this)}/>
+        <ExpandedView func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contracts') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
       </Animated.View>
     )
   }
 }
 
 class ExpandedView extends Component{
+
   render(){
+
+    const { data } = this.props
+    var contentExpandedView = {
+      'first':{
+        title: 'Período de Consumo',
+        value: data.payday_limit,
+      },
+      'second':{
+        title: 'Lectura Inicial',
+        value: data.previous_reading,
+      },
+      'third':{
+        title: 'Última Lectura Diaria',
+        value: data.previous_reading + 200,
+      },
+      'four':{
+        title: 'Consumo kWh',
+        value: data.current_dataclea,
+      }
+    }
+
     let colors = ['#fff', 'lightgrey']
     return(
       <View onLayout={this.props.func}>

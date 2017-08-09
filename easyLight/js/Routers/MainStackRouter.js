@@ -23,7 +23,7 @@ HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
 
 
 export default (StackNav = StackNavigator({
-  Login: { screen: Login },
+  // Login: { screen: Login },
   Contracts: { screen: Contracts },
   SignIn: { screen: SignIn },
   DetailContract: { screen: DetailContract },
