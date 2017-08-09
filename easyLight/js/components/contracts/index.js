@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Platform, Image, ScrollView } from 'react-native';
+import { View, Platform, Image, ScrollView, Dimensions } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Container, Fab , Content, Body, Left, List, Thumbnail, Text, Title, Button, Icon, Right} from 'native-base';
 import Header from '../header/index';
@@ -15,6 +15,7 @@ import { openDrawer } from "../../actions/drawer";
 import { getRateUnique, getContract } from "../../actions/list_states_mx";
 
 // var gradientImage = require('../../../images/header.png')
+
 
 class Contracts extends Component {
   static navigationOptions = {
@@ -38,6 +39,7 @@ class Contracts extends Component {
   }
 
   render(){
+    console.log('drawnav',DrawNav);
     const { navigation } = this.props
     const { contracts } = this.props
     const {state} = navigation
@@ -79,6 +81,7 @@ class ParentSwipeContracts extends Component {
     return(
       <ScrollView
         style={{backgroundColor: '#fff'}}
+        scrollEnabled={true}
         >
         {getContract.map((contract, i )=><SwipeAccordion
           func={()=>this.onOpenSwipe(i)}

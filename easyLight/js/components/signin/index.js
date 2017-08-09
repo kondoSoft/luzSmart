@@ -33,10 +33,10 @@ class SignIn extends Component {
             style={{backgroundColor: '#fff'}}
             ref='scroll'
             >
-            <Grid style={{flex: 1}}>
+            <Grid>
               <Row style={styles.row__top}>
                 <Col style={styles.row__top__col__left}>
-                  <Thumbnail source={ require('../../../images/profile.png')} />
+                  <Thumbnail style={{width: 70, height:70}} source={ require('../../../images/profile.png')} />
                 </Col>
                 <Col style={styles.row__top__col__right}>
                   {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}> */}

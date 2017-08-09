@@ -19,18 +19,19 @@ export default class FabButton extends Component{
       <View
         style={{
           backgroundColor: 'steelblue',
-          width: (Platform.OS === 'ios')? 60 : 75,
-          height: (Platform.OS === 'ios')? 60 : 75,
-          borderRadius: 50,
+          width: (Platform.OS === 'ios')? 50 : 75,
+          height: (Platform.OS === 'ios')? 50 : 75,
+          borderRadius: 25,
           alignItems: 'center',
           justifyContent: 'center',
           position: 'absolute',
-          bottom: (Platform.OS === 'ios')? 80 : 30,
-          right: 10,
+          bottom: (Platform.OS === 'ios')? 60 : 30,
+          right: (Platform.OS === 'ios')? 5 : 10,
+          overflow: 'hidden',
         }}>
         <TouchableOpacity
           onPress={(this.props.navigateTo === undefined)? this.props.onTap : this.onNavigateTo }
-          style={{ width: 65, height: 65, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
+          style={{ width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
           {this.props.children}
         </TouchableOpacity>
       </View>
