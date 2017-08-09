@@ -39,7 +39,6 @@ class Home extends Component {
   }
 
   render() {
-    console.log(DrawNav, "786785786");
     return (
       <Container style={styles.container}>
         <Header>

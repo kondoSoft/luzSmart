@@ -24,10 +24,11 @@ class Contracts extends Component {
   componentWillMount(){
     // this.props.getStates()
     this.props.getRateUnique()
-
+    if(this.props.token != ""){
+      this.props.getContract(this.props.token)
+    }
   }
   componentWillReceiveProps(nextProps){
-  
     if(this.props.token == ""){
       this.props.getContract(nextProps.token)
     }
@@ -39,7 +40,6 @@ class Contracts extends Component {
   }
 
   render(){
-    console.log('drawnav',DrawNav);
     const { navigation } = this.props
     const { contracts } = this.props
     const {state} = navigation
@@ -77,7 +77,8 @@ class ParentSwipeContracts extends Component {
   }
   render(){
     const { navigation } = this.props
-    var { getContract } = this.props
+    const { getContract } = this.props
+    console.log(getContract);
     return(
       <ScrollView
         style={{backgroundColor: '#fff'}}
@@ -91,6 +92,7 @@ class ParentSwipeContracts extends Component {
           index={contract.id}
           receipts={contract.receipt}
           navigation={navigation}
+          dataAccordionContract={contract}
           component={<ItemComponent data={contract}/>}
           icon={<Icon style={styles.icon} name="information-circle"/>}
         />)}
