@@ -10,13 +10,16 @@ export type State = {
 
 const initialState = {
   token: '',
+  loginError: undefined,
 };
 
 export default function (state:State = initialState, action:Action): State {
+
   if (action.type === SET_USER) {
     return {
       ...state,
       token: action.payload.token,
+      loginError: action.payload.non_field_errors,
     };
   }
   else if (action.type === REHYDRATE){

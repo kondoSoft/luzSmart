@@ -23,7 +23,7 @@ import EditProfile from '../components/editProfile';
 
 
 export default (StackNav = StackNavigator({
-  // Login: { screen: Login },
+  Login: { screen: Login },
   Contracts: { screen: Contracts },
   SignIn: { screen: SignIn },
   DetailContract: { screen: DetailContract },
