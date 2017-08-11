@@ -13,13 +13,16 @@ import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
 import { getRateUnique, getContract } from "../../actions/list_states_mx";
-
+import Tips from '../tips'
+import Measurements from '../measurements'
+import Results from '../results'
 // var gradientImage = require('../../../images/header.png')
 
 
 class Contracts extends Component {
   static navigationOptions = {
     header: null,
+    tabBarLabel: 'Contratos',
   };
   componentWillMount(){
     // this.props.getStates()
@@ -45,7 +48,7 @@ class Contracts extends Component {
     const {state} = navigation
     return(
       <Container>
-        <Header navigation={navigation} title={"EASYLIGHT"}/>
+        <Header navigation={navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <ParentSwipeContracts
           getContract={contracts}
@@ -78,7 +81,6 @@ class ParentSwipeContracts extends Component {
   render(){
     const { navigation } = this.props
     const { getContract } = this.props
-    console.log(getContract);
     return(
       <ScrollView
         style={{backgroundColor: '#fff'}}
@@ -131,4 +133,22 @@ const mapStateToProps = state => ({
   selectedIndex: state.list_contracts.selectedIndex,
   token: state.user.token
 })
-export default connect(mapStateToProps, bindAction)(Contracts)
+const ContractsSwagger = connect(mapStateToProps, bindAction)(Contracts);
+const DrawNav = DrawerNavigator(
+  {
+     Contracts: { screen: ContractsSwagger },
+     Tips: { screen: Tips },
+     Mediciones: { screen: Measurements},
+     Resultados: { screen: Results },
+  },
+  {
+      drawerPosition: 'right',
+      // contentComponent: props => <DrawBar {...props} />
+  }
+)
+DrawNav.navigationOptions = ({navigation}) => {
+  return {
+    header: null
+  }
+}
+export default DrawNav

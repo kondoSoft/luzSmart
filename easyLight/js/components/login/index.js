@@ -56,8 +56,9 @@ const validate = values => {
   }
   return error;
 };
-
+  var errorLogin;
 class Login extends Component {
+
   static propTypes = {
     setUser: React.PropTypes.func,
     loginUser: React.PropTypes.func,
@@ -65,7 +66,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: ""
+      name: "",
+      loginNavigate: false
     };
     this.renderInput = this.renderInput.bind(this);
     this.handleContracts = this.handleContracts.bind(this);
@@ -100,8 +102,6 @@ class Login extends Component {
     );
   }
   handleContracts(e){
-    // console.log(e);
-    // this.props.setUser(e.email);
     this.props.loginUser(
       (e.email === undefined)?
       e.email
@@ -109,14 +109,12 @@ class Login extends Component {
       (e.password === undefined)?
       e.email
       : e.password.toLowerCase())
-    if(e.password != undefined){
-      this.props.navigation.navigate("Contracts")
-    }
-
+    this.props.navigation.navigate("Contracts")
   }
 
   componentWillUpdate(){
     this.props.getStates()
+
   }
   render() {
 
@@ -189,6 +187,9 @@ function bindAction(dispatch) {
     getStates: () => dispatch(getStates()),
   };
 }
+const mapStateToProps = state => ({
+  loginError: state.user.loginError
+})
 
 // export default LoginSwag;
-export default connect(null, bindAction)(LoginSwag);
+export default connect(mapStateToProps, bindAction)(LoginSwag);
