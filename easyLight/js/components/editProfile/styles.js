@@ -8,7 +8,7 @@ export default {
      alignItems: 'center',
      borderBottomWidth: 1,
      borderBottomColor: 'lightgray',
-     height: '15%',
+     height: '25%',
      paddingTop: (Platform.OS === 'ios')? 40 : (Screen.height > 592)? 15  : 5,
      paddingBottom: (Platform.OS === 'ios')? 40 : (Screen.height > 552)? 10  : 5,
   },
@@ -23,15 +23,20 @@ export default {
     textAlign: 'right'
   },
   row__botttom: {
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     height:'10%',
     paddingTop: (Platform.OS === 'ios')? 0 : (Screen.height > 592)? 7 : 10,
     paddingBottom:5,
   },
-  row__botttom__btn: {
-    width: 150,
+  row__botttom__btn__Cancel: {
+    width: 100,
     justifyContent: 'center',
-    backgroundColor: '#007aff',
+    backgroundColor: 'red',
+  },
+  row__botttom__btn__Success: {
+    width: 100,
+    justifyContent: 'center',
+    backgroundColor: '#4ccbe8',
   },
   form__item: {
      alignItems: 'center',

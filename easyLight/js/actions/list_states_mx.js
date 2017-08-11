@@ -9,7 +9,8 @@ export const SET_INDEX = 'SET_INDEX';
 export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
-const endPoint = 'http://192.168.1.82:8080';
+
+const endPoint = 'http://192.168.1.68:8080';
 
 
 export function printStates(list):Action{
@@ -64,7 +65,7 @@ export function successContract(list):Action {
 
 export function getStates(list):Action {
   return dispatch => {
-    return fetch (endPoint+'/states', {
+    return fetch (endPoint+'/states/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -93,7 +94,7 @@ export function getMunicipality(state_id):Action{
 }
 export function getRate(list):Action{
   return dispatch => {
-    return fetch (endPoint+'/rate', {
+    return fetch (endPoint+'/rate/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -107,7 +108,7 @@ export function getRate(list):Action{
 }
 export function getRateUnique(list):Action{
   return dispatch => {
-    return fetch (endPoint+'/rate_unique', {
+    return fetch (endPoint+'/rate_unique/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -119,42 +120,44 @@ export function getRateUnique(list):Action{
     .catch(err => console.log(err))
   }
 }
-export function postContract(list):Action{
-  console.log('postContract', list, list.name);
+export function postContract(list, token):Action{
+  console.log('fetch', token);
   return dispatch => {
+    const data = new FormData();
+    data.append('name_contract', list.name)
+    data.append('number_contract', list.number_contract)
+    data.append('state', list.state)
+    data.append('municipality', list.municipality)
+    data.append('rate', list.rate)
+    data.append('period_summer', list.period_summer)
+    data.append('type_payment', list.type_payment)
+    data.append('image',{
+      uri: list.file.uri,
+      type: 'image/png',
+      name: list.file.fileName
+    })
     return fetch(endPoint+'/contract/',{
       method: 'POST',
       headers: {
        'Accept': 'application/json',
-       'Content-Type': 'application/json',
+       'Content-Type': 'multipart/form-data',
+       'Authorization': 'Token '+token
      },
-     body: JSON.stringify({
-        name_contract: list.name,
-        number_contract: list.number_contract,
-        state: list.state,
-        municipality: list.municipality,
-        rate: list.rate,
-        period_summer: list.period_summer,
-        type_payment: list.type_payment,
-        // image: list.image,
-
-      })
+     body: data
     })
     .then(res => {return res.json()})
-    .then(res =>{
-      console.log('respuesta',res)
-      dispatch(successContract(res))
-    })
+    .then(res => dispatch(successContract(res)))
     .catch(err => console.log(err))
   }
 }
-export function getContract(list):Action{
+export function getContract(token):Action{
   return dispatch => {
-    return fetch (endPoint+'/contract', {
+    return fetch (endPoint+'/contract/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Token '+token
       }
     })
     .then(res => {return res.json()})

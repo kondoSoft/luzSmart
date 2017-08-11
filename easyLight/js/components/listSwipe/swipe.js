@@ -2,24 +2,7 @@ import React,{ Component } from 'react';
 import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity,Platform } from 'react-native';
 
 let Window = Dimensions.get('window');
-var contentExpandedView = {
-  'first':{
-    title: 'Período de Consumo',
-    value: '29 FEB 17 al 29 ABR 17',
-  },
-  'second':{
-    title: 'Período de Consumo',
-    value: '5,000',
-  },
-  'third':{
-    title: 'Última Lectura Diaria',
-    value: '5,200',
-  },
-  'four':{
-    title: 'Consumo kWh',
-    value: '200',
-  }
-}
+
 
 class ListItemSwipe extends React.Component {
   static propTypes = {
@@ -68,10 +51,10 @@ class ListItemSwipe extends React.Component {
         if ( x == 0 ){
           this.props.onTap('DetailContract')
         }
-        if (gesture.dx < -75) {
+        if (gesture.dx < -25) {
           Animated.spring(
             this.state.pan,
-            {toValue:{x:-120,y:0}},
+            {toValue:{x:-125,y:0}},
           ).start();
         }
         // else if(gesture.dx > 75) {
@@ -99,7 +82,7 @@ class ListItemSwipe extends React.Component {
     return(
         <Animated.View
          {...this.panResponder.panHandlers}
-          style={[this.state.pan.getLayout(),{backgroundColor: '#fff',height: 80, width: Window.width, position: 'absolute', top: 0, right: 0},this.props.style]}
+          style={[this.state.pan.getLayout(),{backgroundColor: '#fff',height: 70, width: Window.width, position: 'absolute', top: 0, right: 0},this.props.style]}
           onLayout={this.props.onLayout}
           >
             {this.props.component}
@@ -111,7 +94,7 @@ export default class SwipeAccordion extends Component{
   constructor(props){
     super(props)
     this.state = {
-      animation: new Animated.Value(80),
+      animation: new Animated.Value(70),
       minHeight: 0,
       maxHeight: 0,
       expanded : false,
@@ -119,15 +102,18 @@ export default class SwipeAccordion extends Component{
     this.navigateTo = this.navigateTo.bind(this)
   }
   toggle(){
+    this.props.func()
     let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
-       finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
+        finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
+
     this.setState({
       expanded : !this.state.expanded
-    });
+     });
+
     var Config = {
-      tension: (this.props.tension)? this.props.tension : 40,
-      friction: (this.props.friction)? this.props.friction : 15,
-      velocity: (this.props.velocity)? this.props.velocity : 12
+     tension: (this.props.tension)? this.props.tension : 40,
+     friction: (this.props.friction)? this.props.friction : 15,
+     velocity: (this.props.velocity)? this.props.velocity : 12
     }
     this.state.animation.setValue(initialValue);
     Animated.spring(
@@ -136,7 +122,7 @@ export default class SwipeAccordion extends Component{
           ...Config,
           toValue: finalValue
         }
-    ).start();
+      ).start();
   }
   _setMinHeight(event){
     this.setState({
@@ -152,7 +138,7 @@ export default class SwipeAccordion extends Component{
     if (this.props.navigation.state.routeName === 'DetailContract') {
 
     }else {
-      this.props.navigation.navigate(route, { params: this.props.index})
+      this.props.navigation.navigate(route, { receipt: this.props.receipts, index: this.props.index})
     }
   }
   render(){
@@ -177,23 +163,45 @@ export default class SwipeAccordion extends Component{
           </TouchableOpacity>
         </View>
         <ListItemSwipe style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
-        <ExpandedView func={this._setMaxHeight.bind(this)}/>
+        <ExpandedView func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contracts') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
       </Animated.View>
     )
   }
 }
 
 class ExpandedView extends Component{
+
   render(){
+
+    const { data } = this.props
+    var contentExpandedView = {
+      'first':{
+        title: 'Período de Consumo',
+        value: data.payday_limit,
+      },
+      'second':{
+        title: 'Lectura Inicial',
+        value: data.previous_reading,
+      },
+      'third':{
+        title: 'Última Lectura Diaria',
+        value: data.previous_reading + 200,
+      },
+      'four':{
+        title: 'Consumo kWh',
+        value: data.current_dataclea,
+      }
+    }
+
     let colors = ['#fff', 'lightgrey']
     return(
       <View onLayout={this.props.func}>
         {Object.keys(contentExpandedView).map((current,i)=>{
           let colors = ['#fff', 'lightgrey']
           return(
-            <View key={i} style={{flexDirection: 'row',alignItems: 'center', height: 70, backgroundColor: colors[i % colors.length]}}>
-              <Text style={{flex: 2, textAlign: 'center'}}>{contentExpandedView[current].title}</Text>
-              <Text style={{flex: .7,padding: 15, textAlign: 'center'}}>{contentExpandedView[current].value}</Text>
+            <View key={i} style={{flexDirection: 'row',alignItems: 'center', height: 50, backgroundColor: colors[i % colors.length]}}>
+              <Text style={{flex: 2, textAlign: 'center',color:'black'}}>{contentExpandedView[current].title}</Text>
+              <Text style={{flex: .7,padding: (i === 0)? 0 : 15,paddingRight: (i === 0)? 15 : 0, textAlign: 'center',color: 'black'}}>{contentExpandedView[current].value}</Text>
             </View>
           )
         })}
@@ -224,9 +232,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   swipeBack:{
-    height: 80,
+    height: 70,
     flexDirection: 'row',
-    backgroundColor: '#fff',
   },
   swipeBack__left:{
     flex: 1,
@@ -240,5 +247,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderColor: 'lightgrey',
   },
 });

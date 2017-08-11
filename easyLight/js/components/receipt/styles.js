@@ -1,11 +1,11 @@
 const React = require('react-native');
-const { StyleSheet, Dimensions } = React;
+const { StyleSheet, Dimensions, Platform } = React;
 
 
 export default {
   grid:{
     flexDirection: 'column',
-    paddingTop: 15,
+    paddingTop: (Platform.OS === 'ios')? 15 : 5,
   },
   form:{
     paddingLeft: 15,
@@ -22,21 +22,22 @@ export default {
     borderBottomColor: 'green',
     borderBottomWidth: 3,
     alignItems: 'flex-end',
-    marginBottom: 20
+    marginBottom: 20,
   },
   form__item__inputs:{
     borderLeftWidth: 2,
     borderBottomWidth: 2,
     borderRightWidth: 2,
     borderTopWidth: 2,
-    marginBottom: 10
+    marginBottom: 10,
+    paddingTop: 5,
   },
   form__item__label:{
     marginBottom: 3
   },
   col__bottom:{
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 5,
   },
   col__bottom__row__bottom:{
     paddingTop: 20,

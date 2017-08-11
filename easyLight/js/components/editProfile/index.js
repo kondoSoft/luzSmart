@@ -7,7 +7,7 @@ import styles from './styles';
 
 const Screen = Dimensions.get('window');
 
-class SignIn extends Component {
+class EditProfile extends Component {
   static navigationOptions = {
     header: null
   };
@@ -28,15 +28,15 @@ class SignIn extends Component {
   render(){
     return(
         <Container style={{height:Screen.height}}>
-          <Header zIndex navigation={this.props.navigation} title="Nuevo Registro"/>
+          <Header zIndex navigation={this.props.navigation} title="Editar Perfil"/>
           <ScrollView
             style={{backgroundColor: '#fff'}}
             ref='scroll'
             >
-            <Grid>
+            <Grid style={{flex: 1}}>
               <Row style={styles.row__top}>
                 <Col style={styles.row__top__col__left}>
-                  <Thumbnail style={{width: 70, height:70}} source={ require('../../../images/profile.png')} />
+                  <Thumbnail style={{width:80,height:80}} source={ require('../../../images/profile.png')} />
                 </Col>
                 <Col style={styles.row__top__col__right}>
                   {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}> */}
@@ -68,38 +68,24 @@ class SignIn extends Component {
                     />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Contraseña:</Label>
+                    <Label style={styles.text}>Contraseña Actual:</Label>
                     <Input
                       style={styles.form__item__input}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 90 : 90 })}
                     />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Confirmar contraseña:</Label>
+                    <Label style={styles.text}>Nueva Contraseña:</Label>
                     <Input
                       style={styles.form__item__input}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 100 : 100 })}
                     />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>F. nacimiento:</Label>
+                    <Label style={styles.text}>Confirmar Contraseña:</Label>
                     <Input
                       style={styles.form__item__input}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 160 : 160 })}
-                    />
-                  </Item>
-                  <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Celular:</Label>
-                    <Input
-                      style={styles.form__item__input}
-                      onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 200 : 200 })}
-                    />
-                  </Item>
-                  <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>C.P.:</Label>
-                    <Input
-                      style={styles.form__item__input}
-                      onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 250 : 300 })}
                     />
                   </Item>
                 </Form>
@@ -107,9 +93,15 @@ class SignIn extends Component {
               <Row style={styles.row__botttom}>
                 <Button
                   primary
-                  style={styles.row__botttom__btn}
+                  style={styles.row__botttom__btn__Cancel}
                   >
-                  <Text>Crear cuenta</Text>
+                  <Text>Cancelar</Text>
+                </Button>
+                <Button
+                  primary
+                  style={styles.row__botttom__btn__Success}
+                  >
+                  <Text>Guardar</Text>
                 </Button>
               </Row>
             </Grid>
@@ -119,4 +111,4 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+export default EditProfile;

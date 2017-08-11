@@ -14,21 +14,23 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import { DrawerNavigator, NavigationActions } from "react-navigation";
 import styles from './styles';
-
 const Screen = Dimensions.get('window');
+
 
 class HeaderGlobal extends Component {
 
+  handleDrawer(){
+    this.props.navigation.navigate('DrawerOpen')
+  }
   render(){
     const { state } = this.props.navigation
-    const button = <Button transparent onPress={() => alert('im the menu button')}><Icon active style={styles.header__icon} name="menu"/></Button>
+    const button = <Button transparent onPress={() => this.handleDrawer()}><Icon active style={styles.header__icon} name="menu"/></Button>
     const iconBack =  <Button transparent onPress={() => this.props.navigation.goBack()}>
         <Icon style={styles.header__icon} name={(Platform.OS === 'ios')? "ios-arrow-back" : "arrow-back"} />
       </Button>
     var platformHeader = (
-      <Header style={{backgroundColor: '#069b1c',height: 60 }}>
+      <Header style={{backgroundColor: '#069b1c',height: 50 }}>
         <Left style={styles.left,{flex: (Platform.OS === 'ios')? 0 : (state.routeName === 'Login')? 0 : 4 }}>
           {(state.routeName != "Login" && state.routeName != "Contracts") ? iconBack : <View style={{paddingLeft: (state.routeName != "Login" )? '20%' : 0}}/>}
         </Left>
@@ -46,7 +48,7 @@ class HeaderGlobal extends Component {
       platformHeader = (
         <Image
         source={require('../../../images/header.png')}
-        style={[styles.header,{ zIndex: (this.props.zIndex)? 1000 : 0}]}
+        style={[styles.header,{ zIndex: (this.props.zIndex)? 1000 : 0 , width: Screen.width}]}
         >
           <Left style={styles.left}>
             {(state.routeName != "Login" && state.routeName != "Contracts") ? iconBack : <View style={{paddingLeft: (state.routeName != "Login" )? '20%' : 0}}/>}

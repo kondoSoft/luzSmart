@@ -51,10 +51,11 @@ class AddContracts extends Component {
         "type_payment" : "",
         "receipt" : undefined,
         "cost" : 0,
-        "image" : require('../../../images/office.png'),
+        // "image" : require('../../../images/office.png'),
         "checkedMen": false,
         "checkedBi": false,
         "avatarSource" : null,
+        "file" : null,
     }
   }
   static propType = {
@@ -88,13 +89,14 @@ class AddContracts extends Component {
         console.log('User tapped custom button: ', response.customButton);
       }
       else {
-        let source = { uri: response.origURL };
-        console.log('source', typeof(source.uri), source.uri);
+        // let source = { uri: response.uri };
+
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
         this.setState({
-          avatarSource: source.uri
+          avatarSource: response.uri,
+          file: response
         });
       }
     });
@@ -126,7 +128,8 @@ class AddContracts extends Component {
     this.setState({cost: event.nativeEvent.text});
   }
   sendData(){
-    this.props.postContract(this.state)
+    console.log('index',this.props.token);
+    this.props.postContract(this.state, this.props.token)
     this.props.navigation.navigate('Receipt')
   }
   // falta condicion para hacer check en uno u otro
@@ -170,6 +173,7 @@ class AddContracts extends Component {
       })
     }
   }
+
   render(){
     const { navigation, states_mx, municipality_mx } = this.props
     var periodSummer = (
@@ -219,12 +223,12 @@ class AddContracts extends Component {
             >{item.name_mun}</Option>)
         })}
     </Select>
-
     )
     if (Platform.OS === 'android') {
       selectMun = (
       <View style={styles.selectPicker}>
         <Picker
+          selectedValue={this.state.municipality}
           onValueChange={(value, key) => this.handleMunicipality(value, key)}
         >
         {this.props.municipality_mx.map((item,i)=>{
@@ -234,38 +238,44 @@ class AddContracts extends Component {
         </Picker>
       </View>
       )
+      periodSummer = (
+        <View style={styles.selectPicker}>
+          <Picker
+            selectedValue={this.state.language}
+            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+            <Picker.Item label="Java" value="java" />
+            <Picker.Item label="JavaScript" value="js" />
+          </Picker>
+        </View>
+      )
     }
-
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-          <Grid style={{alignItems: 'center',flex:1}}>
-            <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
-              <Left style={ {marginLeft: 30} }>
+        <ScrollView>
+          <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
+            <Row size={12} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
+              <Left style={{marginLeft:19}}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                  <View style={{marginBottom: 0,height: 65,width: '100%'}}>
-                  { this.state.avatarSource === null && <Text style={{textAlign: 'center'}}>Select a Photo</Text>
-                      // <Image  source={this.state.avatarSource} />
-                  }
+                  <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
+                  { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Select a Photo</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
                   </View>
                 </TouchableOpacity>
-                {/* <Thumbnail source={{ uri: 'https://facebook.github.io/react/img/logo_og.png' }} /> */}
               </Left>
-              <Body style={{ flex:3,height: '35%'}}>
-                {/* <Text>Mi Casa</Text> */}
-                <Input style={{textAlign: 'center', paddingRight: 30,width: '100%', paddingTop: 0, paddingBottom: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
+              <Body style={{height: 30,flex:2}}>
+                <Input style={{textAlign: 'center',width: '100%',padding: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
               </Body>
               <Right style={ styles.row__top__left__right }>
                 <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
               </Right>
             </Row>
             <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
-            <Col size={(Platform.OS === 'ios')? 40 : 35} style={ styles.col__form }>
+            <Col size={ (Platform.OS === 'ios')? 40 : 29 } style={ styles.col__form }>
               <Form>
                 <Item fixedLabel style={styles.col__form__item}>
-                <Input placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
-              </Item>
+                  <Input placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
+                </Item>
               { (Platform.OS === 'ios')?
                 <Select
                   selectStyle={styles.select}
@@ -306,10 +316,10 @@ class AddContracts extends Component {
               </View>
               }
               { periodSummer }
-
               </Form>
             </Col>
-            <Row size={6}>
+            {(Platform.OS === 'ios')? <View style={{height:15}}></View> : <View style={{height: 20}}></View>}
+            <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 20 : 20}}>
               <View style={styles.row__bottom__view__top}>
                 <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen()}/>
                 <Body style={{ flex: 0 }}>
@@ -333,6 +343,7 @@ class AddContracts extends Component {
               </Button>
             </Row>
           </Grid>
+        </ScrollView>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )
@@ -340,7 +351,7 @@ class AddContracts extends Component {
 }
 function bindAction(dispatch){
   return {
-    postContract: list =>dispatch(postContract(list)),
+    postContract: (list, token) =>dispatch(postContract(list, token)),
     getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
     resetMunicipality: () => dispatch(resetMunicipality()),
   }
@@ -349,5 +360,6 @@ const mapStateToProps = state => ({
   states_mx: state.list_states_mx.results,
   municipality_mx: state.list_mun_mx.results,
   list_rate: state.list_rate.list_rate,
+  token: state.user.token
 })
 export default connect(mapStateToProps, bindAction)(AddContracts);

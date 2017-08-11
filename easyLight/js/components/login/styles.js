@@ -7,16 +7,19 @@ const Screen = Dimensions.get('window');
 
 export default {
   container: {
+    flex:1,
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#fff',
+    backgroundColor: 'red',
   },
   grid:{
-    height: Screen.height - 140,
+    flex:1,
+    height: Screen.height,
     paddingTop: (Platform.OS === 'ios')? 100 : 120,
+    backgroundColor: '#fff'
   },
   header:{
     backgroundColor: 'green',
@@ -28,7 +31,7 @@ export default {
     color: 'white',
   },
   form:{
-    marginTop: 40,
+    marginTop: 20,
     paddingLeft: 15,
     paddingRight: 15,
   },
