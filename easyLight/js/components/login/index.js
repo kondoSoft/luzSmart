@@ -49,10 +49,10 @@ const validate = values => {
   //   error.email = "@ not included";
   // }
   if (pw.length > 12) {
-    error.password = "Max 11 caracteres";
+    error.password = "max 11 characters";
   }
-  if (pw.length < 8 && pw.length > 0) {
-    error.password = "Muy corta";
+  if (pw.length < 5 && pw.length > 0) {
+    error.password = "Weak";
   }
   return error;
 };
@@ -84,17 +84,15 @@ class Login extends Component {
       hasError = true;
     }
     return (
-      <Item error={hasError} style={{marginRight: 20}}>
+      <Item error={hasError}>
         <Input
-          returnKeyType={'done'}
-          secureTextEntry={input.name === 'email' ? false : true}
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
           {...input}
           onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0 })}
         />
         {hasError
           ? <Item style={{ borderColor: "transparent" }}>
-              {/* <Icon active style={{ color: "red", marginTop: 5 }} name="bug" /> */}
+              <Icon active style={{ color: "red", marginTop: 5 }} name="bug" />
               <Text style={{ fontSize: 15, color: "red" }}>{error}</Text>
             </Item>
           : <Text />}
@@ -109,7 +107,9 @@ class Login extends Component {
       (e.password === undefined)?
       e.email
       : e.password.toLowerCase())
+
     this.props.navigation.navigate("Contracts")
+
   }
 
   componentWillUpdate(){

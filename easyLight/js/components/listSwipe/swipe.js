@@ -54,7 +54,7 @@ class ListItemSwipe extends React.Component {
         if (gesture.dx < -25) {
           Animated.spring(
             this.state.pan,
-            {toValue:{x:-125,y:0}},
+            {toValue:{x:-120,y:0}},
           ).start();
         }
         // else if(gesture.dx > 75) {
@@ -102,6 +102,7 @@ export default class SwipeAccordion extends Component{
     this.navigateTo = this.navigateTo.bind(this)
   }
   toggle(){
+    console.log('props of swipe accordion',this.props);
     this.props.func()
     let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
         finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
