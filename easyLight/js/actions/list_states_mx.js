@@ -10,7 +10,7 @@ export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 
-const endPoint = 'http://192.168.1.72:8080';
+const endPoint = 'http://192.168.1.64:8080';
 
 
 export function printStates(list):Action{
@@ -161,7 +161,9 @@ export function getContract(token):Action{
       }
     })
     .then(res => {return res.json()})
-    .then(res=> dispatch(printContract(res)))
+    .then(res=> {
+      console.log(res);
+      dispatch(printContract(res))})
     .catch(err => console.log(err))
   }
 }

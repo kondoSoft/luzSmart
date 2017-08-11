@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import  { Text, Container, Content, Icon, Thumbnail, Button, Form, Item, Label, Input } from 'native-base';
 import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import styles from './styles';
-
+import { registerUser } from '../../actions/user'
 const Screen = Dimensions.get('window');
 
 class SignIn extends Component {
@@ -13,7 +14,11 @@ class SignIn extends Component {
   };
   constructor(props){
     super(props)
-
+    this.state = {
+      email: '',
+      password1: '',
+      password2: '',
+    }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
   }
   componentWillMount () {
@@ -25,6 +30,7 @@ class SignIn extends Component {
   _keyboardDidHide () {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
+
   render(){
     return(
         <Container style={{height:Screen.height}}>
@@ -64,6 +70,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Email:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(email)=> this.setState({email})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })}
                     />
                   </Item>
@@ -71,6 +78,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Contraseña:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(password1)=> this.setState({password1})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 90 : 90 })}
                     />
                   </Item>
@@ -78,6 +86,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Confirmar contraseña:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(password2)=> this.setState({password2})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 100 : 100 })}
                     />
                   </Item>
@@ -108,6 +117,7 @@ class SignIn extends Component {
                 <Button
                   primary
                   style={styles.row__botttom__btn}
+                  onPress={()=>this.props.registerUser(this.state)}
                   >
                   <Text>Crear cuenta</Text>
                 </Button>
@@ -119,4 +129,10 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+
+function bindAction(dispatch) {
+  return {
+    registerUser: state => dispatch(registerUser(state)),
+  };
+}
+export default connect(null, bindAction)(SignIn);

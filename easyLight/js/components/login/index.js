@@ -21,7 +21,7 @@ import {
 } from "native-base";
 import { Dimensions, Platform } from 'react-native';
 import { Field, reduxForm } from "redux-form";
-import { setUser, loginUser } from "../../actions/user";
+import { setUser, loginUser, logoutUser } from "../../actions/user";
 import styles from "./styles";
 import Header from '../header/index';
 import { getStates } from "../../actions/list_states_mx";
@@ -106,15 +106,19 @@ class Login extends Component {
       : e.email.toLowerCase(),
       (e.password === undefined)?
       e.email
-      : e.password.toLowerCase())
+      : e.password.toLowerCase(), this.props.navigation)
 
-    this.props.navigation.navigate("Contracts")
+    // this.props.navigation.navigate("Contracts")
 
   }
 
   componentWillUpdate(){
     this.props.getStates()
 
+
+  }
+  componentWillMount(){
+    this.props.logoutUser()
   }
   render() {
 
@@ -183,8 +187,10 @@ LoginSwag.navigationOptions = {
 function bindAction(dispatch) {
   return {
     setUser: name => dispatch(setUser(name)),
-    loginUser: (email, password) => dispatch(loginUser(email, password)),
+    loginUser: (email, password, navigate) => dispatch(loginUser(email, password, navigate)),
     getStates: () => dispatch(getStates()),
+    logoutUser: () => dispatch(logoutUser()),
+
   };
 }
 const mapStateToProps = state => ({
