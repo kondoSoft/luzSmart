@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import HomeDrawerRouter from "./HomeDrawerRouter";
+// import HomeDrawerRouter from "./HomeDrawerRouter";
 import { StackNavigator } from "react-navigation";
 import { Header, Left, Button, Icon, Body, Title, Right } from "native-base";
 import Login from "../components/login/";
@@ -17,9 +17,9 @@ import Configuration from '../components/configuration';
 import EditProfile from '../components/editProfile';
 
 
-HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
-  header: null
-});
+// HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
+//   header: null
+// });
 
 
 export default (StackNav = StackNavigator({
