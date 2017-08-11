@@ -123,12 +123,14 @@ class Receipt extends Component {
                 </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
+                    keyboardType='numeric'
                     placeholder="Fecha Limite de Pago"
                     onChange={event => this.handlePaydayLimit(event)}
                   />
                 </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
+                    keyboardType='numeric'
                     placeholder="Monto a Pagar"
                     onChange={event => this.handleAmountPayable(event)}
                     onFocus={() => this.refs['scroll'].scrollTo({y: 80 })}
@@ -139,6 +141,7 @@ class Receipt extends Component {
                 </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
+                    keyboardType='numeric'
                     placeholder="Lectura Actual"
                     onChange={event => this.handleCurrentReading(event)}
                     onFocus={() => this.refs['scroll'].scrollTo({y: 140 })}
@@ -146,9 +149,10 @@ class Receipt extends Component {
                 </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
+                    keyboardType='numeric'
                     placeholder="Lectura Anterior"
                     onChange={event => this.handlePreviousReading(event)}
-                    onFocus={() => this.refs['scroll'].scrollTo({y: 140 })}
+                    onFocus={() => this.refs['scroll'].scrollTo({y: 160 })}
                   />
                 </Item>
               </Form>
