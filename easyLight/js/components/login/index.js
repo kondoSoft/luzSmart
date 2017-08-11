@@ -49,10 +49,10 @@ const validate = values => {
   //   error.email = "@ not included";
   // }
   if (pw.length > 12) {
-    error.password = "max 11 characters";
+    error.password = "Max 11 caracteres";
   }
-  if (pw.length < 5 && pw.length > 0) {
-    error.password = "Weak";
+  if (pw.length < 8 && pw.length > 0) {
+    error.password = "Muy corta";
   }
   return error;
 };
@@ -82,15 +82,17 @@ class Login extends Component {
       hasError = true;
     }
     return (
-      <Item error={hasError}>
+      <Item error={hasError} style={{marginRight: 20}}>
         <Input
+          returnKeyType={'done'}
+          secureTextEntry={input.name === 'email' ? false : true}
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
           {...input}
           onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0 })}
         />
         {hasError
           ? <Item style={{ borderColor: "transparent" }}>
-              <Icon active style={{ color: "red", marginTop: 5 }} name="bug" />
+              {/* <Icon active style={{ color: "red", marginTop: 5 }} name="bug" /> */}
               <Text style={{ fontSize: 15, color: "red" }}>{error}</Text>
             </Item>
           : <Text />}
@@ -100,7 +102,13 @@ class Login extends Component {
   handleContracts(e){
     // console.log(e);
     // this.props.setUser(e.email);
-    this.props.loginUser(e.email, e.password)
+    this.props.loginUser(
+      (e.email === undefined)?
+      e.email
+      : e.email.toLowerCase(),
+      (e.password === undefined)?
+      e.email
+      : e.password.toLowerCase())
     if(e.password != undefined){
       this.props.navigation.navigate("Contracts")
     }
