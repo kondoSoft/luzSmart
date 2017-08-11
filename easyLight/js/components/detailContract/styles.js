@@ -38,7 +38,6 @@ export default {
   listItem__body__text:{
     flex: 1.3,
     padding: 5,
-    paddingTop: 25,
   },
   listItem__body__view:{
     flexDirection: 'column',
@@ -51,20 +50,17 @@ export default {
     textAlign: 'right',
   },
   icon:{
-    color: '#007aff',
+    color: 'steelblue',
     fontSize: 40,
     textAlign: 'center',
-    paddingTop: 0,
+    paddingTop: 15,
   },
   ItemComponent:{
     view:{
       flexDirection: 'row',
       height: 80,
-      alignItems: 'center',
-      justifyContent:'center',
     },
     align:{
-      justifyContent: 'center',
       alignItems: 'center',
     },
   },
