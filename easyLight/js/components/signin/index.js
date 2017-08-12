@@ -15,9 +15,14 @@ class SignIn extends Component {
   constructor(props){
     super(props)
     this.state = {
+      first_name: '',
+      last_name: '',
       email: '',
       password1: '',
       password2: '',
+      phone: '',
+      birth_date: '',
+      zip_code: '',
     }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
   }
@@ -56,6 +61,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Nombres:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(first_name)=> this.setState({first_name})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
                     />
                   </Item>
@@ -63,6 +69,8 @@ class SignIn extends Component {
                     <Label style={styles.text}>Apellidos:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(last_name)=> this.setState({last_name})}
+
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
                     />
                   </Item>
@@ -94,6 +102,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>F. nacimiento:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(birth_date)=> this.setState({birth_date})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 160 : 160 })}
                     />
                   </Item>
@@ -101,6 +110,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Celular:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(phone)=> this.setState({phone})}
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 200 : 200 })}
                     />
                   </Item>
@@ -108,6 +118,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>C.P.:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(zip_code)=> this.setState({zip_code})}  
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 250 : 300 })}
                     />
                   </Item>

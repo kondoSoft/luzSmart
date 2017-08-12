@@ -18,7 +18,6 @@ function resetToken(logout):Action {
   }
 }
 export function loginUser(email:email, password:password, navigate):Action {
-  console.log(navigate);
   return dispatch => {
     return fetch(endPoint+'/rest-auth/login/',{
       method: 'POST',
@@ -35,10 +34,12 @@ export function loginUser(email:email, password:password, navigate):Action {
     .then(res => {return res.json()})
     .then(token => {
       console.log(token);
+
+      dispatch(setUser(token))
       if(!token.non_field_errors){
         navigate.navigate("Contracts")
       }
-      dispatch(setUser(token))})
+    })
     .catch(err => console.log(err))
   }
 }
@@ -53,10 +54,14 @@ export function registerUser(data):Action{
        'Content-Type': 'application/json',
      },
      body: JSON.stringify({
+       first_name: data.first_name,
+       last_name: data.last_name,
        email: data.email,
        password1: data.password1,
        password2: data.password2,
-      //  email:
+       phone: data.phone,
+       birth_date: data.birth_date,
+       zip_code: data.zip_code,
      })
     })
     .then(res=> {return res.json()})
