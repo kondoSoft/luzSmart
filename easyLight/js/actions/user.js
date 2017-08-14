@@ -1,7 +1,7 @@
 
 import type { Action } from './types';
 
-const endPoint = 'http://192.168.1.64:8080';
+const endPoint = 'http://192.168.1.78:8080';
 
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
@@ -32,10 +32,7 @@ export function loginUser(email:email, password:password, navigate):Action {
       })
     })
     .then(res => {return res.json()})
-    .then(token => {
-      console.log(token);
-
-      dispatch(setUser(token))
+    .then(token => {dispatch(setUser(token))
       if(!token.non_field_errors){
         navigate.navigate("Contracts")
       }
@@ -44,26 +41,31 @@ export function loginUser(email:email, password:password, navigate):Action {
   }
 }
 
-export function registerUser(data):Action{
-  console.log(data);
+export function registerUser(list):Action{
   return dispatch=>{
+    const data = new FormData();
+    data.append('first_name', list.first_name)
+    data.append('last_name', list.last_name)
+    data.append('email', list.email,)
+    data.append('password1', list.password1,)
+    data.append('password2', list.password2,)
+    data.append('phone', list.phone,)
+    data.append('birth_date', list.birth_date,)
+    data.append('zip_code', list.zip_code)
+    // data.append('avatar',{
+    //   uri: list.file.uri,
+    //   type: 'image/png',
+    //   name: list.file.fileName
+    // })
     return fetch(endPoint+'/rest-auth/registration/',{
       method: 'POST',
       headers: {
-       'Accept': 'application/json',
-       'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
      },
-     body: JSON.stringify({
-       first_name: data.first_name,
-       last_name: data.last_name,
-       email: data.email,
-       password1: data.password1,
-       password2: data.password2,
-       phone: data.phone,
-       birth_date: data.birth_date,
-       zip_code: data.zip_code,
-     })
+     body: data
     })
+
     .then(res=> {return res.json()})
     .catch(err => console.log(err))
   }

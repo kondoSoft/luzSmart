@@ -10,7 +10,7 @@ export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 
-const endPoint = 'http://192.168.1.64:8080';
+const endPoint = 'http://192.168.1.78:8080';
 
 
 export function printStates(list):Action{
@@ -121,7 +121,6 @@ export function getRateUnique(list):Action{
   }
 }
 export function postContract(list, token):Action{
-  console.log('fetch', token);
   return dispatch => {
     const data = new FormData();
     data.append('name_contract', list.name)

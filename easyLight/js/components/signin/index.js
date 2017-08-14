@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import  { Text, Container, Content, Icon, Thumbnail, Button, Form, Item, Label, Input } from 'native-base';
-import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView } from 'react-native';
+import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import styles from './styles';
 import { registerUser } from '../../actions/user'
 const Screen = Dimensions.get('window');
+import ImagePicker from 'react-native-image-picker';
 
 class SignIn extends Component {
   static navigationOptions = {
@@ -23,8 +24,41 @@ class SignIn extends Component {
       phone: '',
       birth_date: '',
       zip_code: '',
+      avatarSource : null,
+      file: null,
     }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
+  }
+  selectPhotoTapped() {
+    const options = {
+      quality: 1.0,
+      maxWidth: 500,
+      maxHeight: 500,
+      storageOptions: {
+        skipBackup: true
+      }
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+
+        this.setState({
+          avatarSource: response.uri,
+          file: response,
+        });
+      }
+    });
   }
   componentWillMount () {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
@@ -47,11 +81,15 @@ class SignIn extends Component {
             <Grid>
               <Row style={styles.row__top}>
                 <Col style={styles.row__top__col__left}>
-                  <Thumbnail style={{width: 70, height:70}} source={ require('../../../images/profile.png')} />
+                  <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                    <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
+                    { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Select a Photo</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
+                    </View>
+                  </TouchableOpacity>
                 </Col>
                 <Col style={styles.row__top__col__right}>
                   {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}> */}
-                    <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
+                    {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
                   {/* </Button> */}
                 </Col>
               </Row>
@@ -118,7 +156,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>C.P.:</Label>
                     <Input
                       style={styles.form__item__input}
-                      onChangeText={(zip_code)=> this.setState({zip_code})}  
+                      onChangeText={(zip_code)=> this.setState({zip_code})}
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 250 : 300 })}
                     />
                   </Item>
