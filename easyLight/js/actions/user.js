@@ -33,7 +33,8 @@ export function loginUser(email:email, password:password, navigate):Action {
     })
     .then(res => {return res.json()})
     .then(token => {dispatch(setUser(token))
-      if(!token.non_field_errors){
+      console.log('detail', token);
+      if(!token.non_field_errors && email !== undefined){
         navigate.navigate("Contracts")
       }
     })
@@ -52,11 +53,7 @@ export function registerUser(list):Action{
     data.append('phone', list.phone,)
     data.append('birth_date', list.birth_date,)
     data.append('zip_code', list.zip_code)
-    // data.append('avatar',{
-    //   uri: list.file.uri,
-    //   type: 'image/png',
-    //   name: list.file.fileName
-    // })
+re
     return fetch(endPoint+'/rest-auth/registration/',{
       method: 'POST',
       headers: {

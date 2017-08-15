@@ -42,17 +42,14 @@ const validate = values => {
   if (values.password === undefined) {
     pw = "";
   }
-  // if (ema.length < 8 && ema !== "") {
-  //   error.email = "too short";
-  // }
-  // if (!ema.includes("@") && ema !== "") {
-  //   error.email = "@ not included";
-  // }
-  if (pw.length > 12) {
-    error.password = "max 11 characters";
+  if (!ema.includes("@") && ema !== "") {
+    error.email = "Este no es un correo valido";
   }
-  if (pw.length < 5 && pw.length > 0) {
-    error.password = "Weak";
+  if (pw.length > 12) {
+    error.password = "Maximo 11 caracteres";
+  }
+  if (pw.length < 8 && pw.length > 0) {
+    error.password = "Contraseña muy corta";
   }
   return error;
 };
@@ -67,7 +64,8 @@ class Login extends Component {
     super(props);
     this.state = {
       name: "",
-      loginNavigate: false
+      loginNavigate: false,
+      validation: <Text style={{backgroundColor:'red', height:'25%',width: '94%', textAlign: 'center', paddingTop:0,color:'#fff'}}>{(this.props.noPassword != undefined)? this.props.noPassword[0] : 'null'}</Text>
     };
     this.renderInput = this.renderInput.bind(this);
     this.handleContracts = this.handleContracts.bind(this);
@@ -84,15 +82,15 @@ class Login extends Component {
       hasError = true;
     }
     return (
-      <Item error={hasError}>
+      <Item error={hasError} style={{marginRight:20}}>
         <Input
+          style={{}}
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
           {...input}
           onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0 })}
         />
         {hasError
           ? <Item style={{ borderColor: "transparent" }}>
-              <Icon active style={{ color: "red", marginTop: 5 }} name="bug" />
               <Text style={{ fontSize: 15, color: "red" }}>{error}</Text>
             </Item>
           : <Text />}
@@ -107,21 +105,16 @@ class Login extends Component {
       (e.password === undefined)?
       e.email
       : e.password.toLowerCase(), this.props.navigation)
-
     // this.props.navigation.navigate("Contracts")
-
   }
-
   componentWillUpdate(){
     this.props.getStates()
-
-
   }
   componentWillMount(){
     this.props.logoutUser()
   }
   render() {
-
+    const { validation } = this.state
     const { handleSubmit } = this.props
     return (
       <Container scrollEnabled={false}>
@@ -133,7 +126,8 @@ class Login extends Component {
           >
             <Grid style={styles.grid}>
               <Row  size={40}>
-                <Col style={styles.col__inputs__login}>
+                <Col style={[styles.col__inputs__login,{}]}>
+                  { (this.props.loginError != undefined || this.props.noPassword !=undefined)? this.state.validation : null  }
                   <Field style={styles.field__email} name="email" component={this.renderInput} />
                   <Field name="password" component={this.renderInput} />
                 </Col>
@@ -194,7 +188,8 @@ function bindAction(dispatch) {
   };
 }
 const mapStateToProps = state => ({
-  loginError: state.user.loginError
+  loginError: state.user.loginError,
+  noPassword: state.user.noPassword,
 })
 
 // export default LoginSwag;
