@@ -16,6 +16,7 @@ import { getRateUnique, getContract } from "../../actions/list_states_mx";
 import Tips from '../tips'
 import Measurements from '../measurements'
 import Results from '../results'
+import Login from '../login'
 // var gradientImage = require('../../../images/header.png')
 
 
@@ -123,7 +124,6 @@ class ItemComponent extends Component{
 }
 function bindAction(dispatch){
   return {
-    // getStates: () => dispatch(getStates()),
     getRateUnique: list => dispatch(getRateUnique(list)),
     getContract: token => dispatch(getContract(token)),
   }
@@ -140,6 +140,7 @@ const DrawNav = DrawerNavigator(
      Tips: { screen: Tips },
      Mediciones: { screen: Measurements},
      Resultados: { screen: Results },
+     Logout: { screen: Login },
   },
   {
       drawerPosition: 'right',

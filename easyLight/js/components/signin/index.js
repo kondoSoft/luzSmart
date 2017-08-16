@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import  { Text, Container, Content, Icon, Thumbnail, Button, Form, Item, Label, Input } from 'native-base';
-import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView } from 'react-native';
+import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import styles from './styles';
-
+import { registerUser } from '../../actions/user'
 const Screen = Dimensions.get('window');
+import ImagePicker from 'react-native-image-picker';
 
 class SignIn extends Component {
   static navigationOptions = {
@@ -13,8 +15,50 @@ class SignIn extends Component {
   };
   constructor(props){
     super(props)
-
+    this.state = {
+      first_name: '',
+      last_name: '',
+      email: '',
+      password1: '',
+      password2: '',
+      phone: '',
+      birth_date: '',
+      zip_code: '',
+      avatarSource : null,
+      file: null,
+    }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
+  }
+  selectPhotoTapped() {
+    const options = {
+      quality: 1.0,
+      maxWidth: 500,
+      maxHeight: 500,
+      storageOptions: {
+        skipBackup: true
+      }
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+
+        this.setState({
+          avatarSource: response.uri,
+          file: response,
+        });
+      }
+    });
   }
   componentWillMount () {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
@@ -25,6 +69,7 @@ class SignIn extends Component {
   _keyboardDidHide () {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
+
   render(){
     return(
         <Container style={{height:Screen.height}}>
@@ -36,11 +81,15 @@ class SignIn extends Component {
             <Grid>
               <Row style={styles.row__top}>
                 <Col style={styles.row__top__col__left}>
-                  <Thumbnail style={{width: 70, height:70}} source={ require('../../../images/profile.png')} />
+                  <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                    <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
+                    { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Select a Photo</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
+                    </View>
+                  </TouchableOpacity>
                 </Col>
                 <Col style={styles.row__top__col__right}>
                   {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}> */}
-                    <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
+                    {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
                   {/* </Button> */}
                 </Col>
               </Row>
@@ -50,6 +99,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Nombres:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(first_name)=> this.setState({first_name})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
                     />
                   </Item>
@@ -57,6 +107,8 @@ class SignIn extends Component {
                     <Label style={styles.text}>Apellidos:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(last_name)=> this.setState({last_name})}
+
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
                     />
                   </Item>
@@ -64,6 +116,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Email:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(email)=> this.setState({email})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })}
                     />
                   </Item>
@@ -71,6 +124,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Contraseña:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(password1)=> this.setState({password1})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 90 : 90 })}
                     />
                   </Item>
@@ -78,6 +132,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Confirmar contraseña:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(password2)=> this.setState({password2})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 100 : 100 })}
                     />
                   </Item>
@@ -85,6 +140,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>F. nacimiento:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(birth_date)=> this.setState({birth_date})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 160 : 160 })}
                     />
                   </Item>
@@ -92,6 +148,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Celular:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(phone)=> this.setState({phone})}
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 200 : 200 })}
                     />
                   </Item>
@@ -99,6 +156,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>C.P.:</Label>
                     <Input
                       style={styles.form__item__input}
+                      onChangeText={(zip_code)=> this.setState({zip_code})}
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 250 : 300 })}
                     />
                   </Item>
@@ -108,6 +166,7 @@ class SignIn extends Component {
                 <Button
                   primary
                   style={styles.row__botttom__btn}
+                  onPress={()=>this.props.registerUser(this.state)}
                   >
                   <Text>Crear cuenta</Text>
                 </Button>
@@ -119,4 +178,10 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+
+function bindAction(dispatch) {
+  return {
+    registerUser: state => dispatch(registerUser(state)),
+  };
+}
+export default connect(null, bindAction)(SignIn);

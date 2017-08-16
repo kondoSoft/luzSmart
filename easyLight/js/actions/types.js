@@ -15,6 +15,8 @@ export type Action =
     | { type: 'GET_MUNICIPALITY', list: string}
     | { type: 'GET_RATE', list: string}
     | { type: 'GET_RATE_UNIQUE', list: string}
+    | { type: 'LOGOUT'}
+
 
 export type Dispatch = (action:Action | Array<Action>) => any;
 export type GetState = () => Object;
