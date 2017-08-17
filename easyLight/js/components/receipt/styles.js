@@ -22,7 +22,7 @@ export default {
     borderBottomColor: 'green',
     borderBottomWidth: 3,
     alignItems: 'flex-end',
-    marginBottom: 20,
+    marginBottom: 25,
   },
   form__item__inputs:{
     borderLeftWidth: 2,
