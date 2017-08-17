@@ -127,7 +127,7 @@ class App extends Component {
       );
     }
 
-    return <MainStackRouter screenProps={this.props.token}/>;
+    return <MainStackRouter screenProps={this.props}/>;
   }
 }
 const mapStateToProps = state => ({
