@@ -111,7 +111,6 @@ class Receipt extends Component {
     this.showAlert()
   }
   render(){
-    console.log(this.state);
     const { navigation } = this.props
     var contract;
     if (navigation.state.params == undefined) {
