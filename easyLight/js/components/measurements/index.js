@@ -153,11 +153,14 @@ class Measurements extends Component {
             <Row size={30} style={{alignItems: 'flex-start', justifyContent: 'center',paddingTop: (Platform.OS === 'android' && Screen.height <= 640)? 30 : 0}}>
               <Image resizeMode={'stretch'} source={require('../../../images/medidor.png')} style={styles.animatedView__image}>
                 <View style={styles.animatedView__image__view}>
-                  <TextInput
-                    keyboardType={'numbers-and-punctuation'}
-                    style={styles.animatedView__image__view__input}
-                    onFocus={ () => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 185 : 300 }) }
-                  />
+                  <View style={{flexDirection: 'row',height:40,justifyContent:'center', alignItems:'center',marginTop: 65,marginLeft:37}}>
+                    <TextInput
+                      keyboardType={'numeric'}
+                      style={styles.animatedView__image__view__input}
+                      onFocus={ () => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 185 : 300 }) }
+                    />
+                    <Text style={{color: 'grey'}}>kWh</Text>
+                  </View>
                   <Button
                     small
                     style={styles.animatedView__image__view__btn}

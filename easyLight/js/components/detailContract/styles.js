@@ -38,6 +38,7 @@ export default {
   listItem__body__text:{
     flex: 1.3,
     padding: 5,
+    marginTop: 20,
   },
   listItem__body__view:{
     flexDirection: 'column',
@@ -58,7 +59,7 @@ export default {
   ItemComponent:{
     view:{
       flexDirection: 'row',
-      height: 80,
+      height: 70,
     },
     align:{
       alignItems: 'center',
