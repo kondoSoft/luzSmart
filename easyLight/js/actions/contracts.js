@@ -1,7 +1,7 @@
 import type { Action } from './types';
 
 
-const endPoint = 'http://192.168.1.78:8080';
+const endPoint = 'http://192.168.1.64:8080';
 
 
 
@@ -22,7 +22,6 @@ export function postReceipt(list):Action{
       })
     })
     .then(res => {return res.json()})
-    .then(res => console.log(res))
     .catch(err => console.log(err))
   }
 }

@@ -13,6 +13,7 @@ const initialState = {
 
 export default function(state: State = initialState, action: Action): State {
   if (action.type === GET_RATE) {
+    console.log(action.payload);
     return {
       ...state,
       results: action.payload

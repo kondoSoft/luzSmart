@@ -20,10 +20,8 @@ import EditProfile from '../components/editProfile';
 // HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
 //   header: null
 // });
-
-
-export default (StackNav = StackNavigator({
-  Login: { screen: Login },
+const navigation = {
+  // Login: { screen: Login },
   Contracts: { screen: Contracts },
   SignIn: { screen: SignIn },
   DetailContract: { screen: DetailContract },
@@ -36,4 +34,6 @@ export default (StackNav = StackNavigator({
   Contact: { screen:  Contact },
   Configuration: { screen: Configuration },
   EditProfile: { screen: EditProfile },
-}));
+}
+
+export default (StackNav = StackNavigator(navigation));

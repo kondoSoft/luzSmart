@@ -29,7 +29,7 @@ import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import { getMunicipality, resetMunicipality, postContract } from '../../actions/list_states_mx'
+import { getMunicipality, resetMunicipality, postContract, getRate } from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
 
 let Screen = Dimensions.get('window')
@@ -62,6 +62,8 @@ class AddContracts extends Component {
     postContract: React.PropTypes.func,
     getMunicipality: React.PropTypes.func,
     resetMunicipality: React.PropTypes.func,
+    getRate: React.PropTypes.func,
+
   }
   static navigationOptions = {
     header: null
@@ -114,6 +116,7 @@ class AddContracts extends Component {
   }
   handleMunicipality(value, item){
     this.setState({municipality: value.id});
+    this.props.getRate(value.id)
   }
   handleRate(value, item){
     this.setState({rate: item});
@@ -128,7 +131,6 @@ class AddContracts extends Component {
     this.setState({cost: event.nativeEvent.text});
   }
   sendData(){
-    console.log('index',this.props.token);
     this.props.postContract(this.state, this.props.token)
     this.props.navigation.navigate('Receipt')
   }
@@ -151,15 +153,13 @@ class AddContracts extends Component {
         >{item.state}</Option>
       )
     })
-    optionsRates = this.props.list_rate.map((item,i)=>{
-      return (
-        <Option
-          key={i}
-          value={i}
-          optionStyle={styles.select__option}
-          >{item.name_rate}</Option>
-      )
-    })
+    console.log(this.props.mun_rate);
+    optionsRates = <Option optionStyle={styles.select__option} >hola</Option>
+    // this.props.list_rate.map((item,i)=>{
+      // return (
+
+    //   )
+    // })
     if (Platform.OS === 'android') {
       optionsStates = this.props.states_mx.map((item,i)=>{
         return(
@@ -175,7 +175,8 @@ class AddContracts extends Component {
   }
 
   render(){
-    const { navigation, states_mx, municipality_mx } = this.props
+    console.log(this.props.list_rate, this.props.mun_rate);
+    const { navigation, states_mx, municipality_mx, mun_rate } = this.props
     var periodSummer = (
       <Select
         selectStyle={styles.select}
@@ -296,7 +297,8 @@ class AddContracts extends Component {
                 </View>
               }
               { (municipality_mx.length == 0) ? <View/> : selectMun}
-              { (Platform.OS === 'ios')?
+              { (mun_rate.length == 0) && <View />}
+              {/* { (Platform.OS === 'ios')?
               <Select
                 selectStyle={styles.select}
                 padding={10}
@@ -304,6 +306,8 @@ class AddContracts extends Component {
                 caretSize={0}
                 onSelect={(value, key) => this.handleRate(value, key)}
                 >
+                  <Option optionStyle={styles.select__option} >hola</Option>
+                  <Option optionStyle={styles.select__option} >mundo</Option>
                 {optionsRates}
               </Select> :
               <View style={styles.selectPicker}>
@@ -311,10 +315,11 @@ class AddContracts extends Component {
                   selectedValue={this.state.rate}
                   onValueChange={(value, key) => this.handleRate(value, key)}
                   >
+
                   {optionsRates}
                 </Picker>
               </View>
-              }
+              } */}
               { periodSummer }
               </Form>
             </Col>
@@ -354,12 +359,14 @@ function bindAction(dispatch){
     postContract: (list, token) =>dispatch(postContract(list, token)),
     getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
     resetMunicipality: () => dispatch(resetMunicipality()),
+    getRate: mun_id => dispatch(getRate(mun_id)),
   }
 }
 const mapStateToProps = state => ({
   states_mx: state.list_states_mx.results,
   municipality_mx: state.list_mun_mx.results,
   list_rate: state.list_rate.list_rate,
+  mun_rate: state.list_rate.results,
   token: state.user.token
 })
 export default connect(mapStateToProps, bindAction)(AddContracts);
