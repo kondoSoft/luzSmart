@@ -39,6 +39,7 @@ class Receipt extends Component {
         amount_payable_ui: 0,
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
+      this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
     }
   static navigationOptions = {
     header: null
@@ -63,11 +64,13 @@ class Receipt extends Component {
   _keyboardDidHide () {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
-  handlePaydayLimit(event){
-    if (event.nativeEvent.text === '') {
+  handlePaydayLimit(date){
+    if (date === '') {
 
     }else {
-      this.setState({payday_limit: event.nativeEvent.text});
+      this.setState({
+          payday_limit: date
+        })
     }
   }
   handleAmountPayable(text){
@@ -108,6 +111,7 @@ class Receipt extends Component {
     this.showAlert()
   }
   render(){
+    console.log(this.state);
     const { navigation } = this.props
     var contract;
     if (navigation.state.params == undefined) {
@@ -130,12 +134,7 @@ class Receipt extends Component {
                 <Item inlineLabel last style={styles.form__item__title}>
                   <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                 </Item>
-                <Item last style={styles.form__item__inputs}>
-                  <Input
-                    placeholder="Fecha Limite de Pago"
-                    onChange={event => this.handlePaydayLimit(event)}
-                  />
-                </Item>
+                <PickerDate func={this.handlePaydayLimit}/>
                 <Item last style={styles.form__item__inputs}>
                   <Input
                     placeholder="Monto a Pagar"
@@ -199,7 +198,7 @@ class Receipt extends Component {
                   <Item inlineLabel last style={styles.form__item__title}>
                     <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                   </Item>
-                  <PickerDate/>
+                  <PickerDate func={this.handlePaydayLimit}/>
                   <Item last style={styles.form__item__inputs}>
                     <Input
                       keyboardType={'numeric'}

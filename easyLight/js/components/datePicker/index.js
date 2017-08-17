@@ -5,8 +5,14 @@ export default class PickerDate extends Component {
   constructor(props){
     super(props)
     this.state = {date:"2016-05-15"}
+    this.setDate = this.setDate.bind(this)
   }
-
+  setDate(date){
+    this.setState({
+      date: date
+    })
+    this.props.func(date)
+  }
   render(){
     return (
       <DatePicker
@@ -17,7 +23,7 @@ export default class PickerDate extends Component {
         placeholder="select date"
         format="YYYY-MM-DD"
         minDate="2016-05-01"
-        maxDate="2016-06-01"
+        // maxDate="2016-06-01"
         confirmBtnText="Confirmar"
         cancelBtnText="Cancelar"
         customStyles={{
@@ -37,7 +43,9 @@ export default class PickerDate extends Component {
           }
           // ... You can check the source to find the other keys.
         }}
-        onDateChange={(date) => {this.setState({date: date})}}
+        onDateChange={(date) => {
+          this.setDate(date)
+        }}
       />
     )
   }
