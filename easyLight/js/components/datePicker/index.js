@@ -28,7 +28,7 @@ export default class PickerDate extends Component {
             borderTopWidth: 2,
             borderLeftWidth: 2,
             borderBottomWidth: 2,
-            borderRightWith: 2,
+            borderRightWidth: 2,
             alignItems: 'flex-start',
             paddingLeft: 18
           },

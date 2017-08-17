@@ -17,7 +17,6 @@ import {
   Alert,
   ScrollView,
   Keyboard,
-  DocumentSelectionState,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -37,6 +36,7 @@ class Receipt extends Component {
         current_reading: 0,
         previous_reading: 0,
         contract_id: 0,
+        amount_payable_ui: 0,
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
     }
@@ -71,7 +71,10 @@ class Receipt extends Component {
     }
   }
   handleAmountPayable(text){
-    this.setState({ amount_payable: text });
+    this.setState({
+      amount_payable: text,
+      amount_payable_ui: text,
+     });
   }
   handleCurrentReading(event){
     this.setState({current_reading: event.nativeEvent.text});
@@ -136,7 +139,13 @@ class Receipt extends Component {
                 <Item last style={styles.form__item__inputs}>
                   <Input
                     placeholder="Monto a Pagar"
-                    onChange={event => this.handleAmountPayable(event)}
+                    onChangeText={text => this.handleAmountPayable(text)}
+                    onBlur={()=> {
+                      this.setState({
+                        amount_payable_ui: parseInt(this.state.amount_payable_ui).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
+                      })
+                    }}
+                    value={this.state.amount_payable_ui}
                     onFocus={() => this.refs['scroll'].scrollTo({y: 80 })}
                   />
                 </Item>
@@ -149,6 +158,7 @@ class Receipt extends Component {
                     onChange={event => this.handleCurrentReading(event)}
                     onFocus={() => this.refs['scroll'].scrollTo({y: 140 })}
                   />
+                  <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                 </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
@@ -156,6 +166,7 @@ class Receipt extends Component {
                     onChange={event => this.handlePreviousReading(event)}
                     onFocus={() => this.refs['scroll'].scrollTo({y: 180 })}
                   />
+                  <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                 </Item>
               </Form>
             </Col>
@@ -195,12 +206,11 @@ class Receipt extends Component {
                       placeholder="Monto a Pagar"
                       onChangeText={text => this.handleAmountPayable(text)}
                       onBlur={()=> {
-                        console.log(DocumentSelectionState)
                         this.setState({
-                          amount_payable: parseInt(this.state.amount_payable).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
+                          amount_payable_ui: parseInt(this.state.amount_payable_ui).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
                         })
                       }}
-                      value={this.state.amount_payable}
+                      value={this.state.amount_payable_ui}
                       onFocus={() => this.refs['scroll'].scrollTo({y: 0 })}
                     />
                   </Item>
@@ -214,6 +224,7 @@ class Receipt extends Component {
                       onChange={event => this.handleCurrentReading(event)}
                       onFocus={() => this.refs['scroll'].scrollTo({y: 40})}
                     />
+                    <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                   </Item>
                   <Item last style={styles.form__item__inputs}>
                     <Input
@@ -223,6 +234,7 @@ class Receipt extends Component {
                       onChange={event => this.handlePreviousReading(event)}
                       onFocus={() => this.refs['scroll'].scrollTo({y: 80})}
                     />
+                    <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                   </Item>
                 </Form>
               </Col>
