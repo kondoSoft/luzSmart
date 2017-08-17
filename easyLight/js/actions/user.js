@@ -1,7 +1,7 @@
 
 import type { Action } from './types';
 
-const endPoint = 'http://192.168.1.78:8080';
+const endPoint = 'http://192.168.1.64:8080';
 
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
@@ -33,7 +33,6 @@ export function loginUser(email:email, password:password, navigate):Action {
     })
     .then(res => {return res.json()})
     .then(token => {dispatch(setUser(token))
-      console.log('detail', token);
       if(!token.non_field_errors && email !== undefined){
         navigate.navigate("Contracts")
       }
@@ -53,7 +52,11 @@ export function registerUser(list):Action{
     data.append('phone', list.phone,)
     data.append('birth_date', list.birth_date,)
     data.append('zip_code', list.zip_code)
-re
+     data.append('avatar',{
+       uri: list.file.uri,
+       type: 'image/png',
+       name: list.file.fileName
+     })
     return fetch(endPoint+'/rest-auth/registration/',{
       method: 'POST',
       headers: {

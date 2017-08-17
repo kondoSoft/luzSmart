@@ -10,7 +10,7 @@ export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 
-const endPoint = 'http://192.168.1.78:8080';
+const endPoint = 'http://192.168.1.64:8080';
 
 
 export function printStates(list):Action{
@@ -92,9 +92,9 @@ export function getMunicipality(state_id):Action{
     .catch(err => console.log(err))
   }
 }
-export function getRate(list):Action{
+export function getRate(mun_id):Action{
   return dispatch => {
-    return fetch (endPoint+'/rate/', {
+    return fetch (endPoint+'/rate_unique/?mun_id=' + mun_id, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -106,20 +106,20 @@ export function getRate(list):Action{
     .catch(err => console.log(err))
   }
 }
-export function getRateUnique(list):Action{
-  return dispatch => {
-    return fetch (endPoint+'/rate_unique/', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    })
-    .then(res => {return res.json()})
-    .then(res=> dispatch(printRateUnique(res)))
-    .catch(err => console.log(err))
-  }
-}
+// export function getRateUnique(list):Action{
+//   return dispatch => {
+//     return fetch (endPoint+'/rate_unique/', {
+//       method: 'GET',
+//       headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json',
+//       }
+//     })
+//     .then(res => {return res.json()})
+//     .then(res=> dispatch(printRateUnique(res)))
+//     .catch(err => console.log(err))
+//   }
+// }
 export function postContract(list, token):Action{
   return dispatch => {
     const data = new FormData();
@@ -161,7 +161,6 @@ export function getContract(token):Action{
     })
     .then(res => {return res.json()})
     .then(res=> {
-      console.log(res);
       dispatch(printContract(res))})
     .catch(err => console.log(err))
   }

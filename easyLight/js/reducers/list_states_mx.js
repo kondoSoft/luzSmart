@@ -19,10 +19,11 @@ export default function(state: State = initialState, action: Action): State {
     return {
       ...state,
       results: action.payload
-    };
+    }
   }
   else if (action.type === REHYDRATE){
     var incoming = action.payload.list_states_mx
+    console.log('me ejecuto 2')
     if (incoming) return {...state, ...incoming}
     return state
   }

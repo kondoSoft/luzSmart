@@ -12,7 +12,7 @@ import FabButton from '../fabButton';
 import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
-import { getRateUnique, getContract } from "../../actions/list_states_mx";
+import { getContract } from "../../actions/list_states_mx";
 import Tips from '../tips'
 import Measurements from '../measurements'
 import Results from '../results'
@@ -26,11 +26,13 @@ class Contracts extends Component {
     tabBarLabel: 'Contratos',
   };
   componentWillMount(){
-    // this.props.getStates()
-    this.props.getRateUnique()
+    // console.log(this.props.token);
     if(this.props.token != ""){
       this.props.getContract(this.props.token)
     }
+    // else {
+    //   this.props.navigation.navigate("login")
+    // }
   }
   componentWillReceiveProps(nextProps){
     if(this.props.token == ""){
@@ -38,7 +40,7 @@ class Contracts extends Component {
     }
   }
   static propType = {
-    getRateUnique: React.PropTypes.func,
+    getRate: React.PropTypes.func,
     getContract: React.PropTypes.func,
     getStates: React.PropTypes.func,
   }
@@ -124,8 +126,8 @@ class ItemComponent extends Component{
 }
 function bindAction(dispatch){
   return {
-    getRateUnique: list => dispatch(getRateUnique(list)),
     getContract: token => dispatch(getContract(token)),
+
   }
 }
 const mapStateToProps = state => ({

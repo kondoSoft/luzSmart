@@ -16,7 +16,6 @@ const initialState = {
 export default function (state:State = initialState, action:Action): State {
 
   if (action.type === SET_USER) {
-    console.log('token',action.payload);
     return {
       ...state,
       token: action.payload.key,
@@ -25,8 +24,8 @@ export default function (state:State = initialState, action:Action): State {
     };
   }
   else if (action.type === REHYDRATE){
-    var incoming = action.payload.user.token
-    if (incoming) return {...state, ...incoming}
+    var incoming = action.payload.user
+    if (incoming.token) return {...state, ...incoming}
     return state
   }
   else if(action.type === LOGOUT){
