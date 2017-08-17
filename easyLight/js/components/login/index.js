@@ -85,6 +85,7 @@ class Login extends Component {
       <Item error={hasError} style={{marginRight:20}}>
         <Input
           style={{}}
+          secureTextEntry={input.name === "email" ? false : true }
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
           {...input}
           onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0 })}

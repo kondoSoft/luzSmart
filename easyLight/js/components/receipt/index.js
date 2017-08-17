@@ -17,6 +17,7 @@ import {
   Alert,
   ScrollView,
   Keyboard,
+  DocumentSelectionState,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -24,6 +25,7 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import { postReceipt } from '../../actions/contracts'
+import PickerDate from '../datePicker'
 
 
 class Receipt extends Component {
@@ -62,10 +64,14 @@ class Receipt extends Component {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   handlePaydayLimit(event){
-    this.setState({payday_limit: event.nativeEvent.text});
+    if (event.nativeEvent.text === '') {
+
+    }else {
+      this.setState({payday_limit: event.nativeEvent.text});
+    }
   }
-  handleAmountPayable(event){
-    this.setState({amount_payable: event.nativeEvent.text});
+  handleAmountPayable(text){
+    this.setState({ amount_payable: text });
   }
   handleCurrentReading(event){
     this.setState({current_reading: event.nativeEvent.text});
@@ -148,7 +154,7 @@ class Receipt extends Component {
                   <Input
                     placeholder="Lectura Anterior"
                     onChange={event => this.handlePreviousReading(event)}
-                    onFocus={() => this.refs['scroll'].scrollTo({y: 140 })}
+                    onFocus={() => this.refs['scroll'].scrollTo({y: 180 })}
                   />
                 </Item>
               </Form>
@@ -182,16 +188,19 @@ class Receipt extends Component {
                   <Item inlineLabel last style={styles.form__item__title}>
                     <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                   </Item>
+                  <PickerDate/>
                   <Item last style={styles.form__item__inputs}>
                     <Input
-                      placeholder="Fecha Limite de Pago"
-                      onChange={event => this.handlePaydayLimit(event)}
-                    />
-                  </Item>
-                  <Item last style={styles.form__item__inputs}>
-                    <Input
+                      keyboardType={'numeric'}
                       placeholder="Monto a Pagar"
-                      onChange={event => this.handleAmountPayable(event)}
+                      onChangeText={text => this.handleAmountPayable(text)}
+                      onBlur={()=> {
+                        console.log(DocumentSelectionState)
+                        this.setState({
+                          amount_payable: parseInt(this.state.amount_payable).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
+                        })
+                      }}
+                      value={this.state.amount_payable}
                       onFocus={() => this.refs['scroll'].scrollTo({y: 0 })}
                     />
                   </Item>
@@ -200,6 +209,7 @@ class Receipt extends Component {
                   </Item>
                   <Item last style={styles.form__item__inputs}>
                     <Input
+                      keyboardType={'numeric'}
                       placeholder="Lectura Actual"
                       onChange={event => this.handleCurrentReading(event)}
                       onFocus={() => this.refs['scroll'].scrollTo({y: 40})}
@@ -207,9 +217,11 @@ class Receipt extends Component {
                   </Item>
                   <Item last style={styles.form__item__inputs}>
                     <Input
+                      keyboardType={'numeric'}
+                      returnKeyType={'go'}
                       placeholder="Lectura Anterior"
                       onChange={event => this.handlePreviousReading(event)}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: 40})}
+                      onFocus={() => this.refs['scroll'].scrollTo({y: 80})}
                     />
                   </Item>
                 </Form>
