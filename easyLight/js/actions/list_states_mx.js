@@ -4,14 +4,13 @@ export const GET_STATES = 'GET_STATES';
 export const GET_MUNICIPALITY = 'GET_MUNICIPALITY';
 export const RESET_MUNICIPALITY = 'RESET_MUNICIPALITY'
 export const GET_RATE = 'GET_RATE'
-export const GET_RATE_UNIQUE = 'GET_RATE_UNIQUE'
 export const SET_INDEX = 'SET_INDEX';
 export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 
 
-const endPoint = 'http://192.168.1.64:8080';
+const endPoint = 'http://138.68.49.119:8080';
 
 
 
@@ -43,13 +42,7 @@ export function resetMunicipality():Action{
 export function printRate(list):Action {
   return {
     type: GET_RATE,
-    payload: list
-  }
-}
-export function printRateUnique(list):Action {
-  return {
-    type: GET_RATE_UNIQUE,
-    payload: list
+    payload: list.results
   }
 }
 export function printContract(list):Action {
@@ -94,13 +87,14 @@ export function getMunicipality(state_id):Action{
     .catch(err => console.log(err))
   }
 }
-export function getRate(mun_id):Action{
+export function getRate(mun_id, token):Action{
   return dispatch => {
     return fetch (endPoint+'/rate_unique/?mun_id=' + mun_id, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': 'Token '+token
       }
     })
     .then(res => {return res.json()})
@@ -108,28 +102,15 @@ export function getRate(mun_id):Action{
     .catch(err => console.log(err))
   }
 }
-// export function getRateUnique(list):Action{
-//   return dispatch => {
-//     return fetch (endPoint+'/rate_unique/', {
-//       method: 'GET',
-//       headers: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json',
-//       }
-//     })
-//     .then(res => {return res.json()})
-//     .then(res=> dispatch(printRateUnique(res)))
-//     .catch(err => console.log(err))
-//   }
-// }
-export function postContract(list, token):Action{
+
+export function postContract(list, rate, token):Action{
   return dispatch => {
     const data = new FormData();
     data.append('name_contract', list.name)
     data.append('number_contract', list.number_contract)
     data.append('state', list.state)
     data.append('municipality', list.municipality)
-    data.append('rate', list.rate)
+    data.append('rate', rate)
     data.append('period_summer', list.period_summer)
     data.append('type_payment', list.type_payment)
     data.append('image',{

@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import DatePicker from 'react-native-datepicker'
 
+
+var date = new Date()
+var formatDate = date.getFullYear()+ '-' + (date.getMonth() + 1) + '-' + date.getDate()
+
 export default class PickerDate extends Component {
   constructor(props){
+
     super(props)
-    this.state = {date:"2016-05-15"}
+    this.state = {date: formatDate}
     this.setDate = this.setDate.bind(this)
   }
   setDate(date){
@@ -13,6 +18,7 @@ export default class PickerDate extends Component {
     })
     this.props.func(date)
   }
+
   render(){
     return (
       <DatePicker
@@ -22,7 +28,7 @@ export default class PickerDate extends Component {
         showIcon={false}
         placeholder="select date"
         format="YYYY-MM-DD"
-        minDate="2016-05-01"
+        minDate={formatDate}
         // maxDate="2016-06-01"
         confirmBtnText="Confirmar"
         cancelBtnText="Cancelar"
