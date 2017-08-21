@@ -24,7 +24,7 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import { postReceipt } from '../../actions/contracts'
-import PickerDate from '../datePicker'
+import ReceiptPickerDate from '../datePicker/receipt'
 
 
 class Receipt extends Component {
@@ -133,7 +133,7 @@ class Receipt extends Component {
                 <Item inlineLabel last style={styles.form__item__title}>
                   <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                 </Item>
-                <PickerDate func={this.handlePaydayLimit}/>
+                <ReceiptPickerDate func={this.handlePaydayLimit}/>
                 <Item last style={styles.form__item__inputs}>
                   <Input
                     placeholder="Monto a Pagar"
@@ -197,7 +197,7 @@ class Receipt extends Component {
                   <Item inlineLabel last style={styles.form__item__title}>
                     <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                   </Item>
-                  <PickerDate func={this.handlePaydayLimit}/>
+                  <ReceiptPickerDate func={this.handlePaydayLimit}/>
                   <Item last style={styles.form__item__inputs}>
                     <Input
                       keyboardType={'numeric'}

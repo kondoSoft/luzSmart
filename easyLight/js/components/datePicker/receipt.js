@@ -5,7 +5,8 @@ import DatePicker from 'react-native-datepicker'
 var date = new Date()
 var formatDate = date.getFullYear()+ '-' + (date.getMonth() + 1) + '-' + date.getDate()
 
-export default class PickerDate extends Component {
+
+export default class ReceiptPickerDate extends Component {
   constructor(props){
 
     super(props)
@@ -22,7 +23,7 @@ export default class PickerDate extends Component {
   render(){
     return (
       <DatePicker
-        style={{width: '70%'}}
+        style={{width: '100%'}}
         date={this.state.date}
         mode="date"
         showIcon={false}
@@ -34,10 +35,12 @@ export default class PickerDate extends Component {
         cancelBtnText="Cancelar"
         customStyles={{
           dateInput: {
-            height: 39,
+            height: 45,
             alignItems: 'flex-start',
-            paddingLeft: 120,
-            borderWidth:0,
+            paddingLeft: 18,
+            borderWidth:2,
+            marginBottom:20,
+            borderColor: 'lightgrey',
           },
           dateText:{
             fontSize: 16
