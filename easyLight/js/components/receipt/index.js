@@ -17,7 +17,6 @@ import {
   Alert,
   ScrollView,
   Keyboard,
-  DocumentSelectionState,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -25,7 +24,7 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import { postReceipt } from '../../actions/contracts'
-import PickerDate from '../datePicker'
+import ReceiptPickerDate from '../datePicker/receipt'
 
 
 class Receipt extends Component {
@@ -37,8 +36,10 @@ class Receipt extends Component {
         current_reading: 0,
         previous_reading: 0,
         contract_id: 0,
+        amount_payable_ui: 0,
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
+      this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
     }
   static navigationOptions = {
     header: null
@@ -63,15 +64,20 @@ class Receipt extends Component {
   _keyboardDidHide () {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
-  handlePaydayLimit(event){
-    if (event.nativeEvent.text === '') {
+  handlePaydayLimit(date){
+    if (date === '') {
 
     }else {
-      this.setState({payday_limit: event.nativeEvent.text});
+      this.setState({
+          payday_limit: date
+        })
     }
   }
   handleAmountPayable(text){
-    this.setState({ amount_payable: text });
+    this.setState({
+      amount_payable: text,
+      amount_payable_ui: text,
+     });
   }
   handleCurrentReading(event){
     this.setState({current_reading: event.nativeEvent.text});
@@ -127,16 +133,17 @@ class Receipt extends Component {
                 <Item inlineLabel last style={styles.form__item__title}>
                   <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                 </Item>
-                <Item last style={styles.form__item__inputs}>
-                  <Input
-                    placeholder="Fecha Limite de Pago"
-                    onChange={event => this.handlePaydayLimit(event)}
-                  />
-                </Item>
+                <ReceiptPickerDate func={this.handlePaydayLimit}/>
                 <Item last style={styles.form__item__inputs}>
                   <Input
                     placeholder="Monto a Pagar"
-                    onChange={event => this.handleAmountPayable(event)}
+                    onChangeText={text => this.handleAmountPayable(text)}
+                    onBlur={()=> {
+                      this.setState({
+                        amount_payable_ui: parseInt(this.state.amount_payable_ui).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
+                      })
+                    }}
+                    value={this.state.amount_payable_ui}
                     onFocus={() => this.refs['scroll'].scrollTo({y: 80 })}
                   />
                 </Item>
@@ -149,6 +156,7 @@ class Receipt extends Component {
                     onChange={event => this.handleCurrentReading(event)}
                     onFocus={() => this.refs['scroll'].scrollTo({y: 140 })}
                   />
+                  <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                 </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
@@ -156,6 +164,7 @@ class Receipt extends Component {
                     onChange={event => this.handlePreviousReading(event)}
                     onFocus={() => this.refs['scroll'].scrollTo({y: 180 })}
                   />
+                  <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                 </Item>
               </Form>
             </Col>
@@ -188,19 +197,18 @@ class Receipt extends Component {
                   <Item inlineLabel last style={styles.form__item__title}>
                     <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                   </Item>
-                  <PickerDate/>
+                  <ReceiptPickerDate func={this.handlePaydayLimit}/>
                   <Item last style={styles.form__item__inputs}>
                     <Input
                       keyboardType={'numeric'}
                       placeholder="Monto a Pagar"
                       onChangeText={text => this.handleAmountPayable(text)}
                       onBlur={()=> {
-                        console.log(DocumentSelectionState)
                         this.setState({
-                          amount_payable: parseInt(this.state.amount_payable).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
+                          amount_payable_ui: parseInt(this.state.amount_payable_ui).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
                         })
                       }}
-                      value={this.state.amount_payable}
+                      value={this.state.amount_payable_ui}
                       onFocus={() => this.refs['scroll'].scrollTo({y: 0 })}
                     />
                   </Item>
@@ -214,6 +222,7 @@ class Receipt extends Component {
                       onChange={event => this.handleCurrentReading(event)}
                       onFocus={() => this.refs['scroll'].scrollTo({y: 40})}
                     />
+                    <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                   </Item>
                   <Item last style={styles.form__item__inputs}>
                     <Input
@@ -223,6 +232,7 @@ class Receipt extends Component {
                       onChange={event => this.handlePreviousReading(event)}
                       onFocus={() => this.refs['scroll'].scrollTo({y: 80})}
                     />
+                    <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                   </Item>
                 </Form>
               </Col>

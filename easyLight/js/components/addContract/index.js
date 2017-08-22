@@ -115,11 +115,8 @@ class AddContracts extends Component {
     this.setState({state: value+1});
   }
   handleMunicipality(value, item){
+    this.props.getRate(value.id, this.props.token)
     this.setState({municipality: value.id});
-    this.props.getRate(value.id)
-  }
-  handleRate(value, item){
-    this.setState({rate: item});
   }
   handlePeriodSummer(value){
     this.setState({period_summer: value});
@@ -131,7 +128,7 @@ class AddContracts extends Component {
     this.setState({cost: event.nativeEvent.text});
   }
   sendData(){
-    this.props.postContract(this.state, this.props.token)
+    this.props.postContract(this.state, this.props.mun_rate,this.props.token)
     this.props.navigation.navigate('Receipt')
   }
   // falta condicion para hacer check en uno u otro
@@ -153,29 +150,17 @@ class AddContracts extends Component {
         >{item.state}</Option>
       )
     })
-    console.log(this.props.mun_rate);
-    optionsRates = <Option optionStyle={styles.select__option} >hola</Option>
-    // this.props.list_rate.map((item,i)=>{
-      // return (
 
-    //   )
-    // })
     if (Platform.OS === 'android') {
       optionsStates = this.props.states_mx.map((item,i)=>{
         return(
           <Picker.Item key={i} label={item.state} value={i}/>
         )
       })
-      optionsRates = this.props.list_rate.map((item,i)=>{
-        return(
-          <Picker.Item key={i} label={item.name_rate} value={i}/>
-        )
-      })
     }
   }
 
   render(){
-    console.log(this.props.list_rate, this.props.mun_rate);
     const { navigation, states_mx, municipality_mx, mun_rate } = this.props
     var periodSummer = (
       <Select
@@ -268,7 +253,7 @@ class AddContracts extends Component {
                 <Input style={{textAlign: 'center',width: '100%',padding: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
               </Body>
               <Right style={ styles.row__top__left__right }>
-                <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
+                {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
               </Right>
             </Row>
             <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
@@ -297,29 +282,7 @@ class AddContracts extends Component {
                 </View>
               }
               { (municipality_mx.length == 0) ? <View/> : selectMun}
-              { (mun_rate.length == 0) && <View />}
-              {/* { (Platform.OS === 'ios')?
-              <Select
-                selectStyle={styles.select}
-                padding={10}
-                listHeight={200}
-                caretSize={0}
-                onSelect={(value, key) => this.handleRate(value, key)}
-                >
-                  <Option optionStyle={styles.select__option} >hola</Option>
-                  <Option optionStyle={styles.select__option} >mundo</Option>
-                {optionsRates}
-              </Select> :
-              <View style={styles.selectPicker}>
-                <Picker
-                  selectedValue={this.state.rate}
-                  onValueChange={(value, key) => this.handleRate(value, key)}
-                  >
-
-                  {optionsRates}
-                </Picker>
-              </View>
-              } */}
+              { (mun_rate.length == 0) ? <View></View> : <Input editable={false} value={this.props.mun_rate}/>}
               { periodSummer }
               </Form>
             </Col>
@@ -356,10 +319,10 @@ class AddContracts extends Component {
 }
 function bindAction(dispatch){
   return {
-    postContract: (list, token) =>dispatch(postContract(list, token)),
+    postContract: (list, rate, token) =>dispatch(postContract(list, rate, token)),
     getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
     resetMunicipality: () => dispatch(resetMunicipality()),
-    getRate: mun_id => dispatch(getRate(mun_id)),
+    getRate: (mun_id, token) => dispatch(getRate(mun_id, token)),
   }
 }
 const mapStateToProps = state => ({

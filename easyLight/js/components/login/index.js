@@ -59,6 +59,7 @@ class Login extends Component {
   static propTypes = {
     setUser: React.PropTypes.func,
     loginUser: React.PropTypes.func,
+    getStates: React.PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -69,6 +70,7 @@ class Login extends Component {
     };
     this.renderInput = this.renderInput.bind(this);
     this.handleContracts = this.handleContracts.bind(this);
+    this.renderInput = this.renderInput.bind(this)
   }
   renderInput({
     input,
@@ -84,7 +86,7 @@ class Login extends Component {
     return (
       <Item error={hasError} style={{marginRight:20}}>
         <Input
-          style={{}}
+          autoCapitalize={'none'}
           secureTextEntry={input.name === "email" ? false : true }
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
           {...input}
@@ -127,7 +129,7 @@ class Login extends Component {
           >
             <Grid style={styles.grid}>
               <Row  size={40}>
-                <Col style={[styles.col__inputs__login,{}]}>
+                <Col style={styles.col__inputs__login}>
                   { (this.props.loginError != undefined || this.props.noPassword !=undefined)? this.state.validation : null  }
                   <Field style={styles.field__email} name="email" component={this.renderInput} />
                   <Field name="password" component={this.renderInput} />

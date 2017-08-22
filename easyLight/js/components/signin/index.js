@@ -8,6 +8,7 @@ import styles from './styles';
 import { registerUser } from '../../actions/user'
 const Screen = Dimensions.get('window');
 import ImagePicker from 'react-native-image-picker';
+import PickerDate from '../datePicker';
 
 class SignIn extends Component {
   static navigationOptions = {
@@ -28,6 +29,7 @@ class SignIn extends Component {
       file: null,
     }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
+    this.setBirthDay = this.setBirthDay.bind(this)
   }
   selectPhotoTapped() {
     const options = {
@@ -69,8 +71,17 @@ class SignIn extends Component {
   _keyboardDidHide () {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
+  setBirthDay(date){
+    if (date === '') {
 
+    }else {
+      this.setState({
+          birth_date: date
+        })
+    }
+  }
   render(){
+    console.log('state in SignIn',this.state);
     return(
         <Container style={{height:Screen.height}}>
           <Header zIndex navigation={this.props.navigation} title="Nuevo Registro"/>
@@ -98,6 +109,7 @@ class SignIn extends Component {
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Nombres:</Label>
                     <Input
+                      ref="first_name"
                       style={styles.form__item__input}
                       onChangeText={(first_name)=> this.setState({first_name})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
@@ -106,15 +118,18 @@ class SignIn extends Component {
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Apellidos:</Label>
                     <Input
+                      ref="last_name"
                       style={styles.form__item__input}
                       onChangeText={(last_name)=> this.setState({last_name})}
-
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
                     />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Email:</Label>
                     <Input
+                      autoCapitalize={'none'}
+                      keyboardType='email-address'
+                      ref='email'
                       style={styles.form__item__input}
                       onChangeText={(email)=> this.setState({email})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })}
@@ -123,6 +138,9 @@ class SignIn extends Component {
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Contraseña:</Label>
                     <Input
+                      autoCapitalize={'none'}
+                      ref="password1"
+                      secureTextEntry={true}
                       style={styles.form__item__input}
                       onChangeText={(password1)=> this.setState({password1})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 90 : 90 })}
@@ -131,6 +149,9 @@ class SignIn extends Component {
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Confirmar contraseña:</Label>
                     <Input
+                      autoCapitalize={'none'}
+                      ref="password2"
+                      secureTextEntry={true}
                       style={styles.form__item__input}
                       onChangeText={(password2)=> this.setState({password2})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 100 : 100 })}
@@ -138,15 +159,14 @@ class SignIn extends Component {
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>F. nacimiento:</Label>
-                    <Input
-                      style={styles.form__item__input}
-                      onChangeText={(birth_date)=> this.setState({birth_date})}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 160 : 160 })}
-                    />
+                    <PickerDate func={this.setBirthDay}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Celular:</Label>
                     <Input
+                      keyboardType='phone-pad'
+                      maxLength={10}
+                      ref="phone_number"
                       style={styles.form__item__input}
                       onChangeText={(phone)=> this.setState({phone})}
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 200 : 200 })}
@@ -155,6 +175,9 @@ class SignIn extends Component {
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>C.P.:</Label>
                     <Input
+                      maxLength={5}
+                      keyboardType='numeric'
+                      ref="zip_code"
                       style={styles.form__item__input}
                       onChangeText={(zip_code)=> this.setState({zip_code})}
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 250 : 300 })}

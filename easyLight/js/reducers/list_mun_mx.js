@@ -24,11 +24,11 @@ export default function(state: State = initialState, action: Action): State {
       results: []
     }
   }
-  else if(action.type === REHYDRATE){
-    var incoming = action.payload.list_mun_mx
-    if (incoming) return {...state, ...incoming}
-    return state
-  }
+  // else if(action.type === REHYDRATE){
+  //   var incoming = action.payload.list_mun_mx
+  //   if (incoming) return {...state, ...incoming}
+  //   return state
+  // }
 
   return state;
 }
