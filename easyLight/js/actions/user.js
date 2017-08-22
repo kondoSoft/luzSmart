@@ -1,7 +1,7 @@
 
 import type { Action } from './types';
 
-const endPoint = 'http://192.168.1.64:8080';
+const endPoint = 'http://138.68.49.119:8080/';
 
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
