@@ -35,15 +35,14 @@ export default class ReceiptPickerDate extends Component {
         cancelBtnText="Cancelar"
         customStyles={{
           dateInput: {
-            height: 45,
+            height:45,
             alignItems: 'flex-start',
-            paddingLeft: 18,
             borderWidth:2,
-            marginBottom:20,
             borderColor: 'lightgrey',
+            paddingLeft: 20,
           },
           dateText:{
-            fontSize: 16
+            fontSize: 16,
           }
         }}
         onDateChange={(date) => {

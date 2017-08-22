@@ -102,7 +102,6 @@ export default class SwipeAccordion extends Component{
     this.navigateTo = this.navigateTo.bind(this)
   }
   toggle(){
-    console.log('props of swipe accordion',this.props);
     this.props.func()
     let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
         finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
@@ -175,6 +174,7 @@ class ExpandedView extends Component{
   render(){
 
     const { data } = this.props
+    console.log(data);
     var contentExpandedView = {
       'first':{
         title: 'Período de Consumo',
@@ -190,7 +190,7 @@ class ExpandedView extends Component{
       },
       'four':{
         title: 'Consumo kWh',
-        value: data.current_dataclea,
+        value: ((data.previous_reading + 200) - data.previous_reading),
       }
     }
 

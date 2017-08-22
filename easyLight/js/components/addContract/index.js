@@ -239,9 +239,9 @@ class AddContracts extends Component {
       <Container style={{backgroundColor:'#fff'}}>
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
-        <ScrollView>
+        <ScrollView scrollEnabled={false}>
           <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
-            <Row size={12} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
+            <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
               <Left style={{marginLeft:19}}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                   <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
@@ -260,7 +260,7 @@ class AddContracts extends Component {
             <Col size={ (Platform.OS === 'ios')? 40 : 29 } style={ styles.col__form }>
               <Form>
                 <Item fixedLabel style={styles.col__form__item}>
-                  <Input placeholder={'No Contrato'} onChange={event => this.handleNumberContract(event)}/>
+                  <Input keyboardType={'numeric'} placeholder={'No Contrato'} style={{paddingLeft:10,paddingTop:15}} onChange={event => this.handleNumberContract(event)}/>
                 </Item>
               { (Platform.OS === 'ios')?
                 <Select
@@ -286,8 +286,8 @@ class AddContracts extends Component {
               { periodSummer }
               </Form>
             </Col>
-            {(Platform.OS === 'ios')? <View style={{height:15}}></View> : <View style={{height: 20}}></View>}
-            <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 20 : 20}}>
+            {(Platform.OS === 'ios')? <View style={{height:15}}></View> : <View style={{height: 0}}></View>}
+            <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 20 : 0}}>
               <View style={styles.row__bottom__view__top}>
                 <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen()}/>
                 <Body style={{ flex: 0 }}>

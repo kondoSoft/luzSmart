@@ -5,23 +5,23 @@ export default {
     row__top__left__right:{
       paddingLeft: 0,
       flex: 1,
+      backgroundColor: 'red',
     },
     row__top__left__right:{
       flex: 1,
+      backgroundColor: 'yellow',
     },
     col__form:{
       alignItems: 'center',
       justifyContent:'center',
-      width:'100%'
+      width:'100%',
     },
     row__top__col__right__icon:{
-      paddingRight: 30
+      paddingRight: 30,
     },
     col__form__item:{
       paddingLeft: 10,
-      marginTop: 5,
       marginRight: (Platform.OS === 'ios')? 0 : 5,
-      marginBottom: 5,
       marginLeft: (Platform.OS === 'ios')? 0 : 5,
       backgroundColor: 'lightgray',
       width: '85%',
@@ -42,7 +42,7 @@ export default {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-end',
-      paddingRight: 25
+      paddingRight: 25,
     },
     row__bottom__view__bottom:{
       marginTop: 0,
