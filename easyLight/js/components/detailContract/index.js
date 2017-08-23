@@ -33,6 +33,7 @@ class DetailContract extends Component {
 
     this.state = {
       key: null,
+      status: 'Pagado',
     }
     this.onOpenSwipe = this.onOpenSwipe.bind(this)
   }
@@ -46,6 +47,7 @@ class DetailContract extends Component {
   }
   render(){
     const { navigation } = this.props
+    const {status} = this.state
     const bill = navigation.state.params.receipt
     const index = navigation.state.params.index
     const colors = ['lightgrey','#fff']
@@ -74,7 +76,7 @@ class DetailContract extends Component {
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
-                    component={<ItemComponent data={item}/>}
+                    component={<ItemComponent data={item} status={status}/>}
                     dataAccordion={item}
                     icon={<Icon style={styles.icon} name="information-circle" />}
                   />
@@ -89,7 +91,7 @@ class DetailContract extends Component {
           >
           <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer navigation={navigation} bill={bill} contract={numContract}/> : null }
       </Container>
     )
   }
@@ -98,6 +100,7 @@ class DetailContract extends Component {
 class ItemComponent extends Component{
   render(){
     const receipt = this.props.data
+    const status = this.props.status
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
@@ -108,7 +111,7 @@ class ItemComponent extends Component{
         </Body>
         <Right style={styles.ItemComponent.align}>
           <Text style={styles.listItem__body__view__text,{}}>{receipt.current_reading}</Text>
-          <Text style={styles.listItem__body__view__text,{}}>Pagado</Text>
+          <Text style={styles.listItem__body__view__text,{}}>{status}</Text>
         </Right>
       </View>
     )

@@ -9,6 +9,10 @@ import styles from "./styles";
 
 class FooterGlobal extends Component {
   render(){
+    var currentContract = null
+    if(this.props.navigation.state.routeName == 'DetailContract'){
+      currentContract = this.props.contract
+    }
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
           <FooterTab style={styles.footer}>
@@ -20,7 +24,7 @@ class FooterGlobal extends Component {
               <Icon style={styles.footer__icon} name="calendar" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Periodos</Text> : <View/> }
             </Button>
-            <Button vertical onPress={() => this.props.navigation.navigate("Measurements")}>
+            <Button vertical onPress={() => this.props.navigation.navigate("Measurements", { currentContract: currentContract})}>
               <Thumbnail source={ require('../../../images/logogray.png') } style={styles.footer__logo} />
             </Button>
             <Button vertical style={styles.footer__btn__resultados} onPress={() => this.props.navigation.navigate("Results")}>

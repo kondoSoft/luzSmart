@@ -102,7 +102,6 @@ export default class SwipeAccordion extends Component{
     this.navigateTo = this.navigateTo.bind(this)
   }
   toggle(){
-    console.log('props of swipe accordion',this.props);
     this.props.func()
     let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
         finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;

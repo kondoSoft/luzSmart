@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import {
   Container,
   Content,
@@ -47,8 +48,36 @@ class Measurements extends Component {
   _keyboardDidHide () {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
+
   render(){
-    const { navigation } = this.props
+    const { navigation, contracts} = this.props
+    const { number_contract } = this.props.navigation.state.params.currentContract[0]
+    const receipt = this.props.navigation.state.params.currentContract[0].receipt
+    const arrReceipt = receipt.map((item, i)=>{
+      return item
+    })
+    const lastReceipt = arrReceipt[receipt.length-1]
+    // Select Contract
+    const TextContract = <Text>#{number_contract}</Text>
+    const SelectContract =
+    <Select
+      selectStyle={styles.col__row__top__select}
+      padding={5}
+      listHeight={100}
+      caretSize={0}
+      >
+      {(number_contract.length > 1) && number_contract.map((item,i)=>{
+        <Option
+          value={i}
+          optionStyle={styles.col__row__select__option}
+          >#{item}</Option>
+      })}
+    </Select>
+    // Select receipt
+    const TextReceipt = <Text>{lastReceipt.payday_limit}</Text>
+    // Math
+    const sumInitialCurrent = lastReceipt.previous_reading + lastReceipt.current_data
+    const reskWh = sumInitialCurrent - lastReceipt.previous_reading
     return(
       <Container style={{backgroundColor: '#fff'}}>
         <Header navigation={this.props.navigation} zIndex title="Mediciones"/>
@@ -70,25 +99,8 @@ class Measurements extends Component {
               <Row style={styles.grid__col__select__row__top}>
                 <Text style={styles.grid__row__top__view}>Contrato</Text>
                 {(Platform.OS === 'ios')?
-                <Select
-                  selectStyle={styles.col__row__top__select}
-                  padding={5}
-                  listHeight={100}
-                  caretSize={0}
-                  >
-                  <Option
-                    value={1}
-                    optionStyle={styles.col__row__select__option}
-                    >#123456</Option>
-                  <Option
-                    value={2}
-                    optionStyle={styles.col__row__select__option}
-                    >List Item 2</Option>
-                  <Option
-                    value={3}
-                    optionStyle={styles.col__row__select__option}
-                    >List Item 3</Option>
-                </Select> :
+                (contracts.length > 1) ? SelectContract : TextContract
+                :
                 <View style={styles.selectPicker}>
                   <Picker
                     style={{flex:1}}
@@ -103,25 +115,8 @@ class Measurements extends Component {
               <Row style={styles.grid__col__select__row__bottom}>
                 <Text style={styles.grid__row__top__view}>Periodo</Text>
                 {(Platform.OS === 'ios')?
-                <Select
-                  selectStyle={styles.col__row__top__select}
-                  padding={5}
-                  listHeight={100}
-                  caretSize={0}
-                  >
-                  <Option
-                    value={1}
-                    optionStyle={styles.col__row__select__option}
-                    >Marzo 2017</Option>
-                  <Option
-                    value={2}
-                    optionStyle={styles.col__row__select__option}
-                    >List Item 2</Option>
-                  <Option
-                    value={3}
-                    optionStyle={styles.col__row__select__option}
-                    >List Item 3</Option>
-                </Select> :
+                (receipt.length > 1) && TextReceipt
+                :
                 <View style={styles.selectPicker}>
                   <Picker
                     style={{flex:1}}
@@ -138,15 +133,15 @@ class Measurements extends Component {
               <List style={styles.row__bottom__list}>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Lectura Inicial</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>5,400</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{lastReceipt.previous_reading}</Text>
                 </ListItem>
                 <ListItem last>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Ultima Lectura Diaria</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>5,500</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{sumInitialCurrent}</Text>
                 </ListItem>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Consumo en KWh</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>100</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{reskWh}</Text>
                 </ListItem>
               </List>
             </Row>
@@ -193,4 +188,7 @@ class Measurements extends Component {
   }
 }
 
-export default Measurements;
+const mapStateToProps = state => ({
+  contracts: state.list_contracts.contracts,
+});
+export default connect(mapStateToProps)(Measurements)
