@@ -9,9 +9,7 @@ export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 
-
 const endPoint = 'http://138.68.49.119:8080';
-
 
 
 export function printStates(list):Action{
@@ -58,7 +56,7 @@ export function successContract(list):Action {
   }
 }
 
-export function getStates(list):Action {
+export function getStates():Action {
   return dispatch => {
     return fetch (endPoint+'/states/', {
       method: 'GET',

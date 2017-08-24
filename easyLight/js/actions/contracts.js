@@ -1,9 +1,7 @@
 import type { Action } from './types';
 
 
-
 const endPoint = 'http://138.68.49.119:8080';
-
 
 
 
