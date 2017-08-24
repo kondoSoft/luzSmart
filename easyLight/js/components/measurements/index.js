@@ -22,6 +22,7 @@ import Footer from '../footer/index';
 import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
+import { patchReceipt } from '../../actions/contracts'
 
 let Screen = Dimensions.get('window')
 
@@ -36,6 +37,7 @@ class Measurements extends Component {
     this.state = {
       active: false,
       scroll: false,
+      current_data: '',
     }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
   }
@@ -48,15 +50,22 @@ class Measurements extends Component {
   _keyboardDidHide () {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
-
+  sendCurrentData(id){
+    this.props.patchReceipt(this.state.current_data, this.props.token, id)
+    this.props.navigation.goBack()
+  }
   render(){
     const { navigation, contracts} = this.props
     const { number_contract } = this.props.navigation.state.params.currentContract[0]
     const receipt = this.props.navigation.state.params.currentContract[0].receipt
+    // Array de recibos para sacar el ultimo
     const arrReceipt = receipt.map((item, i)=>{
       return item
     })
+    //  Ultimo recibo
     const lastReceipt = arrReceipt[receipt.length-1]
+    // Select receipt
+    const TextReceipt = <Text>{lastReceipt.payday_limit}</Text>
     // Select Contract
     const TextContract = <Text>#{number_contract}</Text>
     const SelectContract =
@@ -73,8 +82,7 @@ class Measurements extends Component {
           >#{item}</Option>
       })}
     </Select>
-    // Select receipt
-    const TextReceipt = <Text>{lastReceipt.payday_limit}</Text>
+
     // Math
     const sumInitialCurrent = lastReceipt.previous_reading + lastReceipt.current_data
     const reskWh = sumInitialCurrent - lastReceipt.previous_reading
@@ -115,7 +123,7 @@ class Measurements extends Component {
               <Row style={styles.grid__col__select__row__bottom}>
                 <Text style={styles.grid__row__top__view}>Periodo</Text>
                 {(Platform.OS === 'ios')?
-                (receipt.length > 1) && TextReceipt
+                (receipt.length >= 1) && TextReceipt
                 :
                 <View style={styles.selectPicker}>
                   <Picker
@@ -152,6 +160,7 @@ class Measurements extends Component {
                     <TextInput
                       keyboardType={'numeric'}
                       style={styles.animatedView__image__view__input}
+                      onChangeText={(current_data)=> this.setState({ current_data })}
                       onFocus={ () => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 185 : 300 }) }
                     />
                     <Text style={{color: 'grey'}}>kWh</Text>
@@ -159,7 +168,7 @@ class Measurements extends Component {
                   <Button
                     small
                     style={styles.animatedView__image__view__btn}
-                    onPress={() => this.props.navigation.navigate("Contact")}
+                    onPress={() => this.sendCurrentData(lastReceipt.id)}
                     >
                     <Text>Enter</Text>
                   </Button>
@@ -187,8 +196,13 @@ class Measurements extends Component {
     )
   }
 }
-
+function bindAction(dispatch) {
+  return {
+    patchReceipt: (data, token, id) => dispatch(patchReceipt(data, token, id)),
+  };
+}
 const mapStateToProps = state => ({
   contracts: state.list_contracts.contracts,
+  token: state.user.token,
 });
-export default connect(mapStateToProps)(Measurements)
+export default connect(mapStateToProps, bindAction)(Measurements)
