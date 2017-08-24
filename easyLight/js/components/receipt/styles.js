@@ -22,7 +22,7 @@ export default {
     borderBottomColor: 'green',
     borderBottomWidth: 3,
     alignItems: 'flex-end',
-    marginBottom: 25,
+    marginBottom: 20,
   },
   form__item__inputs:{
     borderLeftWidth: 2,
@@ -30,7 +30,16 @@ export default {
     borderRightWidth: 2,
     borderTopWidth: 2,
     marginBottom: 10,
+    marginTop: 10,
     paddingTop: 5,
+  },
+  form__item__datepicker:{
+    borderLeftWidth: 2,
+    borderBottomWidth: 2,
+    borderRightWidth: 2,
+    borderTopWidth: 2,
+    marginBottom: 10,
+    marginTop: 10,
   },
   form__item__label:{
     marginBottom: 3

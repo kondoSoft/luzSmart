@@ -133,7 +133,9 @@ class Receipt extends Component {
                 <Item inlineLabel last style={styles.form__item__title}>
                   <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                 </Item>
-                <ReceiptPickerDate func={this.handlePaydayLimit}/>
+                <Item last style={styles.form__item__datepicker}>
+                  <ReceiptPickerDate func={this.handlePaydayLimit}/>
+                </Item>
                 <Item last style={styles.form__item__inputs}>
                   <Input
                     placeholder="Monto a Pagar"
