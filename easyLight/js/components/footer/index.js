@@ -12,6 +12,8 @@ class FooterGlobal extends Component {
     var currentContract = null
     if(this.props.navigation.state.routeName == 'DetailContract'){
       currentContract = this.props.contract
+    }else if(this.props.navigation.state.routeName == 'Contracts'){
+      currentContract = this.props.viewContract
     }
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
