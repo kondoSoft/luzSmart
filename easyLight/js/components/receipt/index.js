@@ -107,7 +107,8 @@ class Receipt extends Component {
     }
   }
   sendData(){
-    this.props.postReceipt(this.state)
+    console.log(this.props.token);
+    this.props.postReceipt(this.state, this.props.token)
     this.showAlert()
   }
   render(){
@@ -257,11 +258,12 @@ class Receipt extends Component {
 }
 function bindAction(dispatch) {
   return {
-    postReceipt: list => dispatch(postReceipt(list)),
+    postReceipt: (list, token) => dispatch(postReceipt(list, token)),
   }
 }
 const mapStateToProps = state => ({
-  newContract: state.list_contracts.newContract
+  newContract: state.list_contracts.newContract,
+  token: state.user.token
 })
 
 export default connect(mapStateToProps, bindAction)(Receipt);

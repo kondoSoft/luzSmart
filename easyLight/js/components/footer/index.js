@@ -11,7 +11,7 @@ class FooterGlobal extends Component {
   render(){
     var currentContract = null
     if(this.props.navigation.state.routeName == 'DetailContract'){
-      currentContract = this.props.contract
+      currentContract = this.props.detailContract
     }else if(this.props.navigation.state.routeName == 'Contracts'){
       currentContract = this.props.viewContract
     }

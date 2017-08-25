@@ -27,8 +27,7 @@ import { patchReceipt } from '../../actions/contracts'
 let Screen = Dimensions.get('window')
 
 var SelectContract
-var sumInitialCurrent
-var reskWh
+var rangeDate
 class Measurements extends Component {
 
   static navigationOptions = {
@@ -43,11 +42,29 @@ class Measurements extends Component {
       id_contract: null,
       id_receipt: null,
       current_data: '',
-      itemReceipt: []
+      itemReceipt: {
+        previous_reading: 0,
+        current_data: 0,
+        payday_limit: '',
+      }
     }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
   }
+
   componentWillMount () {
+    if (this.props.navigation.state.params.currentContract.length === 1) {
+      const arrayReceipts = this.props.navigation.state.params.currentContract[0]
+      const itemsReceipts = []
+      arrayReceipts.receipt.map((item,i)=>{
+        itemsReceipts.push(item)
+        return item
+      })
+      const itemReceipt = itemsReceipts[itemsReceipts.length-1]
+      this.setState({
+        itemReceipt
+      })
+    }
+
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentDidMount(){
@@ -64,33 +81,44 @@ class Measurements extends Component {
     this.props.navigation.goBack()
   }
   setDataContract(contract_id){
-    console.log(contract_id);
     const itemContract = []
-    const itemReceipt = []
+    var itemReceipt;
+
     var arrContracts = this.props.contracts.map((item, i) => {
       if(item.id == contract_id){
-        itemContract.push(item)
+        itemContract.push(item.receipt)
       }
     })
-    var arrReceipt = itemContract.map((item,i)=>{
-      itemReceipt.push(item.receipt[item.receipt.length-1])
+    itemContract.map((item,i)=>{
+      itemReceipt = item[item.length-1]
     })
-    // sumInitialCurrent = lastReceipt.previous_reading + lastReceipt.current_data
-    // reskWh = sumInitialCurrent - lastReceipt.previous_reading
-
-    // console.log(Object.keys(this.props.contracts));
-    // console.log(contractIndex);
     this.setState({
       itemReceipt
-
     })
   }
+  // Funcion rango de fecha
+  setRangeDate(){
+    const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    const d = new Date()
+    const month = d.getMonth()+1;
+    const day = d.getDate();
+    const year = d.getFullYear();
+    const currentDate = ((''+day).length<2 ? '0' : '') + day + '/' + ((''+month).length<2 ? '0' : '') + month + '/' + d.getFullYear()
+    const indexPaydayLimit = this.state.itemReceipt.payday_limit.slice(5,7)
+    const dayPaydayLimit = this.state.itemReceipt.payday_limit.slice(8,10)
+    const initialDate = new Date(year, indexPaydayLimit, dayPaydayLimit)
+
+    var finalDate = initialDate.setDate(initialDate.getDate()+30)
+    finalDate = initialDate.getMonth()-1
+    rangeDate = arrMonth[indexPaydayLimit-1] + '-' + arrMonth[finalDate]
+
+  }
   render(){
-    console.log(this.state.itemReceipt);
+    this.setRangeDate()
+
     const { navigation, contracts} = this.props
     // Contrato que viene desde la pantalla recibos
-    const { number_contract } = this.props.navigation.state.params.currentContract[0]
-
+    const { currentContract } = this.props.navigation.state.params
     const receipt = this.props.navigation.state.params.currentContract[0].receipt
     // Array de recibos para sacar el ultimo
     const arrReceipt = receipt.map((item, i)=>{
@@ -99,9 +127,9 @@ class Measurements extends Component {
     //  Ultimo recibo
     const lastReceipt = arrReceipt[receipt.length-1]
     // Select receipt
-    const TextReceipt = <Text>{lastReceipt.payday_limit}</Text>
+    const TextReceipt = <Text>{rangeDate}</Text>
     // Select Contract
-    const TextContract = <Text>#{number_contract}</Text>
+    const TextContract = <Text>#{currentContract[0].number_contract}</Text>
 
     SelectContract =
     <Select
@@ -141,9 +169,9 @@ class Measurements extends Component {
             <Col size={6} style={styles.grid__col__select}>
               <Row style={styles.grid__col__select__row__top}>
                 <Text style={styles.grid__row__top__view}>Contrato</Text>
-                 {/* (contracts.length > 1) ? SelectContract : TextContract */}
+                 {(currentContract.length == 1) ? TextContract  : SelectContract }
 
-                  {SelectContract}
+                  {/* {SelectContract} */}
               </Row>
               <Row style={styles.grid__col__select__row__bottom}>
                 <Text style={styles.grid__row__top__view}>Periodo</Text>
@@ -166,15 +194,15 @@ class Measurements extends Component {
               <List style={styles.row__bottom__list}>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Lectura Inicial</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt[0] !== undefined)&& this.state.itemReceipt[0].previous_reading}</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.previous_reading}</Text>
                 </ListItem>
                 <ListItem last>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Ultima Lectura Diaria</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt[0] !== undefined)&& this.state.itemReceipt[0].current_reading}</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.previous_reading +  this.state.itemReceipt.current_data)}</Text>
                 </ListItem>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Consumo en KWh</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt[0] !== undefined)&& this.state.itemReceipt[0].current_data}</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.current_data}</Text>
                 </ListItem>
               </List>
             </Row>
@@ -193,7 +221,7 @@ class Measurements extends Component {
                   <Button
                     small
                     style={styles.animatedView__image__view__btn}
-                    onPress={() => this.sendCurrentData(lastReceipt.id)}
+                    onPress={() => this.sendCurrentData(this.state.itemReceipt.id)}
                     >
                     <Text>Enter</Text>
                   </Button>

@@ -91,7 +91,7 @@ class DetailContract extends Component {
           >
           <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation} bill={bill} contract={numContract}/> : null }
+        {(Platform.OS === 'ios')? <Footer navigation={navigation} bill={bill} detailContract={numContract}/> : null }
       </Container>
     )
   }
