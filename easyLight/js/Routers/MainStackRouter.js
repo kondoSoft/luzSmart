@@ -21,7 +21,7 @@ import EditProfile from '../components/editProfile';
 //   header: null
 // });
 const navigation = {
-  Login: { screen: Login },
+  // Login: { screen: Login },
   Contracts: { screen: Contracts },
   SignIn: { screen: SignIn },
   DetailContract: { screen: DetailContract },

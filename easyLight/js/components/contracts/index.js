@@ -63,7 +63,7 @@ class Contracts extends Component {
           >
           <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer viewContract={contracts} navigation={navigation}/> : null}
       </Container>
     )
   }

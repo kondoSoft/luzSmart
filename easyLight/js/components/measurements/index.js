@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import {
   Container,
   Content,
@@ -21,11 +22,14 @@ import Footer from '../footer/index';
 import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
+import { patchReceipt } from '../../actions/contracts'
 
 let Screen = Dimensions.get('window')
 
-
+var SelectContract
+var rangeDate
 class Measurements extends Component {
+
   static navigationOptions = {
     header: null
   };
@@ -35,11 +39,36 @@ class Measurements extends Component {
     this.state = {
       active: false,
       scroll: false,
+      id_contract: null,
+      id_receipt: null,
+      current_data: '',
+      itemReceipt: {
+        previous_reading: 0,
+        current_data: 0,
+        payday_limit: '',
+      }
     }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
   }
+
   componentWillMount () {
+    if (this.props.navigation.state.params.currentContract.length === 1) {
+      const arrayReceipts = this.props.navigation.state.params.currentContract[0]
+      const itemsReceipts = []
+      arrayReceipts.receipt.map((item,i)=>{
+        itemsReceipts.push(item)
+        return item
+      })
+      const itemReceipt = itemsReceipts[itemsReceipts.length-1]
+      this.setState({
+        itemReceipt
+      })
+    }
+
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+  componentDidMount(){
+
   }
   componentWillUnmount () {
     this.keyboardDidHideListener.remove();
@@ -47,8 +76,79 @@ class Measurements extends Component {
   _keyboardDidHide () {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
+  sendCurrentData(id){
+    this.props.patchReceipt(this.state.current_data, this.props.token, id)
+    this.props.navigation.goBack()
+  }
+  setDataContract(contract_id){
+    const itemContract = []
+    var itemReceipt;
+
+    var arrContracts = this.props.contracts.map((item, i) => {
+      if(item.id == contract_id){
+        itemContract.push(item.receipt)
+      }
+    })
+    itemContract.map((item,i)=>{
+      itemReceipt = item[item.length-1]
+    })
+    this.setState({
+      itemReceipt
+    })
+  }
+  // Funcion rango de fecha
+  setRangeDate(){
+    const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    const d = new Date()
+    const month = d.getMonth()+1;
+    const day = d.getDate();
+    const year = d.getFullYear();
+    const currentDate = ((''+day).length<2 ? '0' : '') + day + '/' + ((''+month).length<2 ? '0' : '') + month + '/' + d.getFullYear()
+    const indexPaydayLimit = this.state.itemReceipt.payday_limit.slice(5,7)
+    const dayPaydayLimit = this.state.itemReceipt.payday_limit.slice(8,10)
+    const initialDate = new Date(year, indexPaydayLimit, dayPaydayLimit)
+
+    var finalDate = initialDate.setDate(initialDate.getDate()+30)
+    finalDate = initialDate.getMonth()-1
+    rangeDate = arrMonth[indexPaydayLimit-1] + '-' + arrMonth[finalDate]
+
+  }
   render(){
-    const { navigation } = this.props
+    this.setRangeDate()
+
+    const { navigation, contracts} = this.props
+    // Contrato que viene desde la pantalla recibos
+    const { currentContract } = this.props.navigation.state.params
+    const receipt = this.props.navigation.state.params.currentContract[0].receipt
+    // Array de recibos para sacar el ultimo
+    const arrReceipt = receipt.map((item, i)=>{
+      return item
+    })
+    //  Ultimo recibo
+    const lastReceipt = arrReceipt[receipt.length-1]
+    // Select receipt
+    const TextReceipt = <Text>{rangeDate}</Text>
+    // Select Contract
+    const TextContract = <Text>#{currentContract[0].number_contract}</Text>
+
+    SelectContract =
+    <Select
+      selectStyle={styles.col__row__top__select}
+      padding={5}
+      listHeight={100}
+      caretSize={0}
+      onSelect={(id)=> this.setDataContract(id)}
+      >
+      {contracts.map((item,i)=>{
+        return <Option
+          key={i}
+          value={item.id}
+          optionStyle={styles.col__row__select__option}
+          ># {item.number_contract}</Option>
+      })}
+    </Select>
+    // Math
+
     return(
       <Container style={{backgroundColor: '#fff'}}>
         <Header navigation={this.props.navigation} zIndex title="Mediciones"/>
@@ -69,59 +169,15 @@ class Measurements extends Component {
             <Col size={6} style={styles.grid__col__select}>
               <Row style={styles.grid__col__select__row__top}>
                 <Text style={styles.grid__row__top__view}>Contrato</Text>
-                {(Platform.OS === 'ios')?
-                <Select
-                  selectStyle={styles.col__row__top__select}
-                  padding={5}
-                  listHeight={100}
-                  caretSize={0}
-                  >
-                  <Option
-                    value={1}
-                    optionStyle={styles.col__row__select__option}
-                    >#123456</Option>
-                  <Option
-                    value={2}
-                    optionStyle={styles.col__row__select__option}
-                    >List Item 2</Option>
-                  <Option
-                    value={3}
-                    optionStyle={styles.col__row__select__option}
-                    >List Item 3</Option>
-                </Select> :
-                <View style={styles.selectPicker}>
-                  <Picker
-                    style={{flex:1}}
-                    selectedValue={this.state.language}
-                    onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-                    <Picker.Item label="Java" value="java" />
-                    <Picker.Item label="JavaScript" value="js" />
-                  </Picker>
-                </View>
-              }
+                 {(currentContract.length == 1) ? TextContract  : SelectContract }
+
+                  {/* {SelectContract} */}
               </Row>
               <Row style={styles.grid__col__select__row__bottom}>
                 <Text style={styles.grid__row__top__view}>Periodo</Text>
                 {(Platform.OS === 'ios')?
-                <Select
-                  selectStyle={styles.col__row__top__select}
-                  padding={5}
-                  listHeight={100}
-                  caretSize={0}
-                  >
-                  <Option
-                    value={1}
-                    optionStyle={styles.col__row__select__option}
-                    >Marzo 2017</Option>
-                  <Option
-                    value={2}
-                    optionStyle={styles.col__row__select__option}
-                    >List Item 2</Option>
-                  <Option
-                    value={3}
-                    optionStyle={styles.col__row__select__option}
-                    >List Item 3</Option>
-                </Select> :
+                (receipt.length >= 1) && TextReceipt
+                :
                 <View style={styles.selectPicker}>
                   <Picker
                     style={{flex:1}}
@@ -138,15 +194,15 @@ class Measurements extends Component {
               <List style={styles.row__bottom__list}>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Lectura Inicial</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>5,400</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.previous_reading}</Text>
                 </ListItem>
                 <ListItem last>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Ultima Lectura Diaria</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>5,500</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.previous_reading +  this.state.itemReceipt.current_data)}</Text>
                 </ListItem>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Consumo en KWh</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>100</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.current_data}</Text>
                 </ListItem>
               </List>
             </Row>
@@ -157,6 +213,7 @@ class Measurements extends Component {
                     <TextInput
                       keyboardType={'numeric'}
                       style={styles.animatedView__image__view__input}
+                      onChangeText={(current_data)=> this.setState({ current_data })}
                       onFocus={ () => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 185 : 300 }) }
                     />
                     <Text style={{color: 'grey'}}>kWh</Text>
@@ -164,7 +221,7 @@ class Measurements extends Component {
                   <Button
                     small
                     style={styles.animatedView__image__view__btn}
-                    onPress={() => this.props.navigation.navigate("Contact")}
+                    onPress={() => this.sendCurrentData(this.state.itemReceipt.id)}
                     >
                     <Text>Enter</Text>
                   </Button>
@@ -192,5 +249,13 @@ class Measurements extends Component {
     )
   }
 }
-
-export default Measurements;
+function bindAction(dispatch) {
+  return {
+    patchReceipt: (data, token, id) => dispatch(patchReceipt(data, token, id)),
+  };
+}
+const mapStateToProps = state => ({
+  contracts: state.list_contracts.contracts,
+  token: state.user.token,
+});
+export default connect(mapStateToProps, bindAction)(Measurements)
