@@ -235,10 +235,10 @@ class Measurements extends Component {
             active={this.state.active}
             direction="up"
             containerStyle={{ right: 10 }}
-            style={{ backgroundColor: '#5067FF' }}
+            style={{ backgroundColor: 'steelblue' }}
             position="bottomRight"
             onPress={() => this.setState({ active: !this.state.active })}>
-            <Icon name="share" />
+            <Icon name="md-share" />
             <Button style={{ backgroundColor: '#3B5998' }}>
               <Icon name="logo-facebook" />
             </Button>

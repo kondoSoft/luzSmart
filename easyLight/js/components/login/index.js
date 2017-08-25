@@ -59,6 +59,7 @@ class Login extends Component {
   static propTypes = {
     setUser: React.PropTypes.func,
     loginUser: React.PropTypes.func,
+    getStates: React.PropTypes.func,
   };
   constructor(props) {
     super(props);
