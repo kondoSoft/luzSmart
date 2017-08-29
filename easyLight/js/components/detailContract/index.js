@@ -106,10 +106,15 @@ class ItemComponent extends Component{
   render(){
     const receipt = this.props.data
     const status = this.props.status
+    const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    const splitRange = receipt.payday_limit.split('-',)
+    const date = new Date(splitRange[0], splitRange[1], splitRange[2])
+    const dateMonth = date.getMonth()
+    const finalRange = new Date(new Date(date).setMonth(date.getMonth()+1))
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__text}>{receipt.payday_limit.substring(3)}</Text>
+          <Text style={styles.listItem__body__text}>{arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()]}</Text>
         </Left>
         <Body style={styles.ItemComponent.align}>
 

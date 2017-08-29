@@ -9,8 +9,8 @@ export const GET_CONTRACT = 'GET_CONTRACT'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 export function printStates(list):Action{
@@ -110,7 +110,8 @@ export function postContract(list, rate, token):Action{
     data.append('state', list.state)
     data.append('municipality', list.municipality)
     data.append('rate', rate)
-    data.append('period_summer', list.period_summer)
+    data.append('initialDateRange', list.initialDateRange)
+    data.append('finalDateRange', list.finalDateRange)
     data.append('type_payment', list.type_payment)
     data.append('image',{
       uri: list.file.uri,
@@ -127,7 +128,9 @@ export function postContract(list, rate, token):Action{
      body: data
     })
     .then(res => {return res.json()})
-    .then(res => dispatch(successContract(res)))
+    .then(res => {
+      console.log('res',res);
+      dispatch(successContract(res))})
     .catch(err => console.log(err))
   }
 }
