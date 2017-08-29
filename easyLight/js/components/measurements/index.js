@@ -126,8 +126,8 @@ class Measurements extends Component {
     })
     //  Ultimo recibo
     const lastReceipt = arrReceipt[receipt.length-1]
-    // Select receipt
-    const TextReceipt = <Text>{rangeDate}</Text>
+    // Rango automatico del periodo
+    const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
     // Select Contract
     const TextContract = <Text>#{currentContract[0].number_contract}</Text>
 

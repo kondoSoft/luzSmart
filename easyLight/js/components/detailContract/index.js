@@ -69,7 +69,9 @@ class DetailContract extends Component {
             </Row>
             <Col>
               <List style={styles.list}>
-                {bill.map((item, i )=><SwipeAccordion
+                {bill.map((item, i )=>
+                  {
+                  return <SwipeAccordion
                     func={()=>this.onOpenSwipe(i)}
                     indexOpen={this.state.key}
                     keyVal={i}
@@ -80,7 +82,10 @@ class DetailContract extends Component {
                     dataAccordion={item}
                     icon={<Icon style={styles.icon} name="information-circle" />}
                   />
-                  )}
+                  console.log('item',item)
+                }
+              )}
+
               </List>
             </Col>
           </Grid>
