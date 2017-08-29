@@ -174,7 +174,6 @@ class ExpandedView extends Component{
   render(){
 
     const { data } = this.props
-    console.log(data);
     var contentExpandedView = {
       'first':{
         title: 'Período de Consumo',
@@ -186,11 +185,11 @@ class ExpandedView extends Component{
       },
       'third':{
         title: 'Última Lectura Diaria',
-        value: data.previous_reading + 200,
+        value: data.previous_reading + data.current_data,
       },
       'four':{
         title: 'Consumo kWh',
-        value: ((data.previous_reading + 200) - data.previous_reading),
+        value: data.current_data,
       }
     }
 
