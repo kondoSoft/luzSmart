@@ -36,7 +36,9 @@ class Receipt extends Component {
         current_reading: 0,
         previous_reading: 0,
         contract_id: 0,
-        amount_payable_ui: 0,
+        amount_payable_ui: '',
+        current_reading_ui: 0,
+        previous_reading_ui: 0,
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
       this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
@@ -77,13 +79,19 @@ class Receipt extends Component {
     this.setState({
       amount_payable: text,
       amount_payable_ui: text,
-     });
+    });
   }
   handleCurrentReading(event){
-    this.setState({current_reading: event.nativeEvent.text});
+    this.setState({
+      current_reading: event.nativeEvent.text,
+      current_reading_ui: event.nativeEvent.text
+    })
   }
   handlePreviousReading(event){
-    this.setState({previous_reading: event.nativeEvent.text});
+    this.setState({
+      previous_reading: event.nativeEvent.text,
+      previous_reading_ui: event.nativeEvent.text,
+    });
   }
   showAlert(){
     if (Platform.OS === 'ios') {
@@ -107,7 +115,6 @@ class Receipt extends Component {
     }
   }
   sendData(){
-    console.log(this.props.token);
     this.props.postReceipt(this.state, this.props.token)
     this.showAlert()
   }
@@ -143,11 +150,16 @@ class Receipt extends Component {
                     onChangeText={text => this.handleAmountPayable(text)}
                     onBlur={()=> {
                       this.setState({
-                        amount_payable_ui: parseInt(this.state.amount_payable_ui).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
+                        amount_payable_ui:  parseInt(this.state.amount_payable).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
                       })
                     }}
                     value={this.state.amount_payable_ui}
-                    onFocus={() => this.refs['scroll'].scrollTo({y: 80 })}
+                    onFocus={() => {
+                      this.refs['scroll'].scrollTo({y: 0 })
+                      this.setState({
+                        amount_payable_ui: this.state.amount_payable
+                      })
+                  }}
                   />
                 </Item>
                 <Item last style={styles.form__item__title}>
@@ -157,7 +169,18 @@ class Receipt extends Component {
                   <Input
                     placeholder="Lectura Actual"
                     onChange={event => this.handleCurrentReading(event)}
-                    onFocus={() => this.refs['scroll'].scrollTo({y: 140 })}
+                    onBlur={()=>{
+                      this.setState({
+                        current_reading_ui: parseInt(this.state.current_reading).toLocaleString()
+                      })
+                    }}
+                    value={this.state.current_reading_ui}
+                    onFocus={() => {
+                      this.refs['scroll'].scrollTo({y: 140})
+                      this.setState({
+                        current_reading_ui: this.state.current_reading
+                      })
+                    }}
                   />
                   <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                 </Item>
@@ -165,7 +188,18 @@ class Receipt extends Component {
                   <Input
                     placeholder="Lectura Anterior"
                     onChange={event => this.handlePreviousReading(event)}
-                    onFocus={() => this.refs['scroll'].scrollTo({y: 180 })}
+                    onBlur={()=>{
+                      this.setState({
+                        previous_reading_ui: parseInt(this.state.previous_reading).toLocaleString()
+                      })
+                    }}
+                    value={this.state.previous_reading_ui}
+                    onFocus={() => {
+                      this.refs['scroll'].scrollTo({y: 180})
+                      this.setState({
+                        previous_reading_ui: this.state.previous_reading
+                      })
+                    }}
                   />
                   <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                 </Item>
@@ -203,16 +237,22 @@ class Receipt extends Component {
                   <ReceiptPickerDate func={this.handlePaydayLimit}/>
                   <Item last style={styles.form__item__inputs}>
                     <Input
+                      ref='monto'
                       keyboardType={'numeric'}
                       placeholder="Monto a Pagar"
                       onChangeText={text => this.handleAmountPayable(text)}
                       onBlur={()=> {
                         this.setState({
-                          amount_payable_ui: parseInt(this.state.amount_payable_ui).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
+                            amount_payable_ui: parseInt(this.state.amount_payable).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
                         })
                       }}
                       value={this.state.amount_payable_ui}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: 0 })}
+                      onFocus={() => {
+                        this.refs['scroll'].scrollTo({y: 0 })
+                        this.setState({
+                          amount_payable_ui: this.state.amount_payable
+                        })
+                    }}
                     />
                   </Item>
                   <Item last style={styles.form__item__title}>
@@ -223,7 +263,18 @@ class Receipt extends Component {
                       keyboardType={'numeric'}
                       placeholder="Lectura Actual"
                       onChange={event => this.handleCurrentReading(event)}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: 40})}
+                      onBlur={()=>{
+                        this.setState({
+                          current_reading_ui: parseInt(this.state.current_reading).toLocaleString()
+                        })
+                      }}
+                      value={this.state.current_reading_ui}
+                      onFocus={() => {
+                        this.refs['scroll'].scrollTo({y: 40})
+                        this.setState({
+                          current_reading_ui: this.state.current_reading
+                        })
+                      }}
                     />
                     <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                   </Item>
@@ -233,7 +284,18 @@ class Receipt extends Component {
                       returnKeyType={'go'}
                       placeholder="Lectura Anterior"
                       onChange={event => this.handlePreviousReading(event)}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: 80})}
+                      onBlur={()=>{
+                        this.setState({
+                          previous_reading_ui: parseInt(this.state.previous_reading).toLocaleString()
+                        })
+                      }}
+                      value={this.state.previous_reading_ui}
+                      onFocus={() => {
+                        this.refs['scroll'].scrollTo({y: 80})
+                        this.setState({
+                          previous_reading_ui: this.state.previous_reading
+                        })
+                      }}
                     />
                     <Text style={{fontSize:16,paddingRight:5,color:'grey'}}>kWh</Text>
                   </Item>
