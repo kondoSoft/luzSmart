@@ -1,5 +1,7 @@
 import type { Action } from "../actions/types";
 import { GET_STATES, GET_MUNICIPALITY, GET_RATE } from "../actions/list_states_mx";
+import { PRINT_RATE_PERIOD } from "../actions/contracts";
+
 
 export type State = {
   list: string
@@ -8,7 +10,8 @@ export type State = {
 const initialState = {
   results:[],
   list_rate:[],
-  selectedIndex: undefined
+  selectedIndex: undefined,
+  rate_period: undefined,
 };
 
 export default function(state: State = initialState, action: Action): State {
@@ -17,6 +20,13 @@ export default function(state: State = initialState, action: Action): State {
       ...state,
       results: action.payload[0].rate
     };
+  }
+  if(action.type == PRINT_RATE_PERIOD) {
+    return {
+      ...state,
+
+      rate_period: action.payload.results
+    }
   }
 
   return state;

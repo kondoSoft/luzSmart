@@ -33,7 +33,9 @@ import { getMunicipality, resetMunicipality, postContract, getRate } from '../..
 import ImagePicker from 'react-native-image-picker';
 
 let Screen = Dimensions.get('window')
-
+var arrRangeDate = []
+var arrRangeMonth= []
+var arrRange = []
 class AddContracts extends Component {
 
   constructor(props){
@@ -47,11 +49,11 @@ class AddContracts extends Component {
         "state" : "",
         "municipality" : "",
         "rate" : "",
-        "period_summer" : "",
+        "initialDateRange": "",
+        "finalDateRange": "",
         "type_payment" : "",
         "receipt" : undefined,
         "cost" : 0,
-        // "image" : require('../../../images/office.png'),
         "checkedMen": false,
         "checkedBi": false,
         "avatarSource" : null,
@@ -119,7 +121,16 @@ class AddContracts extends Component {
     this.setState({municipality: value.id});
   }
   handlePeriodSummer(value){
-    this.setState({period_summer: value});
+    const initialRange = arrRange[value].initialRange
+    const finalRange = arrRange[value].finalRange
+    const monthInitial = initialRange.getMonth()+1
+    const monthFinal = finalRange.getMonth()+1
+    const initialDateRange = initialRange.getFullYear() + '-' + ((''+monthInitial).length<2 ? '0': '') + monthInitial + '-' +  ((''+initialRange.getDay()).length<2 ? '0' : '') + initialRange.getDay()
+    const finalDateRange = finalRange.getFullYear() + '-' + ((''+monthFinal).length<2 ? '0' : '') + monthFinal + '-' +  ((''+finalRange.getDay()).length<2 ? '0' : '') + finalRange.getDay()
+    this.setState({
+      initialDateRange,
+      finalDateRange,
+    })
   }
   handleTypePayment(event){
     this.setState({type_payment: event.nativeEvent.text});
@@ -158,6 +169,21 @@ class AddContracts extends Component {
         )
       })
     }
+    this.createRangeDate()
+  }
+  createRangeDate(){
+    var arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+
+    for (var i = 1; i < 5; i++) {
+      var initialRange = new Date(new Date().getFullYear(),'0' + i, '01')
+      initialRange.setDate(1)
+      const finalRange = new Date(new Date(initialRange).setMonth(initialRange.getMonth()+6))
+      var finalDay = new Date(finalRange.setDate(0))
+
+      arrRangeDate.push(arrMonth[initialRange.getMonth()] + '-' + arrMonth[finalRange.getMonth()]);
+      arrRange.push({initialRange: initialRange, finalRange: finalRange})
+
+    }
   }
 
   render(){
@@ -170,26 +196,14 @@ class AddContracts extends Component {
         caretSize={0}
         onSelect={value => this.handlePeriodSummer(value)}
         >
-        <Option
-          value={1}
-          optionStyle={styles.select__option}
-          >Periodo de Verano</Option>
-        <Option
-          value={2}
-          optionStyle={styles.select__option}
-          >Feb - Jul</Option>
-        <Option
-          value={3}
-          optionStyle={styles.select__option}
-          >Mar - Ago</Option>
-        <Option
-          value={4}
-          optionStyle={styles.select__option}
-          >Abr - Sep</Option>
-        <Option
-          value={5}
-          optionStyle={styles.select__option}
-          >Mayo - Oct</Option>
+          {/* <Option>Periodo</Option> */}
+        {arrRangeDate.map((item, i)=>{
+          return <Option
+            key={i}
+            value={i}
+            optionStyle={styles.select__option}
+            >{item}</Option>
+        })}
       </Select>
     )
     var selectMun = (
@@ -330,6 +344,6 @@ const mapStateToProps = state => ({
   municipality_mx: state.list_mun_mx.results,
   list_rate: state.list_rate.list_rate,
   mun_rate: state.list_rate.results,
-  token: state.user.token
+  token: state.user.token,
 })
 export default connect(mapStateToProps, bindAction)(AddContracts);
