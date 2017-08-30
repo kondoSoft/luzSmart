@@ -26,6 +26,10 @@ import Footer from '../footer/index';
 import styles from './styles';
 import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
+import {getRatePeriod} from '../../actions/contracts'
+
+var numContract = []
+var rateArr = []
 
 class DetailContract extends Component {
   constructor(props){
@@ -33,31 +37,85 @@ class DetailContract extends Component {
 
     this.state = {
       key: null,
-      status: 'Pagado',
+      status: '',
+
     }
     this.onOpenSwipe = this.onOpenSwipe.bind(this)
+    this.getPeriod = this.getPeriod.bind(this)
+    this.getStatus = this.getStatus.bind(this)
   }
   static navigationOptions = {
     header: null
   };
+  componentDidMount(){
+    this.getPeriod()
+    this.getStatus()
+  }
+  componentWillUnmount(){
+    rateArr = []
+  }
   onOpenSwipe(i){
     this.setState({
       key: i,
     })
   }
+  getStatus(){
+    console.log(numContract);
+    const firstDate = new Date(numContract[0].receipt[0].payday_limit.replace(/-/g,'\/')).getTime()
+    const firsDateISO = new Date(firstDate)
+    const currentDate = Date.now()
+    const lastDay = new Date(firstDate).setDate(firsDateISO.getDay()+30)
+    if (currentDate >= firstDate && currentDate <= lastDay) {
+      this.setState({
+        status: 'En proceso'
+      })
+    }else {
+      this.setState({
+        status: 'Pagado'
+      })
+    }
+  }
+  getPeriod(){
+    const receipt = this.props.navigation.state.params.receipt
+    const initialDateRange = numContract[0].initialDateRange
+    const finalDateRange = numContract[0].finalDateRange
+    receipt.map((item, i)=>{
+
+      const payday = receipt[i].payday_limit
+      const paydayDate = new Date(payday.replace(/-/g, '\/')).getTime()
+      const initialDate = new Date(initialDateRange.replace(/-/g,'\/')).getTime()
+      const finalDate = new Date(finalDateRange.replace(/-/g,'\/')).getTime()
+      if(paydayDate >= initialDate && paydayDate <= finalDate){
+          rateArr.push({[`periods` +i]: 'Verano'})
+        // this.setState({
+        //  [`periods` +i]: 'Verano'
+        // })
+      }else{
+          rateArr.push({[`periods` +i]: 'NoVerano'})
+        // this.setState({
+        //   [`periods` + i]: 'NoVerano'
+        // })
+      }
+    })
+    this.props.getRatePeriod(numContract[0].rate, this.props.token)
+  }
+
   render(){
     const { navigation } = this.props
     const {status} = this.state
     const bill = navigation.state.params.receipt
     const index = navigation.state.params.index
     const colors = ['lightgrey','#fff']
-    var numContract = []
+
     const contract = this.props.contracts.map((item,i)=>{
       if (item.id == navigation.state.params.index){
         numContract.push(item)
         return numContract
       }
     })
+    // Obtener datos por Periodos
+
+
     return(
       <Container>
         <Header navigation={navigation} title="Periodos"/>
@@ -82,7 +140,6 @@ class DetailContract extends Component {
                     dataAccordion={item}
                     icon={<Icon style={styles.icon} name="information-circle" />}
                   />
-                  console.log('item',item)
                 }
               )}
 
@@ -103,12 +160,13 @@ class DetailContract extends Component {
 }
 
 class ItemComponent extends Component{
+
   render(){
     const receipt = this.props.data
     const status = this.props.status
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const splitRange = receipt.payday_limit.split('-',)
-    const date = new Date(splitRange[0], splitRange[1], splitRange[2])
+    const date = new Date(splitRange[0], splitRange[1]-1, splitRange[2])
     const dateMonth = date.getMonth()
     const finalRange = new Date(new Date(date).setMonth(date.getMonth()+1))
     return(
@@ -127,7 +185,15 @@ class ItemComponent extends Component{
     )
   }
 }
+function bindAction(dispatch){
+  return {
+    getRatePeriod: (rate, token) => dispatch(getRatePeriod(rate, token)),
+  }
+}
+
 const mapStateToProps = state => ({
   contracts: state.list_contracts.contracts,
-});
-export default connect(mapStateToProps)(DetailContract)
+  token: state.user.token,
+  rate_period: state.list_rate.rate_period
+})
+export default connect(mapStateToProps, bindAction)(DetailContract)

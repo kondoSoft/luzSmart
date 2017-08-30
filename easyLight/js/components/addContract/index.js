@@ -175,8 +175,10 @@ class AddContracts extends Component {
     var arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
     for (var i = 1; i < 5; i++) {
-      const initialRange = new Date(new Date().getFullYear(),'0' + i, '01')
-      const finalRange = new Date(new Date(initialRange).setMonth(initialRange.getMonth()+5))
+      var initialRange = new Date(new Date().getFullYear(),'0' + i, '01')
+      initialRange.setDate(1)
+      const finalRange = new Date(new Date(initialRange).setMonth(initialRange.getMonth()+6))
+      var finalDay = new Date(finalRange.setDate(0))
 
       arrRangeDate.push(arrMonth[initialRange.getMonth()] + '-' + arrMonth[finalRange.getMonth()]);
       arrRange.push({initialRange: initialRange, finalRange: finalRange})
@@ -342,6 +344,6 @@ const mapStateToProps = state => ({
   municipality_mx: state.list_mun_mx.results,
   list_rate: state.list_rate.list_rate,
   mun_rate: state.list_rate.results,
-  token: state.user.token
+  token: state.user.token,
 })
 export default connect(mapStateToProps, bindAction)(AddContracts);

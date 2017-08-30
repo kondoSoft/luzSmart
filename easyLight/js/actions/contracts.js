@@ -4,6 +4,15 @@ import { getContract } from './list_states_mx'
 // const endPoint = 'http://138.68.49.119:8080';
 const endPoint = 'http://127.0.0.1:8000';
 
+export const PRINT_RATE_PERIOD = 'PRINT_RATE_PERIOD'
+
+export function printRatePeriod(data):Action{
+  return {
+    type: PRINT_RATE_PERIOD,
+    payload: data
+  }
+}
+
 export function postReceipt(list, token):Action{
   return dispatch => {
     return fetch(endPoint+'/receipt/',{
@@ -27,7 +36,6 @@ export function postReceipt(list, token):Action{
 }
 
 export function patchReceipt(data, token, id):Action{
-  console.log(data, id);
   return dispatch => {
     return fetch(endPoint+'/receipt/'+ id + '/',{
       method: 'PATCH',
@@ -43,9 +51,23 @@ export function patchReceipt(data, token, id):Action{
     .then(res => {
       console.log('first', res);
       return res.json()})
-    .then(res=>{
-      console.log(res, token);
-      dispatch(getContract(token))})
+    .then(res=> dispatch(getContract(token)))
+    .catch(err => console.log(err))
+  }
+}
+
+export function getRatePeriod(rate, token):Action{
+  return dispatch=>{
+    return fetch(endPoint+'/rate_period/?' + 'rate=' + rate,{
+      method: 'GET',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       'Authorization': 'Token '+token
+      },
+    })
+    .then(res => {return res.json()})
+    .then(res=> dispatch(printRatePeriod(res)))
     .catch(err => console.log(err))
   }
 }

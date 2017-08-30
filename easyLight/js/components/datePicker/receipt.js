@@ -29,7 +29,7 @@ export default class ReceiptPickerDate extends Component {
         showIcon={false}
         placeholder="select date"
         format="YYYY-MM-DD"
-        minDate={formatDate}
+        // minDate={formatDate}
         // maxDate="2016-06-01"
         confirmBtnText="Confirmar"
         cancelBtnText="Cancelar"
