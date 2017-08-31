@@ -17,7 +17,7 @@ export type Action =
     | { type: 'GET_RATE_UNIQUE', list: string}
     | { type: 'LOGOUT'}
     | { type: 'PRINT_RATE_PERIOD'}
-
+    | { type: 'PRINT_RECEIPTS'}
 
 
 export type Dispatch = (action:Action | Array<Action>) => any;

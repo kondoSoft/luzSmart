@@ -81,6 +81,7 @@ class Measurements extends Component {
     this.props.navigation.goBack()
   }
   setDataContract(contract_id){
+
     const itemContract = []
     var itemReceipt;
 
@@ -98,6 +99,7 @@ class Measurements extends Component {
   }
   // Funcion rango de fecha
   setRangeDate(){
+    console.log(this.props.contracts);
     const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
     const d = new Date()
     const month = d.getMonth()+1;
@@ -114,9 +116,11 @@ class Measurements extends Component {
 
   }
   render(){
+
     this.setRangeDate()
 
     const { navigation, contracts} = this.props
+
     // Contrato que viene desde la pantalla recibos
     const { currentContract } = this.props.navigation.state.params
     const receipt = this.props.navigation.state.params.currentContract[0].receipt
@@ -124,6 +128,7 @@ class Measurements extends Component {
     const arrReceipt = receipt.map((item, i)=>{
       return item
     })
+    console.log(arrReceipt);
     //  Ultimo recibo
     const lastReceipt = arrReceipt[receipt.length-1]
     // Rango automatico del periodo
@@ -137,14 +142,15 @@ class Measurements extends Component {
       padding={5}
       listHeight={100}
       caretSize={0}
-      onSelect={(id)=> this.setDataContract(id)}
+      onSelect={(id) => this.setDataContract(id)}
       >
       {contracts.map((item,i)=>{
+
         return <Option
           key={i}
           value={item.id}
           optionStyle={styles.col__row__select__option}
-          ># {item.number_contract}</Option>
+          > {'#' + item.number_contract }</Option>
       })}
     </Select>
     // Math

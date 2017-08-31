@@ -54,7 +54,7 @@ class Contracts extends Component {
         <Header navigation={navigation}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <ParentSwipeContracts
-          getContract={contracts}
+          contract={contracts}
           navigation={navigation}
         />
         <FabButton
@@ -83,13 +83,13 @@ class ParentSwipeContracts extends Component {
   }
   render(){
     const { navigation } = this.props
-    const { getContract } = this.props
+    const { contract } = this.props
     return(
       <ScrollView
         style={{backgroundColor: '#fff'}}
         scrollEnabled={true}
         >
-        {getContract.map((contract, i )=><SwipeAccordion
+        {contract.map((contract, i )=><SwipeAccordion
           func={()=>this.onOpenSwipe(i)}
           indexOpen={this.state.key}
           keyVal={i}
