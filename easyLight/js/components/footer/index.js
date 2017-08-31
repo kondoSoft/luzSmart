@@ -22,18 +22,18 @@ class FooterGlobal extends Component {
               <Icon style={styles.footer__icon} name="home" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text}>Inicio</Text> : <View/> }
             </Button>
-            <Button vertical style={styles.footer__btn__resultados} onPress={() => this.props.navigation.navigate("DetailContract")}>
+            <Button vertical style={styles.footer__btn__resultados} >
               <Icon style={styles.footer__icon} name="calendar" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Periodos</Text> : <View/> }
             </Button>
             <Button vertical onPress={() => this.props.navigation.navigate("Measurements", { currentContract: currentContract})}>
               <Thumbnail source={ require('../../../images/logogray.png') } style={styles.footer__logo} />
             </Button>
-            <Button vertical style={styles.footer__btn__resultados} onPress={() => this.props.navigation.navigate("Results")}>
+            <Button vertical style={styles.footer__btn__resultados} >
               <Icon style={styles.footer__icon} active name="trending-up" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Resultados</Text> : <View/> }
             </Button>
-            <Button vertical onPress={() => this.props.navigation.navigate("Tips")}>
+            <Button vertical >
 
               {(Platform.OS === 'ios')?   <Icon style={styles.footer__icon} name="bulb" /> : <Icon style={styles.footer__icon} name="menu" /> }
               {(Platform.OS === 'ios')?   <Text style={styles.footer__text}>Tips</Text> : <View/> }

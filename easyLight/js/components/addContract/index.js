@@ -178,6 +178,7 @@ class AddContracts extends Component {
       var initialRange = new Date(new Date().getFullYear(),'0' + i, '01')
       initialRange.setDate(1)
       const finalRange = new Date(new Date(initialRange).setMonth(initialRange.getMonth()+6))
+
       var finalDay = new Date(finalRange.setDate(0))
 
       arrRangeDate.push(arrMonth[initialRange.getMonth()] + '-' + arrMonth[finalRange.getMonth()]);

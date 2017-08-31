@@ -79,6 +79,7 @@ class ListItemSwipe extends React.Component {
   });
   }
   render(){
+    
     return(
         <Animated.View
          {...this.panResponder.panHandlers}
@@ -185,7 +186,7 @@ class ExpandedView extends Component{
       },
       'third':{
         title: 'Última Lectura Diaria',
-        value: data.previous_reading + data.current_data,
+        value: data.current_reading,
       },
       'four':{
         title: 'Consumo kWh',
