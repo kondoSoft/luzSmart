@@ -102,7 +102,7 @@ class Measurements extends Component {
     console.log(this.props.contracts);
     const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
     const d = new Date()
-    const month = d.getMonth()+1;
+    const month = d.getMonth()-1;
     const day = d.getDate();
     const year = d.getFullYear();
     const currentDate = ((''+day).length<2 ? '0' : '') + day + '/' + ((''+month).length<2 ? '0' : '') + month + '/' + d.getFullYear()

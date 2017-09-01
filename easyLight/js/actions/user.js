@@ -54,11 +54,13 @@ export function registerUser(list):Action{
     data.append('phone', list.phone,)
     data.append('birth_date', list.birth_date,)
     data.append('zip_code', list.zip_code)
-     data.append('avatar',{
-       uri: list.file.uri,
-       type: 'image/png',
-       name: list.file.fileName
-     })
+    if(list.file != undefined){
+      data.append('avatar',{
+        uri: list.file.uri,
+        type: 'image/png',
+        name: list.file.fileName
+      })
+    }
     return fetch(endPoint+'/rest-auth/registration/',{
       method: 'POST',
       headers: {
@@ -67,8 +69,8 @@ export function registerUser(list):Action{
      },
      body: data
     })
-
     .then(res=> {return res.json()})
+    .then(res=> {console.log(res);})
     .catch(err => console.log(err))
   }
 }

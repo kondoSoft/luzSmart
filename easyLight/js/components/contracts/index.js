@@ -140,8 +140,8 @@ const DrawNav = DrawerNavigator(
   {
      Contracts: { screen: ContractsSwagger },
      Tips: { screen: Tips },
-     Mediciones: { screen: Measurements},
-     Resultados: { screen: Results },
+    //  Mediciones: { screen: Measurements},
+    //  Resultados: { screen: Results },
      Logout: { screen: Login },
   },
   {

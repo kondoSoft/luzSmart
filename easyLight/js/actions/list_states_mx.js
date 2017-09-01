@@ -113,11 +113,13 @@ export function postContract(list, rate, token):Action{
     data.append('initialDateRange', list.initialDateRange)
     data.append('finalDateRange', list.finalDateRange)
     data.append('type_payment', list.type_payment)
-    data.append('image',{
-      uri: list.file.uri,
-      type: 'image/png',
-      name: list.file.fileName
-    })
+    if(list.file != undefined){
+      data.append('image',{
+        uri: list.file.uri,
+        type: 'image/png',
+        name: list.file.fileName
+      })
+    }
     return fetch(endPoint+'/contract/',{
       method: 'POST',
       headers: {

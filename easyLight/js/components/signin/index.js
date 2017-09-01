@@ -80,8 +80,11 @@ class SignIn extends Component {
         })
     }
   }
+  sendData(){
+    this.props.registerUser(this.state)
+    this.props.navigation.navigate("Login")
+  }
   render(){
-    console.log('state in SignIn',this.state);
     return(
         <Container style={{height:Screen.height}}>
           <Header zIndex navigation={this.props.navigation} title="Nuevo Registro"/>
@@ -94,7 +97,7 @@ class SignIn extends Component {
                 <Col style={styles.row__top__col__left}>
                   <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                     <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                    { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Select a Photo</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
+                    { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Agregar Foto</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
                     </View>
                   </TouchableOpacity>
                 </Col>
@@ -189,7 +192,7 @@ class SignIn extends Component {
                 <Button
                   primary
                   style={styles.row__botttom__btn}
-                  onPress={()=>this.props.registerUser(this.state)}
+                  onPress={()=>this.sendData()}
                   >
                   <Text>Crear cuenta</Text>
                 </Button>
