@@ -46,6 +46,7 @@ export function loginUser(email:email, password:password, navigate):Action {
 }
 
 export function registerUser(list):Action{
+  console.log(list);
   return dispatch=>{
     const data = new FormData();
     data.append('first_name', list.first_name)
