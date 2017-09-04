@@ -189,7 +189,7 @@ class DetailContract extends Component {
                     style={{backgroundColor: colors[i % colors.length]}}
                     component={<ItemComponent data={item} status={status}/>}
                     dataAccordion={item}
-                    icon={<Icon style={styles.icon} name="information-circle" />}
+                    icon={<Icon style={{paddingTop: (navigation.state.routeName === 'DetailContract')? 5 : 15,color: 'steelblue',fontSize:40,textAlign:'center'}} name="information-circle" />}
                   />
                 }
               )}
