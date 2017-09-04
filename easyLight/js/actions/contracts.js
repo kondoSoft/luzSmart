@@ -1,8 +1,8 @@
 import type { Action } from './types';
 import { getContract } from './list_states_mx'
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 export const PRINT_RATE_PERIOD = 'PRINT_RATE_PERIOD'
 export const PRINT_RECEIPTS = 'PRINT_RECEIPTS'
@@ -52,13 +52,12 @@ export function patchReceipt(data, token, id):Action{
        'Authorization': 'Token '+token
       },
       body: JSON.stringify({
-        current_data: data
+        current_reading: data
       })
     })
-    .then(res => {
-      console.log('first', res);
-      return res.json()})
-    .then(res=> dispatch(getContract(token)))
+    .then(res => {return res.json()})
+    .then(res=> {dispatch(getContract(token))
+    })
     .catch(err => console.log(err))
   }
 }

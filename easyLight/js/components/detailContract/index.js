@@ -163,7 +163,7 @@ class DetailContract extends Component {
     const { status } = this.state
     const bill = navigation.state.params.receipt
     const colors = ['lightgrey','#fff']
-
+    console.log(this.props);
     // Obtener datos por Periodos
 
 

@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity,Platform } from 'react-native';
 
 let Window = Dimensions.get('window');
-
+var currentData;
 
 class ListItemSwipe extends React.Component {
   static propTypes = {
@@ -79,7 +79,7 @@ class ListItemSwipe extends React.Component {
   });
   }
   render(){
-    
+
     return(
         <Animated.View
          {...this.panResponder.panHandlers}
@@ -171,10 +171,10 @@ export default class SwipeAccordion extends Component{
 }
 
 class ExpandedView extends Component{
-
   render(){
 
     const { data } = this.props
+    currentData = data.current_reading - data.previous_reading
     var contentExpandedView = {
       'first':{
         title: 'Período de Consumo',
@@ -190,7 +190,7 @@ class ExpandedView extends Component{
       },
       'four':{
         title: 'Consumo kWh',
-        value: data.current_data,
+        value: currentData,
       }
     }
 
