@@ -52,13 +52,12 @@ export function patchReceipt(data, token, id):Action{
        'Authorization': 'Token '+token
       },
       body: JSON.stringify({
-        current_data: data
+        current_reading: data
       })
     })
-    .then(res => {
-      console.log('first', res);
-      return res.json()})
-    .then(res=> dispatch(getContract(token)))
+    .then(res => {return res.json()})
+    .then(res=> {dispatch(getContract(token))
+    })
     .catch(err => console.log(err))
   }
 }

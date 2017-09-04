@@ -78,6 +78,7 @@ class Measurements extends Component {
   }
   sendCurrentData(id){
     this.props.patchReceipt(this.state.current_data, this.props.token, id)
+    
     this.props.navigation.goBack()
   }
   setDataContract(contract_id){
@@ -99,7 +100,6 @@ class Measurements extends Component {
   }
   // Funcion rango de fecha
   setRangeDate(){
-    console.log(this.props.contracts);
     const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
     const d = new Date()
     const month = d.getMonth();
@@ -128,7 +128,6 @@ class Measurements extends Component {
     const arrReceipt = receipt.map((item, i)=>{
       return item
     })
-    console.log(arrReceipt);
     //  Ultimo recibo
     const lastReceipt = arrReceipt[receipt.length-1]
     // Rango automatico del periodo
@@ -204,11 +203,11 @@ class Measurements extends Component {
                 </ListItem>
                 <ListItem last>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Ultima Lectura Diaria</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.previous_reading +  this.state.itemReceipt.current_data)}</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading)}</Text>
                 </ListItem>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Consumo en KWh</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.current_data}</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading }</Text>
                 </ListItem>
               </List>
             </Row>
