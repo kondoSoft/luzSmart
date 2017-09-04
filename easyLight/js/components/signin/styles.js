@@ -16,7 +16,8 @@ export default {
     paddingLeft: 30
   },
   row__top__col__right:{
-    paddingRight: 30
+    paddingRight: 0,
+    alignItems: 'flex-end'
   },
   row__top__col__right__icon: {
     color: 'lightgray',

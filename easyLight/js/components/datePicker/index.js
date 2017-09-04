@@ -22,7 +22,7 @@ export default class PickerDate extends Component {
   render(){
     return (
       <DatePicker
-        style={{width: '70%'}}
+        style={{width: '57%'}}
         date={this.state.date}
         mode="date"
         showIcon={false}
@@ -34,9 +34,10 @@ export default class PickerDate extends Component {
         cancelBtnText="Cancelar"
         customStyles={{
           dateInput: {
-            height: 39,
+            height: 40,
             alignItems: 'flex-start',
-            paddingLeft: 120,
+            paddingLeft: 90,
+            width: '20%',
             borderWidth:0,
           },
           dateText:{

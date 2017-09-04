@@ -149,6 +149,8 @@ class Login extends Component {
   render() {
     const { validation } = this.state
     const { handleSubmit } = this.props
+    var bothFieldsValidation = (validation === `Must include either "username" or "email" and "password".`)&& "El correo o la contraseña no son validos"
+    bothFieldsValidation = (validation === "No puede iniciar sesión con las credenciales proporcionadas.")&& "El correo y/o la contraseña no existen"
     return (
       <Container scrollEnabled={false}>
         <Header title={"INICIO DE SESIÓN"} zIndex navigation={this.props.navigation}/>
@@ -161,7 +163,7 @@ class Login extends Component {
               <Row  size={40}>
                 <Col style={styles.col__inputs__login}>
                   {/*  this.state.validation : null  } */}
-                  { (this.state.validation != '') && <Text style={{backgroundColor:'red', height:'25%',width: '94%', textAlign: 'center', paddingTop:0,color:'#fff'}}>{this.state.validation}</Text>}
+                  { (this.state.validation != '') && <Text style={{backgroundColor:'red', height:'25%',width: '94%', textAlign: 'center', paddingTop:0,color:'#fff'}}>{(bothFieldsValidation === false)? "Ingrese un correo y/o contraseña" : bothFieldsValidation }</Text>}
                   <Field style={styles.field__email} name="email" component={this.renderInput} />
                   <Field name="password" component={this.renderInput} />
                 </Col>
