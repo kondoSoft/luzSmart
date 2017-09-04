@@ -51,7 +51,7 @@ class Contracts extends Component {
     const {state} = navigation
     return(
       <Container>
-        <Header navigation={navigation}/>
+        <Header navigation={navigation} title={"EASYLIGTH"}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <ParentSwipeContracts
           contract={contracts}
