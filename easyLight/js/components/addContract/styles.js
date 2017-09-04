@@ -20,9 +20,8 @@ export default {
       paddingRight: 30,
     },
     col__form__item:{
-      paddingLeft: 10,
-      marginRight: (Platform.OS === 'ios')? 0 : 5,
-      marginLeft: (Platform.OS === 'ios')? 0 : 5,
+      marginRight: (Platform.OS === 'ios')? 10 : 5,
+      marginLeft: (Platform.OS === 'ios')? 10 : 5,
       backgroundColor: 'lightgray',
       width: '85%',
     },

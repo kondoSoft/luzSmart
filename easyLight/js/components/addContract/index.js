@@ -23,6 +23,7 @@ import {
   Picker,
   Dimensions,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -309,8 +310,8 @@ class AddContracts extends Component {
                   </Picker>
                 </View>
               }
-              { (municipality_mx.length == 0) ? <View/> : selectMun}
-              { (mun_rate.length == 0) ? <View></View> : <Text style={{height:50,marginTop:5,marginLeft:5,marginRight:5,textAlignVertical:'center',paddingLeft:10}}>{mun_rate}</Text>}
+              { (municipality_mx.length == 0) ? <View style={{height:40}}/> : selectMun}
+              { (mun_rate.length == 0) ? <View style={{height:40}}/> : <Text style={{height:40,marginTop:5,marginLeft:(Platform.OS === 'ios')? 10 : 5,marginRight:(Platform.OS === 'ios')? 10 : 5,textAlignVertical:'center',paddingLeft:10,paddingTop:7,textAlign:'left'}}>{mun_rate}</Text>}
               { periodSummer }
               </Form>
             </Col>

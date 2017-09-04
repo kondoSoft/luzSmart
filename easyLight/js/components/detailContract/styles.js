@@ -50,12 +50,6 @@ export default {
     flex: 1,
     textAlign: 'right',
   },
-  icon:{
-    color: 'steelblue',
-    fontSize: 40,
-    textAlign: 'center',
-    paddingTop: 15,
-  },
   ItemComponent:{
     view:{
       flexDirection: 'row',
