@@ -113,11 +113,21 @@ class AddContracts extends Component {
   }
   handleState(value, item){
     this.props.resetMunicipality()
-    this.props.getMunicipality(value+1)
-    this.setState({state: value+1});
+    if (Platform.OS === 'ios') {
+      this.props.getMunicipality(value+1)
+      this.setState({
+        state: value+1
+      })
+    }else {
+      this.props.getMunicipality(value)
+      this.setState({
+        state: value
+      })
+    }
   }
   handleMunicipality(value, item){
-    this.props.getRate(value.id, this.props.token)
+    const mun_id = (Platform.OS === 'ios')? value.id : value
+    this.props.getRate(mun_id, this.props.token)
     this.setState({municipality: value.id});
   }
   handlePeriodSummer(value){
@@ -183,10 +193,8 @@ class AddContracts extends Component {
 
       arrRangeDate.push(arrMonth[initialRange.getMonth()] + '-' + arrMonth[finalRange.getMonth()]);
       arrRange.push({initialRange: initialRange, finalRange: finalRange})
-
     }
   }
-
   render(){
     const { navigation, states_mx, municipality_mx, mun_rate } = this.props
     var periodSummer = (
@@ -244,8 +252,13 @@ class AddContracts extends Component {
           <Picker
             selectedValue={this.state.language}
             onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-            <Picker.Item label="Java" value="java" />
-            <Picker.Item label="JavaScript" value="js" />
+            {arrRangeDate.map((item, i)=>{
+              return <Picker.item
+                        key={i}
+                        label={item}
+                        value={item}
+                      />
+            })}
           </Picker>
         </View>
       )
@@ -297,7 +310,7 @@ class AddContracts extends Component {
                 </View>
               }
               { (municipality_mx.length == 0) ? <View/> : selectMun}
-              { (mun_rate.length == 0) ? <View></View> : <Input editable={false} value={this.props.mun_rate}/>}
+              { (mun_rate.length == 0) ? <View></View> : <Text style={{height:50,marginTop:5,marginLeft:5,marginRight:5,textAlignVertical:'center',paddingLeft:10}}>{mun_rate}</Text>}
               { periodSummer }
               </Form>
             </Col>
