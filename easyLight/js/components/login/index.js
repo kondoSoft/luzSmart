@@ -29,13 +29,15 @@ const background = require("../../../images/shadow.png");
 const Screen = Dimensions.get('window');
 const logoFooter = require('../../../images/easylight.png');
 
+var ema;
+var pw;
 
 const validate = values => {
   const error = {};
   error.email = "";
   error.password = "";
-  var ema = values.email;
-  var pw = values.password;
+  ema = values.email;
+  pw = values.password;
   if (values.email === undefined) {
     ema = "";
   }
@@ -148,7 +150,7 @@ class Login extends Component {
                   <Button
                     block
                     style={styles.btn}
-                    onPress={() => this.props.navigation.navigate("SignIn")}
+                    onPress={() => this.props.navigation.navigate("SignIn",ema)}
                   >
                     <Text>Crear Cuenta</Text>
                   </Button>

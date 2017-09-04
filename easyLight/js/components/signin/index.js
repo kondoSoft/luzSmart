@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import  { Text, Container, Content, Icon, Thumbnail, Button, Form, Item, Label, Input } from 'native-base';
-import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView, TouchableOpacity, Image } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import styles from './styles';
@@ -110,16 +110,18 @@ class SignIn extends Component {
               <Col>
                 <Form>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Nombres:</Label>
+                    <Label style={styles.text}><Text style={{color:'red',paddingBottom:10}}>*</Text>Nombres:</Label>
                     <Input
                       ref="first_name"
+                      multiline
                       style={styles.form__item__input}
                       onChangeText={(first_name)=> this.setState({first_name})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
                     />
+                    {/* <Image style={{rezimode:'cover'}} source={require('../../../images/Succes.png')}/> */}
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Apellidos:</Label>
+                    <Label style={styles.text}><Text style={{color:'red',paddingBottom:10}}>*</Text>Apellidos:</Label>
                     <Input
                       ref="last_name"
                       style={styles.form__item__input}
@@ -128,18 +130,19 @@ class SignIn extends Component {
                     />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Email:</Label>
+                    <Label style={styles.text}><Text style={{color:'red',paddingBottom:10}}>*</Text>Email:</Label>
                     <Input
                       autoCapitalize={'none'}
                       keyboardType='email-address'
                       ref='email'
                       style={styles.form__item__input}
                       onChangeText={(email)=> this.setState({email})}
+                      value={(this.props.navigation.state.params != "")&& this.props.navigation.state.params }
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })}
                     />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Contraseña:</Label>
+                    <Label style={styles.text}><Text style={{color:'red',paddingBottom:10}}>*</Text>Contraseña:</Label>
                     <Input
                       autoCapitalize={'none'}
                       ref="password1"
@@ -150,7 +153,7 @@ class SignIn extends Component {
                     />
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Confirmar contraseña:</Label>
+                    <Label style={styles.text}><Text style={{color:'red',paddingBottom:10}}>*</Text>Confirmar contraseña:</Label>
                     <Input
                       autoCapitalize={'none'}
                       ref="password2"
