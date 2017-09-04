@@ -54,6 +54,7 @@ const validate = values => {
   return error;
 };
   var errorLogin;
+  var validationPass
 class Login extends Component {
 
   static propTypes = {
@@ -66,7 +67,8 @@ class Login extends Component {
     this.state = {
       name: "",
       loginNavigate: false,
-      validation: <Text style={{backgroundColor:'red', height:'25%',width: '94%', textAlign: 'center', paddingTop:0,color:'#fff'}}>{(this.props.noPassword != undefined)? this.props.noPassword[0] : 'null'}</Text>
+      // validation: <Text style={{backgroundColor:'red', height:'25%',width: '94%', textAlign: 'center', paddingTop:0,color:'#fff'}}>{this.props.noPassword}</Text>
+      validation: '',
     };
     this.renderInput = this.renderInput.bind(this);
     this.handleContracts = this.handleContracts.bind(this);
@@ -108,13 +110,39 @@ class Login extends Component {
       (e.password === undefined)?
       e.email
       : e.password.toLowerCase(), this.props.navigation)
+
+
+
     // this.props.navigation.navigate("Contracts")
   }
+  compon
   componentWillUpdate(){
     this.props.getStates()
+
   }
   componentWillMount(){
     this.props.logoutUser()
+
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.noPassword != ''){
+      this.setState({
+        validation: nextProps.noPassword,
+      })
+    }
+    if(nextProps.loginError != ''){
+      this.setState({
+        validation: nextProps.loginError,
+      })
+    }
+    console.log(nextProps.loginError);
+  //   if (nextProps.noPassword != undefined) {
+  //     validationPass = nextProps.noPassword.toString()
+  //   }
+  //   console.log(nextProps.noPassword);
+  //   this.setState({
+  //     validation: <Text style={{backgroundColor:'red', height:'25%',width: '94%', textAlign: 'center', paddingTop:0,color:'#fff'}}>{nextProps.validationPass}</Text>
+  //   })
   }
   render() {
     const { validation } = this.state
@@ -130,7 +158,8 @@ class Login extends Component {
             <Grid style={styles.grid}>
               <Row  size={40}>
                 <Col style={styles.col__inputs__login}>
-                  { (this.props.loginError != undefined || this.props.noPassword !=undefined)? this.state.validation : null  }
+                  {/*  this.state.validation : null  } */}
+                  { (this.state.validation != '') && <Text style={{backgroundColor:'red', height:'25%',width: '94%', textAlign: 'center', paddingTop:0,color:'#fff'}}>{this.state.validation}</Text>}
                   <Field style={styles.field__email} name="email" component={this.renderInput} />
                   <Field name="password" component={this.renderInput} />
                 </Col>

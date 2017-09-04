@@ -9,8 +9,8 @@ export type State = {
 
 const initialState = {
   token: '',
-  loginError: undefined,
-  noPassword: undefined,
+  loginError: '',
+  noPassword: '',
 };
 
 export default function (state:State = initialState, action:Action): State {
@@ -19,8 +19,8 @@ export default function (state:State = initialState, action:Action): State {
     return {
       ...state,
       token: action.payload.key,
-      noPassword: action.payload.password,
-      loginError: action.payload.non_field_errors,
+      noPassword: (action.payload.password) && action.payload.password.toString(),
+      loginError: (action.payload.non_field_errors) && action.payload.non_field_errors.toString(),
     };
   }
   else if (action.type === REHYDRATE){

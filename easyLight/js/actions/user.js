@@ -34,7 +34,9 @@ export function loginUser(email:email, password:password, navigate):Action {
       })
     })
     .then(res => {return res.json()})
-    .then(token => {dispatch(setUser(token))
+    .then(token => {
+      // console.log(token);
+      dispatch(setUser(token))
       if(!token.non_field_errors && email !== undefined){
         navigate.navigate("Contracts")
       }
