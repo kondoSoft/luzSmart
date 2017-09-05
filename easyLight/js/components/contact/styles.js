@@ -1,5 +1,5 @@
 const React = require('react-native');
-const { StyleSheet, Dimensions } = React;
+const { StyleSheet, Dimensions, Platform } = React;
 
 export default {
   grid:{
@@ -32,7 +32,7 @@ export default {
   },
   col__bottom__item:{
     backgroundColor: 'lightgrey',
-    width: '90%',
+    width: (Platform.OS === 'ios')? '100%' : '90%',
     height: '65%',
     paddingLeft: 10,
     paddingRight: 10,

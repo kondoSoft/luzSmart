@@ -33,7 +33,7 @@ export function loginUser(email:email, password:password, navigate):Action {
         password: password,
       })
     })
-    .then(res => {return res.json()})
+    .then(res => { return res.json() })
     .then(token => {
       // console.log(token);
       dispatch(setUser(token))

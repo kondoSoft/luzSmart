@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import  { Text, Container, Content, Icon, Thumbnail, Button, Form, Item, Label, Input } from 'native-base';
-import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView, TouchableOpacity, Image } from 'react-native';
+import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView, TouchableOpacity, Image, AlertIOS } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import styles from './styles';
@@ -85,6 +85,7 @@ class SignIn extends Component {
     this.props.navigation.navigate("Login")
   }
   render(){
+    const { first_name,last_name,email,password1,password2,avatarSource, birth_date, phone, zip_code } = this.state;
     return(
         <Container style={{height:Screen.height}}>
           <Header zIndex navigation={this.props.navigation} title="Nuevo Registro"/>
@@ -97,11 +98,12 @@ class SignIn extends Component {
                 <Col style={styles.row__top__col__left}>
                   <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                     <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                    { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Agregar Foto</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
+                    { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Agregar Foto<Text style={{color:'red'}}>*</Text></Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
                     </View>
                   </TouchableOpacity>
                 </Col>
                 <Col style={styles.row__top__col__right}>
+                  <Image style={{width:30,height:30,marginRight:10}} source={(avatarSource != null)&& require('../../../images/succes.png')}/>
                   {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}> */}
                     {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
                   {/* </Button> */}
@@ -110,7 +112,7 @@ class SignIn extends Component {
               <Col>
                 <Form>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}><Text style={{color:'red',paddingBottom:10}}>*</Text>Nombres:</Label>
+                    <Label style={styles.text}>Nombres<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
                     <Input
                       ref="first_name"
                       multiline
@@ -118,19 +120,20 @@ class SignIn extends Component {
                       onChangeText={(first_name)=> this.setState({first_name})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
                     />
-                    {/* <Image style={{rezimode:'cover'}} source={require('../../../images/Succes.png')}/> */}
+                    <Image style={{width:30,height:30,marginRight:10}} source={(this.state.first_name != "" && this.state.first_name.length > 6)&& require('../../../images/succes.png')}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}><Text style={{color:'red',paddingBottom:10}}>*</Text>Apellidos:</Label>
+                    <Label style={styles.text}>Apellidos<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
                     <Input
                       ref="last_name"
                       style={styles.form__item__input}
                       onChangeText={(last_name)=> this.setState({last_name})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
                     />
+                    <Image style={{width:30,height:30,marginRight:10}} source={(this.state.last_name != "" && this.state.last_name.length > 6)&& require('../../../images/succes.png')}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}><Text style={{color:'red',paddingBottom:10}}>*</Text>Email:</Label>
+                    <Label style={styles.text}>Email<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
                     <Input
                       autoCapitalize={'none'}
                       keyboardType='email-address'
@@ -140,9 +143,10 @@ class SignIn extends Component {
                       value={(this.props.navigation.state.params != "")&& this.props.navigation.state.params }
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })}
                     />
+                    <Image style={{width:30,height:30,marginRight:10}} source={(this.state.email != "" && this.state.email.includes('@') && this.state.email.includes('.'))&& require('../../../images/succes.png')}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}><Text style={{color:'red',paddingBottom:10}}>*</Text>Contraseña:</Label>
+                    <Label style={styles.text}>Contraseña<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
                     <Input
                       autoCapitalize={'none'}
                       ref="password1"
@@ -151,9 +155,10 @@ class SignIn extends Component {
                       onChangeText={(password1)=> this.setState({password1})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 90 : 90 })}
                     />
+                    <Image style={{width:30,height:30,marginRight:10}} source={(password1.length >= 8 && password1 === password2)&& require('../../../images/succes.png')}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}><Text style={{color:'red',paddingBottom:10}}>*</Text>Confirmar contraseña:</Label>
+                    <Label style={styles.text}>Confirmar contraseña<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
                     <Input
                       autoCapitalize={'none'}
                       ref="password2"
@@ -162,10 +167,12 @@ class SignIn extends Component {
                       onChangeText={(password2)=> this.setState({password2})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 100 : 100 })}
                     />
+                    <Image style={{width:30,height:30,marginRight:10}} source={(password2.length >= 8 && password1 === password2)&& require('../../../images/succes.png')}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>F. nacimiento:</Label>
                     <PickerDate func={this.setBirthDay}/>
+                    <Image style={{width:30,height:30,marginRight:10}} source={(birth_date != "")&& require('../../../images/succes.png')}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Celular:</Label>
@@ -177,6 +184,7 @@ class SignIn extends Component {
                       onChangeText={(phone)=> this.setState({phone})}
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 200 : 200 })}
                     />
+                    <Image style={{width:30,height:30,marginRight:10}} source={(phone != "" && phone.length >= 10)&& require('../../../images/succes.png')}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>C.P.:</Label>
@@ -188,6 +196,7 @@ class SignIn extends Component {
                       onChangeText={(zip_code)=> this.setState({zip_code})}
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 250 : 300 })}
                     />
+                    <Image style={{width:30,height:30,marginRight:10}} source={(zip_code != "" && zip_code.length === 5)&& require('../../../images/succes.png')}/>
                   </Item>
                 </Form>
               </Col>
@@ -195,7 +204,25 @@ class SignIn extends Component {
                 <Button
                   primary
                   style={styles.row__botttom__btn}
-                  onPress={()=>this.sendData()}
+                  onPress={()=>{
+                    if (avatarSource != "" && first_name != "" && last_name != "" && email != "" && password1 != "" && password2 != "") {
+                      if (password1 === password2) {
+                          this.sendData()
+                      }
+                      else {
+                          AlertIOS.alert(
+                           'Contraseña incorrecta',
+                           'Verifique que ambas contraseñas sean iguales.'
+                          );
+                            validation = require('../../../images/Failure.png')
+                      }
+                    }else {
+                      AlertIOS.alert(
+                       'Validacion de Formulario',
+                       'Verifique que todos los campos obligatorios esten llenos.'
+                      );
+                    }
+                  }}
                   >
                   <Text>Crear cuenta</Text>
                 </Button>

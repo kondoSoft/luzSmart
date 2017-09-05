@@ -23,11 +23,12 @@ export default function (state:State = initialState, action:Action): State {
       loginError: (action.payload.non_field_errors) && action.payload.non_field_errors.toString(),
     };
   }
-  else if (action.type === REHYDRATE){
-    var incoming = action.payload.user
-    if (incoming.token) return {...state, ...incoming}
-    return state
-  }
+  // else if (action.type === REHYDRATE){
+  //   var incoming = action.payload.user
+  //   console.log('token' ,incoming);
+  //   if (incoming.token) return {...state, ...incoming}
+  //   return state
+  // }
   else if(action.type === LOGOUT){
     return {
       ...state,

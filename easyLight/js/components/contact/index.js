@@ -66,7 +66,7 @@ class Contact extends Component{
             </View>
           </Col>
         </ScrollView>
-          {(Platform.OS === 'ios')? <Footer viewContract={contracts} navigation={this.props.navigation}/> : null}
+          {(Platform.OS === 'ios')? <Footer navigation={this.props.navigation}/> : null}
       </Container>
     )
   }
