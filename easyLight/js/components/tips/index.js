@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import {
   Container,
   Text,
@@ -10,13 +11,33 @@ import Swiper from 'react-native-swiper';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
+import { getTips } from '../../actions/list_states_mx'
 
 
 class Tips extends Component{
   static navigationOptions = {
     header: null
   };
+  componentWillMount(){
+    if(this.props.token != ""){
+      this.props.getTips(this.props.token)
+    }
+  }
   render(){
+    const { results } = this.props.tips
+    var tips = results.map((tip,i)=>{
+      return (<Col key={i} style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
+                <View style={styles.swipper__col__top__image}>
+                  <Image
+                    source={{ uri: tip.image }}
+                    style={styles.image}
+                  />
+                </View>
+                <View style={styles.swipper__view}>
+                  <Text style={styles.text}>{tip.description}</Text>
+                </View>
+              </Col>)
+    })
     return(
       <Container>
         <Header navigation={ this.props.navigation } title="Tips" />
@@ -27,39 +48,7 @@ class Tips extends Component{
             showsButtons={true}
             buttonWrapperStyle={styles.arrow__buttons}
             >
-            <Col style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
-              <View style={styles.swipper__col__top__image}>
-                <Image
-                  source={ require('../../../images/foco.png')}
-                  style={styles.image}
-                />
-              </View>
-              <View style={styles.swipper__view}>
-                <Text style={styles.text}>Usa focos de bajo consumo: Ahorran hasta un 75% de energía.</Text>
-              </View>
-            </Col>
-            <Col style={styles.slide1}>
-              <View style={styles.swipper__col__top__image}>
-                <Image
-                  source={ require('../../../images/foco.png')}
-                  style={styles.image}
-                />
-              </View>
-              <View style={styles.swipper__view}>
-                <Text style={styles.text}>Usa focos de bajo consumo: Ahorran hasta un 75% de energía.</Text>
-              </View>
-            </Col>
-            <Col style={styles.slide1}>
-              <View style={styles.swipper__col__top__image}>
-                <Image
-                  source={ require('../../../images/foco.png')}
-                  style={styles.image}
-                />
-              </View>
-              <View style={styles.swipper__view}>
-                <Text style={styles.text}>Usa focos de bajo consumo: Ahorran hasta un 75% de energía.</Text>
-              </View>
-            </Col>
+            {tips}
           </Swiper>
         </Grid>
         {(Platform.OS == 'ios') ? <Footer navigation={this.props.navigation}/>  : null}
@@ -68,5 +57,17 @@ class Tips extends Component{
   }
 }
 
+function bindAction(dispatch){
+  return {
+    getTips: token => dispatch(getTips(token)),
+  }
+}
 
-export default Tips;
+const mapStateToProps = state => ({
+  tips: state.list_contracts.tips,
+  token: state.user.token
+})
+
+
+
+export default connect(mapStateToProps,bindAction)(Tips);

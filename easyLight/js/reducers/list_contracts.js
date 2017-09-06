@@ -1,6 +1,6 @@
 import type { Action } from "../actions/types";
 import { SET_BILL, SET_INDEX } from "../actions/contracts";
-import { GET_CONTRACT, SUCCES_CONTRACT } from "../actions/list_states_mx"
+import { GET_CONTRACT, SUCCES_CONTRACT, GET_TIPS } from "../actions/list_states_mx"
 import { PRINT_RECEIPTS } from "../actions/contracts"
 export type State = {
   list: string
@@ -40,6 +40,9 @@ export default function(state: State = initialState, action: Action): State {
       ...state,
       newContract: action.payload
     }
+  }
+  if (action.type === GET_TIPS) {
+    return { ...state, tips: action.payload }
   }
   return state;
 }
