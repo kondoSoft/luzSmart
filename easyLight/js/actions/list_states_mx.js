@@ -131,7 +131,6 @@ export function postContract(list, rate, token):Action{
     })
     .then(res => {return res.json()})
     .then(res => {
-      console.log('res',res);
       dispatch(successContract(res))})
     .catch(err => console.log(err))
   }
