@@ -17,6 +17,7 @@ import Tips from '../tips'
 import Measurements from '../measurements'
 import Results from '../results'
 import Login from '../login'
+import Charts from '../charts'
 // var gradientImage = require('../../../images/header.png')
 
 
@@ -143,6 +144,7 @@ const DrawNav = DrawerNavigator(
     //  Mediciones: { screen: Measurements},
     //  Resultados: { screen: Results },
      Logout: { screen: Login },
+     Charts:{screen: Charts},
   },
   {
       drawerPosition: 'right',
