@@ -29,6 +29,8 @@ export function loginUser(email:email, password:password, navigate):Action {
 
      },
       body: JSON.stringify({
+        // email: 'zlatanjon@hotmail.com',
+        // password: 'password123',
         email: email,
         password: password,
       })
