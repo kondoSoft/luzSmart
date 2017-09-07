@@ -16,6 +16,7 @@ import {
   View,
   CheckBox,
   Image,
+  Radio
 } from 'native-base';
 import {
   Platform,
@@ -24,6 +25,7 @@ import {
   Dimensions,
   ScrollView,
   TextInput,
+  Alert
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -150,17 +152,62 @@ class AddContracts extends Component {
     this.setState({cost: event.nativeEvent.text});
   }
   sendData(){
-    this.props.postContract(this.state, this.props.mun_rate,this.props.token)
-    this.props.navigation.navigate('Receipt')
+    if (this.dataValidate(this.state)) {
+      this.props.postContract(this.state, this.props.mun_rate,this.props.token)
+      this.props.navigation.navigate('Receipt')
+    }else {
+      Alert.alert(
+        'Validación de datos',
+        'Todos los campos son obligatorios',
+        [
+          {text: 'Aceptar'},
+        ],
+      )
+    }
   }
+  dataValidate(data){
+    const {
+      name,
+      state,
+      number_contract,
+      municipality,
+      finalDateRange,
+      initialDateRange,
+      checkedMen,
+      checkedBi
+    } = data;
+    // Validacion de datos
+    if (
+        state &&
+        name &&
+        (number_contract || number_contract.length > 0) &&
+        municipality &&
+        finalDateRange &&
+        initialDateRange &&
+        (checkedMen || checkedBi)
+      ) {
+      return true
+    }else {
+      return false
+    }
+
+  }
+
   // falta condicion para hacer check en uno u otro
-  handleCheckedMen(){
-    this.setState({checkedMen: !this.state.checkedMen,
-    type_payment: 'Mensual'})
-  }
-  handleCheckedBi(){
-    this.setState({checkedBi: !this.state.checkedBi,
-    type_payment: 'Bimestral'})
+  handleCheckedMen(check){
+    if (check === 'mensual') {
+      this.setState({
+        checkedMen: true,
+        type_payment: 'Mensual',
+        checkedBi: false
+      })
+    }else {
+      this.setState({
+        checkedBi: true,
+        type_payment: 'Bimestral',
+        checkedMen:false
+      })
+    }
   }
   // ******************************************
   componentWillMount(){
@@ -318,13 +365,13 @@ class AddContracts extends Component {
             {(Platform.OS === 'ios')? <View style={{height:15}}></View> : <View style={{height: 0}}></View>}
             <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 20 : 0}}>
               <View style={styles.row__bottom__view__top}>
-                <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen()}/>
+                <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('mensual')}/>
                 <Body style={{ flex: 0 }}>
                   <Text>Mensual</Text>
                 </Body>
               </View>
               <View style={ styles.row__bottom__view__bottom }>
-                <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} onPress={()=>this.handleCheckedBi()}/>
+                <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('bimestral')}/>
                 <Body style={{ flex: 0 }}>
                   <Text>Bimestral</Text>
                 </Body>
