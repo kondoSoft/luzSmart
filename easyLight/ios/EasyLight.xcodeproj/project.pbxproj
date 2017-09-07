@@ -49,6 +49,9 @@
 		6016931592B74A698B1973A3 /* SanFranciscoBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F919827E3CAF4DFFB1CC8CCC /* SanFranciscoBold.ttf */; };
 		66FB995852FB4DD388B938CC /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3069A3FB613E40F8B53715A8 /* Foundation.ttf */; };
 		6F3701F2FBCF4F4FBD74AB82 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AECFE2BBF925403BAFDCCA8B /* Ionicons.ttf */; };
+		7247D44D1F60A5B900250187 /* iphone 7s y 6s_ portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 7247D44A1F60A5B900250187 /* iphone 7s y 6s_ portrait.png */; };
+		7247D44E1F60A5B900250187 /* iphone7-y-6-plus_portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 7247D44B1F60A5B900250187 /* iphone7-y-6-plus_portrait.png */; };
+		7247D44F1F60A5B900250187 /* iphoneSE_ portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 7247D44C1F60A5B900250187 /* iphoneSE_ portrait.png */; };
 		740C392FAC894EF9B7EE321A /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A5A4F0CAAA2424FBC49205A /* Rubik-LightItalic.ttf */; };
 		746C4AF0C55B401FB05EB152 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D73F54D5FA94B69A2E472DB /* FontAwesome.ttf */; };
 		7E295A326F854CAE8F9E4490 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48C25535EBDA43608A33A43D /* Rubik-Regular.ttf */; };
@@ -253,6 +256,13 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		7247D4521F60A5B900250187 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A959D26A8A8E4388AC300535 /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64AA15081EF7F30100718508;
+			remoteInfo = "BVLinearGradient-tvOS";
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -349,6 +359,9 @@
 		6117B72A64554DC8B3ECF915 /* Arial Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Arial Black.ttf"; path = "../node_modules/native-base/Fonts/Arial Black.ttf"; sourceTree = "<group>"; };
 		69D2060BF61548FF8042CE5A /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-MediumItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-MediumItalic.ttf"; sourceTree = "<group>"; };
 		6C8FE0B3E1C044DFB21DCC29 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		7247D44A1F60A5B900250187 /* iphone 7s y 6s_ portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone 7s y 6s_ portrait.png"; sourceTree = "<group>"; };
+		7247D44B1F60A5B900250187 /* iphone7-y-6-plus_portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone7-y-6-plus_portrait.png"; sourceTree = "<group>"; };
+		7247D44C1F60A5B900250187 /* iphoneSE_ portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphoneSE_ portrait.png"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7D73F54D5FA94B69A2E472DB /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		82B121C5B7AD4991AFCD43C0 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -554,6 +567,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7247D4491F60A5B900250187 /* PNG splashscreen-ios */ = {
+			isa = PBXGroup;
+			children = (
+				7247D44A1F60A5B900250187 /* iphone 7s y 6s_ portrait.png */,
+				7247D44B1F60A5B900250187 /* iphone7-y-6-plus_portrait.png */,
+				7247D44C1F60A5B900250187 /* iphoneSE_ portrait.png */,
+			);
+			path = "PNG splashscreen-ios";
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -596,6 +619,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				7247D4491F60A5B900250187 /* PNG splashscreen-ios */,
 				13B07FAE1A68108700A75B9A /* EasyLight */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* EasyLightTests */,
@@ -680,6 +704,7 @@
 			isa = PBXGroup;
 			children = (
 				B754519E1F3A0E15006704CA /* libBVLinearGradient.a */,
+				7247D4531F60A5B900250187 /* libBVLinearGradient.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1028,6 +1053,13 @@
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		7247D4531F60A5B900250187 /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = 7247D4521F60A5B900250187 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1099,8 +1131,10 @@
 				A55BEB8D3B3B45FAA56F10EC /* Comic Sans MS.ttf in Resources */,
 				A26D369EEBB24FD8A6038010 /* Courier New.ttf in Resources */,
 				8EBDBD5304194806B8775E56 /* Entypo.ttf in Resources */,
+				7247D44F1F60A5B900250187 /* iphoneSE_ portrait.png in Resources */,
 				E4738C80A6F94839A000D5EA /* EvilIcons.ttf in Resources */,
 				746C4AF0C55B401FB05EB152 /* FontAwesome.ttf in Resources */,
+				7247D44E1F60A5B900250187 /* iphone7-y-6-plus_portrait.png in Resources */,
 				66FB995852FB4DD388B938CC /* Foundation.ttf in Resources */,
 				2CE520A091324A9782C71F4D /* Georgia.ttf in Resources */,
 				6F3701F2FBCF4F4FBD74AB82 /* Ionicons.ttf in Resources */,
@@ -1115,6 +1149,7 @@
 				FB7FE701F2AD41F39998D6A2 /* Rubik-Bold.ttf in Resources */,
 				255B374AA8414AEB969F494F /* Rubik-BoldItalic.ttf in Resources */,
 				0E4B85BA80FF44D3879E3837 /* Rubik-Italic.ttf in Resources */,
+				7247D44D1F60A5B900250187 /* iphone 7s y 6s_ portrait.png in Resources */,
 				59487822E9E34BE58132EAC9 /* Rubik-Light.ttf in Resources */,
 				740C392FAC894EF9B7EE321A /* Rubik-LightItalic.ttf in Resources */,
 				AE6595A9355D457EBCE6AB0D /* Rubik-Medium.ttf in Resources */,
