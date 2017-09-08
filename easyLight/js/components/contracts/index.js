@@ -17,6 +17,7 @@ import Tips from '../tips'
 import Measurements from '../measurements'
 import Results from '../results'
 import Login from '../login'
+import Charts from '../charts'
 // var gradientImage = require('../../../images/header.png')
 
 
@@ -112,7 +113,7 @@ class ItemComponent extends Component{
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-          {(contract.image == null)? <Text>Empty</Text> : <Thumbnail source={{ uri: contract.image }} />}
+          {(contract.image == null)? <Thumbnail source={require('../../../images/Casaplace.png')} /> : <Thumbnail source={{ uri: contract.image }} />}
         </Left>
         <Body style={styles.ItemComponent.align}>
           <Text style={styles.listItem__body__text}>{contract.name_contract}</Text>
@@ -143,6 +144,7 @@ const DrawNav = DrawerNavigator(
     //  Mediciones: { screen: Measurements},
     //  Resultados: { screen: Results },
      Logout: { screen: Login },
+     Charts:{screen: Charts},
   },
   {
       drawerPosition: 'right',

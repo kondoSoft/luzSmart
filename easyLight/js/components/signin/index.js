@@ -25,7 +25,7 @@ class SignIn extends Component {
       phone: '',
       birth_date: '',
       zip_code: '',
-      avatarSource : null,
+      avatarSource : require('../../../images/persona.png'),
       file: null,
     }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
@@ -98,12 +98,12 @@ class SignIn extends Component {
                 <Col style={styles.row__top__col__left}>
                   <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                     <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                    { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Agregar Foto<Text style={{color:'red'}}>*</Text></Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
+                      <Thumbnail source={ (this.state.file != null)? this.state.file : this.state.avatarSource}/>
                     </View>
                   </TouchableOpacity>
                 </Col>
                 <Col style={styles.row__top__col__right}>
-                  <Image style={{width:30,height:30,marginRight:10}} source={(avatarSource != null)&& require('../../../images/succes.png')}/>
+                  <Image style={{width:30,height:30,marginRight:10}} source={(this.state.file != null)&& require('../../../images/succes.png')}/>
                   {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}> */}
                     {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
                   {/* </Button> */}
@@ -178,7 +178,7 @@ class SignIn extends Component {
                     <Label style={styles.text}>Celular:</Label>
                     <Input
                       keyboardType='phone-pad'
-                      maxLength={10}
+                      maxLength={13}
                       ref="phone_number"
                       style={styles.form__item__input}
                       onChangeText={(phone)=> this.setState({phone})}

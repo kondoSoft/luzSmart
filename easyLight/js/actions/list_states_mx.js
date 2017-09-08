@@ -6,11 +6,12 @@ export const RESET_MUNICIPALITY = 'RESET_MUNICIPALITY'
 export const GET_RATE = 'GET_RATE'
 export const SET_INDEX = 'SET_INDEX';
 export const GET_CONTRACT = 'GET_CONTRACT'
+export const GET_TIPS = 'GET_TIPS'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 
-// const endPoint = 'http://138.68.49.119:8080';
-const endPoint = 'http://127.0.0.1:8000';
+const endPoint = 'http://138.68.49.119:8080';
+// const endPoint = 'http://127.0.0.1:8080';
 
 
 export function printStates(list):Action{
@@ -53,6 +54,13 @@ export function printContract(list):Action {
 export function successContract(list):Action {
   return {
     type: SUCCES_CONTRACT,
+    payload: list
+  }
+}
+
+export function printTips(list):Action {
+  return {
+    type: GET_TIPS,
     payload: list
   }
 }
@@ -119,6 +127,8 @@ export function postContract(list, rate, token):Action{
         type: 'image/png',
         name: list.file.fileName
       })
+    }else {
+
     }
     return fetch(endPoint+'/contract/',{
       method: 'POST',
@@ -130,8 +140,7 @@ export function postContract(list, rate, token):Action{
      body: data
     })
     .then(res => {return res.json()})
-    .then(res => {
-      dispatch(successContract(res))})
+    .then(res => {dispatch(successContract(res))})
     .catch(err => console.log(err))
   }
 }
@@ -148,6 +157,22 @@ export function getContract(token):Action{
     .then(res => {return res.json()})
     .then(res=> {
       dispatch(printContract(res))})
+    .catch(err => console.log(err))
+  }
+}
+
+export function getTips(token):Action{
+  return dispatch => {
+    return fetch(endPoint + '/tips/', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Token ' + token,
+      }
+    })
+    .then(res => {return res.json()})
+    .then(res => {dispatch(printTips(res))})
     .catch(err => console.log(err))
   }
 }

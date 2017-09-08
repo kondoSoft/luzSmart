@@ -33,7 +33,7 @@ class FooterGlobal extends Component {
               <Icon style={styles.footer__icon} active name="trending-up" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Resultados</Text> : <View/> }
             </Button>
-            <Button vertical >
+            <Button vertical onPress={()=> this.props.navigation.navigate('Tips')} >
 
               {(Platform.OS === 'ios')?   <Icon style={styles.footer__icon} name="bulb" /> : <Icon style={styles.footer__icon} name="menu" /> }
               {(Platform.OS === 'ios')?   <Text style={styles.footer__text}>Tips</Text> : <View/> }
