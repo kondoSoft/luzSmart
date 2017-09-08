@@ -156,7 +156,7 @@ class AddContracts extends Component {
       this.props.navigation.navigate('Receipt')
     }else {
       Alert.alert(
-        'Validación de datos',
+        'Datos incompletos',
         'Todos los campos son obligatorios',
         [
           {text: 'Aceptar'},
