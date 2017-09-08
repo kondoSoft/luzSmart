@@ -26,6 +26,7 @@ import styles from './styles';
 import { postReceipt } from '../../actions/contracts'
 import ReceiptPickerDate from '../datePicker/receipt'
 
+var contract;
 
 class Receipt extends Component {
   constructor(props){
@@ -39,6 +40,7 @@ class Receipt extends Component {
         amount_payable_ui: '',
         current_reading_ui: 0,
         previous_reading_ui: 0,
+        period: '',
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
       this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
@@ -67,6 +69,20 @@ class Receipt extends Component {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   handlePaydayLimit(date){
+    // const period;
+    const initialDateRange = new Date(contract.initialDateRange).getTime()
+    const finalDateRange = new Date(contract.finalDateRange).getTime()
+    const limitReceipt = new Date(date).getTime()
+    if(limitReceipt >= initialDateRange && limitReceipt <= finalDateRange){
+      this.setState({
+          period: 'Verano'
+        })
+    }else{
+      this.setState({
+          period: 'NoVerano'
+        })
+    }
+
     if (date === '') {
 
     }else {
@@ -120,7 +136,7 @@ class Receipt extends Component {
   }
   render(){
     const { navigation } = this.props
-    var contract;
+
     if (navigation.state.params == undefined) {
       contract = this.props.newContract
     }else{
@@ -219,6 +235,7 @@ class Receipt extends Component {
         </ScrollView>
       </Container>
     )
+    // iOS
     if (Platform.OS === 'ios') {
       var receiptView = (
         <Container>

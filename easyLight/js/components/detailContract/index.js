@@ -33,7 +33,11 @@ var numContract = []
 var rateArr = []
 var finalRange
 var arrReceipts = []
-
+var limitReceipt;
+var currentDate;
+var firstDate;
+var type_payment;
+var count_days;
 class DetailContract extends Component {
   constructor(props){
     super(props)
@@ -46,10 +50,8 @@ class DetailContract extends Component {
       contract_id: '',
       previous_reading: '',
       payday_limit: '',
-      amount_payable: 0,
     }
     this.onOpenSwipe = this.onOpenSwipe.bind(this)
-    this.getPeriod = this.getPeriod.bind(this)
     this.getStatus = this.getStatus.bind(this)
   }
   static navigationOptions = {
@@ -63,8 +65,8 @@ class DetailContract extends Component {
     this.getContractsId()
 
     if(numContract[0].receipt.length != []){
-      this.getPeriod()
       this.getStatus()
+      this.props.getRatePeriod(numContract[0].rate, this.props.token)
       numContract[0].receipt.map((item,i)=>{
         arrReceipts.push(item)
       })
@@ -87,13 +89,25 @@ class DetailContract extends Component {
         // },()=>this.props.postReceipt(this.state,this.props.token))
 
       }
+
     }
+
+
     // this.props.getContract(this.props.token)
   }
+  componentWillReceiveProps(nextProps){
+    type_payment = nextProps.contracts[0].type_payment
+    if(type_payment == 'Bimestral'){
+      count_days = 60
+    }else{
+      count_days = 30
+    }
+    this.getCost(nextProps)
+  }
   componentWillUnmount(){
-    rateArr = []
     numContract = []
     statusArr = []
+
   }
 
 
@@ -103,69 +117,68 @@ class DetailContract extends Component {
     })
   }
   getStatus(){
+
     numContract[0].receipt.map((item, i) => {
       const payday = item.payday_limit.replace(/-/g, '\/')
-      const firstDate = Date.parse(new Date(payday))
-      const currentDate = Date.now()
-      const day76 = new Date(firstDate).setDate(new Date(firstDate).getDate()-76)
-      const lastDay = new Date(new Date(day76).setDate(new Date(day76).getDate()+60)).getTime()
-      console.log(day76, currentDate, lastDay);
-      console.log(currentDate >= day76 && currentDate <= lastDay);
-      if (currentDate >= day76 && currentDate <= lastDay) {
-
+      limitReceipt = Date.parse(new Date(payday))
+      currentDate = Date.now()
+      firstDate = new Date(limitReceipt).setDate(new Date(limitReceipt).getDate() - count_days)
+      if (currentDate >= firstDate && currentDate <= limitReceipt) {
         this.setState({
           status: 'En proceso'
         })
       }else {
-
         this.setState({
           status: 'Pagado'
         })
       }
     })
   }
-  getPeriod(){
-    const receipt = this.props.navigation.state.params.receipt
-    const initialDateRange = numContract[0].initialDateRange
-    const finalDateRange = numContract[0].finalDateRange
-    receipt.map((item, i)=>{
-
-      const payday = receipt[i].payday_limit
-      const paydayDate = new Date(payday.replace(/-/g, '\/')).getTime()
-      const initialDate = new Date(initialDateRange.replace(/-/g,'\/')).getTime()
-      const finalDate = new Date(finalDateRange.replace(/-/g,'\/')).getTime()
-      if(paydayDate >= initialDate && paydayDate <= finalDate){
-          rateArr.push({[`periods` +i]: 'Verano'})
-        // this.setState({
-        //  [`periods` +i]: 'Verano'
-        // })
-      }else{
-          rateArr.push({[`periods` +i]: 'NoVerano'})
-        // this.setState({
-        //   [`periods` + i]: 'NoVerano'
-        // })
-      }
-    })
-    this.props.getRatePeriod(numContract[0].rate, this.props.token)
-  }
   getContractsId(){
     const contract = this.props.contracts.map((item,i)=>{
       if (item.id == this.props.navigation.state.params.index){
         numContract.push(item)
-        // return numContract
       }
     })
 
   }
+  getCost(nextProps){
+    var verano = [];
+    var noverano = [];
+    var khw_current;
+    var totalRate;
+    var kilowatt = []
+    nextProps.rate_period.map((period, i)=>{
+      if(period.period_name == 'Verano'){
+        verano.push(period)
+      }else{
+        noverano.push(period)
+      }
+    })
+    console.log(arrReceipts[0].period);
+    if(arrReceipts[0].period == 'Verano'){
+      khw_current = arrReceipts[0].current_reading - arrReceipts[0].previous_reading
+      verano.map((rate, i)=>{
+        kilowatt.push(verano[i].kilowatt)
+
+      })
+      totalRate = kilowatt.reduce((a,b)=>{return a+b})
+      console.log(totalRate);
+      console.log('Verano',verano);
+    }else {
+      console.log('NoVerano',noverano);
+    }
+  }
+
+
 
   render(){
-    const { navigation } = this.props
+
+    const { navigation, rate_period } = this.props
     const { status } = this.state
     const bill = navigation.state.params.receipt
     const colors = ['lightgrey','#fff']
-    console.log(this.props);
     // Obtener datos por Periodos
-
 
     return(
       <Container>
@@ -219,7 +232,7 @@ class ItemComponent extends Component{
     const splitRange = receipt.payday_limit.split('-',)
     const date = new Date(receipt.payday_limit.replace(/-/g, '\/'))
     // Periodo inicial dependiendo la fecha limite de pago, calculando los dias de inicio del recibo
-    const initialPeriod = new Date(date.setDate(new Date(date).getDate()-76))
+    const initialPeriod = new Date(date.setDate(new Date(date).getDate() - count_days))
     const dateMonth = initialPeriod.getMonth()
     finalRange = new Date(new Date(date).setMonth(date.getMonth()+2))
     return(

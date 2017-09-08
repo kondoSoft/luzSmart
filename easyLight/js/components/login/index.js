@@ -137,14 +137,6 @@ class Login extends Component {
         validation: nextProps.loginError,
       })
     }
-    console.log(nextProps.loginError);
-  //   if (nextProps.noPassword != undefined) {
-  //     validationPass = nextProps.noPassword.toString()
-  //   }
-  //   console.log(nextProps.noPassword);
-  //   this.setState({
-  //     validation: <Text style={{backgroundColor:'red', height:'25%',width: '94%', textAlign: 'center', paddingTop:0,color:'#fff'}}>{nextProps.validationPass}</Text>
-  //   })
   }
   render() {
     const { validation } = this.state
