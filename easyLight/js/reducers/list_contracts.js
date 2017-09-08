@@ -12,6 +12,7 @@ const initialState = {
   newContract:[
 
   ],
+  tips: '',
   selectedIndex: undefined
 };
 
@@ -42,7 +43,10 @@ export default function(state: State = initialState, action: Action): State {
     }
   }
   if (action.type === GET_TIPS) {
-    return { ...state, tips: action.payload }
+    return {
+      ...state,
+      tips: action.payload
+    }
   }
   return state;
 }

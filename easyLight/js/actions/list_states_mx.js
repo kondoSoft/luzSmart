@@ -127,6 +127,8 @@ export function postContract(list, rate, token):Action{
         type: 'image/png',
         name: list.file.fileName
       })
+    }else {
+
     }
     return fetch(endPoint+'/contract/',{
       method: 'POST',
@@ -138,9 +140,7 @@ export function postContract(list, rate, token):Action{
      body: data
     })
     .then(res => {return res.json()})
-    .then(res => {
-      console.log('res',res);
-      dispatch(successContract(res))})
+    .then(res => {dispatch(successContract(res))})
     .catch(err => console.log(err))
   }
 }
@@ -172,8 +172,7 @@ export function getTips(token):Action{
       }
     })
     .then(res => {return res.json()})
-    .then(res => {
-      dispatch(printTips(res))})
+    .then(res => {dispatch(printTips(res))})
     .catch(err => console.log(err))
   }
 }

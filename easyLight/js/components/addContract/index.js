@@ -59,7 +59,7 @@ class AddContracts extends Component {
         "cost" : 0,
         "checkedMen": false,
         "checkedBi": false,
-        "avatarSource" : null,
+        "avatarSource" : require('../../../images/Casaplace.png'),
         "file" : null,
     }
   }
@@ -100,7 +100,6 @@ class AddContracts extends Component {
 
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
         this.setState({
           avatarSource: response.uri,
           file: response
@@ -321,7 +320,7 @@ class AddContracts extends Component {
               <Left style={{marginLeft:19}}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                   <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                  { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Agregar Foto</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
+                   <Thumbnail source={ (this.state.file != null)? this.state.file : this.state.avatarSource} />
                   </View>
                 </TouchableOpacity>
               </Left>
@@ -357,8 +356,15 @@ class AddContracts extends Component {
                   </Picker>
                 </View>
               }
-              { (municipality_mx.length == 0) ? <View style={{height:40}}/> : selectMun}
-              { (mun_rate.length == 0) ? <View style={{height:40}}/> : <Text style={{height:40,marginTop:5,marginLeft:(Platform.OS === 'ios')? 10 : 5,marginRight:(Platform.OS === 'ios')? 10 : 5,textAlignVertical:'center',paddingLeft:10,paddingTop:7,textAlign:'left'}}>{mun_rate}</Text>}
+              { (municipality_mx.length == 0) ? <View style={{height:40,marginTop:10,marginBottom:10}}/> : selectMun}
+              { (mun_rate.length == 0) ? <View style={{height:40,marginTop:0,marginBottom:0}}/> : <Text style={{height:40,marginTop:0,marginLeft:(Platform.OS === 'ios')? 10 : 5,
+                                                                                                                            marginRight:(Platform.OS === 'ios')? 10 : 5,
+                                                                                                                            textAlignVertical:'center',
+                                                                                                                            paddingLeft:10,
+                                                                                                                            paddingTop:7,
+                                                                                                                            textAlign:'left'}}>
+                                                                                                                            {mun_rate}
+                                                                                                                          </Text>}
               { periodSummer }
               </Form>
             </Col>
