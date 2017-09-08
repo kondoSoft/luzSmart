@@ -112,7 +112,7 @@ class ItemComponent extends Component{
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-          {(contract.image == null)? <Text>Empty</Text> : <Thumbnail source={{ uri: contract.image }} />}
+          {(contract.image == null)? <Thumbnail source={require('../../../images/Casaplace.png')} /> : <Thumbnail source={{ uri: contract.image }} />}
         </Left>
         <Body style={styles.ItemComponent.align}>
           <Text style={styles.listItem__body__text}>{contract.name_contract}</Text>
