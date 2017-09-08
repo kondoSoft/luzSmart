@@ -28,6 +28,7 @@ import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
 import {getRatePeriod, postReceipt} from '../../actions/contracts'
 import { getContract } from '../../actions/list_states_mx'
+import { getIVA } from '../../helpers'
 
 var numContract = []
 var rateArr = []
@@ -38,6 +39,10 @@ var currentDate;
 var firstDate;
 var type_payment;
 var count_days;
+
+var consumoPromedio = 0;
+
+var countKwh = 0;
 class DetailContract extends Component {
   constructor(props){
     super(props)
@@ -102,12 +107,15 @@ class DetailContract extends Component {
     }else{
       count_days = 30
     }
-    this.getCost(nextProps)
+
   }
   componentWillUnmount(){
     numContract = []
     statusArr = []
-
+    consumoTotal = 0;
+    consumoPromedio = 0;
+    // kilowatt = []
+    countKwh = 0;
   }
 
 
@@ -142,39 +150,71 @@ class DetailContract extends Component {
     })
 
   }
-  getCost(nextProps){
+  // funcion para obtener los datos por costos y hacer operaciones logicas
+  getCost(rate_period){
     var verano = [];
     var noverano = [];
-    var khw_current;
-    var totalRate;
     var kilowatt = []
-    nextProps.rate_period.map((period, i)=>{
+
+    // empuje de datos en el arreglo de verano y fuera de verano
+    rate_period.map((period, i)=>{
       if(period.period_name == 'Verano'){
         verano.push(period)
       }else{
         noverano.push(period)
       }
     })
-    console.log(arrReceipts[0].period);
-    if(arrReceipts[0].period == 'Verano'){
-      khw_current = arrReceipts[0].current_reading - arrReceipts[0].previous_reading
-      verano.map((rate, i)=>{
-        kilowatt.push(verano[i].kilowatt)
+    // countKwh = 1000
 
+    if(arrReceipts[0].period == 'Verano'){
+      kilowatt = verano.map((rate, i)=>{
+        const { kilowatt, cost } = rate
+        return { kilowatt, cost }
       })
-      totalRate = kilowatt.reduce((a,b)=>{return a+b})
-      console.log(totalRate);
-      console.log('Verano',verano);
     }else {
-      console.log('NoVerano',noverano);
+      kilowatt = noverano.map((rate, i)=>{
+        const { kilowatt, cost } = rate
+        return { kilowatt, cost }
+      })
     }
+    return kilowatt
   }
+
+    whileCosts(kilowatt, countKwh){
+      var consumoTotal = 0;
+      if(kilowatt){
+        kilowatt = kilowatt.filter((item)=> {return (item.kilowatt>0)}).reverse()
+
+        while(countKwh >= 0 && kilowatt.length > 0) {
+          let range = kilowatt.pop()
+          if (countKwh > range.kilowatt){
+            let consumo = countKwh - range.kilowatt
+            countKwh -= range.kilowatt
+            consumo = range.kilowatt * range.cost
+            consumoTotal += consumo
+          }
+          while ( kilowatt.length == 0 && countKwh > 0){
+            consumo = countKwh * range.cost
+            consumoTotal += consumo
+            countKwh -= range.kilowatt
+
+            if (countKwh < range.kilowatt){
+              countKwh = 0
+            }
+
+            return consumoTotal
+          }
+        }
+      }
+    }
+
+
 
 
 
   render(){
-
     const { navigation, rate_period } = this.props
+
     const { status } = this.state
     const bill = navigation.state.params.receipt
     const colors = ['lightgrey','#fff']
@@ -200,7 +240,7 @@ class DetailContract extends Component {
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
-                    component={<ItemComponent data={item} status={status}/>}
+                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={this.whileCosts}/>}
                     dataAccordion={item}
                     icon={<Icon style={{paddingTop: (navigation.state.routeName === 'DetailContract')? 5 : 15,color: 'steelblue',fontSize:40,textAlign:'center'}} name="information-circle" />}
                   />
@@ -226,7 +266,12 @@ class DetailContract extends Component {
 class ItemComponent extends Component{
 
   render(){
+
     const receipt = this.props.data
+    countKwh = receipt.current_reading - receipt.previous_reading
+    const subTotal = this.props.consumoPromedio(this.props.ratePeriod, countKwh)
+    const total = getIVA(subTotal)
+
     const status = this.props.status
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const splitRange = receipt.payday_limit.split('-',)
@@ -244,7 +289,7 @@ class ItemComponent extends Component{
 
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{}}>{receipt.current_reading}</Text>
+          <Text style={styles.listItem__body__view__text,{}}>{ (total != undefined) && total.toPrecision(6) }</Text>
           <Text style={styles.listItem__body__view__text,{}}>{status}</Text>
         </Right>
       </View>
