@@ -26,7 +26,7 @@ class Tips extends Component{
   }
   render(){
     const { results } = this.props.tips;
-    console.log(results);
+    
     if(results != undefined){
       if (results.length != 0) {
         tips = results.map((tip,i)=>{
