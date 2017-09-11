@@ -136,24 +136,25 @@ const mapStateToProps = state => ({
   selectedIndex: state.list_contracts.selectedIndex,
   token: state.user.token
 })
-const ContractsSwagger = connect(mapStateToProps, bindAction)(Contracts);
-const DrawNav = DrawerNavigator(
-  {
-     Contracts: { screen: ContractsSwagger },
-     Tips: { screen: Tips },
-    //  Mediciones: { screen: Measurements},
-    //  Resultados: { screen: Results },
-     Logout: { screen: Login },
-     Charts:{screen: Charts},
-  },
-  {
-      drawerPosition: 'right',
-      // contentComponent: props => <DrawBar {...props} />
-  }
-)
-DrawNav.navigationOptions = ({navigation}) => {
-  return {
-    header: null
-  }
-}
-export default DrawNav
+export default connect(mapStateToProps, bindAction)(Contracts);
+// const ContractsSwagger = connect(mapStateToProps, bindAction)(Contracts);
+// const DrawNav = DrawerNavigator(
+//   {
+//      Contracts: { screen: ContractsSwagger },
+//      Tips: { screen: Tips },
+//     //  Mediciones: { screen: Measurements},
+//     //  Resultados: { screen: Results },
+//      Logout: { screen: Login },
+//      Charts:{screen: Charts},
+//   },
+//   {
+//       drawerPosition: 'right',
+//       // contentComponent: props => <DrawBar {...props} />
+//   }
+// )
+// DrawNav.navigationOptions = ({navigation}) => {
+//   return {
+//     header: null
+//   }
+// }
+// export default DrawNav
