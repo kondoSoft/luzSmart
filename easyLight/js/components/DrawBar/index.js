@@ -9,7 +9,7 @@ import {
   Content,
   Icon
 } from "native-base";
-const routes = ["Contracs", "Results", "Tips", "Results"];
+const routes = ["Contracts", "Results", "Tips", "Login"];
 export default class DrawBar extends React.Component {
   static navigationOptions = {
     header: null
