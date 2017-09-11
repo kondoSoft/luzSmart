@@ -32,7 +32,7 @@ import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import { getMunicipality, resetMunicipality, postContract, getRate } from '../../actions/list_states_mx'
+import { getMunicipality, resetMunicipality, postContract, getRate, resetRate } from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
 
 let Screen = Dimensions.get('window')
@@ -61,6 +61,7 @@ class AddContracts extends Component {
         "checkedBi": false,
         "avatarSource" : require('../../../images/Casaplace.png'),
         "file" : null,
+        rates: []
     }
   }
   static propType = {
@@ -128,6 +129,7 @@ class AddContracts extends Component {
     }
   }
   handleMunicipality(value, item){
+    this.props.resetRate()
     const mun_id = (Platform.OS === 'ios')? value.id : value
     this.props.getRate(mun_id, this.props.token)
     this.setState({municipality: value.id});
@@ -228,6 +230,29 @@ class AddContracts extends Component {
     }
     this.createRangeDate()
   }
+  componentWillReceiveProps(nextProps){
+    if (typeof nextProps.mun_rate === 'string') {
+      //array of rates
+      const rates = ['TARIFA 1', 'TARIFA 1A', 'TARIFA 1B', 'TARIFA 1C', 'TARIFA 1D', 'TARIFA 1E', 'TARIFA 1F']
+      // put inside of an array the municipality rate
+      const rate_unique = [nextProps.mun_rate]
+      //function that return a condiciton => return all rates that are different from the municipality
+      const inRates = (rate) => {
+        return rate != nextProps.mun_rate
+      }
+      //filter the array of rates => return a new array with all rates except the munucipality rate
+      var rate = rates.filter(inRates)
+      //concat the arrays of rates => rate and rate_unique
+      const selectRates = rate_unique.concat(rate)
+
+      this.setState({
+        rates: selectRates
+      })
+    }else {
+      console.log(nextProps.mun_rate)
+    }
+
+  }
   createRangeDate(){
     var arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
@@ -280,6 +305,25 @@ class AddContracts extends Component {
         })}
     </Select>
     )
+    var selectRate = (
+      <Select
+        selectStyle={styles.select}
+        padding={10}
+        listHeight={250}
+        caretSize={0}
+        getRate
+        >
+          {
+            (this.state.rates.length != 0)&&
+              this.state.rates.map((rate,i)=>{
+              return (<Option
+                key={i}
+                optionStyle={styles.select__option}
+                >{rate}</Option>)
+              })
+          }
+      </Select>
+    )
     if (Platform.OS === 'android') {
       selectMun = (
       <View style={styles.selectPicker}>
@@ -305,6 +349,28 @@ class AddContracts extends Component {
                         label={item}
                         value={item}
                       />
+            })}
+          </Picker>
+        </View>
+      )
+      selectRate = (
+        <View style={styles.selectPicker}>
+          <Picker
+            selectedValue={this.state.language}
+            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+            {arrRangeDate.map((item, i)=>{
+              return <Picker.item
+                        key={i}
+                        label={item}
+                        value={item}
+                      />
+            })}
+            {selectRates.map((rate,i)=>{
+              return <Picker.item
+                      key={i}
+                      value={rate}
+                      value={rate.rate}
+                    />
             })}
           </Picker>
         </View>
@@ -357,14 +423,15 @@ class AddContracts extends Component {
                 </View>
               }
               { (municipality_mx.length == 0) ? <View style={{height:40,marginTop:10,marginBottom:10}}/> : selectMun}
-              { (mun_rate.length == 0) ? <View style={{height:40,marginTop:0,marginBottom:0}}/> : <Text style={{height:40,marginTop:0,marginLeft:(Platform.OS === 'ios')? 10 : 5,
+              {/* { (mun_rate.length == 0) ? <View style={{height:40,marginTop:0,marginBottom:0}}/> : <Text style={{height:40,marginTop:0,marginLeft:(Platform.OS === 'ios')? 10 : 5,
                                                                                                                             marginRight:(Platform.OS === 'ios')? 10 : 5,
                                                                                                                             textAlignVertical:'center',
                                                                                                                             paddingLeft:10,
                                                                                                                             paddingTop:7,
                                                                                                                             textAlign:'left'}}>
                                                                                                                             {mun_rate}
-                                                                                                                          </Text>}
+                                                                                                                          </Text>} */}
+              { (mun_rate.length != 0)? selectRate : <View style={{height:40,marginTop:10,marginBottom:10}}/> }
               { periodSummer }
               </Form>
             </Col>
@@ -405,6 +472,7 @@ function bindAction(dispatch){
     getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
     resetMunicipality: () => dispatch(resetMunicipality()),
     getRate: (mun_id, token) => dispatch(getRate(mun_id, token)),
+    resetRate: ()=> dispatch(resetRate())
   }
 }
 const mapStateToProps = state => ({

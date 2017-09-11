@@ -3,6 +3,7 @@ import type { Action } from './types';
 export const GET_STATES = 'GET_STATES';
 export const GET_MUNICIPALITY = 'GET_MUNICIPALITY';
 export const RESET_MUNICIPALITY = 'RESET_MUNICIPALITY'
+export const RESET_RATE = 'RESET_RATE'
 export const GET_RATE = 'GET_RATE'
 export const SET_INDEX = 'SET_INDEX';
 export const GET_CONTRACT = 'GET_CONTRACT'
@@ -10,8 +11,9 @@ export const GET_TIPS = 'GET_TIPS'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8080';
+
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8080';
 
 
 export function printStates(list):Action{
@@ -37,6 +39,11 @@ export function printMunicipality(list):Action{
 export function resetMunicipality():Action{
   return {
     type: RESET_MUNICIPALITY,
+  }
+}
+export function resetRate():Action{
+  return {
+    type: RESET_RATE
   }
 }
 export function printRate(list):Action {

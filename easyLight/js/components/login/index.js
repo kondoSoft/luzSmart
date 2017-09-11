@@ -90,6 +90,7 @@ class Login extends Component {
     return (
       <Item error={hasError} style={{marginRight:20}}>
         <Input
+          keyboardType={"email-address"}
           autoCapitalize={'none'}
           secureTextEntry={input.name === "email" ? false : true }
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}

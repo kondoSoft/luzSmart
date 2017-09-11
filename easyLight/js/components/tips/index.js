@@ -26,7 +26,7 @@ class Tips extends Component{
   }
   render(){
     const { results } = this.props.tips;
-    if(results){
+    if(results && results.length != 0){
       tips = results.map((tip,i)=>{
            return (<Col key={i} style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
                      <View style={styles.swipper__col__top__image}>
