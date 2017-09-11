@@ -7,12 +7,9 @@ export type State = {
 };
 
 const initialState = {
-  contracts: [
-  ],
-  newContract:[
-
-  ],
-  tips: '',
+  contracts: [],
+  newContract:[],
+  tips: [],
   selectedIndex: undefined
 };
 
