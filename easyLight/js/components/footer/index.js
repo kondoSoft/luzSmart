@@ -29,7 +29,7 @@ class FooterGlobal extends Component {
             <Button vertical onPress={() => this.props.navigation.navigate("Measurements", { currentContract: currentContract})}>
               <Thumbnail source={ (Platform.OS === 'ios')? require('../../../images/logogray.png') : require('../../../images/logoeasy.png') } style={styles.footer__logo} />
             </Button>
-            <Button vertical style={styles.footer__btn__resultados} onPress={()=>this.props.navigation.navigate('Contact')}>
+            <Button vertical style={styles.footer__btn__resultados} onPress={()=>this.props.navigation.navigate('EditProfile')}>
               <Icon style={styles.footer__icon} active name="trending-up" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Resultados</Text> : <View/> }
             </Button>

@@ -96,6 +96,7 @@ class Login extends Component {
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
           {...input}
           onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0 })}
+          value={input.name === 'email'? 'wallas@mail.com': 'password123'}
         />
         {hasError
           ? <Item style={{ borderColor: "transparent" }}>

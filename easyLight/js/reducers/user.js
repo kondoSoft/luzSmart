@@ -1,5 +1,5 @@
 import type { Action } from '../actions/types';
-import { SET_USER, LOGOUT } from '../actions/user';
+import { SET_USER, LOGOUT, PRINT_USER } from '../actions/user';
 
 import {REHYDRATE} from 'redux-persist/constants'
 
@@ -33,6 +33,12 @@ export default function (state:State = initialState, action:Action): State {
     return {
       ...state,
       token: '',
+    }
+  }
+  if (action.type === PRINT_USER) {
+    return{
+      ...state,
+      user:action.payload
     }
   }
   return state;
