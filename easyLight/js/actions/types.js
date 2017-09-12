@@ -19,6 +19,9 @@ export type Action =
     | { type: 'PRINT_RATE_PERIOD'}
     | { type: 'PRINT_RECEIPTS'}
     | { type: 'GET_TIPS' }
+    | { type: 'PRINT_USER' }
+    | { type: 'UPDATE_USER' }
+
 
 
 export type Dispatch = (action:Action | Array<Action>) => any;
