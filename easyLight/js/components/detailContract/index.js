@@ -219,7 +219,6 @@ class DetailContract extends Component {
     const bill = navigation.state.params.receipt
     const colors = ['lightgrey','#fff']
     // Obtener datos por Periodos
-
     return(
       <Container>
         <Header navigation={navigation} title="Periodos"/>
