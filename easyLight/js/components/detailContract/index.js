@@ -227,7 +227,7 @@ class DetailContract extends Component {
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Row style={styles.detailContract__row__top}>
-              {/* <Text style={styles.detailContract__row__top__text}>{numContract[0].name_contract}</Text> */}
+              <Text style={styles.detailContract__row__top__text}>{this.props.contracts[0].name_contract}</Text>
             </Row>
             <Col>
               <List style={styles.list}>

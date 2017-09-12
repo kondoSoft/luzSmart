@@ -19,13 +19,14 @@ const Screen = Dimensions.get('window');
 
 
 class HeaderGlobal extends Component {
-
-  handleDrawer(){
-    this.props.navigation.navigate('DrawerOpen')
-  }
+  //
+  // handleDrawer(){
+  //   this.props.navigation.navigate('DrawerOpen')
+  // }
   render(){
     const { state } = this.props.navigation
-    const button = <Button transparent onPress={() => this.handleDrawer()}><Icon active style={styles.header__icon} name="menu"/></Button>
+    const { navigation } = this.props
+    const button = <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={styles.header__icon} name="menu"/></Button>
     const iconBack =  <Button transparent onPress={() => this.props.navigation.goBack()}>
         <Icon style={styles.header__icon} name={(Platform.OS === 'ios')? "ios-arrow-back" : "arrow-back"} />
       </Button>
