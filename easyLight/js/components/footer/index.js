@@ -3,6 +3,7 @@ import { Footer, FooterTab, Button, Icon, Text, Thumbnail } from 'native-base';
 import {
   Platform,
   View,
+  AlertIOS,
 } from 'react-native';
 import styles from "./styles";
 
@@ -10,10 +11,21 @@ import styles from "./styles";
 class FooterGlobal extends Component {
   render(){
     var currentContract = null
+    var contractPayDayLimit = false
     if(this.props.navigation.state.routeName == 'DetailContract'){
       currentContract = this.props.detailContract
+      console.log(currentContract);
+      if (currentContract.length === 0) {
+        contractPayDayLimit = true
+      }
     }else if(this.props.navigation.state.routeName == 'Contracts'){
       currentContract = this.props.viewContract
+      console.log('contracts',currentContract);
+      currentContract.map((receipts,i)=>{
+        if (receipts.receipt.length === 0) {
+          contractPayDayLimit = true
+        }
+      })
     }
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
@@ -26,7 +38,50 @@ class FooterGlobal extends Component {
               <Icon style={styles.footer__icon} name="calendar" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Periodos</Text> : <View/> }
             </Button>
-            <Button vertical onPress={() => this.props.navigation.navigate("Measurements", { currentContract: currentContract})}>
+            <Button vertical onPress={() => {
+              if (currentContract.length === 0 || contractPayDayLimit) {
+                if (contractPayDayLimit) {
+                  if (Platform.OS === 'ios') {
+                    AlertIOS.alert(
+                      'Recibo',
+                     'El contrato debe contar con un recibo.',
+                     [
+                       {text: 'OK'},
+                     ],
+                    )
+                  }else {
+                    Alert.alert(
+                      'Recibo',
+                     'El contrato debe contar con un recibo.',
+                     [
+                       {text: 'OK'},
+                     ],
+                    )
+                  }
+                }else {
+                  if (Platform.OS === 'ios') {
+                    AlertIOS.alert(
+                      'Contrato',
+                     'Debes de tener al menos un contrato CFE registrado.',
+                     [
+                       {text: 'OK'},
+                     ],
+                    )
+                  }else {
+                    Alert.alert(
+                      'Contrato',
+                     'Debes de tener al menos un contrato CFE registrado.',
+                     [
+                       {text: 'OK'},
+                     ],
+                    )
+                  }
+
+                }
+              }else {
+                this.props.navigation.navigate("Measurements", { currentContract: currentContract})
+              }
+            }}>
               <Thumbnail source={ (Platform.OS === 'ios')? require('../../../images/logogray.png') : require('../../../images/logoeasy.png') } style={styles.footer__logo} />
             </Button>
             <Button vertical style={styles.footer__btn__resultados} onPress={()=>this.props.navigation.navigate('Contact')}>
