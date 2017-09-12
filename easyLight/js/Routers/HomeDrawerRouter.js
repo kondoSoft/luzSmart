@@ -12,7 +12,7 @@ import Receipt from '../components/receipt';
 import History from '../components/history';
 import Configuration from '../components/configuration';
 import EditProfile from '../components/editProfile';
-
+import Faq from '../components/faq';
 
 import DrawBar from "../components/DrawBar";
 
@@ -31,6 +31,7 @@ export default (DrawNav = DrawerNavigator(
     EditProfile: { screen: EditProfile },
     History: { screen: History },
     SignIn: { screen: SignIn },
+    Faq: { screen: Faq },
   },
   {
     contentComponent: props => <DrawBar {...props} />
