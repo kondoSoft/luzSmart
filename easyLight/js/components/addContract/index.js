@@ -277,7 +277,7 @@ class AddContracts extends Component {
         caretSize={0}
         onSelect={value => this.handlePeriodSummer(value)}
         >
-          {/* <Option>Periodo</Option> */}
+        {/* <Option>Periodo</Option> */}
         {arrRangeDate.map((item, i)=>{
           return <Option
             key={i}
@@ -409,6 +409,7 @@ class AddContracts extends Component {
                   padding={10}
                   listHeight={200}
                   caretSize={0}
+                  defaultValue='27'
                   onSelect={(value, key) => this.handleState(value, key)}
                   >
                   {optionsStates}

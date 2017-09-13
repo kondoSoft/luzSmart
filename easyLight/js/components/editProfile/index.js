@@ -229,9 +229,9 @@ class EditProfile extends Component {
                   {/* <Thumbnail style={{width:80,height:80}} source={ require('../../../images/profile.png')} /> */}
                 </Col>
                 <Col style={styles.row__top__col__right}>
-                  {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}> */}
-                    {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
-                  {/* </Button> */}
+                  {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}>
+                    <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
+                  </Button> */}
                 </Col>
               </Row>
               <Col>
