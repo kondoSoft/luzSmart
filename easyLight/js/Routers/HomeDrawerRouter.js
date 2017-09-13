@@ -8,12 +8,12 @@ import Results from '../components/results';
 import Contact from '../components/contact';
 import SignIn from "../components/signin"
 import AddContracts from '../components/addContract';
+import EditContracts from '../components/editContract';
 import Receipt from '../components/receipt';
 import History from '../components/history';
 import Configuration from '../components/configuration';
 import EditProfile from '../components/editProfile';
 import Faq from '../components/faq';
-
 import DrawBar from "../components/DrawBar";
 
 // draw nav?
@@ -26,6 +26,7 @@ export default (DrawNav = DrawerNavigator(
     Resultados: { screen: Results },
     Contact: { screen:  Contact },
     AddContracts: { screen: AddContracts },
+    EditContracts: { screen: EditContracts },
     Receipt: { screen: Receipt },
     Configuration: { screen: Configuration },
     EditProfile: { screen: EditProfile },
@@ -36,5 +37,6 @@ export default (DrawNav = DrawerNavigator(
   {
     contentComponent: props => <DrawBar {...props} />,
     drawerPosition: 'right',
+
   }
 ));

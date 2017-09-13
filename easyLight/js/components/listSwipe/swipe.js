@@ -1,6 +1,12 @@
 import React,{ Component } from 'react';
 import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity,Platform } from 'react-native';
-
+import Svg from "react-native-svg";
+import {
+  VictoryChart,
+  VictoryGroup,
+  VictoryBar,
+} from "victory-native";
+import {Icon} from 'native-base'
 let Window = Dimensions.get('window');
 var currentData;
 
@@ -38,12 +44,12 @@ class ListItemSwipe extends React.Component {
             dy : 0
           }])(e, gestureState);
         }
-        // else if (gestureState.dx > 0) {
-        //   Animated.event([null,{
-        //     dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
-        //     dy : 0
-        //   }])(e, gestureState);
-        // }
+        else if (gestureState.dx > 0) {
+          Animated.event([null,{
+            dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
+            dy : 0
+          }])(e, gestureState);
+        }
 
       },
       onPanResponderRelease        : (e, gesture) => {
@@ -57,15 +63,15 @@ class ListItemSwipe extends React.Component {
             {toValue:{x:-120,y:0}},
           ).start();
         }
-        // else if(gesture.dx > 75) {
-        //   Animated.spring(
-        //     this.state.pan,
-        //     {
-        //       ...springConfig,
-        //       toValue:{x:120,y:0}
-        //     },
-        //   ).start();
-        // }
+        else if(gesture.dx > 75) {
+          Animated.spring(
+            this.state.pan,
+            {
+              ...springConfig,
+              toValue:{x:120,y:0}
+            },
+          ).start();
+        }
         else {
           Animated.spring(
             this.state.pan,
@@ -148,9 +154,11 @@ export default class SwipeAccordion extends Component{
         <View style={styles.swipeBack} >
           <TouchableOpacity
             style={styles.swipeBack__left}
-            activeOpacity={0.9}
+            activeOpacity={0.5}
+            onPress={this.props.onPressLeft}
           >
-            <Text style={{ flex: 1 , textAlign: 'center'}}>hi there</Text>
+            {/* <Text style={{ flex: 1 , textAlign: 'center'}}>hi there</Text> */}
+            <Icon name="md-create" style={{position:'relative', left:'40%', color:'#333'}}/>
           </TouchableOpacity>
           <View style={styles.swipeBack__body}>
 
@@ -164,7 +172,7 @@ export default class SwipeAccordion extends Component{
           </TouchableOpacity>
         </View>
         <ListItemSwipe style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
-        <ExpandedView func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contracts') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
+        <ExpandedView navigation={this.props.navigation} func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contracts') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
       </Animated.View>
     )
   }
@@ -172,7 +180,6 @@ export default class SwipeAccordion extends Component{
 
 class ExpandedView extends Component{
   render(){
-
     const { data } = this.props
     currentData = data.current_reading - data.previous_reading
     var contentExpandedView = {
@@ -196,6 +203,38 @@ class ExpandedView extends Component{
 
     let colors = ['#fff', 'lightgrey']
     return(
+      (this.props.navigation.state.routeName === 'Contracts')?
+      <View onLayout={this.props.func} style={{backgroundColor:'lightgrey'}}>
+        <VictoryChart domain={{x: [0, 4]}}>
+          <VictoryGroup
+            labels={["a", "b", "c"]}
+            offset={10}
+            colorScale={"qualitative"}
+          >
+            <VictoryBar
+              data={[
+                {x: 1, y: 1},
+                {x: 2, y: 2},
+                {x: 3, y: 5}
+              ]}
+            />
+            <VictoryBar
+              data={[
+                {x: 1, y: 2},
+                {x: 2, y: 1},
+                {x: 3, y: 7}
+              ]}
+            />
+            <VictoryBar
+              data={[
+                {x: 1, y: 3},
+                {x: 2, y: 4},
+                {x: 3, y: 9}
+              ]}
+            />
+          </VictoryGroup>
+        </VictoryChart>
+      </View> :
       <View onLayout={this.props.func}>
         {Object.keys(contentExpandedView).map((current,i)=>{
           let colors = ['#fff', 'lightgrey']
@@ -239,7 +278,9 @@ const styles = StyleSheet.create({
   swipeBack__left:{
     flex: 1,
     justifyContent: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
+    borderBottomWidth: 0.5,
+    borderColor: 'lightgrey',
   },
   swipeBack__body:{
     flex: 1
