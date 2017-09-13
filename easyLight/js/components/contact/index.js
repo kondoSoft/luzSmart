@@ -18,7 +18,6 @@ import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 
-
 class Contact extends Component{
   static navigationOptions = {
     header: null
@@ -61,7 +60,7 @@ class Contact extends Component{
             />
             <View style={styles.col__view__bottom}>
               <Button small primary style={{}}>
-                <Text>Agregar</Text>
+                <Text>Enviar</Text>
               </Button>
             </View>
           </Col>

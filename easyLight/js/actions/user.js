@@ -9,6 +9,7 @@ const endPoint = 'http://138.68.49.119:8080';
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
 export const PRINT_USER = 'PRINT_USER'
+export const GET_DATA_USER = 'GET_DATA_USER'
 
 export function setUser(token:string):Action {
   return {
@@ -25,6 +26,31 @@ function printUser(user):Action {
   return{
     type: PRINT_USER,
     payload: user,
+  }
+}
+function dataUser(userData):Action {
+  return{
+    type: GET_DATA_USER,
+    payload: userData,
+  }
+}
+
+
+export function getUser(token):Action {
+  return dispatch => {
+    return fetch(endPoint+'/rest-auth/user/',{
+      method: 'GET',
+      headers:{
+        'Authorization': 'Token '+token,
+      }
+    })
+    .then(res => {
+      return res.json()
+    })
+    .then(res =>{
+      return dispatch(dataUser(res))
+    })
+    .catch(err => console.log(err))
   }
 }
 
