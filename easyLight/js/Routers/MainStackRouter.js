@@ -11,7 +11,7 @@ HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
 });
 const navigation = {
   Login: { screen: Login },
-  Contracts: { screen: HomeDrawerRouter },
+  Contratos: { screen: HomeDrawerRouter },
 }
 
 export default (StackNav = StackNavigator(navigation));

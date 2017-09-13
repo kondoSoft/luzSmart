@@ -23,7 +23,7 @@ export default (DrawNav = DrawerNavigator(
     DetailContract: { screen: DetailContract },
     Measurements: { screen: Measurements },
     Tips: { screen: Tips },
-    Results: { screen: Results },
+    Resultados: { screen: Results },
     Contact: { screen:  Contact },
     AddContracts: { screen: AddContracts },
     EditContracts: { screen: EditContracts },
@@ -35,7 +35,8 @@ export default (DrawNav = DrawerNavigator(
     Faq: { screen: Faq },
   },
   {
-    drawerPosition:'right',
-    contentComponent: props => <DrawBar {...props} />
+    contentComponent: props => <DrawBar {...props} />,
+    drawerPosition: 'right',
+
   }
 ));

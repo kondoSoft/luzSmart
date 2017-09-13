@@ -1,9 +1,8 @@
 
 import type { Action } from './types';
 
-// const endPoint = 'http://138.68.49.119:8080';
-const endPoint = 'http://127.0.0.1:8080';
-
+const endPoint = 'http://138.68.49.119:8080';
+// const endPoint = 'http://127.0.0.1:8000';
 
 
 
@@ -48,7 +47,7 @@ export function loginUser(email:email, password:password, navigate):Action {
       // console.log(token);
       dispatch(setUser(token))
       if(!token.non_field_errors && email !== undefined){
-        navigate.navigate("Contracts")
+        navigate.navigate("Contratos")
       }
     })
     .catch(err => console.log(err))
