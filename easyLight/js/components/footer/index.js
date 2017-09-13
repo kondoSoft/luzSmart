@@ -4,6 +4,7 @@ import {
   Platform,
   View,
   AlertIOS,
+  Alert,
 } from 'react-native';
 import styles from "./styles";
 
@@ -14,13 +15,11 @@ class FooterGlobal extends Component {
     var contractPayDayLimit = false
     if(this.props.navigation.state.routeName == 'DetailContract'){
       currentContract = this.props.detailContract
-      console.log(currentContract);
       if (currentContract.length === 0) {
         contractPayDayLimit = true
       }
     }else if(this.props.navigation.state.routeName == 'Contracts'){
       currentContract = this.props.viewContract
-      console.log('contracts',currentContract);
       currentContract.map((receipts,i)=>{
         if (receipts.receipt.length === 0) {
           contractPayDayLimit = true
@@ -34,7 +33,7 @@ class FooterGlobal extends Component {
               <Icon style={styles.footer__icon} name="home" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text}>Inicio</Text> : <View/> }
             </Button>
-            <Button vertical style={styles.footer__btn__resultados} >
+            <Button vertical style={styles.footer__btn__resultados}>
               <Icon style={styles.footer__icon} name="calendar" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Periodos</Text> : <View/> }
             </Button>

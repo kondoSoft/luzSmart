@@ -27,9 +27,9 @@ class HeaderGlobal extends Component {
     const { state } = this.props.navigation
     const { navigation } = this.props
     const button = <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={styles.header__icon} name="menu"/></Button>
-    const iconBack =  <Button transparent onPress={() => this.props.navigation.goBack()}>
-        <Icon style={styles.header__icon} name={(Platform.OS === 'ios')? "ios-arrow-back" : "arrow-back"} />
-      </Button>
+    const iconBack =  (<Button transparent onPress={() => this.props.navigation.goBack()}>
+                        <Icon style={styles.header__icon} name={(Platform.OS === 'ios')? "ios-arrow-back" : "arrow-back"} />
+                      </Button>)
     var platformHeader = (
       <Header style={{backgroundColor: '#069b1c',height: 50 }}>
         <Left style={styles.left,{flex: (Platform.OS === 'ios')? 0 : (state.routeName === 'Login')? 0 : 4 }}>
@@ -49,7 +49,7 @@ class HeaderGlobal extends Component {
       platformHeader = (
         <Image
         source={require('../../../images/header.png')}
-        style={[styles.header,{ zIndex: (this.props.zIndex)? 1000 : 0 , width: Screen.width}]}
+        style={[{ zIndex: (this.props.zIndex)? 1000 : 0 , width: Screen.width},styles.header]}
         >
           <Left style={styles.left}>
             {(state.routeName != "Login" && state.routeName != "Contracts") ? iconBack : <View style={{paddingLeft: (state.routeName != "Login" )? '20%' : 0}}/>}
