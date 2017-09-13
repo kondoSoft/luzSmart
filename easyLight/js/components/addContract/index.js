@@ -117,9 +117,9 @@ class AddContracts extends Component {
   handleState(value, item){
     this.props.resetMunicipality()
     if (Platform.OS === 'ios') {
-      this.props.getMunicipality(value+1)
+      this.props.getMunicipality(value)
       this.setState({
-        state: value+1
+        state: value
       })
     }else {
       this.props.getMunicipality(value)
@@ -248,10 +248,7 @@ class AddContracts extends Component {
       this.setState({
         rates: selectRates
       })
-    }else {
-      console.log(nextProps.mun_rate)
     }
-
   }
   createRangeDate(){
     var arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
