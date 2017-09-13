@@ -3,16 +3,18 @@ const { StyleSheet, Dimensions } = React;
 
 export default {
   row__top:{
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   row__center:{
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   row__bottom:{
-    justifyContent: 'center'
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   col__row__select__option:{
     height: 30,
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
   }
 }

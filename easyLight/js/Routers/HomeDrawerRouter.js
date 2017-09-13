@@ -13,7 +13,6 @@ import History from '../components/history';
 import Configuration from '../components/configuration';
 import EditProfile from '../components/editProfile';
 import Faq from '../components/faq';
-
 import DrawBar from "../components/DrawBar";
 
 // draw nav?
