@@ -2,7 +2,7 @@
 import type { Action } from './types';
 
 const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://127.0.0.1:8080';
 
 
 
@@ -185,5 +185,25 @@ export function changePassword(data, token):Action {
     .then(res => res.json())
     .then(res => console.log(res))
     .catch(err => console.error(err))
+  }
+}
+export function contactMessage(message,user):Action {
+  return dispatch => {
+    const data = new FormData();
+    data.append('name',user.first_name)
+    data.append('email',user.email)
+    data.append('message',message)
+
+    return fetch(endPoint+'/contact/',{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+     },
+     body: data
+    })
+    .then(res=> { return res.json() })
+    .then(res => { return res })
+    .catch(err => console.log(err))
   }
 }
