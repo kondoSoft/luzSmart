@@ -3,9 +3,11 @@ import type { Action } from './types';
 export const GET_STATES = 'GET_STATES';
 export const GET_MUNICIPALITY = 'GET_MUNICIPALITY';
 export const RESET_MUNICIPALITY = 'RESET_MUNICIPALITY'
+export const RESET_RATE = 'RESET_RATE'
 export const GET_RATE = 'GET_RATE'
 export const SET_INDEX = 'SET_INDEX';
 export const GET_CONTRACT = 'GET_CONTRACT'
+export const GET_TIPS = 'GET_TIPS'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 
@@ -38,6 +40,11 @@ export function resetMunicipality():Action{
     type: RESET_MUNICIPALITY,
   }
 }
+export function resetRate():Action{
+  return {
+    type: RESET_RATE
+  }
+}
 export function printRate(list):Action {
   return {
     type: GET_RATE,
@@ -53,6 +60,13 @@ export function printContract(list):Action {
 export function successContract(list):Action {
   return {
     type: SUCCES_CONTRACT,
+    payload: list
+  }
+}
+
+export function printTips(list):Action {
+  return {
+    type: GET_TIPS,
     payload: list
   }
 }
@@ -119,6 +133,8 @@ export function postContract(list, rate, token):Action{
         type: 'image/png',
         name: list.file.fileName
       })
+    }else {
+
     }
     return fetch(endPoint+'/contract/',{
       method: 'POST',
@@ -130,13 +146,12 @@ export function postContract(list, rate, token):Action{
      body: data
     })
     .then(res => {return res.json()})
-    .then(res => {
-      console.log('res',res);
-      dispatch(successContract(res))})
+    .then(res => {dispatch(successContract(res))})
     .catch(err => console.log(err))
   }
 }
 export function getContract(token):Action{
+  console.log(token);
   return dispatch => {
     return fetch (endPoint+'/contract/', {
       method: 'GET',
@@ -149,6 +164,22 @@ export function getContract(token):Action{
     .then(res => {return res.json()})
     .then(res=> {
       dispatch(printContract(res))})
+    .catch(err => console.log(err))
+  }
+}
+
+export function getTips(token):Action{
+  return dispatch => {
+    return fetch(endPoint + '/tips/', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Token ' + token,
+      }
+    })
+    .then(res => {return res.json()})
+    .then(res => {dispatch(printTips(res))})
     .catch(err => console.log(err))
   }
 }

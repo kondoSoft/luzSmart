@@ -26,6 +26,7 @@ import styles from './styles';
 import { postReceipt } from '../../actions/contracts'
 import ReceiptPickerDate from '../datePicker/receipt'
 
+var contract;
 
 class Receipt extends Component {
   constructor(props){
@@ -39,6 +40,7 @@ class Receipt extends Component {
         amount_payable_ui: '',
         current_reading_ui: 0,
         previous_reading_ui: 0,
+        period: '',
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
       this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
@@ -67,6 +69,20 @@ class Receipt extends Component {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   handlePaydayLimit(date){
+    // const period;
+    const initialDateRange = new Date(contract.initialDateRange).getTime()
+    const finalDateRange = new Date(contract.finalDateRange).getTime()
+    const limitReceipt = new Date(date).getTime()
+    if(limitReceipt >= initialDateRange && limitReceipt <= finalDateRange){
+      this.setState({
+          period: 'Verano'
+        })
+    }else{
+      this.setState({
+          period: 'NoVerano'
+        })
+    }
+
     if (date === '') {
 
     }else {
@@ -115,12 +131,39 @@ class Receipt extends Component {
     }
   }
   sendData(){
-    this.props.postReceipt(this.state, this.props.token)
-    this.showAlert()
+    if (this.dataValidate(this.state)) {
+      this.props.postReceipt(this.state, this.props.token)
+      this.showAlert()
+    }else {
+      Alert.alert(
+        'Datos incompletos',
+        'Todos los campos son obligatorios',
+        [
+          {text: 'Aceptar'},
+        ],
+      )
+    }
+  }
+  dataValidate(data){
+    const {
+      amount_payable,
+      payday_limit,
+      current_reading,
+      previous_reading
+    } = data;
+    if (amount_payable &&
+        payday_limit &&
+        current_reading &&
+        previous_reading
+    ) {
+      return true
+    }else {
+      return false
+    }
   }
   render(){
     const { navigation } = this.props
-    var contract;
+
     if (navigation.state.params == undefined) {
       contract = this.props.newContract
     }else{
@@ -219,6 +262,7 @@ class Receipt extends Component {
         </ScrollView>
       </Container>
     )
+    // iOS
     if (Platform.OS === 'ios') {
       var receiptView = (
         <Container>
@@ -243,7 +287,7 @@ class Receipt extends Component {
                       onChangeText={text => this.handleAmountPayable(text)}
                       onBlur={()=> {
                         this.setState({
-                            amount_payable_ui: parseInt(this.state.amount_payable).toLocaleString(undefined,{ style: 'currency',currency:'MXN' })
+                            amount_payable_ui:(this.state.amount_payable.length > 0)? parseInt(this.state.amount_payable).toLocaleString(undefined,{ style: 'currency',currency:'MXN' }):''
                         })
                       }}
                       value={this.state.amount_payable_ui}
@@ -265,7 +309,7 @@ class Receipt extends Component {
                       onChange={event => this.handleCurrentReading(event)}
                       onBlur={()=>{
                         this.setState({
-                          current_reading_ui: parseInt(this.state.current_reading).toLocaleString()
+                          current_reading_ui: (this.state.current_reading.length > 0)? parseInt(this.state.current_reading).toLocaleString(): ''
                         })
                       }}
                       value={this.state.current_reading_ui}
@@ -286,7 +330,7 @@ class Receipt extends Component {
                       onChange={event => this.handlePreviousReading(event)}
                       onBlur={()=>{
                         this.setState({
-                          previous_reading_ui: parseInt(this.state.previous_reading).toLocaleString()
+                          previous_reading_ui:(this.state.previous_reading.length > 0)? parseInt(this.state.previous_reading).toLocaleString():''
                         })
                       }}
                       value={this.state.previous_reading_ui}

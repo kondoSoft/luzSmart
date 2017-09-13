@@ -17,6 +17,7 @@ import Tips from '../tips'
 import Measurements from '../measurements'
 import Results from '../results'
 import Login from '../login'
+import Charts from '../charts'
 // var gradientImage = require('../../../images/header.png')
 
 
@@ -112,7 +113,7 @@ class ItemComponent extends Component{
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-          {(contract.image == null)? <Text>Empty</Text> : <Thumbnail source={{ uri: contract.image }} />}
+          {(contract.image == null)? <Thumbnail source={require('../../../images/Casaplace.png')} /> : <Thumbnail source={{ uri: contract.image }} />}
         </Left>
         <Body style={styles.ItemComponent.align}>
           <Text style={styles.listItem__body__text}>{contract.name_contract}</Text>
@@ -135,23 +136,25 @@ const mapStateToProps = state => ({
   selectedIndex: state.list_contracts.selectedIndex,
   token: state.user.token
 })
-const ContractsSwagger = connect(mapStateToProps, bindAction)(Contracts);
-const DrawNav = DrawerNavigator(
-  {
-     Contracts: { screen: ContractsSwagger },
-     Tips: { screen: Tips },
-    //  Mediciones: { screen: Measurements},
-    //  Resultados: { screen: Results },
-     Logout: { screen: Login },
-  },
-  {
-      drawerPosition: 'right',
-      // contentComponent: props => <DrawBar {...props} />
-  }
-)
-DrawNav.navigationOptions = ({navigation}) => {
-  return {
-    header: null
-  }
-}
-export default DrawNav
+export default connect(mapStateToProps, bindAction)(Contracts);
+// const ContractsSwagger = connect(mapStateToProps, bindAction)(Contracts);
+// const DrawNav = DrawerNavigator(
+//   {
+//      Contracts: { screen: ContractsSwagger },
+//      Tips: { screen: Tips },
+//     //  Mediciones: { screen: Measurements},
+//     //  Resultados: { screen: Results },
+//      Logout: { screen: Login },
+//      Charts:{screen: Charts},
+//   },
+//   {
+//       drawerPosition: 'right',
+//       // contentComponent: props => <DrawBar {...props} />
+//   }
+// )
+// DrawNav.navigationOptions = ({navigation}) => {
+//   return {
+//     header: null
+//   }
+// }
+// export default DrawNav

@@ -3,7 +3,7 @@ const { StyleSheet, Dimensions, Platform } = React;
 
 export default {
   header:{
-    paddingTop: 0,
+    paddingTop: (Platform.OS === 'ios')? 15 : 0,
     paddingLeft: 0,
     paddingRight: 0,
     backgroundColor:'transparent',

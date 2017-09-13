@@ -16,6 +16,7 @@ import {
   View,
   CheckBox,
   Image,
+  Radio
 } from 'native-base';
 import {
   Platform,
@@ -24,13 +25,14 @@ import {
   Dimensions,
   ScrollView,
   TextInput,
+  Alert
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import { getMunicipality, resetMunicipality, postContract, getRate } from '../../actions/list_states_mx'
+import { getMunicipality, resetMunicipality, postContract, getRate, resetRate } from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
 
 let Screen = Dimensions.get('window')
@@ -57,8 +59,9 @@ class AddContracts extends Component {
         "cost" : 0,
         "checkedMen": false,
         "checkedBi": false,
-        "avatarSource" : null,
+        "avatarSource" : require('../../../images/Casaplace.png'),
         "file" : null,
+        rates: []
     }
   }
   static propType = {
@@ -98,7 +101,6 @@ class AddContracts extends Component {
 
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
         this.setState({
           avatarSource: response.uri,
           file: response
@@ -115,9 +117,9 @@ class AddContracts extends Component {
   handleState(value, item){
     this.props.resetMunicipality()
     if (Platform.OS === 'ios') {
-      this.props.getMunicipality(value+1)
+      this.props.getMunicipality(value)
       this.setState({
-        state: value+1
+        state: value
       })
     }else {
       this.props.getMunicipality(value)
@@ -127,6 +129,7 @@ class AddContracts extends Component {
     }
   }
   handleMunicipality(value, item){
+    this.props.resetRate()
     const mun_id = (Platform.OS === 'ios')? value.id : value
     this.props.getRate(mun_id, this.props.token)
     this.setState({municipality: value.id});
@@ -150,17 +153,62 @@ class AddContracts extends Component {
     this.setState({cost: event.nativeEvent.text});
   }
   sendData(){
-    this.props.postContract(this.state, this.props.mun_rate,this.props.token)
-    this.props.navigation.navigate('Receipt')
+    if (this.dataValidate(this.state)) {
+      this.props.postContract(this.state, this.props.mun_rate,this.props.token)
+      this.props.navigation.navigate('Receipt')
+    }else {
+      Alert.alert(
+        'Datos incompletos',
+        'Todos los campos son obligatorios',
+        [
+          {text: 'Aceptar'},
+        ],
+      )
+    }
   }
+  dataValidate(data){
+    const {
+      name,
+      state,
+      number_contract,
+      municipality,
+      finalDateRange,
+      initialDateRange,
+      checkedMen,
+      checkedBi
+    } = data;
+    // Validacion de datos
+    if (
+        state &&
+        name &&
+        (number_contract || number_contract.length > 0) &&
+        municipality &&
+        finalDateRange &&
+        initialDateRange &&
+        (checkedMen || checkedBi)
+      ) {
+      return true
+    }else {
+      return false
+    }
+
+  }
+
   // falta condicion para hacer check en uno u otro
-  handleCheckedMen(){
-    this.setState({checkedMen: !this.state.checkedMen,
-    type_payment: 'Mensual'})
-  }
-  handleCheckedBi(){
-    this.setState({checkedBi: !this.state.checkedBi,
-    type_payment: 'Bimestral'})
+  handleCheckedMen(check){
+    if (check === 'mensual') {
+      this.setState({
+        checkedMen: true,
+        type_payment: 'Mensual',
+        checkedBi: false
+      })
+    }else {
+      this.setState({
+        checkedBi: true,
+        type_payment: 'Bimestral',
+        checkedMen:false
+      })
+    }
   }
   // ******************************************
   componentWillMount(){
@@ -181,6 +229,26 @@ class AddContracts extends Component {
       })
     }
     this.createRangeDate()
+  }
+  componentWillReceiveProps(nextProps){
+    if (typeof nextProps.mun_rate === 'string') {
+      //array of rates
+      const rates = ['TARIFA 1', 'TARIFA 1A', 'TARIFA 1B', 'TARIFA 1C', 'TARIFA 1D', 'TARIFA 1E', 'TARIFA 1F']
+      // put inside of an array the municipality rate
+      const rate_unique = [nextProps.mun_rate]
+      //function that return a condiciton => return all rates that are different from the municipality
+      const inRates = (rate) => {
+        return rate != nextProps.mun_rate
+      }
+      //filter the array of rates => return a new array with all rates except the munucipality rate
+      var rate = rates.filter(inRates)
+      //concat the arrays of rates => rate and rate_unique
+      const selectRates = rate_unique.concat(rate)
+
+      this.setState({
+        rates: selectRates
+      })
+    }
   }
   createRangeDate(){
     var arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
@@ -234,6 +302,25 @@ class AddContracts extends Component {
         })}
     </Select>
     )
+    var selectRate = (
+      <Select
+        selectStyle={styles.select}
+        padding={10}
+        listHeight={250}
+        caretSize={0}
+        getRate
+        >
+          {
+            (this.state.rates.length != 0)&&
+              this.state.rates.map((rate,i)=>{
+              return (<Option
+                key={i}
+                optionStyle={styles.select__option}
+                >{rate}</Option>)
+              })
+          }
+      </Select>
+    )
     if (Platform.OS === 'android') {
       selectMun = (
       <View style={styles.selectPicker}>
@@ -263,6 +350,28 @@ class AddContracts extends Component {
           </Picker>
         </View>
       )
+      selectRate = (
+        <View style={styles.selectPicker}>
+          <Picker
+            selectedValue={this.state.language}
+            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+            {arrRangeDate.map((item, i)=>{
+              return <Picker.item
+                        key={i}
+                        label={item}
+                        value={item}
+                      />
+            })}
+            {selectRates.map((rate,i)=>{
+              return <Picker.item
+                      key={i}
+                      value={rate}
+                      value={rate.rate}
+                    />
+            })}
+          </Picker>
+        </View>
+      )
     }
     return(
       <Container style={{backgroundColor:'#fff'}}>
@@ -274,7 +383,7 @@ class AddContracts extends Component {
               <Left style={{marginLeft:19}}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                   <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                  { this.state.avatarSource === null ? <Text style={{textAlign: 'center'}}>Agregar Foto</Text> : <Thumbnail source={{ uri: this.state.avatarSource }} />  }
+                   <Thumbnail source={ (this.state.file != null)? this.state.file : this.state.avatarSource} />
                   </View>
                 </TouchableOpacity>
               </Left>
@@ -310,21 +419,29 @@ class AddContracts extends Component {
                   </Picker>
                 </View>
               }
-              { (municipality_mx.length == 0) ? <View style={{height:40}}/> : selectMun}
-              { (mun_rate.length == 0) ? <View style={{height:40}}/> : <Text style={{height:40,marginTop:5,marginLeft:(Platform.OS === 'ios')? 10 : 5,marginRight:(Platform.OS === 'ios')? 10 : 5,textAlignVertical:'center',paddingLeft:10,paddingTop:7,textAlign:'left'}}>{mun_rate}</Text>}
+              { (municipality_mx.length == 0) ? <View style={{height:40,marginTop:10,marginBottom:10}}/> : selectMun}
+              {/* { (mun_rate.length == 0) ? <View style={{height:40,marginTop:0,marginBottom:0}}/> : <Text style={{height:40,marginTop:0,marginLeft:(Platform.OS === 'ios')? 10 : 5,
+                                                                                                                            marginRight:(Platform.OS === 'ios')? 10 : 5,
+                                                                                                                            textAlignVertical:'center',
+                                                                                                                            paddingLeft:10,
+                                                                                                                            paddingTop:7,
+                                                                                                                            textAlign:'left'}}>
+                                                                                                                            {mun_rate}
+                                                                                                                          </Text>} */}
+              { (mun_rate.length != 0)? selectRate : <View style={{height:40,marginTop:10,marginBottom:10}}/> }
               { periodSummer }
               </Form>
             </Col>
             {(Platform.OS === 'ios')? <View style={{height:15}}></View> : <View style={{height: 0}}></View>}
             <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 20 : 0}}>
               <View style={styles.row__bottom__view__top}>
-                <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen()}/>
+                <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('mensual')}/>
                 <Body style={{ flex: 0 }}>
                   <Text>Mensual</Text>
                 </Body>
               </View>
               <View style={ styles.row__bottom__view__bottom }>
-                <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} onPress={()=>this.handleCheckedBi()}/>
+                <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('bimestral')}/>
                 <Body style={{ flex: 0 }}>
                   <Text>Bimestral</Text>
                 </Body>
@@ -352,6 +469,7 @@ function bindAction(dispatch){
     getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
     resetMunicipality: () => dispatch(resetMunicipality()),
     getRate: (mun_id, token) => dispatch(getRate(mun_id, token)),
+    resetRate: ()=> dispatch(resetRate())
   }
 }
 const mapStateToProps = state => ({
