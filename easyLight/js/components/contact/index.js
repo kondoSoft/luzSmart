@@ -1,4 +1,5 @@
 import React , { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   Container,
   Item,
@@ -23,6 +24,7 @@ class Contact extends Component{
     header: null
   };
   render(){
+    console.log(this.props.user);
     return(
       <Container>
         <Header navigation={this.props.navigation} title="CONTACTO"/>
@@ -71,4 +73,7 @@ class Contact extends Component{
   }
 }
 
-export default Contact;
+const mapStateToProps = state => ({
+  user: state.user.userData,
+})
+export default connect(mapStateToProps, null)(Contact)
