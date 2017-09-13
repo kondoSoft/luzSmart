@@ -1,5 +1,6 @@
 import React,{ Component } from 'react';
 import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity,Platform } from 'react-native';
+import {Icon} from 'native-base'
 
 let Window = Dimensions.get('window');
 var currentData;
@@ -38,12 +39,12 @@ class ListItemSwipe extends React.Component {
             dy : 0
           }])(e, gestureState);
         }
-        // else if (gestureState.dx > 0) {
-        //   Animated.event([null,{
-        //     dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
-        //     dy : 0
-        //   }])(e, gestureState);
-        // }
+        else if (gestureState.dx > 0) {
+          Animated.event([null,{
+            dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
+            dy : 0
+          }])(e, gestureState);
+        }
 
       },
       onPanResponderRelease        : (e, gesture) => {
@@ -57,15 +58,15 @@ class ListItemSwipe extends React.Component {
             {toValue:{x:-120,y:0}},
           ).start();
         }
-        // else if(gesture.dx > 75) {
-        //   Animated.spring(
-        //     this.state.pan,
-        //     {
-        //       ...springConfig,
-        //       toValue:{x:120,y:0}
-        //     },
-        //   ).start();
-        // }
+        else if(gesture.dx > 75) {
+          Animated.spring(
+            this.state.pan,
+            {
+              ...springConfig,
+              toValue:{x:120,y:0}
+            },
+          ).start();
+        }
         else {
           Animated.spring(
             this.state.pan,
@@ -148,9 +149,11 @@ export default class SwipeAccordion extends Component{
         <View style={styles.swipeBack} >
           <TouchableOpacity
             style={styles.swipeBack__left}
-            activeOpacity={0.9}
+            activeOpacity={0.5}
+            onPress={this.props.onPressLeft}
           >
-            <Text style={{ flex: 1 , textAlign: 'center'}}>hi there</Text>
+            {/* <Text style={{ flex: 1 , textAlign: 'center'}}>hi there</Text> */}
+            <Icon name="md-create" style={{position:'relative', left:'40%', color:'#333'}}/>
           </TouchableOpacity>
           <View style={styles.swipeBack__body}>
 
@@ -239,7 +242,9 @@ const styles = StyleSheet.create({
   swipeBack__left:{
     flex: 1,
     justifyContent: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
+    borderBottomWidth: 0.5,
+    borderColor: 'lightgrey',
   },
   swipeBack__body:{
     flex: 1

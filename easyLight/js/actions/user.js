@@ -6,6 +6,7 @@ const endPoint = 'http://127.0.0.1:8080';
 
 
 
+
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
 export const PRINT_USER = 'PRINT_USER'
