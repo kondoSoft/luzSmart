@@ -101,6 +101,7 @@ class ParentSwipeContracts extends Component {
           dataAccordionContract={contract}
           component={<ItemComponent data={contract}/>}
           icon={<Icon style={styles.icon} name="information-circle"/>}
+          onPressLeft={() => navigation.navigate('EditContracts', contract)}
         />)}
       </ScrollView>
     )

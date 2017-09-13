@@ -57,6 +57,7 @@ export default {
       height: 70,
       borderBottomWidth: 0.5,
       borderRightWidth:0.5,
+      borderLeftWidth:0.5,
       borderColor: 'lightgrey',
     },
     align:{
