@@ -1,4 +1,5 @@
 import React , { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   Container,
   Item,
@@ -11,18 +12,25 @@ import {
   TextInput,
   Platform,
   ScrollView,
+  AlertIOS,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-
+import {contactMessage} from '../../actions/user';
 
 class Contact extends Component{
   static navigationOptions = {
     header: null
   };
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: ''
+    };
+  }
   render(){
     return(
       <Container>
@@ -58,10 +66,34 @@ class Contact extends Component{
               style={styles.col__bottom__item}
               multiline = {true}
               numberOfLines = {4}
+              onChangeText={message => {
+                this.setState({
+                  message
+                })
+              }}
             />
             <View style={styles.col__view__bottom}>
-              <Button small primary style={{}}>
-                <Text>Agregar</Text>
+              <Button small primary onPress={()=>{
+                if (this.state.message != '') {
+                  this.props.contactMessage(this.state.message,this.props.user)
+                  AlertIOS.alert(
+                    'GRACIAS!',
+                   `Estimado ${this.props.user.first_name} hemos procesado su queja y/o sugerencia pronto resivira un mensaje de nuestra parte.`,
+                   [
+                     {text: 'OK', onPress: () => this.props.navigation.navigate('Contracts')},
+                   ],
+                  )
+                }else {
+                  AlertIOS.alert(
+                    'Verificación de datos',
+                   'El campo mensaje debe contener texto',
+                   [
+                     {text: 'OK'},
+                   ],
+                  )
+                }
+              }}>
+                <Text>Enviar</Text>
               </Button>
             </View>
           </Col>
@@ -71,5 +103,12 @@ class Contact extends Component{
     )
   }
 }
-
-export default Contact;
+function bindAction(dispatch){
+  return {
+    contactMessage: (message,user) => dispatch(contactMessage(message,user)),
+  }
+}
+const mapStateToProps = state => ({
+  user: state.user.userData,
+})
+export default connect(mapStateToProps, bindAction)(Contact)

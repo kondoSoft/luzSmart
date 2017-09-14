@@ -1,14 +1,17 @@
 
 import type { Action } from './types';
 
-// const endPoint = 'http://138.68.49.119:8080';
-const endPoint = 'http://127.0.0.1:8000';
+
+const endPoint = 'http://138.68.49.119:8080';
+// const endPoint = 'http://127.0.0.1:8080';
+
 
 
 
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
 export const PRINT_USER = 'PRINT_USER'
+export const GET_DATA_USER = 'GET_DATA_USER'
 
 export function setUser(token:string):Action {
   return {
@@ -21,10 +24,41 @@ function resetToken(logout):Action {
     type: LOGOUT,
   }
 }
-function printUser(user):Action {
+function printUser(user, profile):Action {
   return{
     type: PRINT_USER,
     payload: user,
+    profile: profile
+  }
+}
+
+export function getProfile(user, token):Action {
+  return dispatch => {
+    return fetch(endPoint+'/user/profile/?user_id='+ user.pk,{
+      method: 'GET',
+      headers:{
+        'Authorization': 'Token '+token,
+      }
+    })
+    .then(res => {return res.json()})
+    .then(res => dispatch(printUser(user, res)))
+    .catch(err => console.log(err))
+  }
+}
+
+export function getUser(token):Action {
+  return dispatch => {
+    return fetch(endPoint+'/rest-auth/user/',{
+      method: 'GET',
+      headers:{
+        'Authorization': 'Token '+token,
+      }
+    })
+    .then(res => {
+      return res.json()
+    })
+    .then(res => dispatch(getProfile(res, token)))
+    .catch(err => console.log(err))
   }
 }
 
@@ -47,7 +81,7 @@ export function loginUser(email:email, password:password, navigate):Action {
       // console.log(token);
       dispatch(setUser(token))
       if(!token.non_field_errors && email !== undefined){
-        navigate.navigate("Contracts")
+        navigate.navigate("Contratos")
       }
     })
     .catch(err => console.log(err))
@@ -81,6 +115,7 @@ export function registerUser(list):Action{
      body: data
     })
     .then(res=> {return res.json()})
+    .then(res => console.log(res))
     .catch(err => console.log(err))
   }
 }
@@ -159,5 +194,25 @@ export function changePassword(data, token):Action {
     .then(res => res.json())
     .then(res => console.log(res))
     .catch(err => console.error(err))
+  }
+}
+export function contactMessage(message,user):Action {
+  return dispatch => {
+    const data = new FormData();
+    data.append('name',user.first_name)
+    data.append('email',user.email)
+    data.append('message',message)
+
+    return fetch(endPoint+'/contact/',{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+     },
+     body: data
+    })
+    .then(res=> { return res.json() })
+    .then(res => { return res })
+    .catch(err => console.log(err))
   }
 }

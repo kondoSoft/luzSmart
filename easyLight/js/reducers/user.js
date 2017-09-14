@@ -1,5 +1,5 @@
 import type { Action } from '../actions/types';
-import { SET_USER, LOGOUT, PRINT_USER } from '../actions/user';
+import { SET_USER, LOGOUT, PRINT_USER, GET_DATA_USER } from '../actions/user';
 
 import {REHYDRATE} from 'redux-persist/constants'
 
@@ -11,6 +11,9 @@ const initialState = {
   token: '',
   loginError: '',
   noPassword: '',
+  user: '',
+  profileUser: '',
+
 };
 
 export default function (state:State = initialState, action:Action): State {
@@ -23,12 +26,6 @@ export default function (state:State = initialState, action:Action): State {
       loginError: (action.payload.non_field_errors) && action.payload.non_field_errors.toString(),
     };
   }
-  // else if (action.type === REHYDRATE){
-  //   var incoming = action.payload.user
-  //   console.log('token' ,incoming);
-  //   if (incoming.token) return {...state, ...incoming}
-  //   return state
-  // }
   else if(action.type === LOGOUT){
     return {
       ...state,
@@ -38,8 +35,16 @@ export default function (state:State = initialState, action:Action): State {
   if (action.type === PRINT_USER) {
     return{
       ...state,
-      user:action.payload
+      user:action.payload,
+      profileUser: action.profile.results[0]
     }
   }
+  // else if (action.type === REHYDRATE){
+  //     var incoming = action.payload
+  //     var profile = action.profile
+  //     console.log('incoming', incoming, 'profile', profile);
+  //     if (incoming.user) return {...state, ...incoming}
+  //     return state
+  // }
   return state;
 }

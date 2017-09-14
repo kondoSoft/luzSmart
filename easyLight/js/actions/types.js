@@ -21,6 +21,7 @@ export type Action =
     | { type: 'GET_TIPS' }
     | { type: 'PRINT_USER' }
     | { type: 'UPDATE_USER' }
+    | { type: 'GET_DATA_USER' }
 
 
 

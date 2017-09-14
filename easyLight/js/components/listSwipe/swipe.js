@@ -1,7 +1,12 @@
 import React,{ Component } from 'react';
 import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity,Platform } from 'react-native';
+import Svg from "react-native-svg";
+import {
+  VictoryChart,
+  VictoryGroup,
+  VictoryBar,
+} from "victory-native";
 import {Icon} from 'native-base'
-
 let Window = Dimensions.get('window');
 var currentData;
 
@@ -167,7 +172,7 @@ export default class SwipeAccordion extends Component{
           </TouchableOpacity>
         </View>
         <ListItemSwipe style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
-        <ExpandedView func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contracts') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
+        <ExpandedView navigation={this.props.navigation} func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contracts') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
       </Animated.View>
     )
   }
@@ -175,7 +180,6 @@ export default class SwipeAccordion extends Component{
 
 class ExpandedView extends Component{
   render(){
-
     const { data } = this.props
     currentData = data.current_reading - data.previous_reading
     var contentExpandedView = {
@@ -199,6 +203,38 @@ class ExpandedView extends Component{
 
     let colors = ['#fff', 'lightgrey']
     return(
+      (this.props.navigation.state.routeName === 'Contracts')?
+      <View onLayout={this.props.func} style={{backgroundColor:'lightgrey'}}>
+        <VictoryChart domain={{x: [0, 4]}}>
+          <VictoryGroup
+            labels={["a", "b", "c"]}
+            offset={10}
+            colorScale={"qualitative"}
+          >
+            <VictoryBar
+              data={[
+                {x: 1, y: 1},
+                {x: 2, y: 2},
+                {x: 3, y: 5}
+              ]}
+            />
+            <VictoryBar
+              data={[
+                {x: 1, y: 2},
+                {x: 2, y: 1},
+                {x: 3, y: 7}
+              ]}
+            />
+            <VictoryBar
+              data={[
+                {x: 1, y: 3},
+                {x: 2, y: 4},
+                {x: 3, y: 9}
+              ]}
+            />
+          </VictoryGroup>
+        </VictoryChart>
+      </View> :
       <View onLayout={this.props.func}>
         {Object.keys(contentExpandedView).map((current,i)=>{
           let colors = ['#fff', 'lightgrey']

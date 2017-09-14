@@ -13,6 +13,7 @@ import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
 import { getContract } from "../../actions/list_states_mx";
+import {getUser} from '../../actions/user';
 import Tips from '../tips'
 import Measurements from '../measurements'
 import Results from '../results'
@@ -30,6 +31,7 @@ class Contracts extends Component {
     // console.log(this.props.token);
     if(this.props.token != ""){
       this.props.getContract(this.props.token)
+      this.props.getUser(this.props.token)
     }
     // else {
     //   this.props.navigation.navigate("login")
@@ -38,6 +40,7 @@ class Contracts extends Component {
   componentWillReceiveProps(nextProps){
     if(this.props.token == ""){
       this.props.getContract(nextProps.token)
+      this.props.getUser(nextProps.token)
     }
   }
   static propType = {
@@ -129,13 +132,14 @@ class ItemComponent extends Component{
 function bindAction(dispatch){
   return {
     getContract: token => dispatch(getContract(token)),
-
+    getUser: token =>dispatch(getUser(token)),
   }
 }
 const mapStateToProps = state => ({
   contracts: state.list_contracts.contracts,
   selectedIndex: state.list_contracts.selectedIndex,
-  token: state.user.token
+  token: state.user.token,
+  dataUser: state.user.user,
 })
 export default connect(mapStateToProps, bindAction)(Contracts);
 // const ContractsSwagger = connect(mapStateToProps, bindAction)(Contracts);

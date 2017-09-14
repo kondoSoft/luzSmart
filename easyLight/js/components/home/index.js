@@ -83,7 +83,7 @@ class Home extends Component {
                 <TouchableOpacity
                   style={styles.row}
                   onPress={() =>
-                    this.props.navigation.navigate("Contracts", {
+                    this.props.navigation.navigate("Contratos", {
                       name: { item }
                     })}
                 >

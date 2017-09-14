@@ -13,8 +13,7 @@ import Receipt from '../components/receipt';
 import History from '../components/history';
 import Configuration from '../components/configuration';
 import EditProfile from '../components/editProfile';
-
-
+import Faq from '../components/faq';
 import DrawBar from "../components/DrawBar";
 
 // draw nav?
@@ -24,7 +23,7 @@ export default (DrawNav = DrawerNavigator(
     DetailContract: { screen: DetailContract },
     Measurements: { screen: Measurements },
     Tips: { screen: Tips },
-    Results: { screen: Results },
+    Resultados: { screen: Results },
     Contact: { screen:  Contact },
     AddContracts: { screen: AddContracts },
     EditContracts: { screen: EditContracts },
@@ -33,9 +32,11 @@ export default (DrawNav = DrawerNavigator(
     EditProfile: { screen: EditProfile },
     History: { screen: History },
     SignIn: { screen: SignIn },
+    Faq: { screen: Faq },
   },
   {
-    drawerPosition:'right',
-    contentComponent: props => <DrawBar {...props} />
+    contentComponent: props => <DrawBar {...props} />,
+    drawerPosition: 'right',
+
   }
 ));
