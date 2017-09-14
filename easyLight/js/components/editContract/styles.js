@@ -27,7 +27,8 @@ export default {
       marginTop:20,
     },
     select:{
-      width: '94%',
+      width: '85%',
+      marginTop:20,
       margin: 10,
       backgroundColor:'#fff',
       borderBottomWidth:1,
@@ -35,6 +36,8 @@ export default {
       borderLeftWidth:1,
       borderRightWidth:1,
       borderColor: 'lightgrey',
+      position:'relative',
+      left:'30%'
     },
     row__bottom__view__top:{
       marginTop: 0,
@@ -74,4 +77,13 @@ export default {
       marginRight:5,
       marginTop:5,
     },
+    loadingContainer:{
+      position:'absolute',
+      width:'100%',
+      height:'100%',
+      backgroundColor:'#000',
+      opacity:0.3,
+      alignItems:'center',
+      justifyContent:'center'
+    }
 }

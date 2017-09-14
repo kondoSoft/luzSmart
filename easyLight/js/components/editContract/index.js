@@ -25,15 +25,24 @@ import {
   Dimensions,
   ScrollView,
   TextInput,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import { getMunicipality, resetMunicipality, postContract, getRate, resetRate } from '../../actions/list_states_mx'
+import {
+  getMunicipality,
+  resetMunicipality,
+  postContract,
+  getRate,
+  resetRate,
+  updateContract
+} from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
+
 
 let Screen = Dimensions.get('window')
 var arrRangeDate = []
@@ -52,8 +61,8 @@ class EditContracts extends Component {
         "state" : "",
         "municipality" : "",
         "rate" : "",
-        "initialDateRange": "",
-        "finalDateRange": "",
+        "municipality_id": "",
+        "state_id": "",
         "type_payment" : "",
         "receipt" : undefined,
         "cost" : 0,
@@ -61,8 +70,11 @@ class EditContracts extends Component {
         "checkedBi": false,
         "avatarSource" : props.navigation.state.params.image? {uri:props.navigation.state.params.image} : require('../../../images/Casaplace.png'),
         "file" : null,
-        rates: []
+        rates: [],
+        isLoading: true
     }
+    this.handleRate = this.handleRate.bind(this)
+    this.createRateSelect = this.createRateSelect.bind(this)
   }
   static propType = {
     postContract: React.PropTypes.func,
@@ -111,10 +123,14 @@ class EditContracts extends Component {
   handleName(event){
     this.setState({name: event.nativeEvent.text});
   }
+  handleRate(value, key){
+    this.setState({rate:key})
+  }
   sendData(){
+    var id = this.props.navigation.state.params.id
     if (this.dataValidate(this.state)) {
-      this.props.postContract(this.state, this.props.mun_rate,this.props.token)
-      this.props.navigation.navigate('Receipt')
+      this.props.updateContract(this.state, this.props.token, id)
+      this.props.navigation.goBack()
     }else {
       Alert.alert(
         'Datos incompletos',
@@ -128,23 +144,17 @@ class EditContracts extends Component {
   dataValidate(data){
     const {
       name,
-      state,
-      number_contract,
-      municipality,
-      finalDateRange,
-      initialDateRange,
       checkedMen,
-      checkedBi
+      checkedBi,
+      type_payment,
+      rate
     } = data;
     // Validacion de datos
     if (
-        state &&
+        type_payment &&
         name &&
-        (number_contract || number_contract.length > 0) &&
-        municipality &&
-        finalDateRange &&
-        initialDateRange &&
-        (checkedMen || checkedBi)
+        (checkedMen || checkedBi)&&
+        rate
       ) {
       return true
     }else {
@@ -152,13 +162,60 @@ class EditContracts extends Component {
     }
 
   }
+  createRateSelect(){
+    const {
+      rates
+    } = this.state
+
+    if (rates.length > 0) {
+      return(
+        <Select
+          selectStyle={styles.select}
+          padding={10}
+          listHeight={250}
+          caretSize={0}
+          getRate
+          onSelect={this.handleRate}
+          >
+          {rates.map((item, i) => {
+          // console.log(item);
+          return (<Option
+            key={i}
+            optionStyle={styles.select__option}
+            >{item}</Option>)
+        })}
+      </Select>
+      )
+    }
+  }
+
+  handleCheckedMen(check){
+    if (check === 'mensual') {
+      this.setState({
+        checkedMen: true,
+        type_payment: 'Mensual',
+        checkedBi: false
+      })
+    }else {
+      this.setState({
+        checkedBi: true,
+        type_payment: 'Bimestral',
+        checkedMen:false
+      })
+    }
+  }
 
 
   // ******************************************
   componentWillMount(){
-    console.log(this.props);
     const {params} = this.props.navigation.state
     const {states_mx} = this.props
+    this.setState({
+        state_id:params.state,
+        municipality_id: params.municipality,
+        number_contract:params.number_contract
+    })
+
     states_mx.map((item,i)=>{
       if (params.state === item.id) {
         this.setState({state:item.state})
@@ -166,23 +223,54 @@ class EditContracts extends Component {
       }
     })
     if (params['type_payment'] === 'Bimestral') {
-      this.setState({checkedBi: true})
+      this.setState({
+        checkedBi: true,
+        type_payment: 'Bimestral'
+      })
     }
     if (params['type_payment'] === 'Mensual') {
-      this.setState({checkedMen: true})
+      this.setState({
+        checkedMen: true,
+        type_payment: 'Mensual'
+      })
     }
   }
   componentWillReceiveProps(nextProps){
     nextProps.municipality_mx.map(item => {
       if (item.id === this.props.navigation.state.params.municipality) {
         this.setState({municipality: item['name_mun']})
+        this.props.getRate(item.id, this.props.token)
       }
     })
+    if (typeof nextProps.mun_rate === 'string') {
+      //array of rates
+      const rates = ['TARIFA 1', 'TARIFA 1A', 'TARIFA 1B', 'TARIFA 1C', 'TARIFA 1D', 'TARIFA 1E', 'TARIFA 1F']
+      // put inside of an array the municipality rate
+      const rate_unique = [nextProps.mun_rate]
+      //function that return a condiciton => return all rates that are different from the municipality
+      const inRates = (rate) => {
+        return rate != nextProps.mun_rate
+      }
+      //filter the array of rates => return a new array with all rates except the munucipality rate
+      var rate = rates.filter(inRates)
+      //concat the arrays of rates => rate and rate_unique
+      const selectRates = rate_unique.concat(rate)
+
+      this.setState({
+        rates: selectRates,
+        isLoading: false,
+        rate:nextProps.mun_rate
+      })
+    }
   }
   render(){
-    console.log(this.props.navigation.state.params);
-    const { navigation, states_mx, municipality_mx, mun_rate } = this.props
 
+    const {
+      navigation,
+      states_mx,
+      municipality_mx,
+      mun_rate
+    } = this.props
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <Header title="Editar Contrato" navigation={this.props.navigation}/>
@@ -215,20 +303,18 @@ class EditContracts extends Component {
               <Item fixedLabel style={styles.col__form__item}>
                 <Input value={this.state.municipality} editable={false} keyboardType={'numeric'} style={{paddingLeft:10}}/>
               </Item>
-              <Item fixedLabel style={styles.col__form__item}>
-                <Input value={navigation.state.params['rate']} editable={false} keyboardType={'numeric'} style={{paddingLeft:10}}/>
-              </Item>
+              {this.createRateSelect()}
             </Col>
             {(Platform.OS === 'ios')? <View style={{height:15}}></View> : <View style={{height: 0}}></View>}
             <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 20 : 0}}>
               <View style={styles.row__bottom__view__top}>
-                <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} />
+                <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('mensual')}/>
                 <Body style={{ flex: 0 }}>
                   <Text>Mensual</Text>
                 </Body>
               </View>
               <View style={ styles.row__bottom__view__bottom }>
-                <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} />
+                <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('bimestral')}/>
                 <Body style={{ flex: 0 }}>
                   <Text>Bimestral</Text>
                 </Body>
@@ -240,12 +326,19 @@ class EditContracts extends Component {
                 primary
                 onPress={() => this.sendData()}
                 >
-                <Text>Agregar</Text>
+                <Text>Actualizar</Text>
               </Button>
             </Row>
           </Grid>
         </ScrollView>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
+        {
+          (this.state.isLoading)?
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator />
+          </View> : null
+        }
+
       </Container>
     )
   }
@@ -256,7 +349,8 @@ function bindAction(dispatch){
     getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
     resetMunicipality: () => dispatch(resetMunicipality()),
     getRate: (mun_id, token) => dispatch(getRate(mun_id, token)),
-    resetRate: ()=> dispatch(resetRate())
+    resetRate: ()=> dispatch(resetRate()),
+    updateContract: (data, token, id)=> dispatch(updateContract(data, token, id))
   }
 }
 const mapStateToProps = state => ({

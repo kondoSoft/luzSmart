@@ -183,3 +183,38 @@ export function getTips(token):Action{
     .catch(err => console.log(err))
   }
 }
+
+
+
+export function updateContract(data, token, id) {
+  return dispatch => {
+    var formData = new FormData();
+    formData.append('name_contract', data.name)
+    formData.append('rate', data.rate)
+    formData.append('type_payment', data.type_payment)
+    formData.append('municipality', data.municipality_id)
+    formData.append('state', data.state_id)
+    formData.append('number_contract', data.number_contract)
+    if(data.file != undefined){
+      formData.append('image',{
+        uri: data.file.uri,
+        type: 'image/png',
+        name: data.file.fileName
+      })
+    }
+    var fetchOptions = {
+      method:'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Token ' + token,
+      },
+      body:formData
+    }
+
+    fetch(endPoint+'/contract/'+id+'/', fetchOptions)
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .catch(err => console.error(err))
+  }
+}
