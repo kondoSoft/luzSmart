@@ -29,9 +29,6 @@ class DrawBar extends Component {
     }
   }
   render() {
-    console.log(this.props.user);
-    console.log(this.props.profile);
-
     return (
       <Container>
           <Image

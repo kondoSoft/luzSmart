@@ -4,7 +4,7 @@ import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView,
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import styles from './styles';
-import {editUser, updateUser, changePassword} from '../../actions/user'
+import {getUser, updateUser, changePassword} from '../../actions/user'
 import {connect} from 'react-redux'
 import ImagePicker from 'react-native-image-picker';
 
@@ -19,14 +19,16 @@ class EditProfile extends Component {
     super(props)
     this.state = {
       user: {},
+      profile: {},
       avatarSource: require('../../../images/persona.png'),
+      file: null,
       password:{
         oldPassword:'',
         newPassword1:'',
         newPassword2:''
       },
       changePassword:false,
-      messageError: ''
+      messageError: '',
     }
 
     this.onChangeInputs = this.onChangeInputs.bind(this)
@@ -35,7 +37,7 @@ class EditProfile extends Component {
     this.onChangePassword = this.onChangePassword.bind(this)
   }
   componentWillMount () {
-    this.props.editUser(this.props.screenProps.token)
+    this.props.getUser(this.props.screenProps.token)
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentWillUnmount () {
@@ -46,9 +48,9 @@ class EditProfile extends Component {
   }
   componentWillReceiveProps(nextProps){
     const {
-      user
+      user, profile
     } = nextProps
-    this.setState({user})
+    this.setState({user, profile})
   }
   selectPhotoTapped() {
     const options = {
@@ -59,7 +61,6 @@ class EditProfile extends Component {
         skipBackup: true
       }
     };
-    const {user} = this.state
     ImagePicker.showImagePicker(options, (response) => {
       console.log('Response = ', response);
 
@@ -73,14 +74,9 @@ class EditProfile extends Component {
         console.log('User tapped custom button: ', response.customButton);
       }
       else {
-        // let source = { uri: response.uri };
-
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-        user['file'] = response
         this.setState({
           avatarSource: response.uri,
-          user
+          file: response,
         });
       }
     });
@@ -126,10 +122,10 @@ class EditProfile extends Component {
       changePassword,
       user,
       password,
-      messageError
+      messageError,
     } = this.state
     if (this.fromValidation(this.state) && changePassword && this.passwordValidation(this.state)) {
-      this.props.updateUser(user, this.props.screenProps.token)
+      this.props.updateUser(this.state, this.props.screenProps.token)
       this.props.changePassword(password, this.props.screenProps.token)
       this.props.navigation.navigate('Contracts')
     }else if (this.fromValidation(this.state) && (changePassword || this.passwordValidation(this.state))) {
@@ -151,7 +147,7 @@ class EditProfile extends Component {
         )
       }
     }else if(this.fromValidation(this.state)){
-      this.props.updateUser(user, this.props.screenProps.token)
+      this.props.updateUser(this.state, this.props.screenProps.token)
       this.props.navigation.navigate('Contracts')
     }else {
       Alert.alert(
@@ -223,16 +219,11 @@ class EditProfile extends Component {
                 <Col style={styles.row__top__col__left}>
                   <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                     <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                     <Thumbnail source={ (this.state.user.file != null)? this.state.user.file : this.state.avatarSource} />
+                     <Thumbnail source={ (this.state.file != null)? this.state.file : (this.state.profile != {}) ? {uri: this.state.profile.avatar} : this.state.avatarSource} />
                     </View>
                   </TouchableOpacity>
-                  {/* <Thumbnail style={{width:80,height:80}} source={ require('../../../images/profile.png')} /> */}
                 </Col>
-                <Col style={styles.row__top__col__right}>
-                  {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}>
-                    <Icon name="md-create" style={ styles.row__top__col__right__icon }/>
-                  </Button> */}
-                </Col>
+
               </Row>
               <Col>
                 <Form>
@@ -323,7 +314,7 @@ class EditProfile extends Component {
 
 function bindAction(dispatch){
   return{
-    editUser: token => dispatch(editUser(token)),
+    getUser: token => dispatch(getUser(token)),
     updateUser: (user, token) => dispatch(updateUser(user, token)),
     changePassword: (data, token) => dispatch(changePassword(data, token))
   }
@@ -331,7 +322,8 @@ function bindAction(dispatch){
 
 function mapStateToProps(state) {
   return({
-    user:state.user.user
+    user:state.user.user,
+    profile: state.user.profileUser,
   })
 }
 
