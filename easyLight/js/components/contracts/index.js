@@ -139,7 +139,7 @@ const mapStateToProps = state => ({
   contracts: state.list_contracts.contracts,
   selectedIndex: state.list_contracts.selectedIndex,
   token: state.user.token,
-  dataUser: state.userData,
+  dataUser: state.user.user,
 })
 export default connect(mapStateToProps, bindAction)(Contracts);
 // const ContractsSwagger = connect(mapStateToProps, bindAction)(Contracts);
