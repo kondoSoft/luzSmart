@@ -130,7 +130,7 @@ class Results  extends Component {
             </Select>
           </Row>
           <Row size={20} style={styles.row__bottom}>
-            <Button small style={{backgroundColor:'green'}}>
+            <Button small primary>
               <Text>Enviar CSV</Text>
             </Button>
           </Row>

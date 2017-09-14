@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { AppRegistry, Image, TouchableOpacity, Dimensions } from "react-native";
 import {
   Button,
@@ -15,7 +16,8 @@ const Screen = Dimensions.get('window');
 import styles from './styles';
 
 const routes = ["Contratos", "Resultados", "Tips", "Login"];
-export default class DrawBar extends React.Component {
+
+class DrawBar extends Component {
   static navigationOptions = {
     header: null
   };
@@ -27,53 +29,34 @@ export default class DrawBar extends React.Component {
     }
   }
   render() {
+    console.log(this.props.user);
+    console.log(this.props.profile);
+
     return (
       <Container>
-        <Content>
           <Image
           source={require('../../../images/header.png')}
           style={[{ zIndex: (this.props.zIndex)? 1000 : 0 , width: Screen.width},styles.header]}
           >
-            <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-              {/* <Thumbnail source={ (this.state.file != null)? this.state.file : this.state.avatarSource}/> */}
-              <Thumbnail source={ (this.state.file != null)? this.state.file : this.state.avatarSource}/>
+            <View style={styles.viewProfile}>
+              <View style={styles.viewThumbnail}>
+                <Thumbnail style={styles.avatar} source={(this.props.profile !== undefined)? {uri: this.props.profile.avatar} : this.state.file }/>
+              </View>
+              <View style={styles.viewName}>
+                <View style={{borderBottomWidth: 1, borderColor: 'white'}}>
+                  {(this.props.user !== undefined)&& <Text style={{color: 'white'}}>{this.props.user.first_name + ' ' + this.props.user.last_name}</Text>}
+                </View>
+                <Text style={styles.textName} >PREMIUM</Text>
+              </View>
             </View>
           </Image>
-          {/* <Image
-            source={{
-              uri: "https://github.com/GeekyAnts/NativeBase-KitchenSink/raw/react-navigation/img/drawer-cover.png"
-            }}
-            style={{
-              height: 120,
-              alignSelf: "stretch",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                height: 120,
-                alignSelf: "stretch",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-              onPress={() => this.props.navigation.navigate("DrawerClose")}
-            >
-              <Image
-                square
-                style={{ height: 80, width: 70 }}
-                source={{
-                  uri: "https://github.com/GeekyAnts/NativeBase-KitchenSink/raw/react-navigation/img/logo.png"
-                }}
-              />
-            </TouchableOpacity>
-          </Image> */}
           <List
+            contentContainerStyle={styles.list}
             dataArray={routes}
             renderRow={data => {
-              console.log(data);
               return (
                 <ListItem
+                  style={styles.listItem}
                   button
                   onPress={() => this.props.navigation.navigate(data)}
                 >
@@ -82,8 +65,12 @@ export default class DrawBar extends React.Component {
               );
             }}
           />
-        </Content>
       </Container>
     );
   }
 }
+const mapStateToProps = state => ({
+  user: state.user.user,
+  profile: state.user.profileUser,
+})
+export default connect(mapStateToProps, null)(DrawBar)

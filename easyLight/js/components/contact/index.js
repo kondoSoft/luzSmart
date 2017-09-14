@@ -24,7 +24,6 @@ class Contact extends Component{
     header: null
   };
   render(){
-    console.log(this.props.user);
     return(
       <Container>
         <Header navigation={this.props.navigation} title="CONTACTO"/>

@@ -1,8 +1,8 @@
 
 import type { Action } from './types';
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 
@@ -22,19 +22,27 @@ function resetToken(logout):Action {
     type: LOGOUT,
   }
 }
-function printUser(user):Action {
+function printUser(user, profile):Action {
   return{
     type: PRINT_USER,
     payload: user,
-  }
-}
-function dataUser(userData):Action {
-  return{
-    type: GET_DATA_USER,
-    payload: userData,
+    profile: profile
   }
 }
 
+export function getProfile(user, token):Action {
+  return dispatch => {
+    return fetch(endPoint+'/user/profile/?user_id='+ user.pk,{
+      method: 'GET',
+      headers:{
+        'Authorization': 'Token '+token,
+      }
+    })
+    .then(res => {return res.json()})
+    .then(res => dispatch(printUser(user, res)))
+    .catch(err => console.log(err))
+  }
+}
 
 export function getUser(token):Action {
   return dispatch => {
@@ -47,9 +55,7 @@ export function getUser(token):Action {
     .then(res => {
       return res.json()
     })
-    .then(res =>{
-      return dispatch(dataUser(res))
-    })
+    .then(res => dispatch(getProfile(res, token)))
     .catch(err => console.log(err))
   }
 }
@@ -107,6 +113,7 @@ export function registerUser(list):Action{
      body: data
     })
     .then(res=> {return res.json()})
+    .then(res => console.log(res))
     .catch(err => console.log(err))
   }
 }

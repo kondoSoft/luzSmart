@@ -11,6 +11,9 @@ const initialState = {
   token: '',
   loginError: '',
   noPassword: '',
+  user: '',
+  profileUser: '',
+
 };
 
 export default function (state:State = initialState, action:Action): State {
@@ -32,20 +35,16 @@ export default function (state:State = initialState, action:Action): State {
   if (action.type === PRINT_USER) {
     return{
       ...state,
-      user:action.payload
+      user:action.payload,
+      profileUser: action.profile.results[0]
     }
   }
-  if (action.type === GET_DATA_USER) {
-    return{
-      ...state,
-      userData: action.payload,
-    }
-  }
-  else if (action.type === REHYDRATE){
-      var incoming = action.payload
-      console.log('token' ,incoming);
-      if (incoming.userData) return {...state, ...incoming}
-      return state
-  }
+  // else if (action.type === REHYDRATE){
+  //     var incoming = action.payload
+  //     var profile = action.profile
+  //     console.log('incoming', incoming, 'profile', profile);
+  //     if (incoming.user) return {...state, ...incoming}
+  //     return state
+  // }
   return state;
 }
