@@ -2,11 +2,8 @@
 import type { Action } from './types';
 
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8080';
-
-
-
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
@@ -115,7 +112,6 @@ export function registerUser(list):Action{
      body: data
     })
     .then(res=> {return res.json()})
-    .then(res => console.log(res))
     .catch(err => console.log(err))
   }
 }
@@ -128,48 +124,48 @@ export function logoutUser():Action{
     .catch(err => console.log(err))
   }
 }
-
-export function editUser(token):Action{
+export function updateProfile(data, token):Action{
+  console.log('data>>>>', data);
   return dispatch => {
-    return fetch(endPoint+'/rest-auth/user/', {
-      method:'GET',
+    const formData = new FormData();
+    if(data.file != undefined){
+      formData.append('avatar', {
+        uri: data.file.uri,
+        type: 'image/png',
+        name: data.file.fileName,
+      })
+    }
+    return fetch(endPoint+'/user/profile/'+ data.user.pk + '/', {
+      method:'PUT',
       headers:{
-        'Authorization': 'Token '+token
-      }
+        'Accept': 'application/json',
+        'Authorization': 'Token '+ token
+      },
+      body: formData
     })
     .then(res => {return res.json()})
-    .then(res => dispatch(printUser(res)))
-    .catch(err => console.log(err))
+    .catch(err => console.error(err))
   }
 }
-
-export function updateUser(user, token):Action{
+export function updateUser(data, token):Action{
   return dispatch => {
-    const data = new FormData();
-    data.append('first_name', user.first_name)
-    data.append('last_name', user.last_name)
-    data.append('email', user.email)
-    data.append('username', user.username)
-
-    // if(user.file != undefined){
-    //   data.append('avatar',{
-    //     uri: user.file.uri,
-    //     type: 'image/png',
-    //     name: user.file.fileName
-    //   })
-    // }
+    const form = new FormData();
+    form.append('first_name', data.user.first_name)
+    form.append('last_name', data.user.last_name)
+    form.append('email', data.user.email)
+    form.append('username', data.user.username)
     const fetchOptions = {
       method:'PUT',
       headers:{
         'Accept': 'application/json',
         'Authorization': 'Token '+ token
       },
-      body: data
+      body: form
     }
 
     return fetch(endPoint+'/rest-auth/user/', fetchOptions)
     .then(res => {return res.json()})
-    .then(res => {return console.log(res)})
+    .then(res => {dispatch(updateProfile(data, token))})
     .catch(err => console.error(err))
   }
 }
@@ -192,7 +188,6 @@ export function changePassword(data, token):Action {
 
     return fetch(endPoint+'/rest-auth/password/change/', fetchOptions)
     .then(res => res.json())
-    .then(res => console.log(res))
     .catch(err => console.error(err))
   }
 }
