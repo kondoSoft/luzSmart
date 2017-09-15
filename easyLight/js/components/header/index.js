@@ -27,7 +27,7 @@ class HeaderGlobal extends Component {
     const { state } = this.props.navigation
     const { navigation } = this.props
     const button = <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={styles.header__icon} name="menu"/></Button>
-    const iconBack =  (<Button transparent onPress={() => this.props.navigation.goBack()}>
+    const iconBack =  (<Button transparent onPress={() => (state.routeName === 'SignIn')? this.props.navigation.navigate('Login') : this.props.navigation.goBack()}>
                         <Icon style={styles.header__icon} name={(Platform.OS === 'ios')? "ios-arrow-back" : "arrow-back"} />
                       </Button>)
     var platformHeader = (
@@ -58,7 +58,7 @@ class HeaderGlobal extends Component {
             {(Platform.OS === 'ios')? <Title style={styles.header__body__title}>{this.props.title}</Title> : null }
           </Body>
           <Right style={styles.right}>
-            { (state.routeName == "Login") ? null : (Platform.OS === 'ios')? button : <Title style={[styles.header__body__title]}>{this.props.title}</Title> }
+            { (state.routeName == "Login" || state.routeName === "SignIn") ? null : (Platform.OS === 'ios')? button : <Title style={[styles.header__body__title]}>{this.props.title}</Title> }
           </Right>
         </Image>
       )

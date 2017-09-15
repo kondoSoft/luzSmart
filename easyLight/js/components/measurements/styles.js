@@ -14,9 +14,10 @@ export default {
   },
   grid__row__top__view:{
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-around',
-    paddingRight: 9,
+    paddingRight: 15,
+    alignItems: 'flex-end',
   },
   grid__col__select:{
     alignItems: 'center',

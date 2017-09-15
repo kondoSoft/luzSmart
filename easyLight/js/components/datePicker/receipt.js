@@ -23,11 +23,11 @@ export default class ReceiptPickerDate extends Component {
   render(){
     return (
       <DatePicker
-        style={{width: '100%'}}
-        date={this.state.date}
+        style={{width: '100%', marginBottom: 10, paddingTop: 5}}
+        // date={this.state.date}
         mode="date"
         showIcon={false}
-        placeholder="select date"
+        placeholder="Fecha final de consumo"
         format="YYYY-MM-DD"
         // minDate={formatDate}
         // maxDate="2016-06-01"
@@ -35,7 +35,7 @@ export default class ReceiptPickerDate extends Component {
         cancelBtnText="Cancelar"
         customStyles={{
           dateInput: {
-            height:45,
+            height:60,
             alignItems: 'flex-start',
             borderWidth:2,
             borderColor: 'lightgrey',
@@ -43,6 +43,10 @@ export default class ReceiptPickerDate extends Component {
           },
           dateText:{
             fontSize: 16,
+          },
+          placeholderText:{
+            color:'#000',
+            fontSize: 15,
           }
         }}
         onDateChange={(date) => {

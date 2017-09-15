@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Platform, Image, ScrollView, Dimensions } from 'react-native';
+import { View, Platform, Image, ScrollView, Dimensions, PanResponder, TouchableOpacity } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Container, Fab , Content, Body, Left, List, Thumbnail, Text, Title, Button, Icon, Right} from 'native-base';
 import Header from '../header/index';
@@ -48,7 +48,6 @@ class Contracts extends Component {
     getContract: React.PropTypes.func,
     getStates: React.PropTypes.func,
   }
-
   render(){
     const { navigation } = this.props
     const { contracts } = this.props
@@ -85,28 +84,41 @@ class ParentSwipeContracts extends Component {
       key: i,
     })
   }
+  componentWillMount(){
+    this.PanResponder = PanResponder.create({
+      onStartShouldSetPanResponder : () => {
+        return true
+      },
+      onPanResponderMove:(e,gestureState)=>{
+
+      },
+      onPanResponderRelease: (e, gesture) => {
+
+      },
+    })
+  }
   render(){
     const { navigation } = this.props
     const { contract } = this.props
     return(
-      <ScrollView
-        style={{backgroundColor: '#fff'}}
-        scrollEnabled={true}
-        >
-        {contract.map((contract, i )=><SwipeAccordion
-          func={()=>this.onOpenSwipe(i)}
-          indexOpen={this.state.key}
-          keyVal={i}
-          key={i}
-          index={contract.id}
-          receipts={contract.receipt}
-          navigation={navigation}
-          dataAccordionContract={contract}
-          component={<ItemComponent data={contract}/>}
-          icon={<Icon style={styles.icon} name="information-circle"/>}
-          onPressLeft={() => navigation.navigate('EditContracts', contract)}
-        />)}
-      </ScrollView>
+        <ScrollView
+          style={{backgroundColor: '#fff'}}
+          scrollEnabled={false}
+          >
+            {contract.map((contract, i )=><SwipeAccordion
+              func={()=>this.onOpenSwipe(i)}
+              indexOpen={this.state.key}
+              keyVal={i}
+              key={i}
+              index={contract.id}
+              receipts={contract.receipt}
+              navigation={navigation}
+              dataAccordionContract={contract}
+              component={<ItemComponent data={contract}/>}
+              icon={<Icon style={styles.icon} name="information-circle"/>}
+              onPressLeft={() => navigation.navigate('EditContracts', contract)}
+            />)}
+          </ScrollView>
     )
   }
 }
