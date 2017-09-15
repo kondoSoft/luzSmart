@@ -163,7 +163,7 @@ class Receipt extends Component {
   }
   render(){
     const { navigation } = this.props
-
+    console.log(this.state);
     if (navigation.state.params == undefined) {
       contract = this.props.newContract
     }else{
@@ -287,7 +287,7 @@ class Receipt extends Component {
                       onChangeText={text => this.handleAmountPayable(text)}
                       onBlur={()=> {
                         this.setState({
-                            amount_payable_ui:(this.state.amount_payable.length > 0)? parseInt(this.state.amount_payable).toLocaleString(undefined,{ style: 'currency',currency:'MXN' }):''
+                            amount_payable_ui:(this.state.amount_payable.length > 0)? parseInt(this.state.amount_payable).toLocaleString('es-MX',{ style: 'currency',currency:'MXN' }):''
                         })
                       }}
                       value={this.state.amount_payable_ui}
@@ -309,7 +309,7 @@ class Receipt extends Component {
                       onChange={event => this.handleCurrentReading(event)}
                       onBlur={()=>{
                         this.setState({
-                          current_reading_ui: (this.state.current_reading.length > 0)? parseInt(this.state.current_reading).toLocaleString(): ''
+                          current_reading_ui: (this.state.current_reading.length > 0)? parseInt(this.state.current_reading).toLocaleString('es-MX') : ''
                         })
                       }}
                       value={this.state.current_reading_ui}
@@ -330,7 +330,7 @@ class Receipt extends Component {
                       onChange={event => this.handlePreviousReading(event)}
                       onBlur={()=>{
                         this.setState({
-                          previous_reading_ui:(this.state.previous_reading.length > 0)? parseInt(this.state.previous_reading).toLocaleString():''
+                          previous_reading_ui:(this.state.previous_reading.length > 0)? parseInt(this.state.previous_reading).toLocaleString('es-MX'):''
                         })
                       }}
                       value={this.state.previous_reading_ui}
