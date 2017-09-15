@@ -72,7 +72,7 @@ export default {
     alignItems: 'center',
   },
   footer: {
-    height: 80,
+    height: 100,
     borderTopWidth: 0,
     alignItems:'center',
   },
