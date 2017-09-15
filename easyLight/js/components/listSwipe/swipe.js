@@ -31,24 +31,35 @@ class ListItemSwipe extends React.Component {
       velocity: (this.props.velocity)? this.props.velocity : 12
     }
   this.panResponder = PanResponder.create({
-      onStartShouldSetPanResponder : () => {
-
-                                            return true
+      onStartShouldSetPanResponder : (e,gestureState) => {
+        return true
       },
       onPanResponderMove            :(e,gestureState)=>{
-        // console.log('gesture state dx>',gestureState.dx);
-
         if (gestureState.dx < 0){
-          Animated.event([null,{
-            dx : this.state.pan.x>0 ? 0 : this.state.pan.x,
-            dy : 0
-          }])(e, gestureState);
+          if (gestureState.dx <= -120) {
+            Animated.event([null,{
+              dx : -140,
+              dy : 0
+            }])(e, gestureState);
+          }else {
+            Animated.event([null,{
+              dx : this.state.pan.x > 0 ? 0 : this.state.pan.x,
+              dy : 0
+            }])(e, gestureState);
+          }
         }
         else if (gestureState.dx > 0) {
-          Animated.event([null,{
-            dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
-            dy : 0
-          }])(e, gestureState);
+          if (gestureState.dx >= 120) {
+            Animated.event([null,{
+              dx : 140,
+              dy : 0
+            }])(e, gestureState);
+          }else {
+            Animated.event([null,{
+              dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
+              dy : 0
+            }])(e, gestureState);
+          }
         }
 
       },
@@ -73,6 +84,7 @@ class ListItemSwipe extends React.Component {
           ).start();
         }
         else {
+          this.props.closeExpanded()
           Animated.spring(
             this.state.pan,
             {
@@ -85,14 +97,13 @@ class ListItemSwipe extends React.Component {
   });
   }
   render(){
-
     return(
         <Animated.View
          {...this.panResponder.panHandlers}
           style={[this.state.pan.getLayout(),{backgroundColor: '#fff',height: 70, width: Window.width, position: 'absolute', top: 0, right: 0},this.props.style]}
           onLayout={this.props.onLayout}
           >
-            {this.props.component}
+          {this.props.component}
         </Animated.View>
     )
   }
@@ -107,6 +118,28 @@ export default class SwipeAccordion extends Component{
       expanded : false,
     }
     this.navigateTo = this.navigateTo.bind(this)
+  }
+  closeExpanded(){
+    if (this.state.expanded) {
+      let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
+      finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
+      this.setState({
+        expanded : false
+      });
+      var Config = {
+        tension: (this.props.tension)? this.props.tension : 40,
+        friction: (this.props.friction)? this.props.friction : 15,
+        velocity: (this.props.velocity)? this.props.velocity : 12
+      }
+      this.state.animation.setValue(initialValue);
+      Animated.spring(
+        this.state.animation,
+        {
+          ...Config,
+          toValue: finalValue
+        }
+      ).start();
+    }
   }
   toggle(){
     this.props.func()
@@ -171,7 +204,7 @@ export default class SwipeAccordion extends Component{
             {this.props.icon}
           </TouchableOpacity>
         </View>
-        <ListItemSwipe style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
+        <ListItemSwipe closeExpanded={this.closeExpanded.bind(this)} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
         <ExpandedView navigation={this.props.navigation} func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contracts') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
       </Animated.View>
     )

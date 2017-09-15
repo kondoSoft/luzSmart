@@ -28,6 +28,12 @@ class Results  extends Component {
   static navigationOptions = {
     header: null
   };
+  constructor(props){
+    super(props)
+    this.state ={
+      active: true
+    }
+  }
   render(){
     const {  navigation } = this.props;
     return(
@@ -131,18 +137,28 @@ class Results  extends Component {
           </Row>
           <Row size={20} style={styles.row__bottom}>
             <Button small primary>
-              <Text>Enviar CSV</Text>
+              <Text>Exportar CSV</Text>
             </Button>
           </Row>
         </Grid>
         <Fab
-          active={true}
-          direction="up"
-          style={{ backgroundColor: 'steelblue', bottom: 60}}
-          position="bottomRight"
-          >
-          <Icon active name="md-share" style={{fontSize: 28, lineHeight: 0}}/>
-        </Fab>
+            active={this.state.active}
+            direction="up"
+            containerStyle={{ bottom: 80, right: 10}}
+            style={{ backgroundColor: 'steelblue' }}
+            position="bottomRight"
+            onPress={() => this.setState({ active: !this.state.active })}>
+            <Icon name="share" />
+            {/* <Button style={{ backgroundColor: '#34A34F' }}>
+              <Icon name="logo-whatsapp" />
+            </Button> */}
+            <Button style={{ backgroundColor: '#3B5998' }}>
+              <Icon name="logo-facebook" />
+            </Button>
+            {/* <Button disabled style={{ backgroundColor: '#DD5144' }}>
+              <Icon name="mail" />
+            </Button> */}
+          </Fab>
         {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
       </Container>
     )

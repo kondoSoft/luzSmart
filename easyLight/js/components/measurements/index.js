@@ -46,9 +46,11 @@ class Measurements extends Component {
         previous_reading: 0,
         current_data: 0,
         payday_limit: '',
-      }
+      },
+      kwhValidation: 'KWh'
     }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
+    this.changeCheckedData = this.changeCheckedData.bind(this)
   }
 
   componentWillMount () {
@@ -76,10 +78,19 @@ class Measurements extends Component {
   _keyboardDidHide () {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
+  changeCheckedData(){
+    setTimeout( ()=> {
+      this.setState({
+        kwhValidation: 'KWh'
+      })
+    },2000);
+  }
   sendCurrentData(id){
-    this.props.patchReceipt(this.state.current_data, this.props.token, id)
-    
-    this.props.navigation.goBack()
+    // this.props.patchReceipt(this.state.current_data, this.props.token, id)
+    this.setState({
+      kwhValidation: require('../../../images/succes.png')
+    },this.changeCheckedData())
+    // this.props.navigation.goBack()
   }
   setDataContract(contract_id){
 
@@ -221,7 +232,7 @@ class Measurements extends Component {
                       onChangeText={(current_data)=> this.setState({ current_data })}
                       onFocus={ () => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 185 : 300 }) }
                     />
-                    <Text style={{color: 'grey'}}>kWh</Text>
+                    {(typeof this.state.kwhValidation != 'string')? <Image style={{width:35,height:30,marginRight:0}} source={this.state.kwhValidation}/> : <Text style={{color: 'grey'}}>{this.state.kwhValidation}</Text>}
                   </View>
                   <Button
                     small
