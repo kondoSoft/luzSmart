@@ -22,9 +22,9 @@ class SignIn extends Component {
       email: '',
       password1: '',
       password2: '',
-      phone: '',
+      phone: 0,
       birth_date: '',
-      zip_code: '',
+      zip_code: 0,
       avatarSource : require('../../../images/persona.png'),
       file: null,
     }

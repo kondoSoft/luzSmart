@@ -2,8 +2,8 @@
 import type { Action } from './types';
 
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
@@ -86,6 +86,7 @@ export function loginUser(email:email, password:password, navigate):Action {
 }
 
 export function registerUser(list):Action{
+  console.log(list);
   return dispatch=>{
     const data = new FormData();
     data.append('first_name', list.first_name)
@@ -94,9 +95,11 @@ export function registerUser(list):Action{
     data.append('password1', list.password1,)
     data.append('password2', list.password2,)
     data.append('phone', list.phone,)
-    data.append('birth_date', list.birth_date,)
+    if(list.birth_date != ''){
+      data.append('birth_date', list.birth_date,)
+    }
     data.append('zip_code', list.zip_code)
-    if(list.file != undefined){
+    if(list.file != null){
       data.append('avatar',{
         uri: list.file.uri,
         type: 'image/png',
@@ -112,7 +115,8 @@ export function registerUser(list):Action{
      body: data
     })
     .then(res=> {return res.json()})
-    .catch(err => console.log(err))
+    .then(res=>{console.log(res)})
+    .catch((res, err) => console.log(res,err))
   }
 }
 export function logoutUser():Action{
