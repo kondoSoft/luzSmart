@@ -13,23 +13,44 @@ import Footer from '../footer/index';
 import styles from './styles';
 import { getTips } from '../../actions/list_states_mx'
 
-var tips;
+var tipsArr;
 
 class Tips extends Component{
   static navigationOptions = {
     header: null
   };
+  constructor(props){
+    super(props);
+    this.state = {
+      tips: [],
+    }
+  }
   componentWillMount(){
     if(this.props.token != ""){
       this.props.getTips(this.props.token)
     }
   }
+  componentDidMount(){
+    if(this.props.token != ""){
+      this.props.getTips(this.props.token)
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    console.log();
+    if (this.state.tips.length === nextProps.tips.results.length) {
+      console.log(nextProps.tips.results);
+    }else {
+      this.setState({
+        tips: nextProps.tips.results
+      })
+    }
+  }
   render(){
     const { results } = this.props.tips;
-    
-    if(results != undefined){
-      if (results.length != 0) {
-        tips = results.map((tip,i)=>{
+    const { tips } = this.state;
+    if(tips != undefined){
+      if (tips.length != 0) {
+        tipsArr = tips.map((tip,i)=>{
           return (<Col key={i} style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
             <View style={styles.swipper__col__top__image}>
               <Image
@@ -43,7 +64,7 @@ class Tips extends Component{
           </Col>)
         })
       }else {
-        tips = (<Col style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
+        tipsArr = (<Col style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
                  <View style={styles.swipper__col__top__image}>
                      <Image
                        source={require('../../../images/foco.png')}
@@ -56,7 +77,7 @@ class Tips extends Component{
                  </Col>)
       }
     }else {
-      tips = (<Col style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
+      tipsArr = (<Col style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
                <View style={styles.swipper__col__top__image}>
                    <Image
                      source={require('../../../images/foco.png')}
@@ -68,6 +89,7 @@ class Tips extends Component{
                  </View>
                </Col>)
     }
+    console.log(tipsArr);
     return(
       <Container>
         <Header navigation={ this.props.navigation } title="Tips" />
@@ -78,7 +100,7 @@ class Tips extends Component{
             showsButtons={true}
             buttonWrapperStyle={styles.arrow__buttons}
             >
-            {tips}
+            {tipsArr}
           </Swiper>
         </Grid>
         {(Platform.OS == 'ios') ? <Footer navigation={this.props.navigation}/>  : null}

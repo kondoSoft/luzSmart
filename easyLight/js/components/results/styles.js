@@ -4,6 +4,7 @@ const { StyleSheet, Dimensions } = React;
 export default {
   row__top:{
     justifyContent: 'center',
+    paddingTop: 10,
   },
   row__center:{
     justifyContent: 'center',

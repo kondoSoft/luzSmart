@@ -170,7 +170,7 @@ class SignIn extends Component {
                     <Image style={{width:30,height:30,marginRight:10}} source={(password2.length >= 8 && password1 === password2)&& require('../../../images/succes.png')}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>F. nacimiento:</Label>
+                    <Label style={styles.text}>F. nacimiento<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
                     <PickerDate func={this.setBirthDay}/>
                     <Image style={{width:30,height:30,marginRight:10}} source={(birth_date != "")&& require('../../../images/succes.png')}/>
                   </Item>

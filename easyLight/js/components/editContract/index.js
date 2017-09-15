@@ -189,21 +189,21 @@ class EditContracts extends Component {
     }
   }
 
-  handleCheckedMen(check){
-    if (check === 'mensual') {
-      this.setState({
-        checkedMen: true,
-        type_payment: 'Mensual',
-        checkedBi: false
-      })
-    }else {
-      this.setState({
-        checkedBi: true,
-        type_payment: 'Bimestral',
-        checkedMen:false
-      })
-    }
-  }
+  // handleCheckedMen(check){
+  //   if (check === 'mensual') {
+  //     this.setState({
+  //       checkedMen: true,
+  //       type_payment: 'Mensual',
+  //       checkedBi: false
+  //     })
+  //   }else {
+  //     this.setState({
+  //       checkedBi: true,
+  //       type_payment: 'Bimestral',
+  //       checkedMen:false
+  //     })
+  //   }
+  // }
 
 
   // ******************************************
@@ -308,13 +308,13 @@ class EditContracts extends Component {
             {(Platform.OS === 'ios')? <View style={{height:15}}></View> : <View style={{height: 0}}></View>}
             <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 20 : 0}}>
               <View style={styles.row__bottom__view__top}>
-                <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('mensual')}/>
+                <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} />
                 <Body style={{ flex: 0 }}>
                   <Text>Mensual</Text>
                 </Body>
               </View>
               <View style={ styles.row__bottom__view__bottom }>
-                <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('bimestral')}/>
+                <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} />
                 <Body style={{ flex: 0 }}>
                   <Text>Bimestral</Text>
                 </Body>

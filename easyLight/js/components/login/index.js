@@ -33,6 +33,7 @@ var ema;
 var pw;
 
 const validate = values => {
+  var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
   const error = {};
   error.email = "";
   error.password = "";
@@ -44,14 +45,15 @@ const validate = values => {
   if (values.password === undefined) {
     pw = "";
   }
-  if (!ema.includes("@") && ema !== "") {
-    error.email = "Este no es un correo valido";
+  if (ema !== "" && !emailRegex.test(ema)) {
+    console.log(emailRegex.test(ema));
+    error.email = " Email invalido";
   }
   if (pw.length > 12) {
     error.password = "Maximo 11 caracteres";
   }
   if (pw.length < 8 && pw.length > 0) {
-    error.password = "Contraseña muy corta";
+    error.password = "Contraseña corta";
   }
   return error;
 };
@@ -118,7 +120,6 @@ class Login extends Component {
 
     // this.props.navigation.navigate("Contracts")
   }
-  compon
   componentWillUpdate(){
     this.props.getStates()
 
@@ -190,7 +191,7 @@ class Login extends Component {
                 </Col>
               </Row>
               <View style={styles.footer}>
-                <Thumbnail source={ logoFooter } />
+                <Thumbnail style={{width:80,height:80,borderRadius:40}} source={ logoFooter } />
               </View>
             </Grid>
         </ScrollView>
