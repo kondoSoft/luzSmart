@@ -191,7 +191,7 @@ class Login extends Component {
                 </Col>
               </Row>
               <View style={styles.footer}>
-                <Thumbnail source={ logoFooter } />
+                <Thumbnail style={{width:80,height:80,borderRadius:40}} source={ logoFooter } />
               </View>
             </Grid>
         </ScrollView>
