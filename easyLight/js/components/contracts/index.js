@@ -49,9 +49,13 @@ class Contracts extends Component {
     getStates: React.PropTypes.func,
   }
   render(){
-    const { navigation } = this.props
-    const { contracts } = this.props
+    // const { navigation } = this.props
+    const { navigation, contracts, profile } = this.props
     const {state} = navigation
+    var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts")}}>
+        <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+      </FabButton>
+    console.log(profile.premium);
     return(
       <Container>
         <Header navigation={navigation} title={"EASYLIGTH"}/>
@@ -60,12 +64,8 @@ class Contracts extends Component {
           contract={contracts}
           navigation={navigation}
         />
-        <FabButton
-          navigation={this.props.navigation}
-          onTap={()=>{navigation.navigate("AddContracts")}}
-          >
-          <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
-        </FabButton>
+        {/* {fab} */}
+        {(profile.premium == true) && fab}
         {(Platform.OS === 'ios')? <Footer viewContract={contracts} navigation={navigation}/> : null}
       </Container>
     )
@@ -152,6 +152,7 @@ const mapStateToProps = state => ({
   selectedIndex: state.list_contracts.selectedIndex,
   token: state.user.token,
   dataUser: state.user.user,
+  profile: state.user.profileUser,
 })
 export default connect(mapStateToProps, bindAction)(Contracts);
 // const ContractsSwagger = connect(mapStateToProps, bindAction)(Contracts);

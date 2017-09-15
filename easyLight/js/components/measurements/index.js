@@ -86,7 +86,7 @@ class Measurements extends Component {
     },2000);
   }
   sendCurrentData(id){
-    // this.props.patchReceipt(this.state.current_data, this.props.token, id)
+    this.props.patchReceipt(this.state.current_data, this.props.token, id)
     this.setState({
       kwhValidation: require('../../../images/succes.png')
     },this.changeCheckedData())

@@ -46,7 +46,6 @@ const validate = values => {
     pw = "";
   }
   if (ema !== "" && !emailRegex.test(ema)) {
-    console.log(emailRegex.test(ema));
     error.email = " Email invalido";
   }
   if (pw.length > 12) {
