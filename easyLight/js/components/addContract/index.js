@@ -117,9 +117,9 @@ class AddContracts extends Component {
   handleState(value, item){
     this.props.resetMunicipality()
     if (Platform.OS === 'ios') {
-      this.props.getMunicipality(value)
+      this.props.getMunicipality(value+1)
       this.setState({
-        state: value
+        state: value+1
       })
     }else {
       this.props.getMunicipality(value)
