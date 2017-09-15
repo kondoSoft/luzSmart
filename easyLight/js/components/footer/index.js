@@ -26,7 +26,6 @@ class FooterGlobal extends Component {
         }
       })
     }
-    console.log(this.props.navigation.state.routeName);
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
           <FooterTab style={styles.footer}>

@@ -87,7 +87,6 @@ export function loginUser(email:email, password:password, navigate):Action {
 }
 
 export function registerUser(list):Action{
-  console.log(list);
   return dispatch=>{
     const data = new FormData();
     data.append('first_name', list.first_name)
@@ -116,8 +115,7 @@ export function registerUser(list):Action{
      body: data
     })
     .then(res=> {return res.json()})
-    .then(res=>{console.log(res)})
-    .catch((res, err) => console.log(res,err))
+    .catch(err => console.log(err))
   }
 }
 export function logoutUser():Action{

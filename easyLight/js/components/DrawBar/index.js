@@ -37,7 +37,9 @@ class DrawBar extends Component {
           >
             <View style={styles.viewProfile}>
               <View style={styles.viewThumbnail}>
-                <Thumbnail style={styles.avatar} source={(this.props.profile !== undefined)? {uri: this.props.profile.avatar} : this.state.file }/>
+                <TouchableOpacity transparent onPress={()=> this.props.navigation.navigate("EditProfile")}>
+                  <Thumbnail style={styles.avatar} source={(this.props.profile.avatar !== null) ? {uri: this.props.profile.avatar} : this.state.avatarSource }/>
+                </TouchableOpacity>
               </View>
               <View style={styles.viewName}>
                 <View style={{borderBottomWidth: 1, borderColor: 'white'}}>
