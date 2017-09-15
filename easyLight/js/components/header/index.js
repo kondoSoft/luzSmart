@@ -41,7 +41,7 @@ class HeaderGlobal extends Component {
           (state.routeName === 'Login')? <Title style={styles.header__body__title}>{this.props.title}</Title> : null }
         </Body>
         <Right style={{flex: (state.routeName === 'Login')? 0 : 20,paddingRight: (state.routeName === 'Login')? 35 : 15 }}>
-           { (state.routeName == "Login") ? null : (Platform.OS === 'ios')? button : <Title style={styles.header__body__title}>{this.props.title}</Title> }
+           { (state.routeName == "Login" || state.routeName == "SignIn") ? null : (Platform.OS === 'ios')? button : <Title style={styles.header__body__title}>{this.props.title}</Title> }
         </Right>
       </Header>
     )
@@ -58,7 +58,7 @@ class HeaderGlobal extends Component {
             {(Platform.OS === 'ios')? <Title style={styles.header__body__title}>{this.props.title}</Title> : null }
           </Body>
           <Right style={styles.right}>
-            { (state.routeName == "Login" || state.routeName === "SignIn") ? null : (Platform.OS === 'ios')? button : <Title style={[styles.header__body__title]}>{this.props.title}</Title> }
+            { (state.routeName == "Login" || state.routeName == "SignIn") ? null : (Platform.OS === 'ios')? button : <Title style={[styles.header__body__title]}>{this.props.title}</Title> }
           </Right>
         </Image>
       )

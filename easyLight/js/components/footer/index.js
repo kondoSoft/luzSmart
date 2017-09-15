@@ -26,10 +26,11 @@ class FooterGlobal extends Component {
         }
       })
     }
+    console.log(this.props.navigation.state.routeName);
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
           <FooterTab style={styles.footer}>
-            <Button vertical onPress={() => (this.props.navigation.state.routeName == "Contratos") ? null : this.props.navigation.navigate("Contratos")}>
+            <Button vertical onPress={() => (this.props.navigation.state.routeName == "Contracts") ? null : this.props.navigation.navigate("Contratos")}>
               <Icon style={styles.footer__icon} name="home" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text}>Inicio</Text> : <View/> }
             </Button>
@@ -83,11 +84,11 @@ class FooterGlobal extends Component {
             }}>
               <Thumbnail source={ (Platform.OS === 'ios')? require('../../../images/logogray.png') : require('../../../images/logoeasy.png') } style={styles.footer__logo} />
             </Button>
-            <Button vertical style={styles.footer__btn__resultados} onPress={()=>this.props.navigation.navigate('EditProfile')}>
+            <Button vertical style={styles.footer__btn__resultados} onPress={()=> (this.props.navigation.state.routeName == "Resultados") ? null :this.props.navigation.navigate('Resultados')}>
               <Icon style={styles.footer__icon} active name="trending-up" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Resultados</Text> : <View/> }
             </Button>
-            <Button vertical onPress={()=> this.props.navigation.navigate('Tips')} >
+            <Button vertical onPress={()=> (this.props.navigation.state.routeName == "Tips") ? null : this.props.navigation.navigate('Tips')} >
 
               {(Platform.OS === 'ios')?   <Icon style={styles.footer__icon} name="bulb" /> : <Icon style={styles.footer__icon} name="menu" /> }
               {(Platform.OS === 'ios')?   <Text style={styles.footer__text}>Tips</Text> : <View/> }
