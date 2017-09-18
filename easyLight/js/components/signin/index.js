@@ -6,9 +6,11 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import Header from '../header/index';
 import styles from './styles';
 import { registerUser } from '../../actions/user'
-const Screen = Dimensions.get('window');
 import ImagePicker from 'react-native-image-picker';
 import PickerDate from '../datePicker';
+
+const Screen = Dimensions.get('window');
+var reGex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
 class SignIn extends Component {
   static navigationOptions = {
@@ -27,6 +29,15 @@ class SignIn extends Component {
       zip_code: 0,
       avatarSource : require('../../../images/persona.png'),
       file: null,
+      isValidAvatar: '',
+      isValidName: '',
+      isValidLastName: '',
+      isValidEmail: '',
+      isValidPassword: '',
+      isValidBDay: '',
+      isValidPhone: '',
+      isValidZipCode: '',
+
     }
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
     this.setBirthDay = this.setBirthDay.bind(this)
@@ -46,6 +57,9 @@ class SignIn extends Component {
 
       if (response.didCancel) {
         console.log('User cancelled photo picker');
+        this.setState({
+          isValidAvatar: require('../../../images/Failure.png')
+        })
       }
       else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
@@ -73,10 +87,13 @@ class SignIn extends Component {
   }
   setBirthDay(date){
     if (date === '') {
-
+      this.setState({
+        isValidBDay: require('../../../images/Failure.png')
+      })
     }else {
       this.setState({
-          birth_date: date
+          birth_date: date,
+          isValidBDay: require('../../../images/succes.png')
         })
     }
   }
@@ -86,6 +103,7 @@ class SignIn extends Component {
   }
   render(){
     const { first_name,last_name,email,password1,password2,avatarSource, birth_date, phone, zip_code } = this.state;
+
     return(
         <Container style={{height:Screen.height}}>
           <Header zIndex navigation={this.props.navigation} title="Nuevo Registro"/>
@@ -103,7 +121,7 @@ class SignIn extends Component {
                   </TouchableOpacity>
                 </Col>
                 <Col style={styles.row__top__col__right}>
-                  <Image style={{width:30,height:30,marginRight:10}} source={(this.state.file != null)&& require('../../../images/succes.png')}/>
+                  <Image style={{width:30,height:30,marginRight:10}} source={(this.state.file != null)? require('../../../images/succes.png') : this.state.isValidAvatar}/>
                   {/* <Button transparent style={{ backgroundColor: 'blue', textAlign: 'center'}}> */}
                     {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
                   {/* </Button> */}
@@ -119,8 +137,20 @@ class SignIn extends Component {
                       style={styles.form__item__input}
                       onChangeText={(first_name)=> this.setState({first_name})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
+                      onBlur={()=>{
+                        if (first_name.length < 3) {
+                          this.setState({
+                            isValidName: require('../../../images/Failure.png')
+                          })  
+                        }else {
+                          this.setState({
+                            isValidName: require('../../../images/succes.png')
+                          })
+                        }
+                        
+                      }}
                     />
-                    <Image style={{width:30,height:30,marginRight:10}} source={(this.state.first_name != "" && this.state.first_name.length > 6)&& require('../../../images/succes.png')}/>
+                    <Image style={{width:30,height:30,marginRight:10}} source={this.state.isValidName}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Apellidos<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
@@ -129,8 +159,19 @@ class SignIn extends Component {
                       style={styles.form__item__input}
                       onChangeText={(last_name)=> this.setState({last_name})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
+                      onBlur={()=>{
+                        if (last_name != '') {
+                          this.setState({
+                            isValidLastName: require('../../../images/succes.png')
+                          })
+                        } else {
+                          this.setState({
+                            isValidLastName: require('../../../images/Failure.png')
+                          })
+                        }
+                      }}
                     />
-                    <Image style={{width:30,height:30,marginRight:10}} source={(this.state.last_name != "" && this.state.last_name.length > 6)&& require('../../../images/succes.png')}/>
+                    <Image style={{width:30,height:30,marginRight:10}} source={this.state.isValidLastName}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Email<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
@@ -142,8 +183,19 @@ class SignIn extends Component {
                       onChangeText={(email)=> this.setState({email})}
                       value={(this.props.navigation.state.params != "")&& this.props.navigation.state.params }
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })}
+                      onBlur={()=>{
+                        if (reGex.test(email)) {
+                          this.setState({
+                            isValidEmail: require('../../../images/succes.png')
+                          })
+                        } else {
+                          this.setState({
+                            isValidEmail: require('../../../images/Failure.png')
+                          })
+                        }
+                      }}
                     />
-                    <Image style={{width:30,height:30,marginRight:10}} source={(this.state.email != "" && this.state.email.includes('@') && this.state.email.includes('.'))&& require('../../../images/succes.png')}/>
+                    <Image style={{width:30,height:30,marginRight:10}} source={this.state.isValidEmail}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Contraseña<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
@@ -155,7 +207,7 @@ class SignIn extends Component {
                       onChangeText={(password1)=> this.setState({password1})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 90 : 90 })}
                     />
-                    <Image style={{width:30,height:30,marginRight:10}} source={(password1.length >= 8 && password1 === password2)&& require('../../../images/succes.png')}/>
+                    <Image style={{width:30,height:30,marginRight:10}} source={this.state.isValidPassword}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Confirmar contraseña<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
@@ -166,16 +218,27 @@ class SignIn extends Component {
                       style={styles.form__item__input}
                       onChangeText={(password2)=> this.setState({password2})}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 100 : 100 })}
+                      onBlur={()=>{
+                        if (password1 === password2 && password1.length === 8 && password2.length === 8) {
+                          this.setState({
+                            isValidPassword: require('../../../images/succes.png')
+                          })
+                        } else {
+                          this.setState({
+                            isValidPassword: require('../../../images/Failure.png')
+                          })
+                        }
+                      }}
                     />
-                    <Image style={{width:30,height:30,marginRight:10}} source={(password2.length >= 8 && password1 === password2)&& require('../../../images/succes.png')}/>
+                    <Image style={{width:30,height:30,marginRight:10}} source={this.state.isValidPassword}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>F. nacimiento<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
                     <PickerDate func={this.setBirthDay}/>
-                    <Image style={{width:30,height:30,marginRight:10}} source={(birth_date != "")&& require('../../../images/succes.png')}/>
+                    <Image style={{width:30,height:30,marginRight:10}} source={this.state.isValidBDay}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Celular:</Label>
+                    <Label style={styles.text}>Celular<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
                     <Input
                       keyboardType='phone-pad'
                       maxLength={13}
@@ -183,8 +246,19 @@ class SignIn extends Component {
                       style={styles.form__item__input}
                       onChangeText={(phone)=> this.setState({phone})}
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 200 : 200 })}
+                      onBlur={()=>{
+                        if (phone != '') {
+                          this.setState({
+                            isValidPhone: require('../../../images/succes.png')
+                          })
+                        } else {
+                          this.setState({
+                            isValidPhone: require('../../../images/Failure.png')
+                          })
+                        }
+                      }}
                     />
-                    <Image style={{width:30,height:30,marginRight:10}} source={(phone != "" && phone.length >= 10)&& require('../../../images/succes.png')}/>
+                    <Image style={{width:30,height:30,marginRight:10}} source={this.state.isValidPhone}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>C.P.:</Label>
@@ -195,8 +269,19 @@ class SignIn extends Component {
                       style={styles.form__item__input}
                       onChangeText={(zip_code)=> this.setState({zip_code})}
                       onFocus={()=>this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 250 : 300 })}
+                      onBlur={()=>{
+                        if (zip_code != '' && zip_code.length == 5 ) {
+                          this.setState({
+                            isValidZipCode: require('../../../images/succes.png')
+                          })
+                        } else {
+                          this.setState({
+                            isValidZipCode:  require('../../../images/Failure.png')
+                          })
+                        }
+                      }}
                     />
-                    <Image style={{width:30,height:30,marginRight:10}} source={(zip_code != "" && zip_code.length === 5)&& require('../../../images/succes.png')}/>
+                    <Image style={{width:30,height:30,marginRight:10}} source={this.state.isValidZipCode}/>
                   </Item>
                 </Form>
               </Col>
@@ -205,7 +290,7 @@ class SignIn extends Component {
                   primary
                   style={styles.row__botttom__btn}
                   onPress={()=>{
-                    if (avatarSource != "" && first_name != "" && last_name != "" && email != "" && password1 != "" && password2 != "") {
+                    if (avatarSource != "" && first_name != "" && last_name != "" && email != "" && password1 != "" && password2 != "" && phone_number != "") {
                       if (password1 === password2) {
                           this.sendData()
                       }
@@ -221,7 +306,52 @@ class SignIn extends Component {
                        'Validacion de Formulario',
                        'Verifique que todos los campos obligatorios esten llenos.'
                       );
-                    }
+                      if (birth_date === '') {
+                        this.setState({
+                          isValidBDay: require('../../../images/Failure.png')
+                        })
+                      }
+                      if (avatarSource === '') {
+                        this.setState({
+                          isValidAvatar: require('../../../images/Failure.png'),
+                        })
+                      }
+                      if (first_name === ''){
+                        this.setState({
+                          isValidName: require('../../../images/Failure.png'),
+                        })
+                      }
+                      if (last_name === '') {
+                        this.setState({
+                          isValidLastName: require('../../../images/Failure.png'),
+                        })
+                      }
+                      if (password1 === '' && password2 === '') {
+                        this.setState({
+                          isValidPassword: require('../../../images/Failure.png')  
+                        })
+                      }
+                      if (birth_date === ''){
+                        this.setState({
+                          isValidBDay: require('../../../images/Failure.png')
+                        })
+                      }
+                      if (email === ''){
+                        this.setState({
+                          isValidEmail: require('../../../images/Failure.png')
+                        })
+                      }
+                      if (phone === ''){
+                        this.setState({
+                          isValidPhone: require('../../../images/Failure.png')
+                        })
+                      }
+                      if (zip_code === ''){
+                        this.setState({
+                          isValidZipCode: require('../../../images/Failure.png')
+                        })
+                      }
+                    }                    
                   }}
                   >
                   <Text>Crear cuenta</Text>

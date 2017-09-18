@@ -13,12 +13,9 @@ class FooterGlobal extends Component {
   render(){
     var currentContract = null
     var contractPayDayLimit = false
-    if(this.props.navigation.state.routeName == 'DetailContract'){
-      currentContract = this.props.detailContract
-      if (currentContract.length === 0) {
-        contractPayDayLimit = true
-      }
-    }else if(this.props.navigation.state.routeName == 'Contracts'){
+    const {state} = this.props.navigation
+    console.log(this.props)
+    if(state.routeName !== 'DetailContract'){
       currentContract = this.props.viewContract
       currentContract.map((receipts,i)=>{
         if (receipts.receipt.length === 0) {
@@ -26,6 +23,13 @@ class FooterGlobal extends Component {
         }
       })
     }
+    else {
+      currentContract = this.props.detailContract
+      if (currentContract.length === 0) {
+        contractPayDayLimit = true
+      }
+    }
+   
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
           <FooterTab style={styles.footer}>

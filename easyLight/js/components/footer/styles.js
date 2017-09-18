@@ -7,11 +7,11 @@ export default {
     height: 40,
   },
   footer__icon:{
-    fontSize: (Platform.OS === 'ios')? 23 : 32,
+    fontSize: (Platform.OS === 'ios')? 27 : 32,
     color: (Platform.OS === 'ios')? 'grey' : '#fff',
   },
   footer__text:{
-    fontSize: 8
+    fontSize: 9
   },
   footer__logo:{
   },

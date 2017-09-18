@@ -173,7 +173,7 @@ class Receipt extends Component {
     var receiptView = (
       <Container>
         <Header zIndex navigation={this.props.navigation} title="Recibo CFE"/>
-        <Footer navigation={navigation}/>
+        <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} />
         <ScrollView
           ref='scroll'
           style={{backgroundColor: '#fff'}}
@@ -267,7 +267,7 @@ class Receipt extends Component {
       var receiptView = (
         <Container>
           <Header zIndex navigation={this.props.navigation} title="Recibo CFE"/>
-          {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+          {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
           <ScrollView
             ref='scroll'
             style={{backgroundColor: '#fff'}}

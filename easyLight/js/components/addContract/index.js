@@ -377,7 +377,7 @@ class AddContracts extends Component {
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <Header title="Agregar Contrato" navigation={this.props.navigation}/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
         <ScrollView scrollEnabled={false}>
           <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
             <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
@@ -389,7 +389,7 @@ class AddContracts extends Component {
                 </TouchableOpacity>
               </Left>
               <Body style={{height: 30,flex:2}}>
-                <Input style={{textAlign: 'center',width: '100%',padding: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
+                <Input style={{width: '100%',padding: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
               </Body>
               <Right style={ styles.row__top__left__right }>
                 {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
@@ -460,7 +460,7 @@ class AddContracts extends Component {
             </Row>
           </Grid>
         </ScrollView>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
       </Container>
     )
   }

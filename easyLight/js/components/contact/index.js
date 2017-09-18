@@ -35,7 +35,7 @@ class Contact extends Component{
     return(
       <Container>
         <Header navigation={this.props.navigation} title="CONTACTO"/>
-        {(Platform.OS === 'android')? <Footer navigation={this.props.navigation}/> : null}
+        {(Platform.OS === 'android')? <Footer navigation={this.props.navigation} viewContract={this.props.screenProps.contracts} /> : null}
         <ScrollView style={ styles.grid } contentContainerStyle={{flex:1}}>
           <Row size={20} style={styles.row__top}>
             <Text style={styles.row__top__text}>Gracias por usar Easy light, tu asistente de confianza.</Text>
@@ -98,7 +98,7 @@ class Contact extends Component{
             </View>
           </Col>
         </ScrollView>
-          {(Platform.OS === 'ios')? <Footer navigation={this.props.navigation}/> : null}
+          {(Platform.OS === 'ios')? <Footer navigation={this.props.navigation} viewContract={this.props.screenProps.contracts} /> : null}
       </Container>
     )
   }
