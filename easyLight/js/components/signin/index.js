@@ -175,7 +175,7 @@ class SignIn extends Component {
                     <Image style={{width:30,height:30,marginRight:10}} source={(birth_date != "")&& require('../../../images/succes.png')}/>
                   </Item>
                   <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Celular:</Label>
+                    <Label style={styles.text}>Celular<Text style={{color:'red',paddingBottom:10}}>*</Text>:</Label>
                     <Input
                       keyboardType='phone-pad'
                       maxLength={13}

@@ -389,7 +389,7 @@ class AddContracts extends Component {
                 </TouchableOpacity>
               </Left>
               <Body style={{height: 30,flex:2}}>
-                <Input style={{textAlign: 'center',width: '100%',padding: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
+                <Input style={{width: '100%',padding: 0}} placeholder='Mi Casa' onChange={event => this.handleName(event)}/>
               </Body>
               <Right style={ styles.row__top__left__right }>
                 {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
