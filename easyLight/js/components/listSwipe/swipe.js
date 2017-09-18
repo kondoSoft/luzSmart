@@ -26,9 +26,9 @@ class ListItemSwipe extends React.Component {
   }
   componentWillMount(){
     var springConfig = {
-      tension: (this.props.tension)? this.props.tension : 40,
-      friction: (this.props.friction)? this.props.friction : 15,
-      velocity: (this.props.velocity)? this.props.velocity : 12
+      tension: (this.props.tension)? this.props.tension : 60,
+      friction: (this.props.friction)? this.props.friction : 20,
+      velocity: (this.props.velocity)? this.props.velocity : 20
     }
   this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder : (e,gestureState) => {

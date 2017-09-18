@@ -48,16 +48,16 @@ const validate = values => {
   if (ema !== "" && !emailRegex.test(ema)) {
     error.email = " Email invalido";
   }
-  if (pw.length > 12) {
-    error.password = "Maximo 11 caracteres";
-  }
-  if (pw.length < 8 && pw.length > 0) {
-    error.password = "Contraseña corta";
-  }
+  // if (pw.length > 12) {
+  //   error.password = "Maximo 11 caracteres";
+  // }
+  // if (pw.length < 8 && pw.length > 0) {
+  //   error.password = "Contraseña corta";
+  // }
   return error;
 };
   var errorLogin;
-  var validationPass
+  var validationPass;
 class Login extends Component {
 
   static propTypes = {
