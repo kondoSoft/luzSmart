@@ -127,7 +127,7 @@ class EditProfile extends Component {
     if (this.fromValidation(this.state) && changePassword && this.passwordValidation(this.state)) {
       this.props.updateUser(this.state, this.props.screenProps.token)
       this.props.changePassword(password, this.props.screenProps.token)
-      this.props.navigation.navigate('Contracts')
+      this.props.navigation.goBack()
     }else if (this.fromValidation(this.state) && (changePassword || this.passwordValidation(this.state))) {
       if (messageError) {
         Alert.alert(
@@ -148,7 +148,7 @@ class EditProfile extends Component {
       }
     }else if(this.fromValidation(this.state)){
       this.props.updateUser(this.state, this.props.screenProps.token)
-      this.props.navigation.navigate('Contracts')
+      this.props.navigation.navigate('Resultados')
     }else {
       Alert.alert(
         'Datos incompletos',
@@ -219,7 +219,7 @@ class EditProfile extends Component {
                 <Col style={styles.row__top__col__left}>
                   <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                     <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                     <Thumbnail source={ (this.state.file != null)? this.state.file : (this.state.profile != {}) ? {uri: this.state.profile.avatar} : this.state.avatarSource} />
+                     <Thumbnail source={ (this.state.file != null)? this.state.file : (this.state.profile.avatar != null) ? {uri: this.state.profile.avatar} : this.state.avatarSource} />
                     </View>
                   </TouchableOpacity>
                 </Col>

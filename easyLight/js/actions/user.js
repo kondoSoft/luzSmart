@@ -3,8 +3,8 @@ import type { Action } from './types';
 
 
 
-// const endPoint = 'http://138.68.49.119:8080';
-const endPoint = 'http://127.0.0.1:8000';
+const endPoint = 'http://138.68.49.119:8080';
+// const endPoint = 'http://127.0.0.1:8000';
 
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
@@ -87,7 +87,6 @@ export function loginUser(email:email, password:password, navigate):Action {
 }
 
 export function registerUser(list):Action{
-  console.log(list);
   return dispatch=>{
     const data = new FormData();
     data.append('first_name', list.first_name)
@@ -116,8 +115,7 @@ export function registerUser(list):Action{
      body: data
     })
     .then(res=> {return res.json()})
-    .then(res=>{console.log(res)})
-    .catch((res, err) => console.log(res,err))
+    .catch(err => console.log(err))
   }
 }
 export function logoutUser():Action{
