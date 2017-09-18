@@ -274,7 +274,7 @@ class EditContracts extends Component {
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <Header title="Editar Contrato" navigation={this.props.navigation}/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
         <ScrollView scrollEnabled={false}>
           <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
             <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
@@ -331,7 +331,7 @@ class EditContracts extends Component {
             </Row>
           </Grid>
         </ScrollView>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
         {
           (this.state.isLoading)?
           <View style={styles.loadingContainer}>

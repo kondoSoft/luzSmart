@@ -93,7 +93,7 @@ class Tips extends Component{
     return(
       <Container>
         <Header navigation={ this.props.navigation } title="Tips" />
-        {(Platform.OS == 'android') ? <Footer navigation={this.props.navigation}/>  : null}
+        {(Platform.OS == 'android') ? <Footer navigation={this.props.navigation} viewContract={this.props.screenProps.contracts} />  : null}
         <Grid style={{backgroundColor: '#fff'}}>
           <Swiper
             style={styles.wrapper}
@@ -103,7 +103,7 @@ class Tips extends Component{
             {tipsArr}
           </Swiper>
         </Grid>
-        {(Platform.OS == 'ios') ? <Footer navigation={this.props.navigation}/>  : null}
+        {(Platform.OS == 'ios') ? <Footer navigation={this.props.navigation} viewContract={this.props.screenProps.contracts} />  : null}
       </Container>
     )
   }

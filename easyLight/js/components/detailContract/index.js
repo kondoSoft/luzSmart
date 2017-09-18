@@ -222,7 +222,7 @@ class DetailContract extends Component {
     return(
       <Container>
         <Header navigation={navigation} title="Periodos"/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'android')? <Footer navigation={navigation} detailContract={numContract}/> : null}
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Row style={styles.detailContract__row__top}>

@@ -168,7 +168,7 @@ class Measurements extends Component {
     return(
       <Container style={{backgroundColor: '#fff'}}>
         <Header navigation={this.props.navigation} zIndex title="Mediciones"/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
         <ScrollView
           ref='scroll'
           style={{height: Screen.height}}
@@ -260,7 +260,7 @@ class Measurements extends Component {
             </Button>
           </Fab>
         </View>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
       </Container>
     )
   }

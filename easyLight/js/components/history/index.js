@@ -62,7 +62,7 @@ class History extends Component{
       <Container>
         {(Platform.OS === 'ios')? <ModalForm visible={this.state.open} onClose={this.onClose} navigation={this.props.navigation}/> : <ModalAndroid visible={this.state.open} navigation={this.props.navigation} onCancel={this.onClose}/>}
         <Header navigation={this.props.navigation} title="Historial" />
-        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Col>
@@ -111,7 +111,7 @@ class History extends Component{
           >
           <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
       </Container>
     )
   }

@@ -51,7 +51,7 @@ export default class Faq extends Component {
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <Header navigation={navigation} title={"FAQ"}/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
         <View style={{backgroundColor:'lightgrey',flex:0.3,alignItems:'center',justifyContent:'center'}}>
           <Text style={{fontSize: 15,fontWeight: '600'}}>Selecciona una pregunta especifica de la lista.</Text>
         </View>
@@ -68,7 +68,7 @@ export default class Faq extends Component {
             })
           }
         </ScrollView>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
       </Container>
     )
   }

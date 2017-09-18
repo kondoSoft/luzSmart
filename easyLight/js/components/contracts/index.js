@@ -71,13 +71,10 @@ class Contracts extends Component {
     return(
       <Container>
         <Header navigation={navigation} title={"EASYLIGTH"}/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={contract} /> : null}
         <ParentSwipeContracts
           contract={contract}
           navigation={navigation}
-        /> 
-        {/* {fab} */}
-
         {(profile.premium == true) && fab}
         {(Platform.OS === 'ios')? <Footer viewContract={contract} navigation={navigation}/> : null}
       </Container>

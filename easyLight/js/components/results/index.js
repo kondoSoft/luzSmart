@@ -39,7 +39,7 @@ class Results  extends Component {
     return(
       <Container>
         <Header title="Resultados" navigation={this.props.navigation}/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
         <Grid style={{ backgroundColor: '#fff' }}>
           <Row size={10} style={styles.row__top}>
             <Select
@@ -159,7 +159,7 @@ class Results  extends Component {
               <Icon name="mail" />
             </Button> */}
           </Fab>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
       </Container>
     )
   }
