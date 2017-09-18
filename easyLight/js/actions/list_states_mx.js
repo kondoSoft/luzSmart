@@ -151,7 +151,6 @@ export function postContract(list, rate, token):Action{
   }
 }
 export function getContract(token):Action{
-  console.log(token);
   return dispatch => {
     return fetch (endPoint+'/contract/', {
       method: 'GET',
@@ -213,8 +212,8 @@ export function updateContract(data, token, id) {
     }
 
     fetch(endPoint+'/contract/'+id+'/', fetchOptions)
-    .then(res => res.json())
-    .then(res => console.log(res))
+    .then(res => {return res.json()})
+    .then(res => {dispatch(getContract(token))})
     .catch(err => console.error(err))
   }
 }
