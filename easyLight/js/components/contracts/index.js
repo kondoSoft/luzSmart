@@ -27,12 +27,21 @@ class Contracts extends Component {
     header: null,
     tabBarLabel: 'Contratos',
   };
+  
+  constructor(props) {
+    super(props)
+    this.state = {
+        contracts: []
+    }
+  }
+
   componentWillMount(){
-    // console.log(this.props.token);
+
     if(this.props.token != ""){
       this.props.getContract(this.props.token)
       this.props.getUser(this.props.token)
     }
+   
     // else {
     //   this.props.navigation.navigate("login")
     // }
@@ -42,6 +51,8 @@ class Contracts extends Component {
       this.props.getContract(nextProps.token)
       this.props.getUser(nextProps.token)
     }
+    const contracts = nextProps.contracts
+    this.setState({ contracts })
   }
   static propType = {
     getRate: React.PropTypes.func,
@@ -49,24 +60,25 @@ class Contracts extends Component {
     getStates: React.PropTypes.func,
   }
   render(){
-    // const { navigation } = this.props
-    const { navigation, contracts, profile } = this.props
+    const { navigation, profile } = this.props
     const {state} = navigation
+    const contract = this.state.contracts
+
     var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts")}}>
         <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
       </FabButton>
-    console.log(profile.premium);
+
     return(
       <Container>
         <Header navigation={navigation} title={"EASYLIGTH"}/>
         {(Platform.OS === 'android')? <Footer navigation={navigation}/> : null}
         <ParentSwipeContracts
-          contract={contracts}
+          contract={contract}
           navigation={navigation}
-        />
+        /> 
         {/* {fab} */}
         {(profile.premium == true) && fab}
-        {(Platform.OS === 'ios')? <Footer viewContract={contracts} navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer viewContract={contract} navigation={navigation}/> : null}
       </Container>
     )
   }
@@ -97,9 +109,13 @@ class ParentSwipeContracts extends Component {
       },
     })
   }
+     
+     
+  
   render(){
     const { navigation } = this.props
     const { contract } = this.props
+
     return(
         <ScrollView
           style={{backgroundColor: '#fff'}}
@@ -124,8 +140,10 @@ class ParentSwipeContracts extends Component {
 }
 
 class ItemComponent extends Component{
+
   render(){
     const contract = this.props.data
+
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
@@ -154,25 +172,5 @@ const mapStateToProps = state => ({
   dataUser: state.user.user,
   profile: state.user.profileUser,
 })
+
 export default connect(mapStateToProps, bindAction)(Contracts);
-// const ContractsSwagger = connect(mapStateToProps, bindAction)(Contracts);
-// const DrawNav = DrawerNavigator(
-//   {
-//      Contracts: { screen: ContractsSwagger },
-//      Tips: { screen: Tips },
-//     //  Mediciones: { screen: Measurements},
-//     //  Resultados: { screen: Results },
-//      Logout: { screen: Login },
-//      Charts:{screen: Charts},
-//   },
-//   {
-//       drawerPosition: 'right',
-//       // contentComponent: props => <DrawBar {...props} />
-//   }
-// )
-// DrawNav.navigationOptions = ({navigation}) => {
-//   return {
-//     header: null
-//   }
-// }
-// export default DrawNav

@@ -22,6 +22,7 @@ export type Action =
     | { type: 'PRINT_USER' }
     | { type: 'UPDATE_USER' }
     | { type: 'GET_DATA_USER' }
+    | { type: 'GET_CONTRACT_UPDATE'}
 
 
 

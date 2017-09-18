@@ -36,6 +36,7 @@ import { getMunicipality, resetMunicipality, postContract, getRate, resetRate } 
 import ImagePicker from 'react-native-image-picker';
 
 let Screen = Dimensions.get('window')
+
 var arrRangeDate = []
 var arrRangeMonth= []
 var arrRange = []
