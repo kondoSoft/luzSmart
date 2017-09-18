@@ -83,4 +83,11 @@ export default {
   field__email: {
     backgroundColor: '#fff',
   },
+  textValidation:{
+    height:'25%',
+    width: '94%',
+    textAlign: 'center',
+    paddingTop:0,
+    color:'red',
+  }
 };
