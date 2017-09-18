@@ -31,9 +31,9 @@ const logoFooter = require('../../../images/easylight.png');
 
 var ema;
 var pw;
+var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
 const validate = values => {
-  var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
   const error = {};
   error.email = "";
   error.password = "";
@@ -48,12 +48,12 @@ const validate = values => {
   if (ema !== "" && !emailRegex.test(ema)) {
     error.email = " Email invalido";
   }
-  if (pw.length > 12) {
-    error.password = "Maximo 11 caracteres";
-  }
-  if (pw.length < 8 && pw.length > 0) {
-    error.password = "Contraseña corta";
-  }
+  // if (pw.length > 12) {
+  //   error.password = "Maximo 11 caracteres";
+  // }
+  // if (pw.length < 8 && pw.length > 0) {
+  //   error.password = "Contraseña corta";
+  // }
   return error;
 };
   var errorLogin;
@@ -70,8 +70,9 @@ class Login extends Component {
     this.state = {
       name: "",
       loginNavigate: false,
-      // validation: <Text style={{backgroundColor:'red', height:'25%',width: '94%', textAlign: 'center', paddingTop:0,color:'#fff'}}>{this.props.noPassword}</Text>
       validation: '',
+      email: '',
+      password: '',
     };
     this.renderInput = this.renderInput.bind(this);
     this.handleContracts = this.handleContracts.bind(this);
@@ -97,6 +98,22 @@ class Login extends Component {
           placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
           {...input}
           onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0 })}
+          onChangeText={(data)=>{
+            if (input.name === "email") {
+              this.setState({
+                email: data
+              })
+            }else if (input.name != "email") {
+              this.setState({
+                password: data
+              })
+            }
+          }}
+          onBlur={()=>{
+            if (input.name === "email" && ema != "") {
+              emailRegex.test(this.state.email)
+            }
+          }}
         />
         {hasError
           ? <Item style={{ borderColor: "transparent" }}>
@@ -113,7 +130,7 @@ class Login extends Component {
       : e.email.toLowerCase(),
       (e.password === undefined)?
       e.email
-      : e.password.toLowerCase(), this.props.navigation)
+      : e.password.toLowerCase(),this.props.navigation)
 
 
 
@@ -138,12 +155,35 @@ class Login extends Component {
         validation: nextProps.loginError,
       })
     }
+    if (nextProps.noPassword === 'Este campo es requerido.') {
+      this.setState({
+        validation: 'Este campo es requerido.'
+      })
+    }
   }
   render() {
     const { validation } = this.state
     const { handleSubmit } = this.props
-    var bothFieldsValidation = (validation === `Must include either "username" or "email" and "password".`)&& "El correo o la contraseña no son validos"
-        bothFieldsValidation = (validation === "No puede iniciar sesión con las credenciales proporcionadas.")&& "El correo y/o la contraseña no existen"
+    var validText;
+
+        if (validation === `Must include either "username" or "email" and "password".` ) {
+
+          validText = <Text style={styles.textValidation}>Ingrese un email valido</Text>
+
+        }else if (validation === "No puede iniciar sesión con las credenciales proporcionadas.") {
+
+          validText = <Text style={styles.textValidation}>Ingrese una contraseña valida</Text>
+
+        }else if (validation === 'Este campo es requerido.') {
+
+          validText = <Text style={styles.textValidation}>Ambos campos son requeridos</Text>
+
+        }
+        else if (validation === undefined) {
+
+          validText = null
+
+        }
     return (
       <Container scrollEnabled={false}>
         <Header title={"INICIO DE SESIÓN"} zIndex navigation={this.props.navigation}/>
@@ -156,7 +196,7 @@ class Login extends Component {
               <Row  size={40}>
                 <Col style={styles.col__inputs__login}>
                   {/*  this.state.validation : null  } */}
-                  { (this.state.validation != '') && <Text style={{height:'25%',width: '94%', textAlign: 'center', paddingTop:0,color:'red'}}>{(bothFieldsValidation === false)? "Ingrese un correo y/o contraseña" : bothFieldsValidation }</Text>}
+                  { validText }
                   <Field style={styles.field__email} name="email" component={this.renderInput} />
                   <Field name="password" component={this.renderInput} />
                 </Col>
