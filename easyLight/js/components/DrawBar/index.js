@@ -14,8 +14,11 @@ import {
 } from "native-base";
 const Screen = Dimensions.get('window');
 import styles from './styles';
+import {getUser} from '../../actions/user'
 
 const routes = ["Contratos", "Resultados", "Tips", "Login"];
+
+
 
 class DrawBar extends Component {
   static navigationOptions = {
@@ -26,12 +29,21 @@ class DrawBar extends Component {
     this.state = {
       avatarSource : require('../../../images/persona.png'),
       file: null,
+      profile: {},
     }
   }
-  render() {
-    console.log(this.props.user);
-    console.log(this.props.profile);
+  componentWillMount () {
+    this.props.getUser(this.props.screenProps.token)
+  }
 
+  componentWillReceiveProps(nextProps){
+    const {
+      profile
+    } = nextProps
+    this.setState({profile})
+    this.forceUpdate()
+  }
+  render() {
     return (
       <Container>
           <Image
@@ -40,7 +52,9 @@ class DrawBar extends Component {
           >
             <View style={styles.viewProfile}>
               <View style={styles.viewThumbnail}>
-                <Thumbnail style={styles.avatar} source={(this.props.profile !== undefined)? {uri: this.props.profile.avatar} : this.state.file }/>
+                <TouchableOpacity transparent onPress={()=> this.props.navigation.navigate("EditProfile")}>
+                  <Thumbnail style={styles.avatar} source={(this.state.profile.avatar !== null) ? {uri: this.state.profile.avatar} : this.state.avatarSource }/>
+                </TouchableOpacity>
               </View>
               <View style={styles.viewName}>
                 <View style={{borderBottomWidth: 1, borderColor: 'white'}}>
@@ -69,8 +83,13 @@ class DrawBar extends Component {
     );
   }
 }
+function bindAction(dispatch){
+  return{
+    getUser: token => dispatch(getUser(token)),
+  }
+}
 const mapStateToProps = state => ({
   user: state.user.user,
   profile: state.user.profileUser,
 })
-export default connect(mapStateToProps, null)(DrawBar)
+export default connect(mapStateToProps, bindAction)(DrawBar)

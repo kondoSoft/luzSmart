@@ -24,7 +24,7 @@ class SignIn extends Component {
       password2: '',
       phone: '',
       birth_date: '',
-      zip_code: '',
+      zip_code: 0,
       avatarSource : require('../../../images/persona.png'),
       file: null,
     }
