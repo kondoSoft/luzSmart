@@ -57,7 +57,7 @@ const validate = values => {
   return error;
 };
   var errorLogin;
-  var validationPass
+  var validationPass;
 class Login extends Component {
 
   static propTypes = {
