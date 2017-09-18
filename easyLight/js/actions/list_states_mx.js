@@ -12,7 +12,7 @@ export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
 
 // const endPoint = 'http://138.68.49.119:8080';
-const endPoint = 'http://127.0.0.1:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 export function printStates(list):Action{
