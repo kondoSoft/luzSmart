@@ -75,7 +75,6 @@ class Contracts extends Component {
         <ParentSwipeContracts
           contract={contract}
           navigation={navigation}
-          />
         {(profile.premium == true) && fab}
         {(Platform.OS === 'ios')? <Footer viewContract={contract} navigation={navigation}/> : null}
       </Container>
