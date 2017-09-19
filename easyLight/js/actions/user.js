@@ -1,8 +1,8 @@
 
 import type { Action } from './types';
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 export const SET_USER = 'SET_USER';
@@ -193,12 +193,13 @@ export function changePassword(data, token):Action {
     .catch(err => console.error(err))
   }
 }
-export function contactMessage(message,user):Action {
+export function contactMessage(subject,message,user):Action {
   return dispatch => {
     const data = new FormData();
     data.append('name',user.first_name)
     data.append('email',user.email)
     data.append('message',message)
+    data.append('subject',subject)
 
     return fetch(endPoint+'/contact/',{
       method: 'POST',
