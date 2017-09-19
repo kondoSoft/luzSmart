@@ -290,7 +290,7 @@ class SignIn extends Component {
                   primary
                   style={styles.row__botttom__btn}
                   onPress={()=>{
-                    if (avatarSource != "" && first_name != "" && last_name != "" && email != "" && password1 != "" && password2 != "" && phone_number != "") {
+                    if (avatarSource != "" && first_name != "" && last_name != "" && email != "" && password1 != "" && password2 != "" && phone != "") {
                       if (password1 === password2) {
                           this.sendData()
                       }
