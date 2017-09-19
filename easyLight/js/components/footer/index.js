@@ -10,26 +10,24 @@ import styles from "./styles";
 
 
 class FooterGlobal extends Component {
-  render(){
-    var currentContract = null
-    var contractPayDayLimit = false
-    const {state} = this.props.navigation
-    console.log(this.props)
+  render() {
+    var currentContract = null;
+    var contractPayDayLimit = false;
+    const { state } = this.props.navigation;
     if(state.routeName !== 'DetailContract'){
-      currentContract = this.props.viewContract
+      currentContract = this.props.viewContract;
       currentContract.map((receipts,i)=>{
         if (receipts.receipt.length === 0) {
           contractPayDayLimit = true
         }
-      })
+      });
     }
     else {
       currentContract = this.props.detailContract
       if (currentContract.length === 0) {
-        contractPayDayLimit = true
+        contractPayDayLimit = true;
       }
     }
-   
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
           <FooterTab style={styles.footer}>
@@ -103,4 +101,4 @@ class FooterGlobal extends Component {
 }
 
 
-export default FooterGlobal
+export default FooterGlobal;
