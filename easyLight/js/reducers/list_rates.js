@@ -8,29 +8,29 @@ export type State = {
 };
 
 const initialState = {
-  results:[],
-  list_rate:[],
+  results: [],
+  list_rate: [],
   selectedIndex: undefined,
-  rate_period: undefined,
+  rate_period: '',
 };
 
 export default function(state: State = initialState, action: Action): State {
   if (action.type === GET_RATE) {
     return {
       ...state,
-      results: action.payload[0].rate
+      results: action.payload[0].rate,
     }
   }
   if (action.type === RESET_RATE) {
     return {
       ...state,
-      results: []
+      results: [],
     }
   }
-  if(action.type == PRINT_RATE_PERIOD) {
+  if(action.type === PRINT_RATE_PERIOD) {
     return {
       ...state,
-      rate_period: action.payload.results
+      rate_period: action.payload.results,
     }
   }
 

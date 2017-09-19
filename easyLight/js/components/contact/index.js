@@ -40,7 +40,6 @@ class Contact extends Component{
     })
   }
   render(){
-    console.log(this.props)
     return(
       <Container>
         <Header navigation={this.props.navigation} title="CONTACTO"/>

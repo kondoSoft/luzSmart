@@ -1,5 +1,5 @@
 import type { Action } from './types';
-import { getContract } from './list_states_mx'
+import { getContract } from './list_states_mx';
 
 
 // const endPoint = 'http://138.68.49.119:8080';
@@ -7,20 +7,20 @@ const endPoint = 'http://127.0.0.1:8000';
 
 
 
-export const PRINT_RATE_PERIOD = 'PRINT_RATE_PERIOD'
-export const PRINT_RECEIPTS = 'PRINT_RECEIPTS'
+export const PRINT_RATE_PERIOD = 'PRINT_RATE_PERIOD';
+export const PRINT_RECEIPTS = 'PRINT_RECEIPTS';
 
-export function printRatePeriod(data):Action{
+export function printRatePeriod(data):Action {
   return {
     type: PRINT_RATE_PERIOD,
-    payload: data
-  }
+    payload: data,
+  };
 }
-export function printReceipts(data):Action{
+export function printReceipts(data):Action {
   return {
     type: PRINT_RECEIPTS,
     payload: data,
-  }
+  };
 }
 
 export function postReceipt(list, token):Action{
