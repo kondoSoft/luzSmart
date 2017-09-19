@@ -30,34 +30,7 @@ const Screen = Dimensions.get('window');
 const logoFooter = require('../../../images/easylight.png');
 
 var ema;
-var pw;
-var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
-const validate = values => {
-  const error = {};
-  error.email = "";
-  error.password = "";
-  ema = values.email;
-  pw = values.password;
-  if (values.email === undefined) {
-    ema = "";
-  }
-  if (values.password === undefined) {
-    pw = "";
-  }
-  if (ema !== "" && !emailRegex.test(ema)) {
-    error.email = " Email invalido";
-  }
-  // if (pw.length > 12) {
-  //   error.password = "Maximo 11 caracteres";
-  // }
-  // if (pw.length < 8 && pw.length > 0) {
-  //   error.password = "Contraseña corta";
-  // }
-  return error;
-};
-  var errorLogin;
-  var validationPass;
 class Login extends Component {
 
   static propTypes = {
@@ -74,67 +47,30 @@ class Login extends Component {
       email: '',
       password: '',
     };
-    this.renderInput = this.renderInput.bind(this);
+    this.reGex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
     this.handleContracts = this.handleContracts.bind(this);
-    this.renderInput = this.renderInput.bind(this)
   }
-  renderInput({
-    input,
-    label,
-    type,
-    meta: { touched, error, warning },
-    inputProps
-  }) {
-    var hasError = false;
-    if (error !== undefined) {
-      hasError = true;
+  handleContracts(){
+    if(this.state.email != '' && this.state.password != ''){
+      this.props.loginUser(this.state.email,this.state.password,this.props.navigation)
     }
-    return (
-      <Item error={hasError} style={{marginRight:20}}>
-        <Input
-          keyboardType={"email-address"}
-          autoCapitalize={'none'}
-          secureTextEntry={input.name === "email" ? false : true }
-          placeholder={input.name === "email" ? "Correo electrónico" : "Contraseña"}
-          {...input}
-          onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0 })}
-          onChangeText={(data)=>{
-            if (input.name === "email") {
-              this.setState({
-                email: data
-              })
-            }else if (input.name != "email") {
-              this.setState({
-                password: data
-              })
-            }
-          }}
-          onBlur={()=>{
-            if (input.name === "email" && ema != "") {
-              emailRegex.test(this.state.email)
-            }
-          }}
-        />
-        {hasError
-          ? <Item style={{ borderColor: "transparent" }}>
-              <Text style={{ fontSize: 15, color: "red" }}>{error}</Text>
-            </Item>
-          : <Text />}
-      </Item>
-    );
-  }
-  handleContracts(e){
-    this.props.loginUser(
-      (e.email === undefined)?
-      e.email
-      : e.email.toLowerCase(),
-      (e.password === undefined)?
-      e.email
-      : e.password.toLowerCase(),this.props.navigation)
-
-
-
-    // this.props.navigation.navigate("Contracts")
+    else{
+      if (this.state.email === '' && this.state.password === '') {
+        this.setState({
+          validation: `Must include either "username" or "email" and "password".`,
+          isValidEmail: require('../../../images/Failure.png'),
+          isValidPass: require('../../../images/Failure.png'),
+        })
+      }else if (this.state.email === '') {
+        this.setState({
+          validation: 'email requerido',
+        })
+      }else if (this.state.password === '') {
+        this.setState({
+          validation: 'password requerido',
+        })
+      }
+    }
   }
   componentWillUpdate(){
     this.props.getStates()
@@ -144,46 +80,20 @@ class Login extends Component {
     this.props.logoutUser()
 
   }
-  componentWillReceiveProps(nextProps){
-    if(nextProps.noPassword != ''){
-      this.setState({
-        validation: nextProps.noPassword,
-      })
-    }
-    if(nextProps.loginError != ''){
-      this.setState({
-        validation: nextProps.loginError,
-      })
-    }
-    if (nextProps.noPassword === 'Este campo es requerido.') {
-      this.setState({
-        validation: 'Este campo es requerido.'
-      })
-    }
+  componentWillUnmount(){
+    ema = ""
   }
   render() {
     const { validation } = this.state
     const { handleSubmit } = this.props
     var validText;
-
-        if (validation === `Must include either "username" or "email" and "password".` ) {
-
-          validText = <Text style={styles.textValidation}>Ingrese un email valido</Text>
-
-        }else if (validation === "No puede iniciar sesión con las credenciales proporcionadas.") {
-
-          validText = <Text style={styles.textValidation}>Ingrese una contraseña valida</Text>
-
-        }else if (validation === 'Este campo es requerido.') {
-
-          validText = <Text style={styles.textValidation}>Ambos campos son requeridos</Text>
-
-        }
-        else if (validation === undefined) {
-
-          validText = null
-
-        }
+    if (validation === `Must include either "username" or "email" and "password".`) {
+      validText = <Text style={styles.textValidation}>Ambos campos son requeridos</Text>
+    } else if(validation === 'email requerido') {
+      validText = <Text style={styles.textValidation}>Ingrese un correo valido</Text>
+    }else if (validation === 'password requerido') {
+      validText = <Text style={styles.textValidation}>Ingrese una contraseña valida</Text>
+    }
     return (
       <Container scrollEnabled={false}>
         <Header title={"INICIO DE SESIÓN"} zIndex navigation={this.props.navigation}/>
@@ -197,8 +107,50 @@ class Login extends Component {
                 <Col style={styles.col__inputs__login}>
                   {/*  this.state.validation : null  } */}
                   { validText }
-                  <Field style={styles.field__email} name="email" component={this.renderInput} />
-                  <Field name="password" component={this.renderInput} />
+                  <Item style={{marginRight:20 }}>
+                    <Input
+                     keyboardType={"email-address"}
+                     autoCapitalize={'none'}
+                     placeholder={"Correo electrónico"}
+                     onChangeText={email => {
+                        this.setState({email})
+                      }}
+                     onBlur={()=>{
+                      if (this.reGex.test(this.state.email)) {
+                        ema = this.state.email
+                        this.setState({
+                          isValidEmail: require('../../../images/succes.png'),
+                        }) 
+                      } else {
+                        this.setState({
+                          isValidEmail: require('../../../images/Failure.png')
+                        })
+                      }
+                     }}
+                    />
+                   <Image style={{width:30,height:30,marginRight:10}} source={this.state.isValidEmail}/>
+                  </Item>
+                  <Item style={{marginRight:20}}>
+                    <Input
+                     autoCapitalize={'none'}
+                     placeholder={"Contraseña"}
+                     secureTextEntry={true}
+                     onChangeText={password => {this.setState({password})}}
+                     returnKeyType={'done'}
+                     onBlur={()=>{
+                        if (this.state.password != '' && this.state.password.length >= 8) {
+                          this.setState({
+                            isValidPass: require('../../../images/succes.png')
+                          })
+                        }else {
+                          this.setState({
+                            isValidPass: require('../../../images/Failure.png')
+                          })
+                        }
+                     }}
+                    />
+                    <Image style={{width:30,height:30,marginRight:10}} source={this.state.isValidPass}/>
+                  </Item>
                 </Col>
               </Row>
               <Row size={40}>
@@ -207,14 +159,16 @@ class Login extends Component {
                     block
                     type="submit"
                     style={styles.btn}
-                    onPress={handleSubmit(this.handleContracts)}
+                    onPress={()=>{
+                        this.handleContracts()  
+                    }}
                   >
                     <Text>Entrar</Text>
                   </Button>
                   <Button
                     block
                     style={styles.btn}
-                    onPress={() => this.props.navigation.navigate("SignIn",ema)}
+                    onPress={() => this.props.navigation.navigate("SignIn",{ema})}
                   >
                     <Text>Crear Cuenta</Text>
                   </Button>
@@ -238,13 +192,7 @@ class Login extends Component {
     );
   }
 }
-const LoginSwag = reduxForm(
-  {
-    form: "test",
-    validate
-  },
-)(Login);
-LoginSwag.navigationOptions = {
+Login.navigationOptions = {
   header: null
 };
 function bindAction(dispatch) {
@@ -261,5 +209,4 @@ const mapStateToProps = state => ({
   noPassword: state.user.noPassword,
 })
 
-// export default LoginSwag;
-export default connect(mapStateToProps, bindAction)(LoginSwag);
+export default connect(mapStateToProps, bindAction)(Login);
