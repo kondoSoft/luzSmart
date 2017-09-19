@@ -76,7 +76,7 @@ class Contracts extends Component {
           contract={contract}
           navigation={navigation}
         />
-        {(profile.premium == true) && fab}
+        {(profile.premium == true)? fab : (contract.length === 0)? fab : null}
         {(Platform.OS === 'ios')? <Footer viewContract={contract} navigation={navigation}/> : null}
       </Container>
     )
