@@ -161,18 +161,18 @@ class Receipt extends Component {
       return false
     }
   }
-  render(){
-    const { navigation } = this.props
-    console.log(this.state);
+  render() {
+    const {navigation} = this.props;
     if (navigation.state.params == undefined) {
-      contract = this.props.newContract
-    }else{
-      contract = navigation.state.params.contract
+      contract = this.props.newContract;
+    }
+    else {
+      contract = navigation.state.params.contract;
     }
 
     var receiptView = (
       <Container>
-        <Header zIndex navigation={this.props.navigation} title="Recibo CFE"/>
+        <Header zIndex navigation={this.props.navigation} title="Recibo de Luz"/>
         <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} />
         <ScrollView
           ref='scroll'
@@ -266,7 +266,7 @@ class Receipt extends Component {
     if (Platform.OS === 'ios') {
       var receiptView = (
         <Container>
-          <Header zIndex navigation={this.props.navigation} title="Recibo CFE"/>
+          <Header zIndex navigation={this.props.navigation} title="Recibo de Luz"/>
           {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
           <ScrollView
             ref='scroll'
@@ -357,7 +357,7 @@ class Receipt extends Component {
               </Col>
             </Grid>
           </ScrollView>
-          <Footer navigation={navigation}/>
+          <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} />
         </Container>
       )
     }

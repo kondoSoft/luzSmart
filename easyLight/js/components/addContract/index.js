@@ -34,7 +34,6 @@ import Footer from '../footer/index';
 import styles from './styles';
 import { getMunicipality, resetMunicipality, postContract, getRate, resetRate } from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
-
 let Screen = Dimensions.get('window')
 
 var arrRangeDate = []
@@ -266,6 +265,7 @@ class AddContracts extends Component {
     }
   }
   render(){
+    
     const { navigation, states_mx, municipality_mx, mun_rate } = this.props
     var periodSummer = (
       <Select

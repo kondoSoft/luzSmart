@@ -32,6 +32,7 @@ class Contact extends Component{
     };
   }
   render(){
+    console.log(this.props.user)
     return(
       <Container>
         <Header navigation={this.props.navigation} title="CONTACTO"/>
@@ -109,6 +110,6 @@ function bindAction(dispatch){
   }
 }
 const mapStateToProps = state => ({
-  user: state.user.userData,
+  user: state.user.user,
 })
 export default connect(mapStateToProps, bindAction)(Contact)

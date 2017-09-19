@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import {
   Container,
   Content,
@@ -20,32 +20,30 @@ import {
   Platform,
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import { Col, Row, Grid } from "react-native-easy-grid";
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
 import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
-import {getRatePeriod, postReceipt} from '../../actions/contracts'
-import { getContract } from '../../actions/list_states_mx'
-import { getIVA } from '../../helpers'
+import { getRatePeriod, postReceipt } from '../../actions/contracts';
+import { getContract } from '../../actions/list_states_mx';
+import { getIVA } from '../../helpers';
 
-var numContract = []
-var rateArr = []
-var finalRange
-var arrReceipts = []
+var numContract = [];
+var rateArr = [];
+var finalRange;
+var arrReceipts = [];
 var limitReceipt;
 var currentDate;
 var firstDate;
 var type_payment;
 var count_days;
-
 var consumoPromedio = 0;
-
 var countKwh = 0;
 class DetailContract extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
       key: null,
@@ -55,53 +53,47 @@ class DetailContract extends Component {
       contract_id: '',
       previous_reading: '',
       payday_limit: '',
-    }
-    this.onOpenSwipe = this.onOpenSwipe.bind(this)
-    this.getStatus = this.getStatus.bind(this)
+      bill: props.navigation.state.params.receipt,
+    };
+    this.onOpenSwipe = this.onOpenSwipe.bind(this);
+    this.getStatus = this.getStatus.bind(this);
   }
   static navigationOptions = {
-    header: null
+    header: null,
   };
   static propType = {
     getRatePeriod: React.PropTypes.func,
     postReceipt: React.PropTypes.func,
   }
-  componentDidMount(){
-    this.getContractsId()
-
-    if(numContract[0].receipt.length != []){
-      this.getStatus()
-      this.props.getRatePeriod(numContract[0].rate, this.props.token)
-      numContract[0].receipt.map((item,i)=>{
-        arrReceipts.push(item)
-      })
-      const lastReceipt = arrReceipts[arrReceipts.length-1]
-      const lastDayLastReceipt = new Date(lastReceipt.payday_limit.replace(/-/g,'\/'))
-      const finalLastDay = new Date(new Date(lastDayLastReceipt).setDate(lastDayLastReceipt.getDate()-76)).getTime()
-      const currentDate = Date.now()
-      const nextPay = new Date(lastDayLastReceipt.setMonth(lastDayLastReceipt.getMonth()+2))
-      const year = nextPay.getFullYear()
-      const month = nextPay.getMonth() + 1
-      const day = nextPay.getDate()
+  componentDidMount() {
+    this.getContractsId();
+    if(numContract[0].receipt.length != []) {
+      this.getStatus();
+      this.props.getRatePeriod(numContract[0].rate, this.props.token);
+      numContract[0].receipt.map((item, i) => {
+        arrReceipts.push(item);
+      });
+      const lastReceipt = arrReceipts[arrReceipts.length - 1];
+      const lastDayLastReceipt = new Date(lastReceipt.payday_limit.replace(/-/g, '\/'));
+      const finalLastDay = new Date(new Date(lastDayLastReceipt).setDate(lastDayLastReceipt.getDate()-76)).getTime();
+      const currentDate = Date.now();
+      const nextPay = new Date(lastDayLastReceipt.setMonth(lastDayLastReceipt.getMonth()+2));
+      const year = nextPay.getFullYear();
+      const month = nextPay.getMonth() + 1;
+      const day = nextPay.getDate();
       const nextPayDay = year + '-' + ((''+ month).length < 2 ? '0' : '') + month + '-' + (('' + day).length < 2 ? '0' : '') + day
       if (currentDate >= finalLastDay) {
         this.setState({
             current_reading: lastReceipt.current_reading + lastReceipt.current_data,
             previous_reading: lastReceipt.current_reading + lastReceipt.current_data,
             payday_limit: nextPayDay,
-            contract_id: numContract[0].id
-        })
-        // },()=>this.props.postReceipt(this.state,this.props.token))
-
+            contract_id: numContract[0].id,
+        });
       }
-
     }
-
-
-    // this.props.getContract(this.props.token)
-  }
-  componentWillReceiveProps(nextProps){
-    type_payment = nextProps.contracts[0].type_payment
+  };
+  componentWillReceiveProps(nextProps) {
+    type_payment = nextProps.contracts[0].type_payment;
     if(type_payment == 'Bimestral'){
       count_days = 60
     }else{
@@ -109,7 +101,7 @@ class DetailContract extends Component {
     }
 
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     numContract = []
     statusArr = []
     consumoTotal = 0;
@@ -119,13 +111,12 @@ class DetailContract extends Component {
   }
 
 
-  onOpenSwipe(i){
+  onOpenSwipe(i) {
     this.setState({
       key: i,
     })
   }
-  getStatus(){
-
+  getStatus() {
     numContract[0].receipt.map((item, i) => {
       const payday = item.payday_limit.replace(/-/g, '\/')
       limitReceipt = Date.parse(new Date(payday))
@@ -142,7 +133,7 @@ class DetailContract extends Component {
       }
     })
   }
-  getContractsId(){
+  getContractsId() {
     const contract = this.props.contracts.map((item,i)=>{
       if (item.id == this.props.navigation.state.params.index){
         numContract.push(item)
@@ -151,78 +142,72 @@ class DetailContract extends Component {
 
   }
   // funcion para obtener los datos por costos y hacer operaciones logicas
-  getCost(rate_period){
+  getCost(rate_period) {
     var verano = [];
     var noverano = [];
-    var kilowatt = []
-
+    var kilowatt = [];
     // empuje de datos en el arreglo de verano y fuera de verano
-    rate_period.map((period, i)=>{
-      if(period.period_name == 'Verano'){
-        verano.push(period)
-      }else{
-        noverano.push(period)
+    rate_period.map((period, i) => {
+      if(period.period_name == 'Verano') {
+        verano.push(period)      
+        }
+      else {
+        noverano.push(period);
+        }
+      });
+      if(arrReceipts[0].period == 'Verano'){
+        kilowatt = verano.map((rate, i)=>{
+          const { kilowatt, cost } = rate;
+          return { kilowatt, cost };
+        });
       }
-    })
-    // countKwh = 1000
-
-    if(arrReceipts[0].period == 'Verano'){
-      kilowatt = verano.map((rate, i)=>{
-        const { kilowatt, cost } = rate
-        return { kilowatt, cost }
-      })
-    }else {
-      kilowatt = noverano.map((rate, i)=>{
-        const { kilowatt, cost } = rate
-        return { kilowatt, cost }
-      })
-    }
-    return kilowatt
+      else {
+        kilowatt = noverano.map((rate, i)=>{
+          const { kilowatt, cost } = rate;
+          return { kilowatt, cost };
+        })
+      }
+    return kilowatt;
   }
 
-    whileCosts(kilowatt, countKwh){
-      var consumoTotal = 0;
-      if(kilowatt){
-        kilowatt = kilowatt.filter((item)=> {return (item.kilowatt>0)}).reverse()
+  whileCosts(kilowatt, countKwh) {
+    var consumoTotal = 0;
+    if(kilowatt){
+      kilowatt = kilowatt.filter((item)=> {return (item.kilowatt>0)}).reverse()
 
-        while(countKwh >= 0 && kilowatt.length > 0) {
-          let range = kilowatt.pop()
-          if (countKwh > range.kilowatt){
-            let consumo = countKwh - range.kilowatt
-            countKwh -= range.kilowatt
-            consumo = range.kilowatt * range.cost
-            consumoTotal += consumo
+      while(countKwh >= 0 && kilowatt.length > 0) {
+        let range = kilowatt.pop()
+        if (countKwh > range.kilowatt){
+          let consumo = countKwh - range.kilowatt
+          countKwh -= range.kilowatt
+          consumo = range.kilowatt * range.cost
+          consumoTotal += consumo
+        }
+        while ( kilowatt.length == 0 && countKwh > 0){
+          consumo = countKwh * range.cost
+          consumoTotal += consumo
+          countKwh -= range.kilowatt
+
+          if (countKwh < range.kilowatt){
+            countKwh = 0
           }
-          while ( kilowatt.length == 0 && countKwh > 0){
-            consumo = countKwh * range.cost
-            consumoTotal += consumo
-            countKwh -= range.kilowatt
 
-            if (countKwh < range.kilowatt){
-              countKwh = 0
-            }
-
-            return consumoTotal
-          }
+          return consumoTotal
         }
       }
     }
-
-
-
-
+  }
 
   render(){
-    const { navigation, rate_period } = this.props
-
-    const { status } = this.state
-    const bill = navigation.state.params.receipt
-    const colors = ['lightgrey','#fff']
+    const { navigation, rate_period } = this.props;
+    const { status } = this.state;
+    const bill = this.state.bill
+    const colors = ['lightgrey','#fff'];
     // Obtener datos por Periodos
     return(
       <Container>
         <Header navigation={navigation} title="Periodos"/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation} detailContract={numContract}/> : null}
+        {(Platform.OS === 'android') ? <Footer navigation={navigation} detailContract={numContract} /> : null}
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Row style={styles.detailContract__row__top}>
@@ -230,7 +215,7 @@ class DetailContract extends Component {
             </Row>
             <Col>
               <List style={styles.list}>
-                {bill.map((item, i )=>
+               {bill.map((item, i )=>
                   {
                   return <SwipeAccordion
                     func={()=>this.onOpenSwipe(i)}
@@ -244,19 +229,18 @@ class DetailContract extends Component {
                     icon={<Icon style={{paddingTop: (navigation.state.routeName === 'DetailContract')? 5 : 15,color: 'steelblue',fontSize:40,textAlign:'center'}} name="information-circle" />}
                   />
                 }
-              )}
-
+              )} 
               </List>
             </Col>
           </Grid>
         </Content>
         <FabButton
           navigation={navigation}
-          onTap={()=>{navigation.navigate("Receipt", {contract: numContract[0]})}}
-          >
+          onTap={() => {navigation.navigate('Receipt', {contract: numContract[0]})}}
+        >
           <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation} bill={bill} detailContract={numContract}/> : null }
+        {(Platform.OS === 'ios') ? <Footer navigation={navigation} bill={bill} detailContract={numContract} /> : null }
       </Container>
     )
   }
@@ -264,9 +248,8 @@ class DetailContract extends Component {
 
 class ItemComponent extends Component{
 
-  render(){
-
-    const receipt = this.props.data
+  render() {
+    const receipt = this.props.data;
     countKwh = receipt.current_reading - receipt.previous_reading
     const subTotal = this.props.consumoPromedio(this.props.ratePeriod, countKwh)
     const total = getIVA(subTotal)
@@ -306,6 +289,6 @@ function bindAction(dispatch){
 const mapStateToProps = state => ({
   contracts: state.list_contracts.contracts,
   token: state.user.token,
-  rate_period: state.list_rate.rate_period
+  rate_period: state.list_rate.rate_period,
 })
-export default connect(mapStateToProps, bindAction)(DetailContract)
+export default connect(mapStateToProps, bindAction)(DetailContract);
