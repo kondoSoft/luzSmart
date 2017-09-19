@@ -13,6 +13,7 @@ import {
   Platform,
   ScrollView,
   AlertIOS,
+  Alert,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -28,11 +29,17 @@ class Contact extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      message: ''
+      message: '',
+      subjects: ['Asunto','Fallo la app?','Crash en la app?','se a borrado mi recibo?'],
+      subject: '',
     };
   }
+  getSubject(subject){
+    this.setState({
+      subject: this.state.subjects[subject]
+    })
+  }
   render(){
-    console.log(this.props.user)
     return(
       <Container>
         <Header navigation={this.props.navigation} title="CONTACTO"/>
@@ -48,15 +55,23 @@ class Contact extends Component{
               padding={10}
               listHeight={100}
               caretSize={0}
+              onSelect={(selected)=>{
+                this.getSubject(selected)
+              }}
               >
-                <Option
-                  value={1}
-                  optionStyle={styles.select__option}
-                  >Por qué nos contacta?</Option>
-                <Option
-                  value={2}
-                  optionStyle={styles.select__option}
-                  >No puedo agregar un recibo fallas en la App</Option>
+              {
+                this.state.subjects.map((subject,key)=>{
+                  return (
+                      <Option
+                        key={key}
+                        value={key}
+                        optionStyle={styles.select__option}
+                      >
+                      {subject}
+                      </Option>
+                    )
+                })
+              }
             </Select>
           </Col>
           <Col size={60} style={styles.row__bottom}>
@@ -75,23 +90,43 @@ class Contact extends Component{
             />
             <View style={styles.col__view__bottom}>
               <Button small primary onPress={()=>{
-                if (this.state.message != '') {
-                  this.props.contactMessage(this.state.message,this.props.user)
-                  AlertIOS.alert(
-                    'GRACIAS!',
-                   `Estimado ${this.props.user.first_name} hemos procesado su queja y/o sugerencia pronto resivira un mensaje de nuestra parte.`,
-                   [
-                     {text: 'OK', onPress: () => this.props.navigation.navigate('Contracts')},
-                   ],
-                  )
+                if (this.state.message != '' && this.state.subject != '') {
+                  this.props.contactMessage(this.state.subject,this.state.message,this.props.user)
+                  if (Platform.OS === 'ios') {
+                      AlertIOS.alert(
+                        'GRACIAS!',
+                       `Estimado ${this.props.user.first_name} hemos procesado su queja y/o sugerencia pronto resivira un mensaje de nuestra parte.`,
+                       [
+                         {text: 'OK', onPress: () => this.props.navigation.navigate('Contracts')},
+                       ],
+                      )
+                  } else {
+                    Alert.alert(
+                      'GRACIAS!',
+                     `Estimado ${this.props.user.first_name} hemos procesado su queja y/o sugerencia pronto resivira un mensaje de nuestra parte.`,
+                     [
+                       {text: 'OK', onPress: () => this.props.navigation.navigate('Contracts')},
+                     ],
+                    )
+                  }
                 }else {
-                  AlertIOS.alert(
-                    'Verificación de datos',
-                   'El campo mensaje debe contener texto',
-                   [
-                     {text: 'OK'},
-                   ],
-                  )
+                  if (Platform.OS === 'ios') {
+                    AlertIOS.alert(
+                      'Verificación de datos',
+                     'El campo mensaje debe contener texto',
+                     [
+                       {text: 'OK'},
+                     ],
+                    )
+                  } else {
+                    Alert.alert(
+                      'Verificación de datos',
+                     'El campo mensaje debe contener texto',
+                     [
+                       {text: 'OK'},
+                     ],
+                    ) 
+                  }
                 }
               }}>
                 <Text>Enviar</Text>
@@ -106,7 +141,7 @@ class Contact extends Component{
 }
 function bindAction(dispatch){
   return {
-    contactMessage: (message,user) => dispatch(contactMessage(message,user)),
+    contactMessage: (subject,message,user) => dispatch(contactMessage(subject,message,user)),
   }
 }
 const mapStateToProps = state => ({
