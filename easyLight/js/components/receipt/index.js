@@ -167,13 +167,18 @@ class Receipt extends Component {
   }
   render() {
     const { navigation } = this.props;
+    // const { bill } = navigation.state.params
+    // var lastBill
     if (navigation.state.params === undefined) {
       contract = this.props.newContract;
     }
     else {
       contract = navigation.state.params.contract;
     }
-
+    // if(bill.length >= 0) {
+    //   lastBill = bill[bill.length-1]
+    // }
+    // console.log(lastBill.payday_limit)
     var receiptView = (
       <Container>
         <Header zIndex navigation={this.props.navigation} title="Recibo de Luz" />

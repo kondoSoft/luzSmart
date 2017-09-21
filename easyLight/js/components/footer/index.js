@@ -14,6 +14,8 @@ class FooterGlobal extends Component {
     var currentContract = null;
     var contractPayDayLimit = false;
     const { state } = this.props.navigation;
+    const firstMonth = this.props.firstDate;
+    const finalMonth = this.props.finalDate;
     if(state.routeName !== 'DetailContract'){
       currentContract = this.props.viewContract;
       currentContract.map((receipts,i)=>{
@@ -80,9 +82,10 @@ class FooterGlobal extends Component {
 
                 }
               }else {
-                this.props.navigation.navigate("Measurements", { currentContract: currentContract})
-              }
-            }}>
+                this.props.navigation.navigate("Measurements", { currentContract: currentContract, firstMonth: firstMonth, finalMonth: finalMonth})
+            }
+          }
+        }>
               <Thumbnail source={ (Platform.OS === 'ios')? require('../../../images/logogray.png') : require('../../../images/logoeasy.png') } style={styles.footer__logo} />
             </Button>
             <Button vertical style={styles.footer__btn__resultados} onPress={()=> (this.props.navigation.state.routeName == "Resultados") ? null :this.props.navigation.navigate('Resultados')}>
@@ -90,7 +93,6 @@ class FooterGlobal extends Component {
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Resultados</Text> : <View/> }
             </Button>
             <Button vertical onPress={()=> (this.props.navigation.state.routeName == "Tips") ? null : this.props.navigation.navigate('Tips')} >
-
               {(Platform.OS === 'ios')?   <Icon style={styles.footer__icon} name="bulb" /> : <Icon style={styles.footer__icon} name="menu" /> }
               {(Platform.OS === 'ios')?   <Text style={styles.footer__text}>Tips</Text> : <View/> }
             </Button>
