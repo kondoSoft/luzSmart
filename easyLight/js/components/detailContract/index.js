@@ -69,15 +69,15 @@ class DetailContract extends Component {
     postReceipt: React.PropTypes.func,
   }
   componentWillMount() {
-    if(this.state.bill){
-      this.getStatus();
-    }
+    // if(this.state.bill !== []){
+    //   this.getStatus();
+    // }
+    this.getContractsId();
   }
   componentDidMount() {
-    const billArr = this.state.bill
-    this.getContractsId();
-    if(billArr != []) {
-      
+    
+    if(this.state.bill.length > 0) {
+      this.getStatus();
       this.props.getRatePeriod(numContract[0].rate, this.props.token);
       billArr.map((item, i) => {
         arrReceipts.push(item);
@@ -137,17 +137,16 @@ class DetailContract extends Component {
       }
        
     })
-    return this.state = {
+    return this.setState = {
       bill: itemStatus
     }
   }
   getContractsId() {
     const contract = this.props.contracts.map((item,i)=>{
       if (item.id == this.props.navigation.state.params.index){
-        numContract.push(item)
+        return numContract.push(item)
       }
     })
-
   }
   // funcion para obtener los datos por costos y hacer operaciones logicas
   getCost(rate_period) {
@@ -212,7 +211,7 @@ class DetailContract extends Component {
     const bill = this.state.bill
     const colors = ['lightgrey','#fff'];
     var params; 
-    if(bill.length >= 0) {
+    if(bill.length > 0) {
       params = { contract: numContract[0], bill: bill } 
     } 
     else{
