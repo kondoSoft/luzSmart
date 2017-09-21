@@ -49,17 +49,22 @@ class ListItemSwipe extends React.Component {
           }
         }
         else if (gestureState.dx > 0) {
-          if (gestureState.dx >= 120) {
+          if (this.props.isPremium) {
+            if (gestureState.dx >= 120) {
             Animated.event([null,{
               dx : 140,
               dy : 0
             }])(e, gestureState);
           }else {
-            Animated.event([null,{
-              dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
-              dy : 0
-            }])(e, gestureState);
+              Animated.event([null,{
+                dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
+                dy : 0
+              }])(e, gestureState);
+            }
+          }else {
+             //do something...
           }
+          
         }
 
       },
@@ -178,7 +183,7 @@ export default class SwipeAccordion extends Component{
     if (this.props.navigation.state.routeName === 'DetailContract') {
 
     }else {
-      this.props.navigation.navigate(route, { receipt: this.props.receipts, index: this.props.index})
+      this.props.navigation.navigate(route, { receipt: this.props.receipts, index: this.props.index,profile: this.props.profile})
     }
   }
   render(){
@@ -204,7 +209,7 @@ export default class SwipeAccordion extends Component{
             {this.props.icon}
           </TouchableOpacity>
         </View>
-        <ListItemSwipe closeExpanded={this.closeExpanded.bind(this)} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
+        <ListItemSwipe isPremium={this.props.isPremium} closeExpanded={this.closeExpanded.bind(this)} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
         <ExpandedView navigation={this.props.navigation} func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contracts') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
       </Animated.View>
     )

@@ -29,7 +29,7 @@ export default class PickerDate extends Component {
         placeholder="select date"
         format="YYYY-MM-DD"
         // minDate={formatDate}
-        // maxDate="2016-06-01"
+        maxDate={formatDate}
         confirmBtnText="Confirmar"
         cancelBtnText="Cancelar"
         customStyles={{

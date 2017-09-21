@@ -75,9 +75,10 @@ class Contracts extends Component {
         <ParentSwipeContracts
           contract={contract}
           navigation={navigation}
+          isPremium={this.props.profile.premium}
         />
         {(profile.premium == true)? fab : (contract.length === 0)? fab : null}
-        {(Platform.OS === 'ios')? <Footer viewContract={contract} navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer isPremium={profile.premium} viewContract={contract} navigation={navigation}/> : null}
       </Container>
     )
   }
@@ -108,19 +109,16 @@ class ParentSwipeContracts extends Component {
       },
     })
   }
-     
-     
-  
   render(){
     const { navigation } = this.props
     const { contract } = this.props
-
     return(
         <ScrollView
           style={{backgroundColor: '#fff'}}
           scrollEnabled={false}
           >
             {contract.map((contract, i )=><SwipeAccordion
+              isPremium={this.props.isPremium}
               func={()=>this.onOpenSwipe(i)}
               indexOpen={this.state.key}
               keyVal={i}
@@ -171,5 +169,6 @@ const mapStateToProps = state => ({
   dataUser: state.user.user,
   profile: state.user.profileUser,
 })
+
 
 export default connect(mapStateToProps, bindAction)(Contracts);

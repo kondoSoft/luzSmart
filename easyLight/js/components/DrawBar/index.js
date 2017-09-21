@@ -60,7 +60,7 @@ class DrawBar extends Component {
                 <View style={{borderBottomWidth: 1, borderColor: 'white'}}>
                   {(this.props.user !== undefined)&& <Text style={{color: 'white'}}>{this.props.user.first_name + ' ' + this.props.user.last_name}</Text>}
                 </View>
-                <Text style={styles.textName} >PREMIUM</Text>
+                <Text style={styles.textName} >{(this.state.profile.premium)? 'PREMIUM' : 'FREE'}</Text>
               </View>
             </View>
           </Image>
