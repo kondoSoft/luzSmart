@@ -77,6 +77,11 @@ class SignIn extends Component {
     });
   }
   componentWillMount () {
+    if (this.props.navigation.state.params != "") {
+      this.setState({
+        email: this.props.navigation.state.params.ema
+      })
+    }
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentWillUnmount () {
@@ -103,7 +108,6 @@ class SignIn extends Component {
   }
   render(){
     const { first_name,last_name,email,password1,password2,avatarSource, birth_date, phone, zip_code } = this.state;
-
     return(
         <Container style={{height:Screen.height}}>
           <Header zIndex navigation={this.props.navigation} title="Nuevo Registro"/>
@@ -181,7 +185,7 @@ class SignIn extends Component {
                       ref='email'
                       style={styles.form__item__input}
                       onChangeText={(email)=> this.setState({email})}
-                      value={(this.props.navigation.state.params != "")&& this.props.navigation.state.params }
+                      value={this.state.email}
                       onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })}
                       onBlur={()=>{
                         if (reGex.test(email)) {
