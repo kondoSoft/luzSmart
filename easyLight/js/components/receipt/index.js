@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import {
   Button,
   Container,
-  View,
+  // View,
   Text,
   Form,
   Item,
@@ -11,20 +11,20 @@ import {
   Input,
 } from 'native-base';
 import {
-  TouchableOpacity,
+  // TouchableOpacity,
   AlertIOS,
   Platform,
   Alert,
   ScrollView,
   Keyboard,
 } from 'react-native';
-import { Col, Row, Grid } from "react-native-easy-grid";
-import { Select, Option } from 'react-native-select-list';
+import { Col, Row, Grid } from 'react-native-easy-grid';
+// import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
 import Footer from '../footer/index';
 import styles from './styles';
-import { postReceipt } from '../../actions/contracts'
-import ReceiptPickerDate from '../datePicker/receipt'
+import { postReceipt } from '../../actions/contracts';
+import ReceiptPickerDate from '../datePicker/receipt';
 
 var contract;
 
@@ -53,12 +53,12 @@ class Receipt extends Component {
   }
   componentWillMount () {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
-   if (this.props.navigation.state.params != undefined){
+   if (this.props.navigation.state.params !== undefined) {
      this.setState({contract_id: this.props.navigation.state.params.contract.id})
    }
   }
   componentWillReceiveProps(nextProps){
-    if(this.props.navigation.state.params == undefined){
+    if(this.props.navigation.state.params === undefined){
       this.setState({contract_id: nextProps.newContract.id})
     }
   }
@@ -69,26 +69,27 @@ class Receipt extends Component {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   handlePaydayLimit(date){
-    // const period;
-    const initialDateRange = new Date(contract.initialDateRange).getTime()
-    const finalDateRange = new Date(contract.finalDateRange).getTime()
-    const limitReceipt = new Date(date).getTime()
-    if(limitReceipt >= initialDateRange && limitReceipt <= finalDateRange){
-      this.setState({
-          period: 'Verano'
-        })
-    }else{
-      this.setState({
-          period: 'NoVerano'
-        })
-    }
 
+    const initialDateRange = new Date(contract.initialDateRange).getTime();
+    const finalDateRange = new Date(contract.finalDateRange).getTime();
+    const limitReceipt = new Date(date).getTime();
+    if (limitReceipt >= initialDateRange && limitReceipt <= finalDateRange){
+      this.setState({
+        period: 'Verano',
+      });
+    }
+    else {
+      this.setState({
+        period: 'NoVerano',
+      });
+    }
     if (date === '') {
 
-    }else {
+    }
+    else {
       this.setState({
-          payday_limit: date
-        })
+        payday_limit: date,
+      });
     }
   }
   handleAmountPayable(text){
@@ -100,8 +101,8 @@ class Receipt extends Component {
   handleCurrentReading(event){
     this.setState({
       current_reading: event.nativeEvent.text,
-      current_reading_ui: event.nativeEvent.text
-    })
+      current_reading_ui: event.nativeEvent.text,
+    });
   }
   handlePreviousReading(event){
     this.setState({
@@ -118,38 +119,40 @@ class Receipt extends Component {
          {text: 'No', onPress: () => this.props.navigation.navigate('Contracts')},
          {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
        ],
-      )
-    }else{
+      );
+    }
+    else {
       Alert.alert(
         'Contrato',
         'Desea agregar un historial al contrato Mi Casa?',
         [
-          {text: 'No', onPress: () => this.props.navigation.navigate('Contracts')},
-          {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
+          { text: 'No', onPress: () => this.props.navigation.navigate('Contracts') },
+          { text: 'Si', onPress: () => this.props.navigation.navigate('History') },
         ],
-      )
+      );
     }
   }
-  sendData(){
+  sendData() {
     if (this.dataValidate(this.state)) {
-      this.props.postReceipt(this.state, this.props.token)
-      this.showAlert()
-    }else {
+      this.props.postReceipt(this.state, this.props.token);
+      this.showAlert();
+    }
+    else {
       Alert.alert(
         'Datos incompletos',
         'Todos los campos son obligatorios',
         [
-          {text: 'Aceptar'},
+          { text: 'Aceptar' },
         ],
-      )
+      );
     }
   }
-  dataValidate(data){
+  dataValidate(data) {
     const {
       amount_payable,
       payday_limit,
       current_reading,
-      previous_reading
+      previous_reading,
     } = data;
     if (amount_payable &&
         payday_limit &&
@@ -157,27 +160,33 @@ class Receipt extends Component {
         previous_reading
     ) {
       return true
-    }else {
+    }
+    else {
       return false
     }
   }
   render() {
-    const {navigation} = this.props;
-    if (navigation.state.params == undefined) {
+    const { navigation } = this.props;
+    // const { bill } = navigation.state.params
+    // var lastBill
+    if (navigation.state.params === undefined) {
       contract = this.props.newContract;
     }
     else {
       contract = navigation.state.params.contract;
     }
-
+    // if(bill.length >= 0) {
+    //   lastBill = bill[bill.length-1]
+    // }
+    // console.log(lastBill.payday_limit)
     var receiptView = (
       <Container>
-        <Header zIndex navigation={this.props.navigation} title="Recibo de Luz"/>
+        <Header zIndex navigation={this.props.navigation} title="Recibo de Luz" />
         <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} />
         <ScrollView
           ref='scroll'
-          style={{backgroundColor: '#fff'}}
-          >
+          style={{ backgroundColor: '#fff' }}
+        >
           <Grid style={styles.grid}>
             <Col size={75}>
               <Form style={styles.form}>
@@ -361,17 +370,17 @@ class Receipt extends Component {
         </Container>
       )
     }
-    return receiptView
+    return receiptView;
   }
 }
 function bindAction(dispatch) {
   return {
     postReceipt: (list, token) => dispatch(postReceipt(list, token)),
-  }
+  };
 }
 const mapStateToProps = state => ({
   newContract: state.list_contracts.newContract,
-  token: state.user.token
-})
+  token: state.user.token,
+});
 
 export default connect(mapStateToProps, bindAction)(Receipt);
