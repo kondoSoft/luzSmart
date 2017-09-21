@@ -83,12 +83,22 @@ class Login extends Component {
   componentWillUnmount(){
     ema = ""
   }
+  componentWillReceiveProps(nextProps){
+    if (nextProps.loginError === 'No puede iniciar sesión con las credenciales proporcionadas.') {
+      this.setState({
+        validation: nextProps.loginError,
+        isValidPass: require('../../../images/Failure.png'),
+        isValidEmail: require('../../../images/Failure.png'),
+      })
+    }
+  }
   render() {
     const { validation } = this.state
+    console.log(validation)
     const { handleSubmit } = this.props
     var validText;
     if (validation === `Must include either "username" or "email" and "password".`) {
-      validText = <Text style={styles.textValidation}>Ambos campos son requeridos</Text>
+      validText = <Text style={styles.textValidation}>Ambos campos son ˜ñ</Text>
     } else if(validation === 'email requerido') {
       validText = <Text style={styles.textValidation}>Ingrese un correo valido</Text>
     }else if (validation === 'password requerido') {

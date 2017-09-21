@@ -113,7 +113,7 @@ export function registerUser(list):Action{
      },
      body: data
     })
-    .then(res=> {return res.json()})
+    .then(res=> { return res.json() })
     .catch(err => console.log(err))
   }
 }

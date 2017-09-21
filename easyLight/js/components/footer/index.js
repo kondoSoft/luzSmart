@@ -85,7 +85,7 @@ class FooterGlobal extends Component {
             }}>
               <Thumbnail source={ (Platform.OS === 'ios')? require('../../../images/logogray.png') : require('../../../images/logoeasy.png') } style={styles.footer__logo} />
             </Button>
-            <Button vertical style={styles.footer__btn__resultados} onPress={()=> (this.props.navigation.state.routeName == "Resultados") ? null :this.props.navigation.navigate('Resultados')}>
+            <Button vertical style={styles.footer__btn__resultados} onPress={()=> (this.props.navigation.state.routeName == "Resultados") ? null :this.props.navigation.navigate('Resultados',{isPremiun: this.props.isPremium})}>
               <Icon style={styles.footer__icon} active name="trending-up" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Resultados</Text> : <View/> }
             </Button>

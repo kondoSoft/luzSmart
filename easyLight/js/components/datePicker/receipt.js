@@ -10,7 +10,7 @@ export default class ReceiptPickerDate extends Component {
   constructor(props){
 
     super(props)
-    this.state = {date: formatDate}
+    this.state = {date: ''}
     this.setDate = this.setDate.bind(this)
   }
   setDate(date){
@@ -27,7 +27,7 @@ export default class ReceiptPickerDate extends Component {
         // date={this.state.date}
         mode="date"
         showIcon={false}
-        placeholder="Fecha final de consumo"
+        placeholder={(this.state.date != '')? this.state.date : 'Fecha final de consumo'}
         format="YYYY-MM-DD"
         // minDate={formatDate}
         // maxDate="2016-06-01"

@@ -31,7 +31,7 @@ class Results  extends Component {
   constructor(props){
     super(props)
     this.state ={
-      active: true
+      active: false
     }
   }
   render(){
@@ -135,34 +135,36 @@ class Results  extends Component {
                   >Gasto Energetico</Option>
             </Select>
           </Row>
-          <Row size={20} style={styles.row__bottom}>
+          <Row size={20} style={styles.row__bottom}> 
             <Button small primary>
               <Text>Exportar CSV</Text>
             </Button>
           </Row>
         </Grid>
         <Fab
-            active={this.state.active}
-            direction="up"
-            containerStyle={{ bottom: 80, right: 10}}
-            style={{ backgroundColor: 'steelblue' }}
-            position="bottomRight"
-            onPress={() => this.setState({ active: !this.state.active })}>
-            <Icon name="share" />
-            {/* <Button style={{ backgroundColor: '#34A34F' }}>
-              <Icon name="logo-whatsapp" />
-            </Button> */}
-            <Button style={{ backgroundColor: '#3B5998' }}>
-              <Icon name="logo-facebook" />
-            </Button>
-            {/* <Button disabled style={{ backgroundColor: '#DD5144' }}>
-              <Icon name="mail" />
-            </Button> */}
-          </Fab>
+          active={this.state.active}
+          direction="up"
+          containerStyle={{ bottom: 80, right: 10}}
+          style={{ backgroundColor: 'steelblue' }}
+          position="bottomRight"
+          onPress={() => this.setState({ active: !this.state.active })}
+          >
+          <Icon name="share" />
+          {/* <Button style={{ backgroundColor: '#34A34F' }}>
+            <Icon name="logo-whatsapp" />
+          </Button> */}
+          <Button style={{ backgroundColor: '#3B5998' }}>
+            <Icon name="logo-facebook" />
+          </Button>
+          {/* <Button disabled style={{ backgroundColor: '#DD5144' }}>
+            <Icon name="mail" />
+          </Button> */}
+        </Fab>  
         {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
       </Container>
     )
   }
 }
+
 
 export default Results;
