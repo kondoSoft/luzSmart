@@ -55,18 +55,18 @@ class Measurements extends Component {
 
   componentWillMount () {
     if (this.props.navigation.state.params.currentContract.length === 1) {
+      this.setDataContract(this.props.navigation.state.params.currentContract[0].id)
       const arrayReceipts = this.props.navigation.state.params.currentContract[0]
       const itemsReceipts = []
       arrayReceipts.receipt.map((item,i)=>{
         itemsReceipts.push(item)
         return item
       })
-      const itemReceipt = itemsReceipts[itemsReceipts.length-1]
+      const itemReceipt = itemsReceipts[0]
       this.setState({
         itemReceipt
       })
     }
-
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentDidMount(){
@@ -93,7 +93,6 @@ class Measurements extends Component {
     // this.props.navigation.goBack()
   }
   setDataContract(contract_id){
-
     const itemContract = []
     var itemReceipt;
     var type_payment
@@ -127,16 +126,18 @@ class Measurements extends Component {
     }else{
       count_days = 30
     }
-    if(currentContract.length >= 2){
-
-      const payday_limit = this.state.itemReceipt.payday_limit.replace(/-/g, '\/')
-      const finalMonth = new Date(payday_limit)
-      const firstMonth = new Date(finalMonth).setDate(new Date(finalMonth).getDate() - count_days)
-      this.setRangeDate(new Date(firstMonth).getMonth(), finalMonth.getMonth())
-    }
-    else{
-      this.setRangeDate(this.props.navigation.state.params.firstMonth, this.props.navigation.state.params.finalMonth)
-    }
+    // if(currentContract.length >= 2){
+    const payday_limit = this.state.itemReceipt.payday_limit.replace(/-/g, '\/')
+    const finalMonth = new Date(payday_limit)
+    const firstMonth = new Date(finalMonth).setDate(new Date(finalMonth).getDate() - count_days)
+    this.setRangeDate(new Date(firstMonth).getMonth(), finalMonth.getMonth())
+    console.log('item',this.state, currentContract)
+    
+    // }
+    // else{
+    //   console.log('item',this.state.itemReceipt)
+    //   this.setRangeDate(this.props.navigation.state.params.firstMonth, this.props.navigation.state.params.finalMonth)
+    // }
     
 
     // Rango automatico del periodo

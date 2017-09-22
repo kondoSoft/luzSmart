@@ -147,7 +147,6 @@ export default class SwipeAccordion extends Component{
     }
   }
   toggle(){
-    this.props.func()
     let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
         finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
 

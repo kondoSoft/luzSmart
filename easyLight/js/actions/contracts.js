@@ -42,7 +42,7 @@ export function postReceipt(list, token):Action{
       })
     })
     .then(res => {return res.json()})
-    .then(res => {console.log(res)})
+    .then(res => {console.log('res',res)})
     .catch(err => console.log(err))
   }
 }
