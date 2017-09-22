@@ -36,9 +36,8 @@ class Tips extends Component{
     }
   }
   componentWillReceiveProps(nextProps){
-    console.log();
     if (this.state.tips.length === nextProps.tips.results.length) {
-      console.log(nextProps.tips.results);
+
     }else {
       this.setState({
         tips: nextProps.tips.results
@@ -64,32 +63,31 @@ class Tips extends Component{
           </Col>)
         })
       }else {
-        tipsArr = (<Col style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
-                 <View style={styles.swipper__col__top__image}>
-                     <Image
-                       source={require('../../../images/foco.png')}
-                       style={styles.image}
-                     />
-                   </View>
-                   <View style={styles.swipper__view}>
-                     <Text style={styles.text}>Estamos añadiendo tips para que puedas reducir tu consumo mensual o bimestral.</Text>
-                   </View>
-                 </Col>)
+        tipsArr =(<Col style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
+                    <View style={styles.swipper__col__top__image}>
+                      <Image
+                        source={require('../../../images/foco.png')}
+                        style={styles.image}
+                       />
+                    </View>
+                    <View style={styles.swipper__view}>
+                      <Text style={styles.text}>Estamos añadiendo tips para que puedas reducir tu consumo mensual o bimestral.</Text>
+                    </View>
+                  </Col>)
       }
     }else {
-      tipsArr = (<Col style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
-               <View style={styles.swipper__col__top__image}>
-                   <Image
-                     source={require('../../../images/foco.png')}
-                     style={styles.image}
-                   />
-                 </View>
-                 <View style={styles.swipper__view}>
-                   <Text style={styles.text}>Estamos añadiendo tips para que puedas reducir tu consumo mensual o bimestral.</Text>
-                 </View>
-               </Col>)
+      tipsArr =(<Col style={styles.slide1,{ marginTop: (Platform.OS === 'ios')? 0 : 50, alignItems: 'center'}}>
+                  <View style={styles.swipper__col__top__image}>
+                    <Image
+                      source={require('../../../images/foco.png')}
+                      style={styles.image}
+                    />
+                  </View>
+                  <View style={styles.swipper__view}>
+                    <Text style={styles.text}>Estamos añadiendo tips para que puedas reducir tu consumo mensual o bimestral.</Text>
+                  </View>
+                </Col>)
     }
-    console.log(tipsArr);
     return(
       <Container>
         <Header navigation={ this.props.navigation } title="Tips" />

@@ -42,14 +42,15 @@ export default {
    fontSize: 16
  },
  swipper__col__top__image:{
-   width: '98%',
+   width: '95%',
    height: '30%',
-   marginBottom:(Platform.OS === 'ios')? 50 : 80,
+   marginBottom:(Platform.OS === 'ios')? 30 : 80,
  },
  swipper__view:{
-   backgroundColor: 'lightgray',
-   height: 100,
-   width: '85%',
-   padding: 10
+   // backgroundColor: 'lightgray',
+   height: 200,
+   width: '95%',
+   padding: 10,
+   alignItems: 'center',
  },
 }

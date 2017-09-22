@@ -41,6 +41,7 @@ var type_payment;
 var count_days;
 var consumoPromedio = 0;
 var countKwh = 0;
+
 class DetailContract extends Component {
   constructor(props) {
     super(props);

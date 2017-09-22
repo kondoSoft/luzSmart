@@ -19,7 +19,7 @@ import {
   Label,
   Right,
 } from "native-base";
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions, Platform, Linking } from 'react-native';
 import { Field, reduxForm } from "redux-form";
 import { setUser, loginUser, logoutUser } from "../../actions/user";
 import styles from "./styles";
@@ -94,7 +94,6 @@ class Login extends Component {
   }
   render() {
     const { validation } = this.state
-    console.log(validation)
     const { handleSubmit } = this.props
     var validText;
     if (validation === `Must include either "username" or "email" and "password".`) {
@@ -188,7 +187,10 @@ class Login extends Component {
                 <Col style={styles.btnView}>
                   <TouchableOpacity
                     style={styles.link}
-                    onPress={() => this.props.navigation.navigate("Home")}>
+                    onPress={() =>{
+                      Linking.openURL('http://127.0.0.1:8000/password_reset/')
+                      // Linking.canOpenURL('http://127.0.0.1:8000/password_reset/')
+                    }}>
                     <Text>Recuperar Contraseña</Text>
                   </TouchableOpacity>
                 </Col>
