@@ -19,6 +19,7 @@ import Measurements from '../measurements'
 import Results from '../results'
 import Login from '../login'
 import Charts from '../charts'
+import { whileCosts } from '../../helpers';
 // var gradientImage = require('../../../images/header.png')
 
 
@@ -71,14 +72,14 @@ class Contracts extends Component {
     return(
       <Container>
         <Header navigation={navigation} title={"EASYLIGTH"}/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={contract} /> : null}
+        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={contract} whileCost={whileCosts} /> : null}
         <ParentSwipeContracts
           contract={contract}
           navigation={navigation}
           isPremium={this.props.profile.premium}
         />
         {(profile.premium == true)? fab : (contract.length === 0)? fab : null}
-        {(Platform.OS === 'ios')? <Footer isPremium={profile.premium} viewContract={contract} navigation={navigation}/> : null}
+        {(Platform.OS === 'ios')? <Footer isPremium={profile.premium} viewContract={contract} navigation={navigation} whileCost={whileCosts}/> : null}
       </Container>
     )
   }
