@@ -60,7 +60,6 @@ export function getUser(token):Action {
 }
 
 export function loginUser(email:email, password:password, navigate):Action {
-  console.log(email,password)
   return dispatch => {
     return fetch(endPoint+'/rest-auth/login/',{
       method: 'POST',
@@ -74,11 +73,9 @@ export function loginUser(email:email, password:password, navigate):Action {
         password: password,
       })
     })
-    .then(res => { 
-      console.log('res login >>>>>',res)
-      return res.json() })
+    .then(res => { return res.json() })
     .then(token => {
-      console.log(token);
+      // console.log(token);
       dispatch(setUser(token))
       if(!token.non_field_errors && email !== undefined){
         navigate.navigate("Contratos")
