@@ -23,6 +23,7 @@ import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
 import { patchReceipt } from '../../actions/contracts'
+import { getIVA, whileCosts } from '../../helpers';
 
 let Screen = Dimensions.get('window')
 
@@ -50,11 +51,15 @@ class Measurements extends Component {
       kwhValidation: 'KWh'
     }
     this.contract_id;
+    this.subTotal;
+    this.total;
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
     this.changeCheckedData = this.changeCheckedData.bind(this)
   }
 
   componentWillMount () {
+    this.subTotal = this.props.navigation.state.params.whileCosts(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading) 
+    this.total = getIVA(this.subTotal)
     if (this.props.navigation.state.params.currentContract.length === 1) {
       this.setDataContract(this.props.navigation.state.params.currentContract[0].id)
       const arrayReceipts = this.props.navigation.state.params.currentContract[0]
@@ -106,24 +111,41 @@ class Measurements extends Component {
         kwhValidation: 'KWh'
       })
     },1000);
+    this.setState({
+      current_data: '',
+    })
   }
   sendCurrentData(id){
-    if (this.state.current_data != '') {
+    if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading) {
         this.props.patchReceipt(this.state.current_data, this.props.token, id)
         this.setState({
           kwhValidation: require('../../../images/succes.png')
-        },this.changeCheckedData())
+        },()=>{
+         this.changeCheckedData()
+         this.subTotal = this.props.navigation.state.params.whileCosts(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading) 
+         this.total = getIVA(this.subTotal)
+        })
       // this.props.navigation.goBack()  
     }else{
-      AlertIOS.alert(
-        'Validacion',
-       'Se necesita datos para calcular el consumo de KHw',
-       [
-         {text: 'OK'},
-       ],
-      )
+      if (this.state.current_data === '') {
+        AlertIOS.alert(
+          'Validacion',
+          'Se necesita datos para calcular el consumo de KHw',
+          [
+            {text: 'OK'},
+          ],
+        )  
+      }else if(this.state.current_data < this.state.itemReceipt.current_reading){
+        AlertIOS.alert(
+          'Validacion',
+          'Los datos introducidos debe ser mayor a la ultima lectura diaria',
+          [
+            {text: 'OK'},
+          ],
+        ) 
+      }
+      
     }
-    
   }
   setDataContract(contract_id){
     this.contract_id = contract_id;
@@ -152,7 +174,6 @@ class Measurements extends Component {
 
   }
   render(){
-    //this.setRangeDate()
     const { navigation, contracts} = this.props
     // Contrato que viene desde la pantalla recibos
     const { currentContract } = this.props.navigation.state.params
@@ -166,7 +187,6 @@ class Measurements extends Component {
     const finalMonth = new Date(payday_limit)
     const firstMonth = new Date(finalMonth).setDate(new Date(finalMonth).getDate() - count_days)
     this.setRangeDate(new Date(firstMonth).getMonth(), finalMonth.getMonth())
-    console.log('item',this.state, currentContract)
     
     // }
     // else{
@@ -197,7 +217,6 @@ class Measurements extends Component {
       })}
     </Select>
     // Math
-
     return(
       <Container style={{backgroundColor: '#fff'}}>
         <Header navigation={this.props.navigation} zIndex title="Mediciones"/>
@@ -211,7 +230,7 @@ class Measurements extends Component {
             <Row size={4} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
               <View style={styles.grid__row__top__view}>
-                <Text>$2,150</Text>
+                <Text>{this.total}</Text>
                 <Text>Proyectado</Text>
               </View>
             </Row>
@@ -264,6 +283,7 @@ class Measurements extends Component {
                       keyboardType={'numeric'}
                       style={styles.animatedView__image__view__input}
                       onChangeText={(current_data)=> this.setState({ current_data })}
+                      value={this.state.current_data}
                       onFocus={ () => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 185 : 300 }) }
                     />
                     {(typeof this.state.kwhValidation != 'string')? <Image style={{width:35,height:30,marginRight:0}} source={this.state.kwhValidation}/> : <Text style={{color: 'grey'}}>{this.state.kwhValidation}</Text>}
@@ -307,5 +327,6 @@ function bindAction(dispatch) {
 const mapStateToProps = state => ({
   contracts: state.list_contracts.contracts,
   token: state.user.token,
+  rate_period: state.list_rate.rate_period,
 });
 export default connect(mapStateToProps, bindAction)(Measurements)
