@@ -14,7 +14,7 @@ import {
   Button,
   Input,
 } from 'native-base';
-import { Image, TextInput, Platform, ScrollView, Dimensions, Keyboard } from 'react-native';
+import { Image, TextInput, Platform, ScrollView, Dimensions, Keyboard, AlertIOS } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
 import Header from '../header/index';
@@ -49,6 +49,7 @@ class Measurements extends Component {
       },
       kwhValidation: 'KWh'
     }
+    this.contract_id;
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
     this.changeCheckedData = this.changeCheckedData.bind(this)
   }
@@ -64,13 +65,34 @@ class Measurements extends Component {
       })
       const itemReceipt = itemsReceipts[0]
       this.setState({
-        itemReceipt
+        itemReceipt,
       })
     }
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentDidMount(){
 
+  }
+  componentWillReceiveProps(nextProps){
+    let filItemID = nextProps.contracts.filter((item,i)=>{
+      return item.id === this.contract_id;
+    })
+    let prevCurrentReading = this.state.itemReceipt.current_reading;
+    let nextCurrentReading = filItemID[0].receipt[0].current_reading;
+    
+    if (nextCurrentReading > prevCurrentReading) {
+      this.setState({
+        itemReceipt:{
+          id: this.state.itemReceipt.id,
+          previous_reading: this.state.itemReceipt.previous_reading,
+          current_reading: nextCurrentReading,
+          payday_limit: this.state.itemReceipt.payday_limit,
+          period: this.state.itemReceipt.period,
+          amount_payable: this.state.itemReceipt.amount_payable,
+        }
+      })
+
+    }
   }
   componentWillUnmount () {
     this.keyboardDidHideListener.remove();
@@ -83,16 +105,28 @@ class Measurements extends Component {
       this.setState({
         kwhValidation: 'KWh'
       })
-    },2000);
+    },1000);
   }
   sendCurrentData(id){
-    this.props.patchReceipt(this.state.current_data, this.props.token, id)
-    this.setState({
-      kwhValidation: require('../../../images/succes.png')
-    },this.changeCheckedData())
-    // this.props.navigation.goBack()
+    if (this.state.current_data != '') {
+        this.props.patchReceipt(this.state.current_data, this.props.token, id)
+        this.setState({
+          kwhValidation: require('../../../images/succes.png')
+        },this.changeCheckedData())
+      // this.props.navigation.goBack()  
+    }else{
+      AlertIOS.alert(
+        'Validacion',
+       'Se necesita datos para calcular el consumo de KHw',
+       [
+         {text: 'OK'},
+       ],
+      )
+    }
+    
   }
   setDataContract(contract_id){
+    this.contract_id = contract_id;
     const itemContract = []
     var itemReceipt;
     var type_payment
@@ -118,6 +152,7 @@ class Measurements extends Component {
 
   }
   render(){
+    //this.setRangeDate()
     const { navigation, contracts} = this.props
     // Contrato que viene desde la pantalla recibos
     const { currentContract } = this.props.navigation.state.params
@@ -217,7 +252,7 @@ class Measurements extends Component {
                 </ListItem>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Consumo en KWh</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading }</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading === undefined)? 0 : this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading }</Text>
                 </ListItem>
               </List>
             </Row>
