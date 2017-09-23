@@ -17,7 +17,6 @@ import {
 import styles from './styles';
 const Screen = Dimensions.get('window');
 
-
 class HeaderGlobal extends Component {
   //
   // handleDrawer(){

@@ -56,18 +56,18 @@ class Measurements extends Component {
 
   componentWillMount () {
     if (this.props.navigation.state.params.currentContract.length === 1) {
+      this.setDataContract(this.props.navigation.state.params.currentContract[0].id)
       const arrayReceipts = this.props.navigation.state.params.currentContract[0]
       const itemsReceipts = []
       arrayReceipts.receipt.map((item,i)=>{
         itemsReceipts.push(item)
         return item
       })
-      const itemReceipt = itemsReceipts[itemsReceipts.length-1]
+      const itemReceipt = itemsReceipts[0]
       this.setState({
         itemReceipt,
       })
     }
-
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentDidMount(){
@@ -129,10 +129,12 @@ class Measurements extends Component {
     this.contract_id = contract_id;
     const itemContract = []
     var itemReceipt;
+    var type_payment
 
     var arrContracts = this.props.contracts.map((item, i) => {
       if(item.id == contract_id){
-        itemContract.push(item.receipt)
+        type_payment = item.type_payment;
+        itemContract.push(item.receipt);
       }
     })
     itemContract.map((item,i)=>{
@@ -140,38 +142,39 @@ class Measurements extends Component {
     })
     this.setState({
       itemReceipt,
+      type_payment: type_payment
     })
   }
   // Funcion rango de fecha
-  setRangeDate(){
+  setRangeDate(firstMonth, finalMonth){
     const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-    const d = new Date()
-    const month = d.getMonth();
-    const day = d.getDate();
-    const year = d.getFullYear();
-    const currentDate = ((''+day).length<2 ? '0' : '') + day + '/' + ((''+month).length<2 ? '0' : '') + month + '/' + d.getFullYear()
-    const indexPaydayLimit = this.state.itemReceipt.payday_limit.slice(5,7)
-    const dayPaydayLimit = this.state.itemReceipt.payday_limit.slice(8,10)
-    const initialDate = new Date(year, indexPaydayLimit, dayPaydayLimit)
-
-    var finalDate = initialDate.setDate(initialDate.getDate()+30)
-    finalDate = initialDate.getMonth()-1
-    rangeDate = arrMonth[indexPaydayLimit-1] + '-' + arrMonth[finalDate]
+    return rangeDate = arrMonth[firstMonth] + '-' + arrMonth[finalMonth]
 
   }
   render(){
-    this.setRangeDate()
+    //this.setRangeDate()
     const { navigation, contracts} = this.props
-
     // Contrato que viene desde la pantalla recibos
     const { currentContract } = this.props.navigation.state.params
-    const receipt = this.props.navigation.state.params.currentContract[0].receipt
-    // Array de recibos para sacar el ultimo
-    const arrReceipt = receipt.map((item, i)=>{
-      return item
-    })
-    //  Ultimo recibo
-    const lastReceipt = arrReceipt[receipt.length-1]
+    if(this.state.type_payment == 'Bimestral'){
+      count_days = 60
+    }else{
+      count_days = 30
+    }
+    // if(currentContract.length >= 2){
+    const payday_limit = this.state.itemReceipt.payday_limit.replace(/-/g, '\/')
+    const finalMonth = new Date(payday_limit)
+    const firstMonth = new Date(finalMonth).setDate(new Date(finalMonth).getDate() - count_days)
+    this.setRangeDate(new Date(firstMonth).getMonth(), finalMonth.getMonth())
+    console.log('item',this.state, currentContract)
+    
+    // }
+    // else{
+    //   console.log('item',this.state.itemReceipt)
+    //   this.setRangeDate(this.props.navigation.state.params.firstMonth, this.props.navigation.state.params.finalMonth)
+    // }
+    
+
     // Rango automatico del periodo
     const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
     // Select Contract
@@ -185,8 +188,7 @@ class Measurements extends Component {
       caretSize={0}
       onSelect={(id) => this.setDataContract(id)}
       >
-      {contracts.map((item,i)=>{
-
+      {currentContract.map((item,i)=>{
         return <Option
           key={i}
           value={item.id}
@@ -222,8 +224,9 @@ class Measurements extends Component {
               </Row>
               <Row style={styles.grid__col__select__row__bottom}>
                 <Text style={styles.grid__row__top__view}>Periodo</Text>
-                {(Platform.OS === 'ios')?
-                (receipt.length >= 1) && TextReceipt
+                
+                {(Platform.OS === 'ios') ? TextReceipt
+                 // {(Platform.OS === 'ios')? (receipt.length >= 1) && TextReceipt
                 :
                 <View style={styles.selectPicker}>
                   <Picker
