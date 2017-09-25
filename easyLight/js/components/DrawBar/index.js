@@ -16,7 +16,7 @@ const Screen = Dimensions.get('window');
 import styles from './styles';
 import {getUser} from '../../actions/user'
 
-const routes = ["Contratos", "Resultados", "Tips", "Login"];
+const routes = ["Contratos", "Resultados","Contacto", "Tips", "Login"];
 
 
 

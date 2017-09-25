@@ -67,7 +67,6 @@
 		A89E687DFFF34004A72A41E7 /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 401C8FB71FAE4DCF80A449BC /* Andale Mono.ttf */; };
 		AE6595A9355D457EBCE6AB0D /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FD63DEE96DB42B5A52B70BD /* Rubik-Medium.ttf */; };
 		B3DBCA0AB8CC4EF192A66FAD /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD0CD31AAF794BFB85AB1276 /* Rubik-BlackItalic.ttf */; };
-		B723CB9C1F7978710005FC48 /* newSplashScreen.PNG in Resources */ = {isa = PBXBuildFile; fileRef = B723CB9B1F7978710005FC48 /* newSplashScreen.PNG */; };
 		BA6E3CB20E704B19A610ADE5 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5EC6A210F0F4D949C0677A5 /* libRNSVG.a */; };
 		BD5758A3089D4CC0B62981CA /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58ED0F727153493698A525A8 /* rubicon-icon-font.ttf */; };
 		C9AD82A2E8664BCBA0874CDF /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5FE3AF64F7C045A2B204145C /* SimpleLineIcons.ttf */; };
@@ -367,6 +366,7 @@
 		5FE3AF64F7C045A2B204145C /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		6117B72A64554DC8B3ECF915 /* Arial Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Arial Black.ttf"; path = "../node_modules/native-base/Fonts/Arial Black.ttf"; sourceTree = "<group>"; };
 		69D2060BF61548FF8042CE5A /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-MediumItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-MediumItalic.ttf"; sourceTree = "<group>"; };
+		6A99B4B61F799AF400A3B965 /* newSplashScreen.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = newSplashScreen.PNG; path = ../../../../../Downloads/newSplashScreen.PNG; sourceTree = "<group>"; };
 		6C8FE0B3E1C044DFB21DCC29 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		7247D44A1F60A5B900250187 /* iphone 7s y 6s_ portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone 7s y 6s_ portrait.png"; sourceTree = "<group>"; };
 		7247D44B1F60A5B900250187 /* iphone7-y-6-plus_portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone7-y-6-plus_portrait.png"; sourceTree = "<group>"; };
@@ -382,7 +382,6 @@
 		ABFDC1A6B1D14AF09E3C6366 /* Times New Roman.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Times New Roman.ttf"; path = "../node_modules/native-base/Fonts/Times New Roman.ttf"; sourceTree = "<group>"; };
 		AE81FFAB3CEC48B88586543A /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		AECFE2BBF925403BAFDCCA8B /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		B723CB9B1F7978710005FC48 /* newSplashScreen.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = newSplashScreen.PNG; path = ../../../../../Desktop/newSplashScreen.PNG; sourceTree = "<group>"; };
 		B9FBCE56480B4E7A800F6A7F /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		C2800C5CB6384A9C97C0D1A7 /* Courier New.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Courier New.ttf"; path = "../node_modules/native-base/Fonts/Courier New.ttf"; sourceTree = "<group>"; };
 		CD0CD31AAF794BFB85AB1276 /* Rubik-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BlackItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -580,6 +579,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6A99B4951F79988F00A3B965 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				AE81FFAB3CEC48B88586543A /* libCodePush.a */,
+				01E1F6217B084F418390C975 /* libRNImagePicker.a */,
+				D534F8ADFF36498689C27F70 /* libBVLinearGradient.a */,
+				E5EC6A210F0F4D949C0677A5 /* libRNSVG.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		72096A5C1F61DBE700DD9E25 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -592,7 +602,7 @@
 		7247D4491F60A5B900250187 /* PNG splashscreen-ios */ = {
 			isa = PBXGroup;
 			children = (
-				B723CB9B1F7978710005FC48 /* newSplashScreen.PNG */,
+				6A99B4B61F799AF400A3B965 /* newSplashScreen.PNG */,
 				7247D44A1F60A5B900250187 /* iphone 7s y 6s_ portrait.png */,
 				7247D44B1F60A5B900250187 /* iphone7-y-6-plus_portrait.png */,
 				7247D44C1F60A5B900250187 /* iphoneSE_ portrait.png */,
@@ -650,6 +660,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				25C1E90E771D4B918DDB0C13 /* Frameworks */,
 				A2148B30DAA644EA8E31BEC0 /* Resources */,
+				6A99B4951F79988F00A3B965 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -1169,7 +1180,6 @@
 				E4738C80A6F94839A000D5EA /* EvilIcons.ttf in Resources */,
 				746C4AF0C55B401FB05EB152 /* FontAwesome.ttf in Resources */,
 				7247D44E1F60A5B900250187 /* iphone7-y-6-plus_portrait.png in Resources */,
-				B723CB9C1F7978710005FC48 /* newSplashScreen.PNG in Resources */,
 				66FB995852FB4DD388B938CC /* Foundation.ttf in Resources */,
 				2CE520A091324A9782C71F4D /* Georgia.ttf in Resources */,
 				6F3701F2FBCF4F4FBD74AB82 /* Ionicons.ttf in Resources */,

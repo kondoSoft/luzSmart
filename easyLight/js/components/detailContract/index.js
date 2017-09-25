@@ -93,26 +93,26 @@ class DetailContract extends Component {
         arrReceipts.push(item);
       });
       //se obtiene el ultimo recibo en el contrato
-      const lastReceipt = arrReceipts[0];
-      const lastDayLastReceipt = new Date(lastReceipt.payday_limit.replace(/-/g, '\/'));
-      const finalLastDay = new Date(new Date(lastDayLastReceipt).setDate(lastDayLastReceipt.getDate() - addMonth)).getTime();
-      const currentDate = Date.now();
-      const nextPay = new Date(lastDayLastReceipt).setMonth(lastDayLastReceipt.getMonth()+ addMonth)
-      const date = new Date(nextPay)
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-      const nextPayday = year + '-' + ((''+ month).length < 2 ? '0' : '') + month + '-' + (('' + day).length < 2 ? '0' : '') + day
+      // const lastReceipt = arrReceipts[0];
+      // const lastDayLastReceipt = new Date(lastReceipt.payday_limit.replace(/-/g, '\/'));
+      // const finalLastDay = new Date(new Date(lastDayLastReceipt).setDate(lastDayLastReceipt.getDate() - addMonth)).getTime();
+      // const currentDate = Date.now();
+      // const nextPay = new Date(lastDayLastReceipt).setMonth(lastDayLastReceipt.getMonth()+ addMonth)
+      // const date = new Date(nextPay)
+      // const year = date.getFullYear();
+      // const month = date.getMonth() + 1;
+      // const day = date.getDate();
+      // const nextPayday = year + '-' + ((''+ month).length < 2 ? '0' : '') + month + '-' + (('' + day).length < 2 ? '0' : '') + day
       // ***************** Creacion automatica de un recibo dependiendo de la fecha limite del ultimo recibo ************************``
-      if (currentDate > finalLastDay) {
-        return this.setState ({
-        current_reading: lastReceipt.current_reading,
-        previous_reading: lastReceipt.current_reading,
-        payday_limit: nextPayday,
-        contract_id: numContract[0].id,
-        }, ()=> this.props.postReceipt(this.state, this.props.token))
+      // if (currentDate > finalLastDay) {
+      //   return this.setState ({
+      //   current_reading: lastReceipt.current_reading,
+      //   previous_reading: lastReceipt.current_reading,
+      //   payday_limit: nextPayday,
+      //   contract_id: numContract[0].id,
+      //   }, ()=> this.props.postReceipt(this.state, this.props.token))
         
-      }
+      // }
 
     }
   };
@@ -197,19 +197,18 @@ class DetailContract extends Component {
     const { status } = this.state;
     const bill = this.state.bill
     const colors = ['lightgrey','#fff'];
-    let fab;
+    let fab = <FabButton
+          navigation={navigation}
+          onTap={() => {navigation.navigate('Receipt', params)}}
+        >
+          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+        </FabButton>
     var params; 
     if(bill.length > 0) {
       params = { contract: numContract[0], bill: bill } 
     } 
     else{
       params = { contract: numContract[0] }
-      fab = <FabButton
-          navigation={navigation}
-          onTap={() => {navigation.navigate('Receipt', params)}}
-        >
-          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
-        </FabButton>
     }
     // Obtener datos por Periodos
     return(
