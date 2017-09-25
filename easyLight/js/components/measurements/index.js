@@ -73,7 +73,7 @@ class Measurements extends Component {
         itemReceipt,
       },()=>{
         this.getTotalPayment()
-        // this.forceUpdate()
+        this.forceUpdate()
       })
     }
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
@@ -121,7 +121,7 @@ class Measurements extends Component {
         },()=>{
          this.changeCheckedData()
          this.getTotalPayment()
-         // this.forceUpdate()
+         this.forceUpdate()
         })
       // this.props.navigation.goBack()  
     }else{

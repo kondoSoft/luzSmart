@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="iphone7-y-6-plus_portrait.png" translatesAutoresizingMaskIntoConstraints="NO" id="eOC-hs-BwR">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="newSplashScreen.PNG" translatesAutoresizingMaskIntoConstraints="NO" id="eOC-hs-BwR">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
@@ -48,6 +48,6 @@
         </view>
     </objects>
     <resources>
-        <image name="iphone7-y-6-plus_portrait.png" width="1242" height="2208"/>
+        <image name="newSplashScreen.PNG" width="640" height="1136"/>
     </resources>
 </document>
