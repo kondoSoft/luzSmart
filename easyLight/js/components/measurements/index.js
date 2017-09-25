@@ -22,8 +22,9 @@ import Footer from '../footer/index';
 import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
-import { patchReceipt } from '../../actions/contracts'
+import { patchReceipt, getRatePeriod } from '../../actions/contracts'
 import { getIVA, whileCosts } from '../../helpers';
+
 
 let Screen = Dimensions.get('window')
 
@@ -53,13 +54,12 @@ class Measurements extends Component {
     this.contract_id;
     this.subTotal;
     this.total;
+    this.rate_contract;
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
     this.changeCheckedData = this.changeCheckedData.bind(this)
   }
 
-  componentWillMount () {
-    this.subTotal = this.props.navigation.state.params.whileCosts(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading) 
-    this.total = getIVA(this.subTotal)
+  componentWillMount () {  
     if (this.props.navigation.state.params.currentContract.length === 1) {
       this.setDataContract(this.props.navigation.state.params.currentContract[0].id)
       const arrayReceipts = this.props.navigation.state.params.currentContract[0]
@@ -71,12 +71,12 @@ class Measurements extends Component {
       const itemReceipt = itemsReceipts[0]
       this.setState({
         itemReceipt,
+      },()=>{
+        this.getTotalPayment()
+        // this.forceUpdate()
       })
     }
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
-  }
-  componentDidMount(){
-
   }
   componentWillReceiveProps(nextProps){
     let filItemID = nextProps.contracts.filter((item,i)=>{
@@ -84,7 +84,6 @@ class Measurements extends Component {
     })
     let prevCurrentReading = this.state.itemReceipt.current_reading;
     let nextCurrentReading = filItemID[0].receipt[0].current_reading;
-    
     if (nextCurrentReading > prevCurrentReading) {
       this.setState({
         itemReceipt:{
@@ -96,7 +95,6 @@ class Measurements extends Component {
           amount_payable: this.state.itemReceipt.amount_payable,
         }
       })
-
     }
   }
   componentWillUnmount () {
@@ -122,8 +120,8 @@ class Measurements extends Component {
           kwhValidation: require('../../../images/succes.png')
         },()=>{
          this.changeCheckedData()
-         this.subTotal = this.props.navigation.state.params.whileCosts(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading) 
-         this.total = getIVA(this.subTotal)
+         this.getTotalPayment()
+         // this.forceUpdate()
         })
       // this.props.navigation.goBack()  
     }else{
@@ -151,10 +149,11 @@ class Measurements extends Component {
     this.contract_id = contract_id;
     const itemContract = []
     var itemReceipt;
-    var type_payment
+    var type_payment;
 
     var arrContracts = this.props.contracts.map((item, i) => {
       if(item.id == contract_id){
+        this.rate_contract = item.rate
         type_payment = item.type_payment;
         itemContract.push(item.receipt);
       }
@@ -165,6 +164,8 @@ class Measurements extends Component {
     this.setState({
       itemReceipt,
       type_payment: type_payment
+    },()=>{
+      this.props.getRatePeriod(this.rate_contract, this.props.token)
     })
   }
   // Funcion rango de fecha
@@ -173,7 +174,16 @@ class Measurements extends Component {
     return rangeDate = arrMonth[firstMonth] + '-' + arrMonth[finalMonth]
 
   }
+  getTotalPayment(){
+    if (this.props.rate_period.length > 0) {
+      if (this.rate_contract === this.props.rate_period[0].name_rate) {
+        this.subTotal = whileCosts(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading) 
+        this.total = getIVA(this.subTotal);
+      }
+    }
+  }
   render(){
+    this.getTotalPayment()
     const { navigation, contracts} = this.props
     // Contrato que viene desde la pantalla recibos
     const { currentContract } = this.props.navigation.state.params
@@ -230,7 +240,7 @@ class Measurements extends Component {
             <Row size={4} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
               <View style={styles.grid__row__top__view}>
-                <Text>{this.total}</Text>
+                <Text>{(this.total != undefined)? `$${this.total.toLocaleString()}` : `$ 0`}</Text>
                 <Text>Proyectado</Text>
               </View>
             </Row>
@@ -322,6 +332,7 @@ class Measurements extends Component {
 function bindAction(dispatch) {
   return {
     patchReceipt: (data, token, id) => dispatch(patchReceipt(data, token, id)),
+    getRatePeriod: (rate, token) => dispatch(getRatePeriod(rate, token)),
   };
 }
 const mapStateToProps = state => ({

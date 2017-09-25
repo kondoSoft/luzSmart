@@ -44,7 +44,6 @@ const whileCosts = (kilowatt, countKwh) => {
           if (countKwh < range.kilowatt){
             countKwh = 0
           }
-
           return consumoTotal
         }
       }
