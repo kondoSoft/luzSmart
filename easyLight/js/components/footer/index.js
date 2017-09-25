@@ -39,7 +39,7 @@ class FooterGlobal extends Component {
               <Icon style={styles.footer__icon} name="home" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text}>Inicio</Text> : <View/> }
             </Button>
-            <Button vertical style={styles.footer__btn__resultados} onPress={()=>this.props.navigation.navigate('Contact')}>
+            <Button vertical style={styles.footer__btn__resultados}>
               <Icon style={styles.footer__icon} name="calendar" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Periodos</Text> : <View/> }
             </Button>

@@ -32,6 +32,7 @@ class Contact extends Component{
       message: '',
       subjects: ['Asunto','Fallo la app?','Crash en la app?','se a borrado mi recibo?'],
       subject: '',
+      validText: false,
     };
   }
   getSubject(subject){
@@ -87,8 +88,17 @@ class Contact extends Component{
                   message
                 })
               }}
+              onBlur={()=>{
+                if (this.state.message != '') {
+                  this.setState({
+                    validText: true,
+                  })
+                }
+              }}
             />
-            <View style={styles.col__view__bottom}>
+            {
+              (this.state.validText)&&
+              <View style={styles.col__view__bottom}>
               <Button small primary onPress={()=>{
                 if (this.state.message != '' && this.state.subject != '') {
                   this.props.contactMessage(this.state.subject,this.state.message,this.props.user)
@@ -132,6 +142,7 @@ class Contact extends Component{
                 <Text>Enviar</Text>
               </Button>
             </View>
+            }
           </Col>
         </ScrollView>
           {(Platform.OS === 'ios')? <Footer navigation={this.props.navigation} viewContract={this.props.screenProps.contracts} /> : null}
