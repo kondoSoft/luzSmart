@@ -27,7 +27,7 @@ const whileCosts = (kilowatt, countKwh) => {
     var consumoTotal = 0;
     if(kilowatt){
       kilowatt = kilowatt.filter((item)=> {return (item.kilowatt>0)}).reverse()
-
+  
       while(countKwh >= 0 && kilowatt.length > 0) {
         let range = kilowatt.pop()
         if (countKwh > range.kilowatt){
@@ -36,6 +36,7 @@ const whileCosts = (kilowatt, countKwh) => {
           consumo = range.kilowatt * range.cost
           consumoTotal += consumo
         }
+
         while ( kilowatt.length == 0 && countKwh > 0){
           consumo = countKwh * range.cost
           consumoTotal += consumo

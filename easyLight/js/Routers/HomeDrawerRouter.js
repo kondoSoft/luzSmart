@@ -24,7 +24,7 @@ export default (DrawNav = DrawerNavigator(
     Measurements: { screen: Measurements },
     Tips: { screen: Tips },
     Resultados: { screen: Results },
-    Contact: { screen:  Contact },
+    Contacto: { screen:  Contact },
     AddContracts: { screen: AddContracts },
     EditContracts: { screen: EditContracts },
     Receipt: { screen: Receipt },
