@@ -67,7 +67,7 @@ class FooterGlobal extends Component {
                   if (Platform.OS === 'ios') {
                     AlertIOS.alert(
                       'Contrato',
-                     'Debes de tener al menos un contrato CFE registrado.',
+                     'Debes de tener al menos un contrato de luz registrado.',
                      [
                        {text: 'OK'},
                      ],
@@ -75,7 +75,7 @@ class FooterGlobal extends Component {
                   }else {
                     Alert.alert(
                       'Contrato',
-                     'Debes de tener al menos un contrato CFE registrado.',
+                     'Debes de tener al menos un contrato de luz registrado.',
                      [
                        {text: 'OK'},
                      ],
