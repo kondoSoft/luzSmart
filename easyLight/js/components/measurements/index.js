@@ -183,6 +183,7 @@ class Measurements extends Component {
     }
   }
   render(){
+    console.log(this.props)
     this.getTotalPayment()
     const { navigation, contracts} = this.props
     // Contrato que viene desde la pantalla recibos

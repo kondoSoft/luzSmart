@@ -62,9 +62,9 @@ class DetailContract extends Component {
     };
     this.getStatus = this.getStatus.bind(this);
   }
-  static navigationOptions = {
-    header: null,
-  };
+  // static navigationOptions = {
+  //   title: 'Detail'
+  // };
   static propType = {
     getRatePeriod: React.PropTypes.func,
     postReceipt: React.PropTypes.func,
@@ -213,7 +213,7 @@ class DetailContract extends Component {
     // Obtener datos por Periodos
     return(
       <Container>
-        <Header navigation={navigation} title="Periodos"/>
+        {/* <Header navigation={navigation} title="Periodos"/> */}
         {(Platform.OS === 'android') ? <Footer navigation={navigation} detailContract={numContract} firstDate={dateMonth} finalRange={finalRange} whileCost={whileCosts} /> : null}
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
@@ -243,7 +243,7 @@ class DetailContract extends Component {
           </Grid>
         </Content>
         { fab }
-        {(Platform.OS === 'ios') ? <Footer navigation={navigation} bill={bill} detailContract={numContract} firstDate={dateMonth} finalDate={new Date(finalRange).getMonth()} consumoTotal={total} whileCost={whileCosts} /> : null }
+        {/* {(Platform.OS === 'ios') ? <Footer navigation={navigation} bill={bill} detailContract={numContract} firstDate={dateMonth} finalDate={new Date(finalRange).getMonth()} consumoTotal={total} whileCost={whileCosts} /> : null } */}
       </Container>
     )
   }

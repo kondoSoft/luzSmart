@@ -105,7 +105,7 @@ class Login extends Component {
     }
     return (
       <Container scrollEnabled={false}>
-        <Header title={"INICIO DE SESIÓN"} zIndex navigation={this.props.navigation}/>
+       {/* <Header title={"INICIO DE SESIÓN"} zIndex navigation={this.props.navigation}/> */}
         <ScrollView
           style={styles.container}
           ref='scroll'
@@ -204,9 +204,10 @@ class Login extends Component {
     );
   }
 }
-Login.navigationOptions = {
-  header: null
-};
+
+// Login.navigationOptions = {
+//   header: null
+// };
 function bindAction(dispatch) {
   return {
     setUser: name => dispatch(setUser(name)),

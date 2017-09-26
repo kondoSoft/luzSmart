@@ -24,11 +24,6 @@ import { whileCosts } from '../../helpers';
 
 
 class Contracts extends Component {
-  static navigationOptions = {
-    header: null,
-    tabBarLabel: 'Contratos',
-  };
-  
   constructor(props) {
     super(props)
     this.state = {
@@ -71,7 +66,7 @@ class Contracts extends Component {
 
     return(
       <Container>
-        <Header navigation={navigation} title={"EASYLIGTH"}/>
+        {/* <Header navigation={navigation} title={"EASYLIGTH"}/> */}
         {(Platform.OS === 'android')? <Footer isPremium={profile.premium} navigation={navigation} viewContract={contract} whileCost={whileCosts} /> : null}
         <ParentSwipeContracts
           contract={contract}
@@ -79,7 +74,7 @@ class Contracts extends Component {
           isPremium={this.props.profile.premium}
         />
         {(profile.premium == true)? fab : (contract.length === 0)? fab : null}
-        {(Platform.OS === 'ios')? <Footer isPremium={profile.premium} viewContract={contract} navigation={navigation} whileCost={whileCosts}/> : null}
+        {/* {(Platform.OS === 'ios')? <Footer isPremium={profile.premium} viewContract={contract} navigation={navigation} whileCost={whileCosts}/> : null} */}
       </Container>
     )
   }

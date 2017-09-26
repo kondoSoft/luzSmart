@@ -132,6 +132,7 @@ class App extends Component {
 }
 const mapStateToProps = state => ({
   token: state.user.token,
-  contracts: state.list_contracts.contracts
+  contracts: state.list_contracts.contracts,
+  tips: state.list_contracts.tips,
 })
 export default connect(mapStateToProps)(App);
