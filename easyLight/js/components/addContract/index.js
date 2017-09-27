@@ -122,15 +122,15 @@ class AddContracts extends Component {
         state: value+1
       })
     }else {
-      this.props.getMunicipality(value)
+      this.props.getMunicipality(value+1)
       this.setState({
-        state: value
+        state: value+1
       })
     }
   }
   handleMunicipality(value, item){
     this.props.resetRate()
-    const mun_id = (Platform.OS === 'ios')? value.id : value
+    const mun_id = (Platform.OS === 'ios')? value.id : value.id
     this.props.getRate(mun_id, this.props.token)
     this.setState({municipality: value.id});
   }
@@ -354,22 +354,18 @@ class AddContracts extends Component {
       selectRate = (
         <View style={styles.selectPicker}>
           <Picker
-            selectedValue={this.state.language}
-            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-            {arrRangeDate.map((item, i)=>{
-              return <Picker.item
-                        key={i}
-                        label={item}
-                        value={item}
-                      />
-            })}
-            {selectRates.map((rate,i)=>{
-              return <Picker.item
-                      key={i}
-                      value={rate}
-                      value={rate.rate}
-                    />
-            })}
+            // selectedValue={this.state.language}
+            // onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}
+            >
+            {
+              (this.state.rates.length != 0)&&
+                this.state.rates.map((rate,i)=>{
+                return <Picker.Item
+                          label={rate}
+                          value={rate}
+                        />
+                })
+            }
           </Picker>
         </View>
       )

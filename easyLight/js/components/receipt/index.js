@@ -53,7 +53,6 @@ class Receipt extends Component {
   }
   componentWillMount () {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
-   console.log(this.props.navigation.state.params)
    if (this.props.navigation.state.params !== undefined) {
      this.setState({contract_id: this.props.navigation.state.params.contract.id})
    }

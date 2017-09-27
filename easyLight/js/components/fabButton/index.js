@@ -19,9 +19,9 @@ export default class FabButton extends Component{
       <View
         style={{
           backgroundColor: 'steelblue',
-          width: (Platform.OS === 'ios')? 50 : 75,
-          height: (Platform.OS === 'ios')? 50 : 75,
-          borderRadius: (Platform.OS === 'ios')? 25 : 37.5,
+          width: (Platform.OS === 'ios')? 50 : 55,
+          height: (Platform.OS === 'ios')? 50 : 55,
+          borderRadius: (Platform.OS === 'ios')? 25 : 27.5,
           alignItems: 'center',
           justifyContent: 'center',
           position: 'absolute',

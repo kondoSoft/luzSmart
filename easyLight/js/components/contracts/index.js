@@ -66,7 +66,7 @@ class Contracts extends Component {
     const contract = this.state.contracts
 
     var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts")}}>
-        <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+        <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: (Platform.OS === 'ios')? 30 : 33, color: '#fff'}}>+</Text>
       </FabButton>
 
     return(

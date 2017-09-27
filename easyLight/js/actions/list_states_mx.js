@@ -96,7 +96,7 @@ export function getMunicipality(state_id):Action{
       }
     })
     .then(res => {return res.json()})
-    .then(res=> dispatch(printMunicipality(res)))
+    .then(res=> { dispatch(printMunicipality(res)) })
     .catch(err => console.log(err))
   }
 }

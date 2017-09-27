@@ -57,7 +57,7 @@ class DetailContract extends Component {
       previous_reading: '',
       payday_limit: '',
       count_days: props.contracts[0].type_payment,
-      bill: props.navigation.state.params.receipt.reverse(),
+      bill: props.navigation.state.params.receipt,
 
     };
     this.getStatus = this.getStatus.bind(this);
