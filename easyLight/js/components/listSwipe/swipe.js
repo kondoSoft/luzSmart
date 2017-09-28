@@ -64,7 +64,7 @@ class ListItemSwipe extends React.Component {
           }else {
              //do something...
           }
-          
+
         }
 
       },
@@ -209,7 +209,7 @@ export default class SwipeAccordion extends Component{
           </TouchableOpacity>
         </View>
         <ListItemSwipe isPremium={this.props.isPremium} closeExpanded={this.closeExpanded.bind(this)} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
-        <ExpandedView navigation={this.props.navigation} func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contracts') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
+        <ExpandedView navigation={this.props.navigation} func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contratos') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
       </Animated.View>
     )
   }
@@ -219,6 +219,7 @@ class ExpandedView extends Component{
   render(){
     const { data } = this.props
     currentData = data.current_reading - data.previous_reading
+    // console.log('data',data);
     var contentExpandedView = {
       'first':{
         title: 'Período de Consumo',

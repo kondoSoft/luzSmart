@@ -1,8 +1,8 @@
 
 import type { Action } from './types';
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 export const SET_USER = 'SET_USER';
@@ -54,7 +54,9 @@ export function getUser(token):Action {
     .then(res => {
       return res.json()
     })
-    .then(res => dispatch(getProfile(res, token)))
+    .then(res => {
+      console.log('getuser', res);
+      dispatch(getProfile(res, token))})
     .catch(err => console.log(err))
   }
 }

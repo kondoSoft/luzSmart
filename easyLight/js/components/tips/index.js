@@ -36,7 +36,6 @@ class Tips extends Component{
     }
   }
   componentWillReceiveProps(nextProps){
-    console.log('nextprops tips >>>>', nextProps)
     if (this.state.tips.length === nextProps.screenProps.tips.results.length) {
 
     }else {
