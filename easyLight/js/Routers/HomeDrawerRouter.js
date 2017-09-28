@@ -7,7 +7,6 @@ import DetailContract from '../components/detailContract'
 // import Tips from '../components/tips'
 // import Results from '../components/results';
 import Contact from '../components/contact';
-import SignIn from "../components/signin"
 // import AddContracts from '../components/addContract';
 import EditContracts from '../components/editContract';
 // import Receipt from '../components/receipt';
@@ -47,7 +46,7 @@ export default (DrawNav = DrawerNavigator(
     // Configuration: { screen: Configuration },
     // EditProfile: { screen: EditProfile },
     // History: { screen: History },
-    // SignIn: { screen: SignIn },
+
     // Faq: { screen: Faq },
   },
   {

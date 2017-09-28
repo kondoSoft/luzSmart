@@ -11,6 +11,7 @@ import Receipt from '../components/receipt';
 import Contracts from '../components/contracts'
 import AddContracts from '../components/addContract';
 import DrawBar from "../components/DrawBar";
+import SignIn from "../components/signin"
 
 import { Image, StyleSheet } from 'react-native';
 
@@ -110,7 +111,14 @@ const LoginStack = StackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Login'
     }),
-  }
+  },
+  SignIn: { 
+    screen: SignIn,
+    navigationOptions:({ navigation }) => ({
+      headerTitle: 'Nuevo Usuario',
+      headerMode: 'screen',
+    }),
+  },
 })
 
 const Root = StackNavigator({

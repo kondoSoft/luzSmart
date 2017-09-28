@@ -13,9 +13,7 @@ const Screen = Dimensions.get('window');
 var reGex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
 class SignIn extends Component {
-  static navigationOptions = {
-    header: null
-  };
+
   constructor(props){
     super(props)
     this.state = {
@@ -110,7 +108,6 @@ class SignIn extends Component {
     const { first_name,last_name,email,password1,password2,avatarSource, birth_date, phone, zip_code } = this.state;
     return(
         <Container style={{height:Screen.height}}>
-          <Header zIndex navigation={this.props.navigation} title="Nuevo Registro"/>
           <ScrollView
             style={{backgroundColor: '#fff'}}
             ref='scroll'
