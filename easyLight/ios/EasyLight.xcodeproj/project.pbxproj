@@ -366,7 +366,7 @@
 		5FE3AF64F7C045A2B204145C /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		6117B72A64554DC8B3ECF915 /* Arial Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Arial Black.ttf"; path = "../node_modules/native-base/Fonts/Arial Black.ttf"; sourceTree = "<group>"; };
 		69D2060BF61548FF8042CE5A /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-MediumItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-MediumItalic.ttf"; sourceTree = "<group>"; };
-		6A99B4B61F799AF400A3B965 /* newSplashScreen.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = newSplashScreen.PNG; path = ../../../../../Downloads/newSplashScreen.PNG; sourceTree = "<group>"; };
+		6A4249B71F7C3C8A0063669A /* newSplashScreen.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = newSplashScreen.PNG; path = ../../../../../Downloads/newSplashScreen.PNG; sourceTree = "<group>"; };
 		6C8FE0B3E1C044DFB21DCC29 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		7247D44A1F60A5B900250187 /* iphone 7s y 6s_ portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone 7s y 6s_ portrait.png"; sourceTree = "<group>"; };
 		7247D44B1F60A5B900250187 /* iphone7-y-6-plus_portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone7-y-6-plus_portrait.png"; sourceTree = "<group>"; };
@@ -602,7 +602,7 @@
 		7247D4491F60A5B900250187 /* PNG splashscreen-ios */ = {
 			isa = PBXGroup;
 			children = (
-				6A99B4B61F799AF400A3B965 /* newSplashScreen.PNG */,
+				6A4249B71F7C3C8A0063669A /* newSplashScreen.PNG */,
 				7247D44A1F60A5B900250187 /* iphone 7s y 6s_ portrait.png */,
 				7247D44B1F60A5B900250187 /* iphone7-y-6-plus_portrait.png */,
 				7247D44C1F60A5B900250187 /* iphoneSE_ portrait.png */,
@@ -833,7 +833,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = JU5Q9F8CVN;
+						DevelopmentTeam = VND5F6FABZ;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1395,7 +1395,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = JU5Q9F8CVN;
+				DEVELOPMENT_TEAM = VND5F6FABZ;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
@@ -1422,7 +1422,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JU5Q9F8CVN;
+				DEVELOPMENT_TEAM = VND5F6FABZ;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",

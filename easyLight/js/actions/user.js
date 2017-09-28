@@ -54,7 +54,9 @@ export function getUser(token):Action {
     .then(res => {
       return res.json()
     })
-    .then(res => dispatch(getProfile(res, token)))
+    .then(res => {
+      console.log('getuser', res);
+      dispatch(getProfile(res, token))})
     .catch(err => console.log(err))
   }
 }

@@ -16,9 +16,9 @@ import { getTips } from '../../actions/list_states_mx'
 var tipsArr;
 
 class Tips extends Component{
-  static navigationOptions = {
-    header: null
-  };
+  // static navigationOptions = {
+  //   header: null
+  // };
   constructor(props){
     super(props);
     this.state = {
@@ -36,11 +36,11 @@ class Tips extends Component{
     }
   }
   componentWillReceiveProps(nextProps){
-    if (this.state.tips.length === nextProps.tips.results.length) {
+    if (this.state.tips.length === nextProps.screenProps.tips.results.length) {
 
     }else {
       this.setState({
-        tips: nextProps.tips.results
+        tips: nextProps.screenProps.tips.results
       })
     }
   }
@@ -90,7 +90,7 @@ class Tips extends Component{
     }
     return(
       <Container>
-        <Header navigation={ this.props.navigation } title="Tips" />
+        {/* <Header navigation={ this.props.navigation } title="Tips" /> */}
         {(Platform.OS == 'android') ? <Footer navigation={this.props.navigation} viewContract={this.props.screenProps.contracts} />  : null}
         <Grid style={{backgroundColor: '#fff'}}>
           <Swiper
@@ -101,7 +101,7 @@ class Tips extends Component{
             {tipsArr}
           </Swiper>
         </Grid>
-        {(Platform.OS == 'ios') ? <Footer navigation={this.props.navigation} viewContract={this.props.screenProps.contracts} />  : null}
+        {/* {(Platform.OS == 'ios') ? <Footer navigation={this.props.navigation} viewContract={this.props.screenProps.contracts} />  : null} */}
       </Container>
     )
   }

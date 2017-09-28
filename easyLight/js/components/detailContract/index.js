@@ -62,9 +62,9 @@ class DetailContract extends Component {
     };
     this.getStatus = this.getStatus.bind(this);
   }
-  static navigationOptions = {
-    header: null,
-  };
+  // static navigationOptions = {
+  //   title: 'Detail'
+  // };
   static propType = {
     getRatePeriod: React.PropTypes.func,
     postReceipt: React.PropTypes.func,
@@ -111,7 +111,7 @@ class DetailContract extends Component {
       //   payday_limit: nextPayday,
       //   contract_id: numContract[0].id,
       //   }, ()=> this.props.postReceipt(this.state, this.props.token))
-        
+
       // }
 
     }
@@ -127,7 +127,7 @@ class DetailContract extends Component {
     // kilowatt = []
     countKwh = 0;
   }
-  
+
   getStatus() {
     if(this.state.count_days == 'Bimestral'){
       count_days = 60
@@ -148,7 +148,7 @@ class DetailContract extends Component {
          item.finished = 'True'
          return item
       }
-       
+
     })
     return this.setState ({
       bill: itemStatus
@@ -169,7 +169,7 @@ class DetailContract extends Component {
     // empuje de datos en el arreglo de verano y fuera de verano
     rate_period.map((period, i) => {
       if(period.period_name == 'Verano') {
-        verano.push(period)      
+        verano.push(period)
         }
       else {
         noverano.push(period);
@@ -190,7 +190,7 @@ class DetailContract extends Component {
     return kilowatt;
   }
 
-  
+
 
   render(){
     const { navigation, rate_period } = this.props;
@@ -203,17 +203,16 @@ class DetailContract extends Component {
         >
           <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
-    var params; 
+    var params;
     if(bill.length > 0) {
-      params = { contract: numContract[0], bill: bill } 
-    } 
+      params = { contract: numContract[0], bill: bill }
+    }
     else{
       params = { contract: numContract[0] }
     }
     // Obtener datos por Periodos
     return(
       <Container>
-        <Header navigation={navigation} title="Periodos"/>
         {(Platform.OS === 'android') ? <Footer navigation={navigation} detailContract={numContract} firstDate={dateMonth} finalRange={finalRange} whileCost={whileCosts} /> : null}
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
@@ -237,13 +236,13 @@ class DetailContract extends Component {
                     icon={<Icon style={{paddingTop: (navigation.state.routeName === 'DetailContract')? 5 : 15,color: 'steelblue',fontSize:40,textAlign:'center'}} name="information-circle" />}
                   />
                 }
-              )} 
+              )}
               </List>
             </Col>
           </Grid>
         </Content>
         { fab }
-        {(Platform.OS === 'ios') ? <Footer navigation={navigation} bill={bill} detailContract={numContract} firstDate={dateMonth} finalDate={new Date(finalRange).getMonth()} consumoTotal={total} whileCost={whileCosts} /> : null }
+        {/* {(Platform.OS === 'ios') ? <Footer navigation={navigation} bill={bill} detailContract={numContract} firstDate={dateMonth} finalDate={new Date(finalRange).getMonth()} consumoTotal={total} whileCost={whileCosts} /> : null } */}
       </Container>
     )
   }

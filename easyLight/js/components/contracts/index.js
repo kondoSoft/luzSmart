@@ -3,32 +3,20 @@ import { connect } from 'react-redux';
 import { View, Platform, Image, ScrollView, Dimensions, PanResponder, TouchableOpacity } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Container, Fab , Content, Body, Left, List, Thumbnail, Text, Title, Button, Icon, Right} from 'native-base';
-import Header from '../header/index';
+// import Header from '../header/index';
 import styles from "./styles";
-import Footer from '../footer/index';
+// import Footer from '../footer/index';
 import SwipeAccordion from '../listSwipe/swipe';
-import DrawBar from '../DrawBar';
 import FabButton from '../fabButton';
-import { DrawerNavigator, NavigationActions } from "react-navigation";
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
 import { getContract } from "../../actions/list_states_mx";
-import {getUser} from '../../actions/user';
-import Tips from '../tips'
-import Measurements from '../measurements'
-import Results from '../results'
-import Login from '../login'
-import Charts from '../charts'
+import { getUser } from '../../actions/user';
 import { whileCosts } from '../../helpers';
 // var gradientImage = require('../../../images/header.png')
 
 
 class Contracts extends Component {
-  static navigationOptions = {
-    header: null,
-    tabBarLabel: 'Contratos',
-  };
-  
   constructor(props) {
     super(props)
     this.state = {
@@ -39,20 +27,16 @@ class Contracts extends Component {
   componentWillMount(){
 
     if(this.props.token != ""){
-      this.props.getContract(this.props.token)
-      this.props.getUser(this.props.token)
+      this.props.getContract(this.props.screenProps.token)
+      this.props.getUser(this.props.screenProps.token)
     }
-   
-    // else {
-    //   this.props.navigation.navigate("login")
-    // }
   }
   componentWillReceiveProps(nextProps){
     if(this.props.token == ""){
-      this.props.getContract(nextProps.token)
-      this.props.getUser(nextProps.token)
+      this.props.getContract(nextProps.screenProps.token)
+      this.props.getUser(nextProps.screenProps.token)
     }
-    const contracts = nextProps.contracts
+    const contracts = nextProps.screenProps.contracts
     this.setState({ contracts })
   }
   static propType = {
@@ -62,24 +46,23 @@ class Contracts extends Component {
   }
   render(){
     const { navigation, profile } = this.props
-    const {state} = navigation
+    const { state } = navigation
     const contract = this.state.contracts
-
     var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts")}}>
         <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
       </FabButton>
 
     return(
       <Container>
-        <Header navigation={navigation} title={"EASYLIGTH"}/>
+        {/* <Header navigation={navigation} title={"EASYLIGTH"}/> */}
         {(Platform.OS === 'android')? <Footer isPremium={profile.premium} navigation={navigation} viewContract={contract} whileCost={whileCosts} /> : null}
         <ParentSwipeContracts
-          contract={contract}
-          navigation={navigation}
-          isPremium={this.props.profile.premium}
+          contract={ contract }
+          navigation={ navigation }
+          isPremium={ this.props.profile.premium }
         />
         {(profile.premium == true)? fab : (contract.length === 0)? fab : null}
-        {(Platform.OS === 'ios')? <Footer isPremium={profile.premium} viewContract={contract} navigation={navigation} whileCost={whileCosts}/> : null}
+        {/* {(Platform.OS === 'ios')? <Footer isPremium={profile.premium} viewContract={contract} navigation={navigation} whileCost={whileCosts}/> : null} */}
       </Container>
     )
   }
@@ -113,12 +96,14 @@ class ParentSwipeContracts extends Component {
   render(){
     const { navigation } = this.props
     const { contract } = this.props
+
     return(
         <ScrollView
           style={{backgroundColor: '#fff'}}
           scrollEnabled={false}
           >
-            {contract.map((contract, i )=><SwipeAccordion
+          {contract.map((contract, i )=>
+            <SwipeAccordion
               isPremium={this.props.isPremium}
               func={()=>this.onOpenSwipe(i)}
               indexOpen={this.state.key}
@@ -132,7 +117,7 @@ class ParentSwipeContracts extends Component {
               icon={<Icon style={styles.icon} name="information-circle"/>}
               onPressLeft={() => navigation.navigate('EditContracts', contract)}
             />)}
-          </ScrollView>
+        </ScrollView>
     )
   }
 }
@@ -141,7 +126,6 @@ class ItemComponent extends Component{
 
   render(){
     const contract = this.props.data
-
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>

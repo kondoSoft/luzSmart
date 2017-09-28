@@ -25,9 +25,9 @@ import {
 } from "victory-native";
 
 class Results  extends Component {
-  static navigationOptions = {
-    header: null
-  };
+  // static navigationOptions = {
+  //   header: null
+  // };
   constructor(props){
     super(props)
     this.state ={
@@ -38,7 +38,7 @@ class Results  extends Component {
     const {  navigation } = this.props;
     return(
       <Container>
-        <Header title="Resultados" navigation={this.props.navigation}/>
+        {/* <Header title="Resultados" navigation={this.props.navigation}/> */}
         {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
         <Grid style={{ backgroundColor: '#fff' }}>
           <Row size={10} style={styles.row__top}>
@@ -160,7 +160,7 @@ class Results  extends Component {
             <Icon name="mail" />
           </Button> */}
         </Fab>  
-        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
+       {/*  {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null} */}
       </Container>
     )
   }
