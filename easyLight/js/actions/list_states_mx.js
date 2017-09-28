@@ -52,6 +52,7 @@ export function printRate(list):Action {
   }
 }
 export function printContract(list):Action {
+  console.log('printContract', list)
   return {
     type: GET_CONTRACT,
     payload: list
@@ -150,19 +151,23 @@ export function postContract(list, rate, token):Action{
     .catch(err => console.log(err))
   }
 }
-export function getContract(token):Action{
+export function getContract(token, navigate):Action{
   return dispatch => {
     return fetch (endPoint+'/contract/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'multipart/form-data',
-        'Authorization': 'Token '+token
+        'Authorization': 'Token '+ token
       }
     })
     .then(res => {return res.json()})
     .then(res=> {
-      dispatch(printContract(res))})
+      dispatch(printContract(res))
+      if(!token.non_field_errors){
+        navigate.navigate('Contratos')
+      }
+    })
     .catch(err => console.log(err))
   }
 }

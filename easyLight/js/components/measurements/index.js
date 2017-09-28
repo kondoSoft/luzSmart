@@ -28,8 +28,9 @@ import { getIVA, whileCosts } from '../../helpers';
 
 let Screen = Dimensions.get('window')
 
-var SelectContract
+var selectContract
 var rangeDate
+var arrayContract = []
 class Measurements extends Component {
 
   static navigationOptions = {
@@ -58,63 +59,57 @@ class Measurements extends Component {
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
     this.changeCheckedData = this.changeCheckedData.bind(this)
   }
-
   componentWillMount () {  
-    if (this.props.navigation.state.params.currentContract.length === 1) {
-      this.setDataContract(this.props.navigation.state.params.currentContract[0].id)
-      const arrayReceipts = this.props.navigation.state.params.currentContract[0]
-      const itemsReceipts = []
-      arrayReceipts.receipt.map((item,i)=>{
-        itemsReceipts.push(item)
-        return item
-      })
-      const itemReceipt = itemsReceipts[0]
-      this.setState({
-        itemReceipt,
-      },()=>{
-        this.getTotalPayment()
-        this.forceUpdate()
-      })
-    }
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentWillReceiveProps(nextProps){
-    if (this.props.navigation.state.params.currentContract.length === 1) {
-      let filItemID = nextProps.contracts.filter((item,i)=>{
-            return item.id === this.contract_id;
-          })
-      let prevCurrentReading = this.state.itemReceipt.current_reading;
-      let nextCurrentReading = filItemID[0].receipt[0].current_reading;
-      if (nextCurrentReading > prevCurrentReading) {
-        this.setState({
-          itemReceipt:{
-            id: this.state.itemReceipt.id,
-            previous_reading: this.state.itemReceipt.previous_reading,
-            current_reading: nextCurrentReading,
-            payday_limit: this.state.itemReceipt.payday_limit,
-            period: this.state.itemReceipt.period,
-            amount_payable: this.state.itemReceipt.amount_payable,
-          }
-        })
+    nextProps.screenProps.contracts.map((item, i) => {
+      if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){
+        arrayContract.push(item)
       }
-    }else {
-      let filItemID = nextProps.contracts.filter((item,i)=>{
-            return item.id === this.contract_id;
+    })
+    if (arrayContract.length === 1) {
+      this.setReceiptByOneContract(arrayContract[0])
+    }
+    selectContract = this.selectContracts(arrayContract)
+    if(this.contract_id != undefined){
+      if (this.props.screenProps.contracts === 1) {
+        let filItemID = nextProps.screenProps.contracts.filter((item,i)=>{
+              return item.id === this.contract_id;
+            })
+        let prevCurrentReading = this.state.itemReceipt.current_reading;
+        let nextCurrentReading = filItemID[0].receipt[0].current_reading;
+        if (nextCurrentReading > prevCurrentReading) {
+          this.setState({
+            itemReceipt:{
+              id: this.state.itemReceipt.id,
+              previous_reading: this.state.itemReceipt.previous_reading,
+              current_reading: nextCurrentReading,
+              payday_limit: this.state.itemReceipt.payday_limit,
+              period: this.state.itemReceipt.period,
+              amount_payable: this.state.itemReceipt.amount_payable,
+            }
           })
-      let prevCurrentReading = this.state.itemReceipt.current_reading;
-      let nextCurrentReading = filItemID[0].receipt[0].current_reading;
-      if (nextCurrentReading > prevCurrentReading) {
-        this.setState({
-          itemReceipt:{
-            id: this.state.itemReceipt.id,
-            previous_reading: this.state.itemReceipt.previous_reading,
-            current_reading: nextCurrentReading,
-            payday_limit: this.state.itemReceipt.payday_limit,
-            period: this.state.itemReceipt.period,
-            amount_payable: this.state.itemReceipt.amount_payable,
-          }
-        })
-      }
+        }
+      }else {
+        let filItemID = nextProps.screenProps.contracts.filter((item,i)=>{
+              return item.id === this.contract_id;
+            })
+        let prevCurrentReading = this.state.itemReceipt.current_reading;
+        let nextCurrentReading = filItemID[0].receipt[0].current_reading;
+        if (nextCurrentReading > prevCurrentReading) {
+          this.setState({
+            itemReceipt:{
+              id: this.state.itemReceipt.id,
+              previous_reading: this.state.itemReceipt.previous_reading,
+              current_reading: nextCurrentReading,
+              payday_limit: this.state.itemReceipt.payday_limit,
+              period: this.state.itemReceipt.period,
+              amount_payable: this.state.itemReceipt.amount_payable,
+            }
+          })
+        }
+      } 
     }
   }
   componentWillUnmount () {
@@ -132,6 +127,15 @@ class Measurements extends Component {
     this.setState({
       current_data: '',
     })
+  }
+  setReceiptByOneContract(contract){
+    this.setState({
+      itemReceipt: contract.receipt[0]
+    })
+  }
+  setRatePeriod(contract){
+    this.rate_contract = contract.rate
+    this.props.getRatePeriod(this.rate_contract, this.props.token)
   }
   sendCurrentData(id){
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading) {
@@ -171,7 +175,7 @@ class Measurements extends Component {
     var itemReceipt;
     var type_payment;
 
-    var arrContracts = this.props.contracts.map((item, i) => {
+    var arrContracts = this.props.screenProps.contracts.map((item, i) => {
       if(item.id == contract_id){
         this.rate_contract = item.rate
         type_payment = item.type_payment;
@@ -195,6 +199,8 @@ class Measurements extends Component {
 
   }
   getTotalPayment(){
+    // console.log('rate_period',this.props.rate_period)
+    // console.log('this.rate_contract', this.rate_contract)
     if (this.props.rate_period.length > 0) {
       if (this.rate_contract === this.props.rate_period[0].name_rate) {
         this.subTotal = whileCosts(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading) 
@@ -202,65 +208,62 @@ class Measurements extends Component {
       }
     }
   }
+  selectContracts(contracts){
+    if(contracts.length === 1){
+     return <Text>#{contracts[0].number_contract}</Text>
+    }else if(contracts.length > 1){
+      if (Platform.OS === 'ios') {
+     return (<Select
+          selectStyle={styles.col__row__top__select}
+          padding={5}
+          listHeight={100}
+          caretSize={0}
+          onSelect={(id) => this.setDataContract(id)}
+          >
+          {contracts.map((item,i)=>{
+              return <Option
+                key={i}
+                value={item.id}
+                optionStyle={styles.col__row__select__option}
+                > {'#' + item.number_contract }</Option>
+              })
+          }
+        </Select>)
+    }else{
+      return (<View style={styles.selectPicker}>
+          <Picker
+            style={{flex:1}}
+            selectedValue={this.contract_id}
+            onValueChange={(itemValue, id) => this.setDataContract(itemValue)}>
+            {
+              contracts.map((item,i)=>{
+                return <Picker.Item key={i} label={`#${item.number_contract}`} value={item.id} />
+              })
+            }
+          </Picker>
+        </View>)
+        }
+    }
+  }
   render(){
-    console.log(this.props)
     this.getTotalPayment()
-    const { navigation, contracts} = this.props
+    const { navigation } = this.props;
     // Contrato que viene desde la pantalla recibos
-    const { currentContract } = this.props.navigation.state.params
+    const { contracts } = this.props.screenProps;
     if(this.state.type_payment == 'Bimestral'){
       count_days = 60
     }else{
       count_days = 30
     }
-    // if(currentContract.length >= 2){
     const payday_limit = this.state.itemReceipt.payday_limit.replace(/-/g, '\/')
     const finalMonth = new Date(payday_limit)
     const firstMonth = new Date(finalMonth).setDate(new Date(finalMonth).getDate() - count_days)
     this.setRangeDate(new Date(firstMonth).getMonth(), finalMonth.getMonth())
-    
-    // }
-    // else{
-    //   console.log('item',this.state.itemReceipt)
-    //   this.setRangeDate(this.props.navigation.state.params.firstMonth, this.props.navigation.state.params.finalMonth)
-    // }
-    
 
     // Rango automatico del periodo
     const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
     // Select Contract
-    const TextContract = <Text>#{currentContract[0].number_contract}</Text>
-    if (Platform.OS === 'ios') {
-      SelectContract =
-      <Select
-        selectStyle={styles.col__row__top__select}
-        padding={5}
-        listHeight={100}
-        caretSize={0}
-        onSelect={(id) => this.setDataContract(id)}
-        >
-        {currentContract.map((item,i)=>{
-          return <Option
-            key={i}
-            value={item.id}
-            optionStyle={styles.col__row__select__option}
-            > {'#' + item.number_contract }</Option>
-        })}
-      </Select>
-    }else{
-      SelectContract = <View style={styles.selectPicker}>
-                          <Picker
-                            style={{flex:1}}
-                            selectedValue={this.contract_id}
-                            onValueChange={(itemValue, id) => this.setDataContract(itemValue)}>
-                            {
-                              currentContract.map((item,i)=>{
-                                return <Picker.Item key={i} label={`#${item.number_contract}`} value={item.id} />
-                              })
-                            }
-                          </Picker>
-                        </View>
-    }
+    
     return(
       <Container style={{backgroundColor: '#fff'}}>
         <Header navigation={this.props.navigation} zIndex title="Mediciones"/>
@@ -281,9 +284,7 @@ class Measurements extends Component {
             <Col size={6} style={styles.grid__col__select}>
               <Row style={styles.grid__col__select__row__top}>
                 <Text style={styles.grid__row__top__view}>Contrato</Text>
-                 {(currentContract.length == 1) ? TextContract  : SelectContract }
-
-                  {/* {SelectContract} */}
+                 { selectContract }
               </Row>
               <Row style={styles.grid__col__select__row__bottom}>
                 <Text style={styles.grid__row__top__view}>Periodo</Text>
@@ -346,7 +347,7 @@ class Measurements extends Component {
             </Button>
           </Fab>
         </View>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
+        {/* {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null} */}
       </Container>
     )
   }
@@ -358,8 +359,8 @@ function bindAction(dispatch) {
   };
 }
 const mapStateToProps = state => ({
-  contracts: state.list_contracts.contracts,
   token: state.user.token,
   rate_period: state.list_rate.rate_period,
+  contracts: state.list_contracts.contracts,
 });
 export default connect(mapStateToProps, bindAction)(Measurements)

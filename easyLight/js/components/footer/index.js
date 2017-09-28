@@ -18,20 +18,20 @@ class FooterGlobal extends Component {
     const finalMonth = this.props.finalDate;
     const {consumoTotal} = this.props;
 
-    if(state.routeName !== 'DetailContract'){
-      currentContract = this.props.viewContract;
-      currentContract.map((receipts,i)=>{
-        if (receipts.receipt.length === 0) {
-          contractPayDayLimit = true
-        }
-      });
-    }
-    else {
-      currentContract = this.props.detailContract
-      if (currentContract.length === 0) {
-        contractPayDayLimit = true;
-      }
-    }
+    // if(state.routeName !== 'DetailContract'){
+    //   currentContract = this.props.viewContract;
+    //   currentContract.map((receipts,i)=>{
+    //     if (receipts.receipt.length === 0) {
+    //       contractPayDayLimit = true
+    //     }
+    //   });
+    // }
+    // else {
+    //   currentContract = this.props.detailContract
+    //   if (currentContract.length === 0) {
+    //     contractPayDayLimit = true;
+    //   }
+    // }
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
           <FooterTab style={styles.footer}>

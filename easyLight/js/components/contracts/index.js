@@ -20,25 +20,16 @@ class Contracts extends Component {
   constructor(props) {
     super(props)
     this.state = {
-        contracts: []
+        contract: []
     }
   }
 
   componentWillMount(){
+    this.setState({
+      contract: this.props.screenProps.contracts
+    })
+  }
 
-    if(this.props.token != ""){
-      this.props.getContract(this.props.screenProps.token)
-      this.props.getUser(this.props.screenProps.token)
-    }
-  }
-  componentWillReceiveProps(nextProps){
-    if(this.props.token == ""){
-      this.props.getContract(nextProps.screenProps.token)
-      this.props.getUser(nextProps.screenProps.token)
-    }
-    const contracts = nextProps.screenProps.contracts
-    this.setState({ contracts })
-  }
   static propType = {
     getRate: React.PropTypes.func,
     getContract: React.PropTypes.func,
@@ -47,7 +38,7 @@ class Contracts extends Component {
   render(){
     const { navigation, profile } = this.props
     const { state } = navigation
-    const contract = this.state.contracts
+    const { contract }= this.state
     var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts")}}>
         <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: (Platform.OS === 'ios')? 30 : 33, color: '#fff'}}>+</Text>
       </FabButton>
@@ -96,7 +87,6 @@ class ParentSwipeContracts extends Component {
   render(){
     const { navigation } = this.props
     const { contract } = this.props
-
     return(
         <ScrollView
           style={{backgroundColor: '#fff'}}

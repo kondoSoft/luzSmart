@@ -197,6 +197,7 @@ class DetailContract extends Component {
     const { status } = this.state;
     const bill = this.state.bill
     const colors = ['lightgrey','#fff'];
+    console.log(this.props.navigation.state.params.receipt)
     let fab = <FabButton
           navigation={navigation}
           onTap={() => {navigation.navigate('Receipt', params)}}
@@ -242,7 +243,6 @@ class DetailContract extends Component {
           </Grid>
         </Content>
         { fab }
-        {/* {(Platform.OS === 'ios') ? <Footer navigation={navigation} bill={bill} detailContract={numContract} firstDate={dateMonth} finalDate={new Date(finalRange).getMonth()} consumoTotal={total} whileCost={whileCosts} /> : null } */}
       </Container>
     )
   }
