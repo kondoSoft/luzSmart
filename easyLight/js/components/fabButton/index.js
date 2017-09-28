@@ -25,8 +25,8 @@ export default class FabButton extends Component{
           alignItems: 'center',
           justifyContent: 'center',
           position: 'absolute',
-          bottom: (Platform.OS === 'ios')? 60 : 30,
-          right: (Platform.OS === 'ios')? 5 : 10,
+          bottom: (Platform.OS === 'ios')? 20 : 30,
+          right: (Platform.OS === 'ios')? 15 : 10,
           overflow: 'hidden',
         }}>
         <TouchableOpacity

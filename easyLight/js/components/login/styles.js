@@ -8,17 +8,11 @@ const Screen = Dimensions.get('window');
 export default {
   container: {
     flex:1,
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'red',
   },
   grid:{
     flex:1,
-    height: Screen.height,
-    paddingTop: (Platform.OS === 'ios')? 100 : 120,
+    // height: Screen.height,
+    paddingTop: (Platform.OS === 'ios')? 0 : 120,
     backgroundColor: '#fff'
   },
   header:{

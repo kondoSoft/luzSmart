@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import  { Text, Container, Content, Icon, Thumbnail, Button, Form, Item, Label, Input } from 'native-base';
 import { Platform, ScrollView, Dimensions, Keyboard, View, KeyboardAvoidingView, TouchableOpacity , Alert} from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
-import Header from '../header/index';
 import styles from './styles';
 import {getUser, updateUser, changePassword} from '../../actions/user'
 import {connect} from 'react-redux'
@@ -12,9 +11,6 @@ import ImagePicker from 'react-native-image-picker';
 const Screen = Dimensions.get('window');
 
 class EditProfile extends Component {
-  static navigationOptions = {
-    header: null
-  };
   constructor(props){
     super(props)
     this.state = {
@@ -209,7 +205,6 @@ class EditProfile extends Component {
     } = user
     return(
         <Container style={{height:Screen.height}}>
-          <Header zIndex navigation={this.props.navigation} title="Editar Perfil"/>
           <ScrollView
             contentContainerStyle={{flex:1}}
             style={{backgroundColor: '#fff'}}
