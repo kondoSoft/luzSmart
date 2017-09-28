@@ -39,13 +39,16 @@ const stackNavigation = StackNavigator({
 	Receipt: {
 		screen: Receipt,
 		navigationOptions: ({ navigation }) => ({
-			title: 'Recibo'
+			title: 'Recibo',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      
 		}),
 	},
   AddContracts: {
     screen: AddContracts,
     navigationOptions: ({ navigation }) => ({
-			title: 'Agregar Contratos'
+			title: 'Agregar Contratos',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
 		}),
   },
   Measurements: { 
@@ -86,6 +89,7 @@ const tabNavigation = TabNavigator(
           tabBarIcon: ({tintColor}) => <Icon name="bulb" />,
         },
      },
+
      Mediciones: { 
       screen: Measurements,
       navigationOptions: {

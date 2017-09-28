@@ -45,9 +45,6 @@ class Receipt extends Component {
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
       this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
     }
-  static navigationOptions = {
-    header: null
-  };
   static propType = {
     setBill: React.PropTypes.func
   }
@@ -275,8 +272,6 @@ class Receipt extends Component {
     if (Platform.OS === 'ios') {
       var receiptView = (
         <Container>
-          {/* <Header zIndex navigation={this.props.navigation} title="Recibo de Luz"/> */}
-          {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
           <ScrollView
             ref='scroll'
             style={{backgroundColor: '#fff'}}
@@ -366,7 +361,6 @@ class Receipt extends Component {
               </Col>
             </Grid>
           </ScrollView>
-          {/* <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> */}
         </Container>
       )
     }
