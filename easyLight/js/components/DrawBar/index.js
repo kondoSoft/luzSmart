@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppRegistry, Image, TouchableOpacity, Dimensions } from "react-native";
+import { AppRegistry, Image, TouchableOpacity, Dimensions, Platform } from "react-native";
 import {
   Button,
   Text,
@@ -48,7 +48,7 @@ class DrawBar extends Component {
       <Container>
           <Image
           source={require('../../../images/header.png')}
-          style={[{ zIndex: (this.props.zIndex)? 1000 : 0 , width: Screen.width},styles.header]}
+          style={[{ zIndex: (this.props.zIndex)? 1000 : 0 , width: Screen.width,flex:(Platform.OS != 'ios')? 0.5 : 0},styles.header]}
           >
             <View style={styles.viewProfile}>
               <View style={styles.viewThumbnail}>

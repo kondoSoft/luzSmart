@@ -79,22 +79,42 @@ class Measurements extends Component {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentWillReceiveProps(nextProps){
-    let filItemID = nextProps.contracts.filter((item,i)=>{
-      return item.id === this.contract_id;
-    })
-    let prevCurrentReading = this.state.itemReceipt.current_reading;
-    let nextCurrentReading = filItemID[0].receipt[0].current_reading;
-    if (nextCurrentReading > prevCurrentReading) {
-      this.setState({
-        itemReceipt:{
-          id: this.state.itemReceipt.id,
-          previous_reading: this.state.itemReceipt.previous_reading,
-          current_reading: nextCurrentReading,
-          payday_limit: this.state.itemReceipt.payday_limit,
-          period: this.state.itemReceipt.period,
-          amount_payable: this.state.itemReceipt.amount_payable,
-        }
-      })
+    if (this.props.navigation.state.params.currentContract.length === 1) {
+      let filItemID = nextProps.contracts.filter((item,i)=>{
+            return item.id === this.contract_id;
+          })
+      let prevCurrentReading = this.state.itemReceipt.current_reading;
+      let nextCurrentReading = filItemID[0].receipt[0].current_reading;
+      if (nextCurrentReading > prevCurrentReading) {
+        this.setState({
+          itemReceipt:{
+            id: this.state.itemReceipt.id,
+            previous_reading: this.state.itemReceipt.previous_reading,
+            current_reading: nextCurrentReading,
+            payday_limit: this.state.itemReceipt.payday_limit,
+            period: this.state.itemReceipt.period,
+            amount_payable: this.state.itemReceipt.amount_payable,
+          }
+        })
+      }
+    }else {
+      let filItemID = nextProps.contracts.filter((item,i)=>{
+            return item.id === this.contract_id;
+          })
+      let prevCurrentReading = this.state.itemReceipt.current_reading;
+      let nextCurrentReading = filItemID[0].receipt[0].current_reading;
+      if (nextCurrentReading > prevCurrentReading) {
+        this.setState({
+          itemReceipt:{
+            id: this.state.itemReceipt.id,
+            previous_reading: this.state.itemReceipt.previous_reading,
+            current_reading: nextCurrentReading,
+            payday_limit: this.state.itemReceipt.payday_limit,
+            period: this.state.itemReceipt.period,
+            amount_payable: this.state.itemReceipt.amount_payable,
+          }
+        })
+      }
     }
   }
   componentWillUnmount () {
@@ -159,7 +179,7 @@ class Measurements extends Component {
       }
     })
     itemContract.map((item,i)=>{
-      itemReceipt = item[item.length-1]
+      itemReceipt = item[0]
     })
     this.setState({
       itemReceipt,
@@ -210,24 +230,37 @@ class Measurements extends Component {
     const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
     // Select Contract
     const TextContract = <Text>#{currentContract[0].number_contract}</Text>
-
-    SelectContract =
-    <Select
-      selectStyle={styles.col__row__top__select}
-      padding={5}
-      listHeight={100}
-      caretSize={0}
-      onSelect={(id) => this.setDataContract(id)}
-      >
-      {currentContract.map((item,i)=>{
-        return <Option
-          key={i}
-          value={item.id}
-          optionStyle={styles.col__row__select__option}
-          > {'#' + item.number_contract }</Option>
-      })}
-    </Select>
-    // Math
+    if (Platform.OS === 'ios') {
+      SelectContract =
+      <Select
+        selectStyle={styles.col__row__top__select}
+        padding={5}
+        listHeight={100}
+        caretSize={0}
+        onSelect={(id) => this.setDataContract(id)}
+        >
+        {currentContract.map((item,i)=>{
+          return <Option
+            key={i}
+            value={item.id}
+            optionStyle={styles.col__row__select__option}
+            > {'#' + item.number_contract }</Option>
+        })}
+      </Select>
+    }else{
+      SelectContract = <View style={styles.selectPicker}>
+                          <Picker
+                            style={{flex:1}}
+                            selectedValue={this.contract_id}
+                            onValueChange={(itemValue, id) => this.setDataContract(itemValue)}>
+                            {
+                              currentContract.map((item,i)=>{
+                                return <Picker.Item key={i} label={`#${item.number_contract}`} value={item.id} />
+                              })
+                            }
+                          </Picker>
+                        </View>
+    }
     return(
       <Container style={{backgroundColor: '#fff'}}>
         <Header navigation={this.props.navigation} zIndex title="Mediciones"/>
@@ -254,20 +287,7 @@ class Measurements extends Component {
               </Row>
               <Row style={styles.grid__col__select__row__bottom}>
                 <Text style={styles.grid__row__top__view}>Periodo</Text>
-                
-                {(Platform.OS === 'ios') ? TextReceipt
-                 // {(Platform.OS === 'ios')? (receipt.length >= 1) && TextReceipt
-                :
-                <View style={styles.selectPicker}>
-                  <Picker
-                    style={{flex:1}}
-                    selectedValue={this.state.language}
-                    onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-                    <Picker.Item label="Java" value="java" />
-                    <Picker.Item label="JavaScript" value="js" />
-                  </Picker>
-                </View>
-              }
+                { TextReceipt }
               </Row>
             </Col>
             <Row size={12}>
@@ -291,6 +311,7 @@ class Measurements extends Component {
                 <View style={styles.animatedView__image__view}>
                   <View style={{flexDirection: 'row',height:40,justifyContent:'center', alignItems:'center',marginTop: 65,marginLeft:37}}>
                     <TextInput
+                      underlineColorAndroid={'transparent'}
                       keyboardType={'numeric'}
                       style={styles.animatedView__image__view__input}
                       onChangeText={(current_data)=> this.setState({ current_data })}

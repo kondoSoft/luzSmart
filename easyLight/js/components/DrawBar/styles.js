@@ -23,8 +23,9 @@ export default {
     flex: 1,
   },
   viewName:{
-    flex: 8,
-    alignItems: 'center'
+    flex: (Platform.OS === 'ios')? 8 : 2,
+    alignItems: 'center',
+    paddingRight: (Platform.OS === 'ios')? 0 : 50,
   },
   avatar:{
     height: 100,

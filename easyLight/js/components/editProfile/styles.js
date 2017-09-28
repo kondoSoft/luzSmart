@@ -29,12 +29,12 @@ export default {
     paddingBottom:5,
   },
   row__botttom__btn__Cancel: {
-    width: 100,
+    width: (Platform.OS === 'ios')? 100 : 120,
     justifyContent: 'center',
     backgroundColor: 'red',
   },
   row__botttom__btn__Success: {
-    width: 100,
+    width: (Platform.OS === 'ios')? 100 : 120,
     justifyContent: 'center',
     backgroundColor: '#4ccbe8',
   },
@@ -45,7 +45,7 @@ export default {
      paddingBottom: (Platform.OS === 'ios')? 10 : (Screen.height > 552)? 10  : 5,
   },
   form__item__input: {
-    height: 30,
+    height: (Platform.OS === 'ios')? 30 : 40,
     padding: 0,
     margin: 0,
     paddingBottom: 0,

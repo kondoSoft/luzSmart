@@ -39,7 +39,7 @@ export default class ReceiptPickerDate extends Component {
             alignItems: 'flex-start',
             borderWidth:2,
             borderColor: 'lightgrey',
-            paddingLeft: 20,
+            borderWidth:0,
           },
           dateText:{
             fontSize: 16,

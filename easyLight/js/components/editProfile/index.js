@@ -211,21 +211,22 @@ class EditProfile extends Component {
         <Container style={{height:Screen.height}}>
           <Header zIndex navigation={this.props.navigation} title="Editar Perfil"/>
           <ScrollView
+            contentContainerStyle={{flex:1}}
             style={{backgroundColor: '#fff'}}
             ref='scroll'
             >
             <Grid style={{flex: 1}}>
-              <Row style={styles.row__top}>
+              <Row size={10} style={styles.row__top}>
                 <Col style={styles.row__top__col__left}>
                   <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                    <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                     <Thumbnail source={ (this.state.file != null)? this.state.file : (this.state.profile.avatar != null) ? {uri: this.state.profile.avatar} : this.state.avatarSource} />
+                    <View style={{marginBottom: 0,height: 80,width: '100%',justifyContent:'center'}}>
+                     <Thumbnail style={{height: 80, width: 80, borderRadius: 40}} source={ (this.state.file != null)? this.state.file : (this.state.profile.avatar != null) ? {uri: this.state.profile.avatar} : this.state.avatarSource} />
                     </View>
                   </TouchableOpacity>
                 </Col>
 
               </Row>
-              <Col>
+              <Col size={50}>
                 <Form>
                   <Item inlineLabel last style={styles.form__item}>
                     <Label style={styles.text}>Nombres:</Label>
@@ -289,7 +290,7 @@ class EditProfile extends Component {
                   </Item>
                 </Form>
               </Col>
-              <Row style={styles.row__botttom}>
+              <Row size={10} style={styles.row__botttom}>
                 <Button
                   primary
                   style={styles.row__botttom__btn__Cancel}
