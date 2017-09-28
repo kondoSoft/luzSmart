@@ -242,7 +242,7 @@ class ExpandedView extends Component{
 
     let colors = ['#fff', 'lightgrey']
     return(
-      (this.props.navigation.state.routeName === 'Contracts')?
+      (this.props.navigation.state.routeName === 'Contratos')?
       <View onLayout={this.props.func} style={{backgroundColor:'lightgrey'}}>
         <VictoryChart domain={{x: [0, 4]}}>
           <VictoryGroup

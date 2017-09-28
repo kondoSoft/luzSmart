@@ -39,13 +39,16 @@ const stackNavigation = StackNavigator({
 	Receipt: {
 		screen: Receipt,
 		navigationOptions: ({ navigation }) => ({
-			title: 'Recibo'
+			title: 'Recibo',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      
 		}),
 	},
   AddContracts: {
     screen: AddContracts,
     navigationOptions: ({ navigation }) => ({
-			title: 'Agregar Contratos'
+			title: 'Agregar Contratos',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
 		}),
   },
 })
@@ -79,17 +82,17 @@ const tabNavigation = TabNavigator(
           tabBarIcon: ({tintColor}) => <Icon name="thumbs-up" />,
         },
      },
-  	// Mediciones: {
-  	// 	screen: Measurements,
-  	// 	navigationOptions: ({ navigation }) => ({
-  	// 		tabBarIcon: ({ tintColor }) => (
-  	//       		<Image
-  	//         		source={require('../../images/logogray.png')}
-  	//         		style={[styles.icon, {tintColor: tintColor}]}
-  	//       		/>
-   //    		),
-   //    	}),
-  	// },
+  	Mediciones: {
+  		screen: Measurements,
+  		navigationOptions: ({ navigation }) => ({
+  			tabBarIcon: ({ tintColor }) => (
+  	      		<Image
+  	        		source={require('../../images/logogray.png')}
+  	        		style={[styles.icon, {tintColor: tintColor}]}
+  	      		/>
+      		),
+      	}),
+  	},
    // 	Resultados: {
    // 		screen: Results,
    // 		navigationOptions: ({ navigation }) => ({
