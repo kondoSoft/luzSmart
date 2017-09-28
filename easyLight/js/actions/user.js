@@ -1,5 +1,6 @@
 
 import type { Action } from './types';
+import { getContract } from "./list_states_mx";
 
 const endPoint = 'http://138.68.49.119:8080';
 // const endPoint = 'http://127.0.0.1:8000';
@@ -54,9 +55,7 @@ export function getUser(token):Action {
     .then(res => {
       return res.json()
     })
-    .then(res => {
-      console.log('getuser', res);
-      dispatch(getProfile(res, token))})
+    .then(res => {dispatch(getProfile(res, token))})
     .catch(err => console.log(err))
   }
 }
@@ -76,12 +75,9 @@ export function loginUser(email:email, password:password, navigate):Action {
       })
     })
     .then(res => { return res.json() })
-    .then(token => {
-      // console.log(token);
+    .then(token => { 
       dispatch(setUser(token))
-      if(!token.non_field_errors && email !== undefined){
-        navigate.navigate("Contratos")
-      }
+      dispatch(getContract(token.key,navigate))
     })
     .catch(err => console.log(err))
   }
