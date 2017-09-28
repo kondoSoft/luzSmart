@@ -20,10 +20,10 @@ export default {
     paddingLeft: 40
   },
   viewThumbnail:{
-    flex: 1,
+    flex: 3.4,
   },
   viewName:{
-    flex: (Platform.OS === 'ios')? 8 : 2,
+    flex: (Platform.OS === 'ios')? 26 : 2,
     alignItems: 'center',
     paddingRight: (Platform.OS === 'ios')? 0 : 50,
   },
@@ -41,10 +41,24 @@ export default {
     flex: 1,
     // alignItems: 'center',
     paddingTop: 30,
-    paddingLeft: 60,
   },
   listItem:{
     borderBottomWidth: 0,
-
+    marginBottom: 10,
+  },
+  left:{
+    flex: 1,
+    justifyContent: 'center'
+  },
+  body:{
+    flex:4
+  },
+  icon:{
+    fontSize: 30,
+    flex:1,
+    textAlign: 'center',
+  },
+  textList:{
+    fontSize: 18,
   },
 }

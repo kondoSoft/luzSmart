@@ -17,8 +17,6 @@ import {
 import { Image, TextInput, Platform, ScrollView, Dimensions, Keyboard, AlertIOS } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
-import Header from '../header/index';
-import Footer from '../footer/index';
 import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
@@ -32,10 +30,6 @@ var selectContract
 var rangeDate
 var arrayContract = []
 class Measurements extends Component {
-
-  static navigationOptions = {
-    header: null
-  };
   constructor(props){
     super(props)
 
@@ -266,8 +260,6 @@ class Measurements extends Component {
     
     return(
       <Container style={{backgroundColor: '#fff'}}>
-        <Header navigation={this.props.navigation} zIndex title="Mediciones"/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
         <ScrollView
           ref='scroll'
           style={{height: Screen.height}}

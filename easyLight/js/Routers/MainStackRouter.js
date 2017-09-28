@@ -12,7 +12,11 @@ import Contracts from '../components/contracts'
 import AddContracts from '../components/addContract';
 import DrawBar from "../components/DrawBar";
 import SignIn from "../components/signin"
-
+import EditProfile from '../components/editProfile';
+import History from '../components/history';
+import Faq from '../components/faq';
+import Contact from '../components/contact';
+import EditContracts from '../components/editContract';
 import { Image, StyleSheet } from 'react-native';
 
 // HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
@@ -51,99 +55,116 @@ const stackNavigation = StackNavigator({
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
 		}),
   },
-  Measurements: { 
-    screen: Measurements,
-    navigationOptions: {
-      title: 'Mediciones'
-    },
+  EditContracts: {
+    screen: EditContracts,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Editar Contratos',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+    }),
   },
-
 })
-const DrawNav = DrawerNavigator (
+
+
+const tabTips = StackNavigator(
   {
-    Contratos: {
-  		screen: stackNavigation,
-      navigationOptions:{
-  			header: null,
-  		},
+    Tips: { 
+      screen: Tips,
+      navigationOptions: ({ navigation }) => ({
+          headerLeft: null,
+          tabBarIcon: ({tintColor}) => <Icon name="bulb" />,
+          title: 'Tips',
+          headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      }),
+    }
+  })
+
+const tabMediciones = StackNavigator(
+  {
+    Mediciones: { 
+      screen: Measurements,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Mediciones',
+        headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      }),
     },
-  },
+  })
+
+const tabResults = StackNavigator(
   {
-    contentComponent: props => <DrawBar {...props} />,
-    drawerPosition: 'right',
-  },
-)
+    Resultados: { 
+      screen: Results,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Resultados',
+        headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      }),
+    },
+  })
+
 const tabNavigation = TabNavigator(
   {
   	Contratos: {
-      screen: DrawNav,
+      screen: stackNavigation,
       navigationOptions: {
           headerLeft: null,
           tabBarLabel: 'Contratos',
           tabBarIcon: ({tintColor}) => <Icon name="home" />,
         },
      },
-  	Tips: { screen: Tips,
-      navigationOptions: {
-          headerLeft: null,
-          tabBarIcon: ({tintColor}) => <Icon name="bulb" />,
-        },
-     },
-
-     Mediciones: { 
-      screen: Measurements,
-      navigationOptions: {
-        title: 'Mediciones'
-      },
-    },
-  	// Mediciones: {
-  	// 	screen: Measurements,
-  	// 	navigationOptions: ({ navigation }) => ({
-  	// 		tabBarIcon: ({ tintColor }) => (
-  	//       		<Image
-  	//         		source={require('../../images/logogray.png')}
-  	//         		style={[styles.icon, {tintColor: tintColor}]}
-  	//       		/>
-   //    		),
-   //    	}),
-  	// },
-   // 	Resultados: {
-   // 		screen: Results,
-   // 		navigationOptions: ({ navigation }) => ({
-  	// 		title: 'Resultados'
-  	// 	}),
-  	// },
+    Mediciones: { screen: tabMediciones },
+  	Tips: { screen: tabTips,},
+    Resultados: { screen: tabResults },
     },
     {
     	tabBarPosition: 'bottom',
     	animationEnabled: true,
     	tabBarOptions: {
       	activeTintColor: '#e91e63',
-      },
+    },
+
   })
 
 const LoginStack = StackNavigator({
-  Login: {
+  'Cerrar Sesion': {
     screen: Login,
     navigationOptions: ({ navigation }) => ({
-      title: 'Login'
+      title: 'Iniciar Sesion',
+      headerLeft: null,
     }),
   },
   SignIn: { 
     screen: SignIn,
     navigationOptions:({ navigation }) => ({
       headerTitle: 'Nuevo Usuario',
-      headerMode: 'screen',
     }),
   },
 })
+
+const DrawNav = DrawerNavigator (
+  {
+    Contratos: {
+      screen: tabNavigation,
+      navigationOptions:{
+        header: null,
+      },
+    },
+    EditProfile: { screen: EditProfile },
+    Contactanos: { screen: Contact },
+    FAQ: { screen: Faq },
+    Historial: { screen: History },
+
+  },
+  {
+    contentComponent: props => <DrawBar {...props} />,
+    drawerPosition: 'right',
+  },
+)
 
 const Root = StackNavigator({
   Login: {
     screen: LoginStack,
   },
-  Tab: {
-    screen: tabNavigation,
+  DrawerNav: {
+    screen: DrawNav,
   },
 },{
   headerMode: 'none'

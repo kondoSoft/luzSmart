@@ -16,9 +16,6 @@ import { getTips } from '../../actions/list_states_mx'
 var tipsArr;
 
 class Tips extends Component{
-  // static navigationOptions = {
-  //   header: null
-  // };
   constructor(props){
     super(props);
     this.state = {

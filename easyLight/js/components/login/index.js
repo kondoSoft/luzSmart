@@ -23,7 +23,6 @@ import { Dimensions, Platform, Linking } from 'react-native';
 import { Field, reduxForm } from "redux-form";
 import { setUser, loginUser, logoutUser } from "../../actions/user";
 import styles from "./styles";
-import Header from '../header/index';
 import { getStates } from "../../actions/list_states_mx";
 const background = require("../../../images/shadow.png");
 const Screen = Dimensions.get('window');
@@ -105,9 +104,8 @@ class Login extends Component {
     }
     return (
       <Container scrollEnabled={false}>
-       {/* <Header title={"INICIO DE SESIÓN"} zIndex navigation={this.props.navigation}/> */}
         <ScrollView
-          style={styles.container}
+          contentContainerStyle={styles.container}
           ref='scroll'
           scrollEnabled={false}
           >

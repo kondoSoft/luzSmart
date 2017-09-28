@@ -25,9 +25,6 @@ import {
 } from "victory-native";
 
 class Results  extends Component {
-  // static navigationOptions = {
-  //   header: null
-  // };
   constructor(props){
     super(props)
     this.state ={

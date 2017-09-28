@@ -20,8 +20,6 @@ import {
 } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 // import { Select, Option } from 'react-native-select-list';
-import Header from '../header/index';
-import Footer from '../footer/index';
 import styles from './styles';
 import { postReceipt } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
@@ -178,8 +176,6 @@ class Receipt extends Component {
     // console.log(lastBill.payday_limit)
     var receiptView = (
       <Container>
-        <Header zIndex navigation={this.props.navigation} title="Recibo de Luz" />
-        <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} />
         <ScrollView
           ref='scroll'
           style={{ backgroundColor: '#fff' }}
