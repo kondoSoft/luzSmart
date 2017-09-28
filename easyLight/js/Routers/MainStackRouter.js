@@ -48,6 +48,13 @@ const stackNavigation = StackNavigator({
 			title: 'Agregar Contratos'
 		}),
   },
+  Measurements: { 
+    screen: Measurements,
+    navigationOptions: {
+      title: 'Mediciones'
+    },
+  },
+
 })
 const DrawNav = DrawerNavigator (
   {
@@ -76,9 +83,15 @@ const tabNavigation = TabNavigator(
   	Tips: { screen: Tips,
       navigationOptions: {
           headerLeft: null,
-          tabBarIcon: ({tintColor}) => <Icon name="thumbs-up" />,
+          tabBarIcon: ({tintColor}) => <Icon name="bulb" />,
         },
      },
+     Mediciones: { 
+      screen: Measurements,
+      navigationOptions: {
+        title: 'Mediciones'
+      },
+    },
   	// Mediciones: {
   	// 	screen: Measurements,
   	// 	navigationOptions: ({ navigation }) => ({

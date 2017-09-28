@@ -61,6 +61,7 @@ class App extends Component {
   }
 
   render() {
+    // console.log(this.props)
     if (this.state.showDownloadingModal) {
       return (
         <Container
@@ -126,13 +127,13 @@ class App extends Component {
         </Container>
       );
     }
-
+    
     return <MainStackRouter screenProps={this.props}/>;
   }
 }
 const mapStateToProps = state => ({
-  token: state.user.token,
   contracts: state.list_contracts.contracts,
+  token: state.user.token,
   tips: state.list_contracts.tips,
 })
 export default connect(mapStateToProps)(App);

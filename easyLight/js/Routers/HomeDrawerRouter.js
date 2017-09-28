@@ -3,12 +3,12 @@ import { DrawerNavigator } from "react-navigation";
 import { Button, Icon } from "react-native"
 import Contracts from '../components/contracts'
 import DetailContract from '../components/detailContract'
-// import Measurements from '../components/measurements'
+import Measurements from '../components/measurements'
 // import Tips from '../components/tips'
 // import Results from '../components/results';
-import Contact from '../components/contact';
+// import Contact from '../components/contact';
 // import AddContracts from '../components/addContract';
-import EditContracts from '../components/editContract';
+// import EditContracts from '../components/editContract';
 // import Receipt from '../components/receipt';
 import History from '../components/history';
 import Configuration from '../components/configuration';
@@ -36,7 +36,7 @@ export default (DrawNav = DrawerNavigator(
   	},
     // Contracts: { screen: Contracts, },
 
-    // Measurements: { screen: Measurements },
+    Measurements: { screen: Measurements },
     // Tips: { screen: Tips },
     // Resultados: { screen: Results },
     // AddContracts: { screen: AddContracts },

@@ -182,7 +182,7 @@ export default class SwipeAccordion extends Component{
     if (this.props.navigation.state.routeName === 'DetailContract') {
 
     }else {
-      console.log('this.props.receipt when navigate to detailContract >',this.props.receipts)
+      console.log('this.props.receipt when navigate to detailContract >',this.props)
       this.props.navigation.navigate(route, { receipt: this.props.receipts, index: this.props.index,profile: this.props.profile})
     }
   }
@@ -220,7 +220,7 @@ class ExpandedView extends Component{
   render(){
     const { data } = this.props
     currentData = data.current_reading - data.previous_reading
-    // console.log('data',data);
+    console.log('data',data);
     var contentExpandedView = {
       'first':{
         title: 'Período de Consumo',
