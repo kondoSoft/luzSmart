@@ -133,7 +133,7 @@ class Measurements extends Component {
   }
   sendCurrentData(id){
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading) {
-        this.props.patchReceipt(this.state.current_data, this.props.token, id)
+        this.props.patchReceipt(this.state.current_data, this.props.token, id, this.props.navigation)
         this.setState({
           kwhValidation: require('../../../images/succes.png')
         },()=>{
@@ -346,7 +346,7 @@ class Measurements extends Component {
 }
 function bindAction(dispatch) {
   return {
-    patchReceipt: (data, token, id) => dispatch(patchReceipt(data, token, id)),
+    patchReceipt: (data, token, id, navigation) => dispatch(patchReceipt(data, token, id, navigation)),
     getRatePeriod: (rate, token) => dispatch(getRatePeriod(rate, token)),
   };
 }

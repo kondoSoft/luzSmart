@@ -20,6 +20,7 @@ import Faq from '../components/faq';
 import Contact from '../components/contact';
 import EditContracts from '../components/editContract';
 import Configuration from '../components/configuration';
+import DetailUltimateContract from '../components/detailUltimateContract';
 import { Image, StyleSheet } from 'react-native';
 
 // HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
@@ -100,6 +101,14 @@ const stackNavigation = StackNavigator({
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
     }),
   },
+  Medicion: { 
+    screen: MeasurementsCopy,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Medicion',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+    }),
+  },
+
 })
 
 
@@ -109,7 +118,7 @@ const tabTips = StackNavigator(
       screen: Tips,
       navigationOptions: ({ navigation }) => ({
           headerLeft: null,
-          tabBarIcon: ({tintColor}) => <Icon name="bulb" />,
+          tabBarIcon: ({tintColor}) => <Icon name="ios-bulb-outline" />,
           title: 'Tips',
           headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
       }),
@@ -122,13 +131,6 @@ const tabMediciones = StackNavigator(
       screen: Measurements,
       navigationOptions: ({ navigation }) => ({
         title: 'Mediciones',
-        headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
-      }),
-    },
-    Medicion: { 
-      screen: MeasurementsCopy,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Medicion',
         headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
       }),
     },
@@ -145,6 +147,24 @@ const tabResults = StackNavigator(
     },
   })
 
+const tabPeriods = StackNavigator(
+  {
+    Periodos: {
+    screen: DetailUltimateContract,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Detalles de Contrato',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+    }),
+  },
+  Medicion: { 
+    screen: MeasurementsCopy,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Medicion',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+    }),
+  },
+})
+
 const tabNavigation = TabNavigator(
   {
   	Contratos: {
@@ -152,18 +172,33 @@ const tabNavigation = TabNavigator(
       navigationOptions: {
           headerLeft: null,
           tabBarLabel: 'Contratos',
-          tabBarIcon: ({tintColor}) => <Icon name="home" />,
+          tabBarIcon: ({tintColor}) => <Icon name="ios-home-outline" />,
         },
      },
-    Mediciones: { screen: tabMediciones },
-  	Tips: { screen: tabTips,},
+    Periodos: { 
+      screen: tabPeriods,
+      navigationOptions: {
+        headerLeft: null,
+        tabBarIcon:({tintColor}) => <Icon name="ios-calendar-outline" />,
+      }
+    },
+    Mediciones: { 
+      screen: tabMediciones,
+      navigationOptions: {
+        headerLeft: null,
+        tabBarIcon:({tintColor}) => <Icon name="ios-flash-outline" />,
+      }
+
+     },
+  	
     Resultados: { screen: tabResults,
       navigationOptions: {
           headerLeft: null,
           tabBarLabel: 'Resultados',
-          tabBarIcon: ({tintColor}) => <Icon name="stats" />,
+          tabBarIcon: ({tintColor}) => <Icon name="ios-stats-outline" />,
         },
      },
+    Tips: { screen: tabTips,},
     },
     {
     	tabBarPosition: (Platform.OS === 'ios')? 'bottom' : 'top',

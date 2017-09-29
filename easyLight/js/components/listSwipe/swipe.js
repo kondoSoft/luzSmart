@@ -179,9 +179,9 @@ export default class SwipeAccordion extends Component{
     })
   }
   navigateTo(route){
-    console.log('dataAccordionContract',this.props.dataAccordionContract)
-    if (this.props.navigation.state.routeName === 'DetailContract') {
-      this.props.navigation.navigate('Medicion',{ receipt: this.props.dataAccordion ,contract: this.props.dataAccordionContract, index: this.props.index})
+    console.log('dataAccordionContract',this.props.dataAccordionContract, this.props.navigation.state.routeName)
+    if (this.props.navigation.state.routeName === 'DetailContract' || this.props.navigation.state.routeName === 'Periodos') {
+      this.props.navigation.navigate('Medicion',{ receipt: this.props.dataAccordion , contract: this.props.dataAccordionContract, index: this.props.index})
 
     }else {
       this.props.navigation.navigate(route, { receipt: this.props.receipts, index: this.props.index, profile: this.props.profile, contract: this.props.dataAccordionContract})
