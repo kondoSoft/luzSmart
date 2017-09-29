@@ -8,8 +8,8 @@ import {
 import { Platform, Image } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Swiper from 'react-native-swiper';
-import Header from '../header/index';
-import Footer from '../footer/index';
+// import Header from '../header/index';
+// import Footer from '../footer/index';
 import styles from './styles';
 import { getTips } from '../../actions/list_states_mx'
 
@@ -88,7 +88,6 @@ class Tips extends Component{
     return(
       <Container>
         {/* <Header navigation={ this.props.navigation } title="Tips" /> */}
-        {(Platform.OS == 'android') ? <Footer navigation={this.props.navigation} viewContract={this.props.screenProps.contracts} />  : null}
         <Grid style={{backgroundColor: '#fff'}}>
           <Swiper
             style={styles.wrapper}

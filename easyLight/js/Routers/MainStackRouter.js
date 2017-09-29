@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Platform } from 'react-native';
 import HomeDrawerRouter from "./HomeDrawerRouter";
 import { StackNavigator, TabNavigator, DrawerNavigator } from "react-navigation";
 import { Header, Left, Button, Icon, Body, Title, Right } from "native-base";
@@ -165,10 +166,12 @@ const tabNavigation = TabNavigator(
      },
     },
     {
-    	tabBarPosition: 'bottom',
+    	tabBarPosition: (Platform.OS === 'ios')? 'bottom' : 'top',
     	animationEnabled: true,
     	tabBarOptions: {
       	activeTintColor: '#e91e63',
+        showIcon: true,
+        showLabel: false,
     },
 
   })
