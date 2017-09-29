@@ -10,8 +10,6 @@ import {
 import {
   Container,
 } from 'native-base'
-import Header from '../header'
-import Footer from '../footer'
 import styles from './styles'
 
 export default class Faq extends Component {
@@ -50,8 +48,6 @@ export default class Faq extends Component {
     const { navigation } = this.props
     return(
       <Container style={{backgroundColor:'#fff'}}>
-        <Header navigation={navigation} title={"FAQ"}/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
         <View style={{backgroundColor:'lightgrey',flex:0.3,alignItems:'center',justifyContent:'center'}}>
           <Text style={{fontSize: 15,fontWeight: '600'}}>Selecciona una pregunta especifica de la lista.</Text>
         </View>
@@ -68,7 +64,6 @@ export default class Faq extends Component {
             })
           }
         </ScrollView>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
       </Container>
     )
   }

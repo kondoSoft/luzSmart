@@ -23,6 +23,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import styles from './styles';
 import { postReceipt } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
+import { getContract } from "../../actions/list_states_mx";
 
 var contract;
 
@@ -44,7 +45,8 @@ class Receipt extends Component {
       this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
     }
   static propType = {
-    setBill: React.PropTypes.func
+    setBill: React.PropTypes.func,
+    getContract: React.PropTypes.func,
   }
   componentWillMount () {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
@@ -131,6 +133,8 @@ class Receipt extends Component {
     if (this.dataValidate(this.state)) {
       this.props.postReceipt(this.state, this.props.token);
       this.showAlert();
+      this.props.navigation.navigate('Contratos', this.props.getContract(this.props.screenProps.token, this.props.navigation));
+
     }
     else {
       Alert.alert(
@@ -278,7 +282,9 @@ class Receipt extends Component {
                   <Item inlineLabel last style={styles.form__item__title}>
                     <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
                   </Item>
-                  <ReceiptPickerDate func={this.handlePaydayLimit}/>
+                  <Item last style={styles.form__item__datepicker}>
+                    <ReceiptPickerDate func={this.handlePaydayLimit}/>
+                  </Item>
                   <Item last style={styles.form__item__inputs}>
                     <Input
                       ref='monto'
@@ -366,6 +372,7 @@ class Receipt extends Component {
 function bindAction(dispatch) {
   return {
     postReceipt: (list, token) => dispatch(postReceipt(list, token)),
+    getContract: (token, navigation) => dispatch(getContract(token, navigation)),
   };
 }
 const mapStateToProps = state => ({

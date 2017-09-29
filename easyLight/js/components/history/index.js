@@ -24,8 +24,6 @@ import {
 import Modal from 'react-native-modalbox';
 import ModalWrapper from 'react-native-modal-wrapper';
 import { Col, Row, Grid } from "react-native-easy-grid";
-import Header from '../header/index';
-import Footer from '../footer/index';
 import styles from './styles';
 import FabButton from '../fabButton/index';
 
@@ -43,9 +41,6 @@ class History extends Component{
       open: false
     }
   }
-  static navigationOptions = {
-    header: null
-  };
   openModal(){
     this.setState({
       open: !this.state.open
@@ -61,8 +56,6 @@ class History extends Component{
     return(
       <Container>
         {(Platform.OS === 'ios')? <ModalForm visible={this.state.open} onClose={this.onClose} navigation={this.props.navigation}/> : <ModalAndroid visible={this.state.open} navigation={this.props.navigation} onCancel={this.onClose}/>}
-        <Header navigation={this.props.navigation} title="Historial" />
-        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Col>
@@ -111,7 +104,6 @@ class History extends Component{
           >
           <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
       </Container>
     )
   }
