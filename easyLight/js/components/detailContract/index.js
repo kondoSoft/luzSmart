@@ -231,7 +231,7 @@ class DetailContract extends Component {
                     style={{backgroundColor: colors[i % colors.length]}}
                     // component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={this.whileCosts}/>}
                     component={<ItemComponent data={item} status={status} ratePeriod={rate_period} consumoPromedio={whileCosts}/>}
-
+                    dataAccordionContract={this.props.navigation.state.params.contract}
                     dataAccordion={item}
                     icon={<Icon style={{paddingTop: (navigation.state.routeName === 'DetailContract')? 5 : 15,color: 'steelblue',fontSize:40,textAlign:'center'}} name="information-circle" />}
                   />

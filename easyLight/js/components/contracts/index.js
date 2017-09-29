@@ -3,14 +3,12 @@ import { connect } from 'react-redux';
 import { View, Platform, Image, ScrollView, Dimensions, PanResponder, TouchableOpacity } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Container, Fab , Content, Body, Left, List, Thumbnail, Text, Title, Button, Icon, Right} from 'native-base';
-// import Header from '../header/index';
 import styles from "./styles";
-// import Footer from '../footer/index';
 import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
-import { getContract } from "../../actions/list_states_mx";
+import { getContract, resetRate, resetMunicipality } from "../../actions/list_states_mx";
 import { getUser } from '../../actions/user';
 import { whileCosts } from '../../helpers';
 // var gradientImage = require('../../../images/header.png')
@@ -25,6 +23,8 @@ class Contracts extends Component {
   }
   componentWillMount(){
     console.log('WillMount', this.props.screenProps.contracts)
+    this.props.resetRate()
+    this.props.resetMunicipality()
     this.setState({
       contract: this.props.screenProps.contracts
     })
@@ -33,27 +33,25 @@ class Contracts extends Component {
   static propType = {
     getRate: React.PropTypes.func,
     getContract: React.PropTypes.func,
+    resetRate: React.PropTypes.func,
     getStates: React.PropTypes.func,
   }
   render(){
     const { navigation, profile } = this.props
     const { state } = navigation
     const { contract }= this.state
-    var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts")}}>
+    var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts" )}}>
         <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: (Platform.OS === 'ios')? 30 : 33, color: '#fff'}}>+</Text>
       </FabButton>
 
     return(
       <Container>
-        {/* <Header navigation={navigation} title={"EASYLIGTH"}/> */}
-        {(Platform.OS === 'android')? <Footer isPremium={profile.premium} navigation={navigation} viewContract={contract} whileCost={whileCosts} /> : null}
         <ParentSwipeContracts
           contract={ contract }
           navigation={ navigation }
           isPremium={ this.props.profile.premium }
         />
         {(profile.premium == true)? fab : (contract.length === 0)? fab : null}
-        {/* {(Platform.OS === 'ios')? <Footer isPremium={profile.premium} viewContract={contract} navigation={navigation} whileCost={whileCosts}/> : null} */}
       </Container>
     )
   }
@@ -135,6 +133,8 @@ function bindAction(dispatch){
   return {
     getContract: (token, navigation) => dispatch(getContract(token, navigation)),
     getUser: token =>dispatch(getUser(token)),
+    resetRate: () => dispatch(resetRate()),
+    resetMunicipality: () => dispatch(resetMunicipality()),
   }
 }
 const mapStateToProps = state => ({

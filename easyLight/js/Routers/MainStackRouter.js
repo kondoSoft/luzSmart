@@ -6,6 +6,7 @@ import Login from "../components/login/";
 import Tips from '../components/tips'
 import Results from '../components/results';
 import Measurements from '../components/measurements'
+import MeasurementsCopy from '../components/measurementsCopy'
 import DetailContract from '../components/detailContract'
 import Receipt from '../components/receipt';
 import Contracts from '../components/contracts'
@@ -120,6 +121,13 @@ const tabMediciones = StackNavigator(
       screen: Measurements,
       navigationOptions: ({ navigation }) => ({
         title: 'Mediciones',
+        headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      }),
+    },
+    Medicion: { 
+      screen: MeasurementsCopy,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Medicion',
         headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
       }),
     },

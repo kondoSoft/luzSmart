@@ -209,25 +209,13 @@ class AddContracts extends Component {
   }
   // ******************************************
   componentWillMount(){
-    optionsStates = this.props.states_mx.map((item,i)=>{
-      return (<Option
-        key={i}
-        value={i}
-        optionStyle={styles.select__option}
-        >{item.state}</Option>
-      )
-    })
 
-    if (Platform.OS === 'android') {
-      optionsStates = this.props.states_mx.map((item,i)=>{
-        return(
-          <Picker.Item key={i} label={item.state} value={i}/>
-        )
-      })
-    }
+    
     this.createRangeDate()
+    
   }
   componentWillReceiveProps(nextProps){
+    console.log('willReceiv', nextProps)
     if (typeof nextProps.mun_rate === 'string') {
       //array of rates
       const rates = ['TARIFA 1', 'TARIFA 1A', 'TARIFA 1B', 'TARIFA 1C', 'TARIFA 1D', 'TARIFA 1E', 'TARIFA 1F']
@@ -262,8 +250,24 @@ class AddContracts extends Component {
     }
   }
   render(){
-    
+    console.log('render', this.props)
     const { navigation, states_mx, municipality_mx, mun_rate } = this.props
+    optionsStates = this.props.states_mx.map((item,i)=>{
+      return (<Option
+        key={i}
+        value={i}
+        optionStyle={styles.select__option}
+        >{item.state}</Option>
+      )
+    })
+    if (Platform.OS === 'android') {
+      optionsStates = this.props.states_mx.map((item,i)=>{
+        return(
+          <Picker.Item key={i} label={item.state} value={i}/>
+        )
+      })
+    }
+    
     var periodSummer = (
       <Select
         selectStyle={styles.select}
@@ -274,6 +278,7 @@ class AddContracts extends Component {
         >
         {/* <Option>Periodo</Option> */}
         {arrRangeDate.map((item, i)=>{
+          console.log('arrRange', item)
           return <Option
             key={i}
             value={i}
@@ -292,6 +297,7 @@ class AddContracts extends Component {
       onSelect={(value, key) => this.handleMunicipality(value, key)}
       >
         {this.props.municipality_mx.map((item,i)=>{
+          console.log('muni', item)
           return (<Option
             key={i}
             value={item}
@@ -311,6 +317,7 @@ class AddContracts extends Component {
           {
             (this.state.rates.length != 0)&&
               this.state.rates.map((rate,i)=>{
+                console.log('rate', rate)
               return (<Option
                 key={i}
                 optionStyle={styles.select__option}
@@ -422,7 +429,7 @@ class AddContracts extends Component {
                                                                                                                             textAlign:'left'}}>
                                                                                                                             {mun_rate}
                                                                                                                           </Text>} */}
-              { (mun_rate.length != 0)? selectRate : <View style={{height:40,marginTop:10,marginBottom:10}}/> }
+              { (mun_rate.length != 0) ? selectRate : <View style={{height:40,marginTop:10,marginBottom:10}}/> }
               { periodSummer }
               </Form>
             </Col>

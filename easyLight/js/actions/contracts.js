@@ -47,7 +47,7 @@ export function postReceipt(list, token):Action{
   }
 }
 
-export function patchReceipt(data, token, id):Action{
+export function patchReceipt(data, token, id,navigation):Action{
   return dispatch => {
     return fetch(endPoint+'/receipt/'+ id + '/',{
       method: 'PATCH',
@@ -61,7 +61,7 @@ export function patchReceipt(data, token, id):Action{
       })
     })
     .then(res => {return res.json()})
-    .then(res=> {dispatch(getContract(token))
+    .then(res=> {dispatch(getContract(token,navigation))
     })
     .catch(err => console.log(err))
   }
