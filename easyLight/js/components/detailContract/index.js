@@ -21,8 +21,8 @@ import {
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import Header from '../header/index';
-import Footer from '../footer/index';
+// import Header from '../header/index';
+// import Footer from '../footer/index';
 import styles from './styles';
 import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
@@ -197,7 +197,6 @@ class DetailContract extends Component {
     const { status } = this.state;
     const bill = this.state.bill
     const colors = ['lightgrey','#fff'];
-    console.log(this.props.navigation.state.params.receipt)
     let fab = <FabButton
           navigation={navigation}
           onTap={() => {navigation.navigate('Receipt', params)}}
@@ -214,7 +213,6 @@ class DetailContract extends Component {
     // Obtener datos por Periodos
     return(
       <Container>
-        {(Platform.OS === 'android') ? <Footer navigation={navigation} detailContract={numContract} firstDate={dateMonth} finalRange={finalRange} whileCost={whileCosts} /> : null}
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Row style={styles.detailContract__row__top}>

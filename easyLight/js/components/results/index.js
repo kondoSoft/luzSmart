@@ -13,8 +13,8 @@ import {
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
-import Header from '../header/index';
-import Footer from '../footer/index';
+// import Header from '../header/index';
+// import Footer from '../footer/index';
 import styles from './styles';
 import { random, range } from "lodash";
 import Svg from "react-native-svg";
@@ -36,7 +36,6 @@ class Results  extends Component {
     return(
       <Container>
         {/* <Header title="Resultados" navigation={this.props.navigation}/> */}
-        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
         <Grid style={{ backgroundColor: '#fff' }}>
           <Row size={10} style={styles.row__top}>
             <Select
@@ -141,7 +140,7 @@ class Results  extends Component {
         <Fab
           active={this.state.active}
           direction="up"
-          containerStyle={{ bottom: 80, right: 10}}
+          containerStyle={{ bottom: 30, right: 10}}
           style={{ backgroundColor: 'steelblue' }}
           position="bottomRight"
           onPress={() => this.setState({ active: !this.state.active })}

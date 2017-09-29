@@ -10,8 +10,8 @@ export const GET_CONTRACT = 'GET_CONTRACT'
 export const GET_TIPS = 'GET_TIPS'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 
@@ -52,7 +52,6 @@ export function printRate(list):Action {
   }
 }
 export function printContract(list):Action {
-  console.log('printContract', list)
   return {
     type: GET_CONTRACT,
     payload: list
@@ -164,6 +163,7 @@ export function getContract(token, navigate):Action{
     .then(res => {return res.json()})
     .then(res=> {
       dispatch(printContract(res))
+      console.log('res',res)
       if(!token.non_field_errors){
         navigate.navigate('Contratos')
       }
