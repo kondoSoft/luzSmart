@@ -29,8 +29,8 @@ import {
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
-import Header from '../header/index';
-import Footer from '../footer/index';
+// import Header from '../header/index';
+// import Footer from '../footer/index';
 import styles from './styles';
 import { getMunicipality, resetMunicipality, postContract, getRate, resetRate } from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
@@ -369,7 +369,6 @@ class AddContracts extends Component {
     }
     return(
       <Container style={{backgroundColor:'#fff'}}>
-      {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
         <ScrollView scrollEnabled={false}>
           <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
             <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>

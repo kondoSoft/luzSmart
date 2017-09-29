@@ -46,7 +46,6 @@ class Contracts extends Component {
     return(
       <Container>
         {/* <Header navigation={navigation} title={"EASYLIGTH"}/> */}
-        {(Platform.OS === 'android')? <Footer isPremium={profile.premium} navigation={navigation} viewContract={contract} whileCost={whileCosts} /> : null}
         <ParentSwipeContracts
           contract={ contract }
           navigation={ navigation }
