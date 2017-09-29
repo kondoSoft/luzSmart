@@ -16,18 +16,12 @@ import {
   Row,
   Grid
 } from 'react-native-easy-grid';
-import Header from '../header/index';
-
 
 class Configuration extends Component {
-  static navigationOptions = {
-    header: null
-  };
   render(){
     console.log('props of configutation',this.props);
     return(
       <Container>
-        <Header title="CONFIGURACIÓN" navigation={this.props.navigation}/>
         <Grid style={{backgroundColor:'#fff'}}>
           <Row size={15} style={{alignItems: 'center', justifyContent: 'center',paddingLeft:15,paddingRight:15}}>
             <Thumbnail source={ require('../../../images/profile.png')} style={{ width: 70,height:70,borderRadius: 35}} />

@@ -23,8 +23,8 @@ class Contracts extends Component {
         contract: []
     }
   }
-
   componentWillMount(){
+    console.log('WillMount', this.props.screenProps.contracts)
     this.setState({
       contract: this.props.screenProps.contracts
     })
@@ -133,7 +133,7 @@ class ItemComponent extends Component{
 }
 function bindAction(dispatch){
   return {
-    getContract: token => dispatch(getContract(token)),
+    getContract: (token, navigation) => dispatch(getContract(token, navigation)),
     getUser: token =>dispatch(getUser(token)),
   }
 }

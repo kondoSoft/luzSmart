@@ -197,7 +197,6 @@ class DetailContract extends Component {
     const { status } = this.state;
     const bill = this.state.bill
     const colors = ['lightgrey','#fff'];
-    console.log(this.props.navigation.state.params.receipt)
     let fab = <FabButton
           navigation={navigation}
           onTap={() => {navigation.navigate('Receipt', params)}}

@@ -17,6 +17,7 @@ import History from '../components/history';
 import Faq from '../components/faq';
 import Contact from '../components/contact';
 import EditContracts from '../components/editContract';
+import Configuration from '../components/configuration';
 import { Image, StyleSheet } from 'react-native';
 
 // HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
@@ -59,6 +60,41 @@ const stackNavigation = StackNavigator({
     screen: EditContracts,
     navigationOptions: ({ navigation }) => ({
       title: 'Editar Contratos',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+    }),
+  },
+  EditProfile: { 
+    screen: EditProfile,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Editar Perfil',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+    }),
+  },
+  Contactanos: { 
+    screen: Contact,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Contactanos',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+    }),
+   },
+  FAQ: { 
+    screen: Faq,
+    navigationOptions: ({ navigation }) => ({
+      title: 'FAQ',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+    }),
+  },
+  Historial: { 
+    screen: History,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Historial',
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+    }),
+  },
+  Premium: { 
+    screen: Configuration,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Premium',
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
     }),
   },
@@ -112,7 +148,13 @@ const tabNavigation = TabNavigator(
      },
     Mediciones: { screen: tabMediciones },
   	Tips: { screen: tabTips,},
-    Resultados: { screen: tabResults },
+    Resultados: { screen: tabResults,
+      navigationOptions: {
+          headerLeft: null,
+          tabBarLabel: 'Resultados',
+          tabBarIcon: ({tintColor}) => <Icon name="stats" />,
+        },
+     },
     },
     {
     	tabBarPosition: 'bottom',
@@ -147,11 +189,6 @@ const DrawNav = DrawerNavigator (
         header: null,
       },
     },
-    EditProfile: { screen: EditProfile },
-    Contactanos: { screen: Contact },
-    FAQ: { screen: Faq },
-    Historial: { screen: History },
-
   },
   {
     contentComponent: props => <DrawBar {...props} />,
