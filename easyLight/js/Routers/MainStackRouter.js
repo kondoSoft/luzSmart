@@ -12,7 +12,6 @@ import DetailContract from '../components/detailContract'
 import Receipt from '../components/receipt';
 import Contracts from '../components/contracts'
 import AddContracts from '../components/addContract';
-import DrawBar from "../components/DrawBar";
 import SignIn from "../components/signin"
 import EditProfile from '../components/editProfile';
 import History from '../components/history';
@@ -22,6 +21,8 @@ import EditContracts from '../components/editContract';
 import Configuration from '../components/configuration';
 import DetailUltimateContract from '../components/detailUltimateContract';
 import { Image, StyleSheet } from 'react-native';
+import DrawBar from "../components/DrawBar";
+import FooterGlobal from "../components/footer";
 
 // HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
 //   // header: null
@@ -49,7 +50,7 @@ const stackNavigation = StackNavigator({
 		navigationOptions: ({ navigation }) => ({
 			title: 'Recibo',
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
-      
+
 		}),
 	},
   AddContracts: {
@@ -66,42 +67,15 @@ const stackNavigation = StackNavigator({
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
     }),
   },
-  EditProfile: { 
+  EditProfile: {
     screen: EditProfile,
     navigationOptions: ({ navigation }) => ({
       title: 'Editar Perfil',
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
     }),
   },
-  Contactanos: { 
-    screen: Contact,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Contactanos',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
-    }),
-   },
-  FAQ: { 
-    screen: Faq,
-    navigationOptions: ({ navigation }) => ({
-      title: 'FAQ',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
-    }),
-  },
-  Historial: { 
-    screen: History,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Historial',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
-    }),
-  },
-  Premium: { 
-    screen: Configuration,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Premium',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
-    }),
-  },
-  Medicion: { 
+
+  Medicion: {
     screen: MeasurementsCopy,
     navigationOptions: ({ navigation }) => ({
       title: 'Medicion',
@@ -111,10 +85,45 @@ const stackNavigation = StackNavigator({
 
 })
 
-
+const stackDraw = StackNavigator(
+	{
+		Contactanos: {
+	    screen: Contact,
+	    navigationOptions: ({ navigation }) => ({
+	      title: 'Contactanos',
+				headerLeft: null,
+	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+	    }),
+	   },
+	  FAQ: {
+	    screen: Faq,
+	    navigationOptions: ({ navigation }) => ({
+	      title: 'FAQ',
+				headerLeft: null,
+	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+	    }),
+	  },
+	  Historial: {
+	    screen: History,
+	    navigationOptions: ({ navigation }) => ({
+	      title: 'Historial',
+				headerLeft: null,
+	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+	    }),
+	  },
+	  Premium: {
+	    screen: Configuration,
+	    navigationOptions: ({ navigation }) => ({
+	      title: 'Premium',
+				headerLeft: null,
+	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+	    }),
+	  },
+	}
+)
 const tabTips = StackNavigator(
   {
-    Tips: { 
+    Tips: {
       screen: Tips,
       navigationOptions: ({ navigation }) => ({
           headerLeft: null,
@@ -127,7 +136,7 @@ const tabTips = StackNavigator(
 
 const tabMediciones = StackNavigator(
   {
-    Mediciones: { 
+    Mediciones: {
       screen: Measurements,
       navigationOptions: ({ navigation }) => ({
         title: 'Mediciones',
@@ -138,7 +147,7 @@ const tabMediciones = StackNavigator(
 
 const tabResults = StackNavigator(
   {
-    Resultados: { 
+    Resultados: {
       screen: Results,
       navigationOptions: ({ navigation }) => ({
         title: 'Resultados',
@@ -156,7 +165,7 @@ const tabPeriods = StackNavigator(
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
     }),
   },
-  Medicion: { 
+  Medicion: {
     screen: MeasurementsCopy,
     navigationOptions: ({ navigation }) => ({
       title: 'Medicion',
@@ -167,6 +176,9 @@ const tabPeriods = StackNavigator(
 
 const tabNavigation = TabNavigator(
   {
+		StackDraw: {
+			screen: stackDraw,
+		},
   	Contratos: {
       screen: stackNavigation,
       navigationOptions: {
@@ -175,14 +187,14 @@ const tabNavigation = TabNavigator(
           tabBarIcon: ({tintColor}) => <Icon name="ios-home-outline" />,
         },
      },
-    Periodos: { 
+    Periodos: {
       screen: tabPeriods,
       navigationOptions: {
         headerLeft: null,
         tabBarIcon:({tintColor}) => <Icon name="ios-calendar-outline" />,
       }
     },
-    Mediciones: { 
+    Mediciones: {
       screen: tabMediciones,
       navigationOptions: {
         headerLeft: null,
@@ -190,7 +202,7 @@ const tabNavigation = TabNavigator(
       }
 
      },
-  	
+
     Resultados: { screen: tabResults,
       navigationOptions: {
           headerLeft: null,
@@ -199,8 +211,12 @@ const tabNavigation = TabNavigator(
         },
      },
     Tips: { screen: tabTips,},
+
     },
+
+
     {
+			tabBarComponent: props => <FooterGlobal {...props} />,
     	tabBarPosition: (Platform.OS === 'ios')? 'bottom' : 'top',
     	animationEnabled: true,
     	tabBarOptions: {
@@ -219,7 +235,7 @@ const LoginStack = StackNavigator({
       headerLeft: null,
     }),
   },
-  SignIn: { 
+  SignIn: {
     screen: SignIn,
     navigationOptions:({ navigation }) => ({
       headerTitle: 'Nuevo Usuario',
@@ -235,7 +251,10 @@ const DrawNav = DrawerNavigator (
         header: null,
       },
     },
+
+
   },
+
   {
     contentComponent: props => <DrawBar {...props} />,
     drawerPosition: 'right',
