@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Platform } from 'react-native';
 import HomeDrawerRouter from "./HomeDrawerRouter";
-import { StackNavigator, TabNavigator, DrawerNavigator } from "react-navigation";
+import { StackNavigator, TabNavigator, DrawerNavigator, TabBarBottom, NavigationActions } from "react-navigation";
 import { Header, Left, Button, Icon, Body, Title, Right } from "native-base";
 import Login from "../components/login/";
 import Tips from '../components/tips'
 import Results from '../components/results';
 import Measurements from '../components/measurements'
-import MeasurementsCopy from '../components/measurementsCopy'
+import MeasurementsCopy from '../components/measurementSingle'
 import DetailContract from '../components/detailContract'
 import Receipt from '../components/receipt';
 import Contracts from '../components/contracts'
@@ -21,6 +21,7 @@ import EditContracts from '../components/editContract';
 import Configuration from '../components/configuration';
 import DetailUltimateContract from '../components/detailUltimateContract';
 import { Image, StyleSheet } from 'react-native';
+// import ImageHeader from '../components/header/';
 import DrawBar from "../components/DrawBar";
 import FooterGlobal from "../components/footer";
 
@@ -33,6 +34,7 @@ const stackNavigation = StackNavigator({
 	Contratos: {
 		screen: Contracts,
     navigationOptions: ({ navigation }) => ({
+      // header: (props) => <ImageHeader {...props} />,
       title: 'EASYLIGHT',
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
       headerLeft: null,
@@ -42,6 +44,7 @@ const stackNavigation = StackNavigator({
     screen: DetailContract,
     navigationOptions: ({ navigation }) => ({
       title: 'Detalles de Contrato',
+      // header: (props) => <ImageHeader {...props} />,
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
     }),
   },
@@ -56,14 +59,14 @@ const stackNavigation = StackNavigator({
   AddContracts: {
     screen: AddContracts,
     navigationOptions: ({ navigation }) => ({
-			title: 'Agregar Contratos',
+			title: 'Agregar Contrato',
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
 		}),
   },
   EditContracts: {
     screen: EditContracts,
     navigationOptions: ({ navigation }) => ({
-      title: 'Editar Contratos',
+      title: 'Editar Contrato',
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
     }),
   },
@@ -74,16 +77,22 @@ const stackNavigation = StackNavigator({
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
     }),
   },
-
   Medicion: {
     screen: MeasurementsCopy,
     navigationOptions: ({ navigation }) => ({
+      // header: (props) => <ImageHeader {...props} />,
       title: 'Medicion',
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
     }),
   },
-
-})
+},
+// {
+//   navigationOptions: ({ navigation }) => ({
+    // header: (props) => <ImageHeader {...props} />,
+//     headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+//   })
+// }
+)
 
 const stackDraw = StackNavigator(
 	{
@@ -119,7 +128,12 @@ const stackDraw = StackNavigator(
 	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
 	    }),
 	  },
-	}
+	},
+  {
+    navigationOptions: ({ navigation }) => ({
+      // header: (props) => <ImageHeader {...props} />,
+    })
+  }
 )
 const tabTips = StackNavigator(
   {
@@ -214,23 +228,52 @@ const tabNavigation = TabNavigator(
 
     },
 
-
     {
-			tabBarComponent: props => <FooterGlobal {...props} />,
+      initialRouteName: 'Contratos',
+      // navigationOptions: ({ navigation }) => ({
+        // header: (props) => <ImageHeader {...props} />,
+
+      // }),
+			tabBarComponent:  props => {
+        const {navigation, navigationState} = props
+        const jumpToIndex = index => {
+          const lastPosition = navigationState.index
+          const tab = navigationState.routes[index]
+          const tabRoute = tab.routeName
+          const firstTab = tab.routes[0].routeName
+          console.log(navigation)
+          lastPosition !== index && navigation.dispatch(pushNavigation(tabRoute))
+          lastPosition === index && navigation.dispatch(resetNavigation(firstTab))
+        }
+        return <FooterGlobal {...props} jumpToIndex={jumpToIndex} />
+      },
     	tabBarPosition: (Platform.OS === 'ios')? 'bottom' : 'top',
     	animationEnabled: true,
     	tabBarOptions: {
       	activeTintColor: '#e91e63',
         showIcon: true,
         showLabel: false,
-    },
-
+      },
+      lazy:true,
+      navigationOptions: ({ navigation }) => ({
+        // header: props => <ImageHeader {...props} />,
+        tabBarOnPress: (scene, jumpToIndex) => {
+          console.log('onPress:', scene.route);
+          jumpToIndex(scene.index);
+            },
+        }),
   })
 
 const LoginStack = StackNavigator({
-  'Cerrar Sesion': {
+  'Iniciar Sesion': {
     screen: Login,
     navigationOptions: ({ navigation }) => ({
+      // header: props => <ImageHeader {...props} />,
+      // headerStyle: { backgroundColor : '#00a85b'},
+      // headerStyle: { backgroundColor : '#009658'},
+      // headerStyle: { backgroundColor : '#007a52'},
+      headerStyle: { backgroundColor : '#00bf60'},
+      headerTintColor: 'white',
       title: 'Iniciar Sesion',
       headerLeft: null,
     }),
@@ -238,10 +281,14 @@ const LoginStack = StackNavigator({
   SignIn: {
     screen: SignIn,
     navigationOptions:({ navigation }) => ({
+      // header: props => <ImageHeader {...props} />,
       headerTitle: 'Nuevo Usuario',
     }),
   },
-})
+},
+
+
+)
 
 const DrawNav = DrawerNavigator (
   {
@@ -251,8 +298,6 @@ const DrawNav = DrawerNavigator (
         header: null,
       },
     },
-
-
   },
 
   {
@@ -269,6 +314,7 @@ const Root = StackNavigator({
     screen: DrawNav,
   },
 },{
+    
   headerMode: 'none'
 })
 const styles = StyleSheet.create({

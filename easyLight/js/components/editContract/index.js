@@ -30,8 +30,6 @@ import {
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
-import Header from '../header/index';
-import Footer from '../footer/index';
 import styles from './styles';
 import {
   getMunicipality,
@@ -83,9 +81,7 @@ class EditContracts extends Component {
     getRate: React.PropTypes.func,
 
   }
-  static navigationOptions = {
-    header: null
-  };
+
   selectPhotoTapped() {
     const options = {
       quality: 1.0,
@@ -273,8 +269,6 @@ class EditContracts extends Component {
     } = this.props
     return(
       <Container style={{backgroundColor:'#fff'}}>
-        <Header title="Editar Contrato" navigation={this.props.navigation}/>
-        {(Platform.OS === 'android')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null}
         <ScrollView scrollEnabled={false}>
           <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
             <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
@@ -331,7 +325,6 @@ class EditContracts extends Component {
             </Row>
           </Grid>
         </ScrollView>
-        {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null}
         {
           (this.state.isLoading)?
           <View style={styles.loadingContainer}>

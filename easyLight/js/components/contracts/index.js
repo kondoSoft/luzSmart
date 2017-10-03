@@ -22,7 +22,6 @@ class Contracts extends Component {
     }
   }
   componentWillMount(){
-    console.log('WillMount', this.props.screenProps.contracts)
     this.props.resetRate()
     this.props.resetMunicipality()
     this.setState({
