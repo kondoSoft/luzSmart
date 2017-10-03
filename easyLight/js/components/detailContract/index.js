@@ -92,28 +92,6 @@ class DetailContract extends Component {
       this.state.bill.map((item, i) => {
         arrReceipts.push(item);
       });
-      //se obtiene el ultimo recibo en el contrato
-      // const lastReceipt = arrReceipts[0];
-      // const lastDayLastReceipt = new Date(lastReceipt.payday_limit.replace(/-/g, '\/'));
-      // const finalLastDay = new Date(new Date(lastDayLastReceipt).setDate(lastDayLastReceipt.getDate() - addMonth)).getTime();
-      // const currentDate = Date.now();
-      // const nextPay = new Date(lastDayLastReceipt).setMonth(lastDayLastReceipt.getMonth()+ addMonth)
-      // const date = new Date(nextPay)
-      // const year = date.getFullYear();
-      // const month = date.getMonth() + 1;
-      // const day = date.getDate();
-      // const nextPayday = year + '-' + ((''+ month).length < 2 ? '0' : '') + month + '-' + (('' + day).length < 2 ? '0' : '') + day
-      // ***************** Creacion automatica de un recibo dependiendo de la fecha limite del ultimo recibo ************************``
-      // if (currentDate > finalLastDay) {
-      //   return this.setState ({
-      //   current_reading: lastReceipt.current_reading,
-      //   previous_reading: lastReceipt.current_reading,
-      //   payday_limit: nextPayday,
-      //   contract_id: numContract[0].id,
-      //   }, ()=> this.props.postReceipt(this.state, this.props.token))
-
-      // }
-
     }
   };
 
@@ -216,7 +194,7 @@ class DetailContract extends Component {
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Row style={styles.detailContract__row__top}>
-              <Text style={styles.detailContract__row__top__text}>{this.props.contracts[0].name_contract}</Text>
+              <Text style={styles.detailContract__row__top__text}>{this.props.navigation.state.params.contract.name_contract}</Text>
             </Row>
             <Col>
               <List style={styles.list}>

@@ -43,6 +43,7 @@ class DrawBar extends Component {
     this.setState({profile})
     this.forceUpdate()
   }
+
   render() {
     return (
       <Container>
