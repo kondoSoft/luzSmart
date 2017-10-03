@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Platform } from 'react-native';
-import HomeDrawerRouter from "./HomeDrawerRouter";
 import { StackNavigator, TabNavigator, DrawerNavigator, TabBarBottom, NavigationActions } from "react-navigation";
 import { Header, Left, Button, Icon, Body, Title, Right } from "native-base";
 import Login from "../components/login/";
@@ -25,67 +24,25 @@ import { Image, StyleSheet } from 'react-native';
 import DrawBar from "../components/DrawBar";
 import FooterGlobal from "../components/footer";
 
-// HomeDrawerRouter.navigationOptions = ({ navigation }) => ({
-//   // header: null
-// });
-
-
-const stackNavigation = StackNavigator({
-	Contratos: {
-		screen: Contracts,
+const stackContratos = StackNavigator({
+  Contratos: {
+    screen: Contracts,
     navigationOptions: ({ navigation }) => ({
-      // header: (props) => <ImageHeader {...props} />,
       title: 'EASYLIGHT',
       headerTintColor: 'white',
       headerStyle: { backgroundColor : '#00a85b'},
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       headerLeft: null,
     }),
-	},
+  },
   DetailContract: {
     screen: DetailContract,
     navigationOptions: ({ navigation }) => ({
       title: 'Detalles de Contrato',
       headerTintColor: 'white',
+      tabBarVisible: false,
       headerStyle: { backgroundColor : '#00a85b'},
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
-    }),
-  },
-	Receipt: {
-		screen: Receipt,
-		navigationOptions: ({ navigation }) => ({
-      headerTintColor: 'white',
-      headerStyle: { backgroundColor : '#00a85b'},
-			title: 'Recibo',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
-
-		}),
-	},
-  AddContracts: {
-    screen: AddContracts,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: 'white',
-      headerStyle: { backgroundColor : '#00a85b'},
-			title: 'Agregar Contrato',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
-		}),
-  },
-  EditContracts: {
-    screen: EditContracts,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: 'white',
-      headerStyle: { backgroundColor : '#00a85b'},
-      title: 'Editar Contrato',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
-    }),
-  },
-  EditProfile: {
-    screen: EditProfile,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: 'white',
-      headerStyle: { backgroundColor : '#00a85b'},
-      title: 'Editar Perfil',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+      // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
   Medicion: {
@@ -93,17 +50,46 @@ const stackNavigation = StackNavigator({
     navigationOptions: ({ navigation }) => ({
       headerTintColor: 'white',
       headerStyle: { backgroundColor : '#00a85b'},
+      tabBarVisible: false,
       title: 'Medicion',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+      // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+    }),
+  },
+  Receipt: {
+    screen: Receipt,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
+      tabBarVisible: false,
+      title: 'Recibo',
+      // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+
+    }),
+  },
+  AddContracts: {
+    screen: AddContracts,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
+      tabBarVisible: false,
+      title: 'Agregar Contrato',
+      // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+    }),
+  },
+  EditContracts: {
+    screen: EditContracts,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
+      tabBarVisible: false,
+      title: 'Editar Contrato',
+      // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
 },
-// {
-//   navigationOptions: ({ navigation }) => ({
-    // header: (props) => <ImageHeader {...props} />,
-//     headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
-//   })
-// }
+  {
+    headerMode: 'screen',
+  }
 )
 
 const stackDraw = StackNavigator(
@@ -148,6 +134,16 @@ const stackDraw = StackNavigator(
 	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
 	    }),
 	  },
+    EditProfile: {
+    screen: EditProfile,
+    navigationOptions: ({ navigation }) => ({
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
+      title: 'Editar Perfil',
+      headerLeft: null,
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+    }),
+  },
 	},
   {
     navigationOptions: ({ navigation }) => ({
@@ -212,8 +208,9 @@ const tabPeriods = StackNavigator(
     navigationOptions: ({ navigation }) => ({
       headerTintColor: 'white',
       headerStyle: { backgroundColor : '#00a85b'},
+      tabBarVisible: false,
       title: 'Medicion',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+      // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
 })
@@ -224,7 +221,7 @@ const tabNavigation = TabNavigator(
 			screen: stackDraw,
 		},
   	Contratos: {
-      screen: stackNavigation,
+      screen: stackContratos,
       navigationOptions: {
           headerLeft: null,
           tabBarLabel: 'Contratos',
@@ -258,11 +255,6 @@ const tabNavigation = TabNavigator(
     },
 
     {
-      initialRouteName: 'Contratos',
-      // navigationOptions: ({ navigation }) => ({
-        // header: (props) => <ImageHeader {...props} />,
-
-      // }),
 			tabBarComponent:  props => {
         return <FooterGlobal {...props} />
       },
@@ -275,6 +267,23 @@ const tabNavigation = TabNavigator(
       },
   })
 
+
+
+const DrawNav = DrawerNavigator (
+  {
+    Contratos: {
+      screen: tabNavigation,
+      navigationOptions:{
+        header: null,
+      },
+    },
+  },
+
+  {
+    contentComponent: props => <DrawBar {...props} />,
+    drawerPosition: 'right',
+  },
+)
 const LoginStack = StackNavigator({
   'Iniciar Sesion': {
     screen: Login,
@@ -298,25 +307,8 @@ const LoginStack = StackNavigator({
       headerStyle: { backgroundColor : '#00a85b'},
     }),
   },
-},
+}
 )
-
-const DrawNav = DrawerNavigator (
-  {
-    Contratos: {
-      screen: tabNavigation,
-      navigationOptions:{
-        header: null,
-      },
-    },
-  },
-
-  {
-    contentComponent: props => <DrawBar {...props} />,
-    drawerPosition: 'right',
-  },
-)
-
 const Root = StackNavigator({
   Login: {
     screen: LoginStack,

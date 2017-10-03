@@ -125,7 +125,6 @@ export function logoutUser():Action{
   }
 }
 export function updateProfile(data, token):Action{
-  console.log('data>>>>', data);
   return dispatch => {
     const formData = new FormData();
     if(data.file != undefined){
