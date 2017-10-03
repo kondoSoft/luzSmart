@@ -18,7 +18,7 @@ const Screen = Dimensions.get('window');
 import styles from './styles';
 import {getUser} from '../../actions/user'
 
-const routes = [{name: "Historial", icon: "book"}, {name: "Premium", icon: "md-help"} ,{name: "FAQ", icon: "md-help"},  {name: "Contactanos", icon: "ios-chatbubbles"}, {name: "Cerrar Sesion", icon:"md-log-out"}];
+const routes = [{name: "Historial", icon: "book"}, {name: "Premium", icon: "md-help"} ,{name: "FAQ", icon: "md-help"},  {name: "Contactanos", icon: "ios-chatbubbles"}, {name: "Iniciar Sesion", icon:"md-log-out"}];
 
 class DrawBar extends Component {
   static navigationOptions = {
@@ -78,7 +78,7 @@ class DrawBar extends Component {
                   <Icon style={styles.icon} name={data.icon} />
                 </Left>
                 <Body style={styles.body}>
-                  <Text style={styles.textList}>{data.name}</Text>
+                  <Text style={styles.textList}>{(data.name == 'Iniciar Sesion') ? 'Cerrar Sesion' : data.name }</Text>
                 </Body>
                 </ListItem>
               );

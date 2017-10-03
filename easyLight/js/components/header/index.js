@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import {
   Body,
@@ -54,7 +55,7 @@ class HeaderGlobal extends Component {
             {(state.routeName != "Login" && state.routeName != "Contracts") ? iconBack : <View style={{paddingLeft: (state.routeName != "Login" )? '20%' : 0}}/>}
           </Left>
           <Body style={styles.header__body}>
-            {(Platform.OS === 'ios')? <Title style={styles.header__body__title}>{this.props.title}</Title> : null }
+            {(Platform.OS === 'ios')? <Title style={styles.header__body__title}>{this.props.scene.route.routeName}</Title> : null }
           </Body>
           <Right style={styles.right}>
             { (state.routeName == "Login" || state.routeName == "SignIn") ? null : (Platform.OS === 'ios')? button : <Title style={[styles.header__body__title]}>{this.props.title}</Title> }

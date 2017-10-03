@@ -10,6 +10,8 @@ export default {
     flexDirection: 'row',
     height: (Platform.OS === 'ios')? '9%' : '10%',
     resizeMode: 'cover',
+    height: 50,
+    justifyContent: 'center'
   },
   header__body__title:{
     color: 'white',
