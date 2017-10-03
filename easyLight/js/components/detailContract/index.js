@@ -13,7 +13,7 @@ import {
   Text,
   Body,
   Fab,
-
+  Button,
 } from 'native-base';
 import {
   View,
@@ -62,13 +62,17 @@ class DetailContract extends Component {
     };
     this.getStatus = this.getStatus.bind(this);
   }
-  // static navigationOptions = {
-  //   title: 'Detail'
-  // };
+
+  static navigationOptions = ({ navigation, screenProps }) => (
+  {
+    headerRight: (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract})}><Icon active style={{'color': 'white'}} name="md-arrow-forward"/></Button>,
+  
+  });
+
   static propType = {
     getRatePeriod: React.PropTypes.func,
     postReceipt: React.PropTypes.func,
-  }
+  };
   componentWillMount() {
     // if(this.state.bill !== []){
     //   this.getStatus();

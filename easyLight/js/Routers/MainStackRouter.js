@@ -24,6 +24,9 @@ import { Image, StyleSheet } from 'react-native';
 import DrawBar from "../components/DrawBar";
 import FooterGlobal from "../components/footer";
 
+
+
+
 const stackContratos = StackNavigator({
   Contratos: {
     screen: Contracts,
@@ -37,12 +40,11 @@ const stackContratos = StackNavigator({
   },
   DetailContract: {
     screen: DetailContract,
-    navigationOptions: ({ navigation }) => ({
+    navigationOptions: ({ navigation, props }) => ({
       title: 'Detalles de Contrato',
       headerTintColor: 'white',
       tabBarVisible: false,
       headerStyle: { backgroundColor : '#00a85b'},
-      // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
   Medicion: {
@@ -86,6 +88,16 @@ const stackContratos = StackNavigator({
       // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
+  Historial: {
+      screen: History,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Historial',
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor : '#00a85b'},
+        headerLeft: null,
+        headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+      }),
+    },
 },
   {
     headerMode: 'screen',
@@ -108,16 +120,6 @@ const stackDraw = StackNavigator(
 	    screen: Faq,
 	    navigationOptions: ({ navigation }) => ({
 	      title: 'FAQ',
-        headerTintColor: 'white',
-        headerStyle: { backgroundColor : '#00a85b'},
-				headerLeft: null,
-	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
-	    }),
-	  },
-	  Historial: {
-	    screen: History,
-	    navigationOptions: ({ navigation }) => ({
-	      title: 'Historial',
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
 				headerLeft: null,
