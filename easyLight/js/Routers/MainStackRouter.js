@@ -36,7 +36,9 @@ const stackNavigation = StackNavigator({
     navigationOptions: ({ navigation }) => ({
       // header: (props) => <ImageHeader {...props} />,
       title: 'EASYLIGHT',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       headerLeft: null,
     }),
 	},
@@ -44,45 +46,55 @@ const stackNavigation = StackNavigator({
     screen: DetailContract,
     navigationOptions: ({ navigation }) => ({
       title: 'Detalles de Contrato',
-      // header: (props) => <ImageHeader {...props} />,
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
 	Receipt: {
 		screen: Receipt,
 		navigationOptions: ({ navigation }) => ({
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
 			title: 'Recibo',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
 
 		}),
 	},
   AddContracts: {
     screen: AddContracts,
     navigationOptions: ({ navigation }) => ({
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
 			title: 'Agregar Contrato',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
 		}),
   },
   EditContracts: {
     screen: EditContracts,
     navigationOptions: ({ navigation }) => ({
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
       title: 'Editar Contrato',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
   EditProfile: {
     screen: EditProfile,
     navigationOptions: ({ navigation }) => ({
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
       title: 'Editar Perfil',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
   Medicion: {
     screen: MeasurementsCopy,
     navigationOptions: ({ navigation }) => ({
-      // header: (props) => <ImageHeader {...props} />,
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
       title: 'Medicion',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
 },
@@ -100,32 +112,40 @@ const stackDraw = StackNavigator(
 	    screen: Contact,
 	    navigationOptions: ({ navigation }) => ({
 	      title: 'Contactanos',
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor : '#00a85b'},
 				headerLeft: null,
-	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
 	    }),
 	   },
 	  FAQ: {
 	    screen: Faq,
 	    navigationOptions: ({ navigation }) => ({
 	      title: 'FAQ',
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor : '#00a85b'},
 				headerLeft: null,
-	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
 	    }),
 	  },
 	  Historial: {
 	    screen: History,
 	    navigationOptions: ({ navigation }) => ({
 	      title: 'Historial',
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor : '#00a85b'},
 				headerLeft: null,
-	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
 	    }),
 	  },
 	  Premium: {
 	    screen: Configuration,
 	    navigationOptions: ({ navigation }) => ({
 	      title: 'Premium',
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor : '#00a85b'},
 				headerLeft: null,
-	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
 	    }),
 	  },
 	},
@@ -141,9 +161,11 @@ const tabTips = StackNavigator(
       screen: Tips,
       navigationOptions: ({ navigation }) => ({
           headerLeft: null,
+          headerTintColor: 'white',
+          headerStyle: { backgroundColor : '#00a85b'},
           tabBarIcon: ({tintColor}) => <Icon name="ios-bulb-outline" />,
           title: 'Tips',
-          headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+          headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       }),
     }
   })
@@ -153,8 +175,10 @@ const tabMediciones = StackNavigator(
     Mediciones: {
       screen: Measurements,
       navigationOptions: ({ navigation }) => ({
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor : '#00a85b'},
         title: 'Mediciones',
-        headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+        headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       }),
     },
   })
@@ -164,8 +188,10 @@ const tabResults = StackNavigator(
     Resultados: {
       screen: Results,
       navigationOptions: ({ navigation }) => ({
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor : '#00a85b'},
         title: 'Resultados',
-        headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+        headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       }),
     },
   })
@@ -175,15 +201,19 @@ const tabPeriods = StackNavigator(
     Periodos: {
     screen: DetailUltimateContract,
     navigationOptions: ({ navigation }) => ({
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
       title: 'Detalles de Contrato',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
   Medicion: {
     screen: MeasurementsCopy,
     navigationOptions: ({ navigation }) => ({
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
       title: 'Medicion',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active name="menu"/></Button>,
+      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
 })
@@ -216,7 +246,6 @@ const tabNavigation = TabNavigator(
       }
 
      },
-
     Resultados: { screen: tabResults,
       navigationOptions: {
           headerLeft: null,
@@ -235,17 +264,7 @@ const tabNavigation = TabNavigator(
 
       // }),
 			tabBarComponent:  props => {
-        const {navigation, navigationState} = props
-        const jumpToIndex = index => {
-          const lastPosition = navigationState.index
-          const tab = navigationState.routes[index]
-          const tabRoute = tab.routeName
-          const firstTab = tab.routes[0].routeName
-          console.log(navigation)
-          lastPosition !== index && navigation.dispatch(pushNavigation(tabRoute))
-          lastPosition === index && navigation.dispatch(resetNavigation(firstTab))
-        }
-        return <FooterGlobal {...props} jumpToIndex={jumpToIndex} />
+        return <FooterGlobal {...props} />
       },
     	tabBarPosition: (Platform.OS === 'ios')? 'bottom' : 'top',
     	animationEnabled: true,
@@ -254,14 +273,6 @@ const tabNavigation = TabNavigator(
         showIcon: true,
         showLabel: false,
       },
-      lazy:true,
-      navigationOptions: ({ navigation }) => ({
-        // header: props => <ImageHeader {...props} />,
-        tabBarOnPress: (scene, jumpToIndex) => {
-          console.log('onPress:', scene.route);
-          jumpToIndex(scene.index);
-            },
-        }),
   })
 
 const LoginStack = StackNavigator({
@@ -269,10 +280,10 @@ const LoginStack = StackNavigator({
     screen: Login,
     navigationOptions: ({ navigation }) => ({
       // header: props => <ImageHeader {...props} />,
-      // headerStyle: { backgroundColor : '#00a85b'},
+      headerStyle: { backgroundColor : '#00a85b'},
       // headerStyle: { backgroundColor : '#009658'},
       // headerStyle: { backgroundColor : '#007a52'},
-      headerStyle: { backgroundColor : '#00bf60'},
+      // headerStyle: { backgroundColor : '#00bf60'},
       headerTintColor: 'white',
       title: 'Iniciar Sesion',
       headerLeft: null,
@@ -283,11 +294,11 @@ const LoginStack = StackNavigator({
     navigationOptions:({ navigation }) => ({
       // header: props => <ImageHeader {...props} />,
       headerTitle: 'Nuevo Usuario',
+      headerTintColor: 'white',
+      headerStyle: { backgroundColor : '#00a85b'},
     }),
   },
 },
-
-
 )
 
 const DrawNav = DrawerNavigator (
@@ -314,7 +325,6 @@ const Root = StackNavigator({
     screen: DrawNav,
   },
 },{
-    
   headerMode: 'none'
 })
 const styles = StyleSheet.create({
