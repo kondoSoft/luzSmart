@@ -13,10 +13,8 @@ class FooterGlobal extends Component {
 
   navigateTo(route){   
     this.props.navigation.state.routes.map((item,i)=> {
-      console.log(i != this.props.navigation.state.index)
       if(i != this.props.navigation.state.index){
         if(item.routeName === route){
-          console.log('me ejecute', i)
           this.props.navigation.navigate(route)
         }
       }
@@ -26,7 +24,6 @@ class FooterGlobal extends Component {
 
   render() {
     this.navigateTo()
-    console.log(this.props,'this.props')
     const { state } = this.props.navigation;
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
