@@ -335,7 +335,7 @@ class MeasurementSingle extends Component {
                <Button
                   transparent
                   small
-                  onPress={() => this.props.navigation.navigate('Historial')}
+                  onPress={() => this.props.navigation.navigate('Resultados')}
                   >
                   <Text>Resultados</Text>
               </Button>
