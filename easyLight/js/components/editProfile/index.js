@@ -123,7 +123,7 @@ class EditProfile extends Component {
     if (this.fromValidation(this.state) && changePassword && this.passwordValidation(this.state)) {
       this.props.updateUser(this.state, this.props.screenProps.token)
       this.props.changePassword(password, this.props.screenProps.token)
-      this.props.navigation.goBack()
+      this.props.navigation.navigate('Contratos')
     }else if (this.fromValidation(this.state) && (changePassword || this.passwordValidation(this.state))) {
       if (messageError) {
         Alert.alert(
@@ -144,7 +144,7 @@ class EditProfile extends Component {
       }
     }else if(this.fromValidation(this.state)){
       this.props.updateUser(this.state, this.props.screenProps.token)
-      this.props.navigation.navigate('Resultados')
+      this.props.navigation.navigate('Contratos')
     }else {
       Alert.alert(
         'Datos incompletos',
@@ -289,7 +289,7 @@ class EditProfile extends Component {
                 <Button
                   primary
                   style={styles.row__botttom__btn__Cancel}
-                  onPress={()=>this.props.navigation.goBack()}
+                  onPress={()=> this.props.navigation.navigate('Contratos')}
                   >
                   <Text>Cancelar</Text>
                 </Button>

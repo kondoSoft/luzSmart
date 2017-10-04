@@ -18,7 +18,7 @@ const Screen = Dimensions.get('window');
 import styles from './styles';
 import {getUser} from '../../actions/user'
 
-const routes = [{name: "Historial", icon: "book"}, {name: "Premium", icon: "md-help"} ,{name: "FAQ", icon: "md-help"},  {name: "Contactanos", icon: "ios-chatbubbles"}, {name: "Iniciar Sesion", icon:"md-log-out"}];
+const routes = [{name: "Premium", icon: "md-help"} ,{name: "FAQ", icon: "md-help"},  {name: "Contactanos", icon: "ios-chatbubbles"}, {name: "Iniciar Sesion", icon:"md-log-out"}];
 
 class DrawBar extends Component {
   static navigationOptions = {

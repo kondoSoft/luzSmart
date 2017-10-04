@@ -22,7 +22,8 @@ import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
 import { patchReceipt, getRatePeriod } from '../../actions/contracts'
 import { getIVA, whileCosts } from '../../helpers';
-
+import { captureScreen } from "react-native-view-shot";
+// import { ShareDialog } from 'react-native-fbsdk';
 
 let Screen = Dimensions.get('window')
 
@@ -239,6 +240,17 @@ class Measurements extends Component {
         }
     }
   }
+  snapshot(){
+    captureScreen({
+      format: "jpg", 
+      quality: 0.8
+    })
+    .then(
+      uri => console.log("Image saved to", uri),
+      error => console.error("Oops, snapshot failed", error)
+    );
+  }
+
   render(){
     this.getTotalPayment()
     const { navigation } = this.props;
@@ -334,7 +346,7 @@ class Measurements extends Component {
             position="bottomRight"
             onPress={() => this.setState({ active: !this.state.active })}>
             <Icon name="md-share" />
-            <Button style={{ backgroundColor: '#3B5998' }}>
+            <Button onPress={() => this.snapshot()} style={{ backgroundColor: '#3B5998' }}>
               <Icon name="logo-facebook" />
             </Button>
           </Fab>

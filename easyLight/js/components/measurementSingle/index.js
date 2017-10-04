@@ -53,6 +53,12 @@ class MeasurementSingle extends Component {
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
     this.changeCheckedData = this.changeCheckedData.bind(this)
   }
+  static navigationOptions = ({ navigation, screenProps }) => (
+  {
+    headerRight: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
+  
+  });
+ 
   componentWillMount () {  
     this.setState({
       itemReceipt: this.props.navigation.state.params.contract.receipt[0],
