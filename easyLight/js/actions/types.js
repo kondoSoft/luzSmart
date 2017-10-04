@@ -23,6 +23,8 @@ export type Action =
     | { type: 'UPDATE_USER' }
     | { type: 'GET_DATA_USER' }
     | { type: 'GET_CONTRACT_UPDATE'}
+    | { type: 'PICKER_CONTRACT'}
+
 
 
 

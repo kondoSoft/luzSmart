@@ -202,7 +202,7 @@ const tabPeriods = StackNavigator(
     navigationOptions: ({ navigation }) => ({
       headerTintColor: 'white',
       headerStyle: { backgroundColor : '#00a85b'},
-      title: 'Detalles de Contrato',
+      title: 'Periodos',
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },

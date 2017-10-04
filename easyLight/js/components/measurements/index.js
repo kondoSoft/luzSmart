@@ -55,9 +55,11 @@ class Measurements extends Component {
     this.changeCheckedData = this.changeCheckedData.bind(this)
   }
   componentWillMount () {  
+
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentWillReceiveProps(nextProps){
+    arrayContract = []
     nextProps.screenProps.contracts.map((item, i) => {
       if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){
         arrayContract.push(item)

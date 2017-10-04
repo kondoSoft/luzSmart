@@ -175,6 +175,7 @@ class DetailContract extends Component {
 
 
   render(){
+    console.log(this.props.rate_period)
     const { navigation, rate_period } = this.props;
     const { status } = this.state;
     const bill = this.state.bill
@@ -211,7 +212,7 @@ class DetailContract extends Component {
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
                     // component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={this.whileCosts}/>}
-                    component={<ItemComponent data={item} status={status} ratePeriod={rate_period} consumoPromedio={whileCosts}/>}
+                    component={<ItemComponent data={item} status={status} ratePeriodCost={rate_period} consumoPromedio={whileCosts}/>}
                     dataAccordionContract={this.props.navigation.state.params.contract}
                     dataAccordion={item}
                     icon={<Icon style={{paddingTop: (navigation.state.routeName === 'DetailContract')? 5 : 15,color: 'steelblue',fontSize:40,textAlign:'center'}} name="information-circle" />}
@@ -229,11 +230,11 @@ class DetailContract extends Component {
 }
 
 class ItemComponent extends Component{
-
+  
   render() {
     const receipt = this.props.data;
     countKwh = receipt.current_reading - receipt.previous_reading
-    const subTotal = this.props.consumoPromedio(this.props.ratePeriod, countKwh)
+    const subTotal = this.props.consumoPromedio(this.props.ratePeriodCost, countKwh)
     total = getIVA(subTotal)
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const splitRange = receipt.payday_limit.split('-',)

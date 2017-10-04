@@ -56,7 +56,6 @@ class MeasurementSingle extends Component {
   static navigationOptions = ({ navigation, screenProps }) => (
   {
     headerRight: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
-  
   });
  
   componentWillMount () {  
