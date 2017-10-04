@@ -66,7 +66,7 @@ export default {
   },
   animatedView__image:{
     width: (Platform.OS === 'android' && Screen.height <= 640)? '65%' : '70%',
-    height: (Platform.OS === 'ios')? '65%' : (Screen.height <= 640)? '65%' : '68%',
+    height: (Platform.OS === 'ios')? '90%' : (Screen.height <= 640)? '65%' : '68%',
   },
   animatedView__image__view:{
     flex: 1,
