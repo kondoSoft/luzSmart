@@ -25,8 +25,7 @@ export type Action =
     | { type: 'GET_CONTRACT_UPDATE'}
     | { type: 'OPEN_SWIPER' }
     | { type: 'CLOSE_SWIPER' }
-
-
+    | { type: 'PRINT_REGISTER_USER' }
 
 export type Dispatch = (action:Action | Array<Action>) => any;
 export type GetState = () => Object;

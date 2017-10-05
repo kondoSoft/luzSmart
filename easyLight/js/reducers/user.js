@@ -1,5 +1,5 @@
 import type { Action } from '../actions/types';
-import { SET_USER, LOGOUT, PRINT_USER, GET_DATA_USER } from '../actions/user';
+import { SET_USER, LOGOUT, PRINT_USER, GET_DATA_USER, PRINT_REGISTER_USER } from '../actions/user';
 
 import {REHYDRATE} from 'redux-persist/constants'
 
@@ -13,6 +13,7 @@ const initialState = {
   noPassword: '',
   user: '',
   profileUser: '',
+  createAccountValidation: '',
 
 };
 
@@ -37,6 +38,12 @@ export default function (state:State = initialState, action:Action): State {
       ...state,
       user:action.payload,
       profileUser: action.profile.results[0]
+    }
+  }
+  if (action.type === PRINT_REGISTER_USER) {
+    return {
+      ...state,
+      createAccountValidation: action.payload
     }
   }
   // else if (action.type === REHYDRATE){

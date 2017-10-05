@@ -9,6 +9,7 @@ const endPoint = 'http://138.68.49.119:8080';
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
 export const PRINT_USER = 'PRINT_USER'
+export const PRINT_REGISTER_USER = 'PRINT_REGISTER_USER'
 export const GET_DATA_USER = 'GET_DATA_USER'
 
 export function setUser(token:string):Action {
@@ -29,7 +30,12 @@ function printUser(user, profile):Action {
     profile: profile
   }
 }
-
+function printRegisterUser (validation):Action {
+  return {
+    type: PRINT_REGISTER_USER,
+    payload: validation
+  }
+}
 export function getProfile(user, token):Action {
   return dispatch => {
     return fetch(endPoint+'/user/profile/?user_id='+ user.pk,{
@@ -112,6 +118,9 @@ export function registerUser(list):Action{
      body: data
     })
     .then(res=> { return res.json() })
+    .then( validation => { 
+      dispatch(printRegisterUser(validation))
+    })
     .catch(err => console.log(err))
   }
 }
