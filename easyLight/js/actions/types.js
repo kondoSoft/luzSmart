@@ -23,8 +23,9 @@ export type Action =
     | { type: 'UPDATE_USER' }
     | { type: 'GET_DATA_USER' }
     | { type: 'GET_CONTRACT_UPDATE'}
+    | { type: 'OPEN_SWIPER' }
+    | { type: 'CLOSE_SWIPER' }
     | { type: 'PICKER_CONTRACT'}
-
 
 
 
