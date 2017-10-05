@@ -55,9 +55,8 @@ class DetailUltimateContract extends Component {
       contract_id: '',
       previous_reading: '',
       payday_limit: '',
-      count_days: props.contracts[0].type_payment,
-      bill: '',
-
+      count_days: (props.contracts.length !== 0)? props.contracts[0].type_payment : '',
+      // bill: ,
     };
     this.arrContracts
     this.getStatus = this.getStatus.bind(this);
@@ -76,10 +75,9 @@ class DetailUltimateContract extends Component {
       
       this.arrContracts.push(item)
     })
-    this.setState({
-      bill: this.arrContracts[this.arrContracts.length-1].receipt
-    })
-
+    // this.setState({
+    //   bill: this.arrContracts[this.arrContracts.length-1].receipt
+    // })
     // if(this.state.bill !== []){
     //   this.getStatus();
     // }

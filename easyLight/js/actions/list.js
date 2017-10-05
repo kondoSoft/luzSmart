@@ -9,3 +9,4 @@ export function setIndex(index:number):Action {
     payload: index,
   };
 }
+
