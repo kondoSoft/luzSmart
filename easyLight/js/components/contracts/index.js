@@ -25,8 +25,12 @@ class Contracts extends Component {
     this.props.resetRate()
     this.props.resetMunicipality()
     this.setState({
-      contract: this.props.screenProps.contracts
+      contract: this.props.contracts
     })
+  }
+  componentWillReceiveProps(nextProps){
+    // this.props.getContract(nextProps.token, nextProps.navigation)
+
   }
 
   static propType = {
@@ -36,9 +40,11 @@ class Contracts extends Component {
     getStates: React.PropTypes.func,
   }
   render(){
+    console.log('')
     const { navigation, profile } = this.props
     const { state } = navigation
     const { contract }= this.state
+    console.log(this.props.contracts)
     var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts" )}}>
         <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: (Platform.OS === 'ios')? 30 : 33, color: '#fff'}}>+</Text>
       </FabButton>
@@ -46,7 +52,8 @@ class Contracts extends Component {
     return(
       <Container>
         <ParentSwipeContracts
-          contract={ contract }
+          contract={ this.props.contracts }
+
           navigation={ navigation }
           isPremium={ this.props.profile.premium }
         />

@@ -2,7 +2,8 @@ import React,{ Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, Animated, Dimensions, TouchableOpacity,Platform, Picker } from 'react-native';
 import { Icon } from 'native-base';
-import { pickerContract } from '../../actions/contracts';
+import { pickerContract, getRatePeriod } from '../../actions/contracts';
+// import { getRatePeriod } from '../../actions/contracts';
 
 
 class ExpandedView extends Component{
@@ -21,8 +22,10 @@ class ExpandedView extends Component{
   }
   static propType = {
     pickerContract: React.PropTypes.func,
+    getRatePeriod: React.PropTypes.func,
   }
-  closeExpanded(itemValue){
+  closeExpanded(itemValue, rate){
+    
     this.props.pickerContract(itemValue)
     if (this.state.expanded) {
       let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
@@ -45,7 +48,7 @@ class ExpandedView extends Component{
         }
       ).start();
     }
-    
+
   }
   toggle(){
     let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
@@ -80,6 +83,7 @@ class ExpandedView extends Component{
     })
   }
   render(){
+    this.props.getRatePeriod(this.props.rate, this.props.contracts.token);    
     return(
     <Animated.View style={[{height: this.state.animation, overflow:'hidden'}]}>
       <View onLayout={e => this._setMinHeight(e)} style={{ backgroundColor: 'gray', height: 30, justifyContent: 'center' }}>
@@ -92,7 +96,7 @@ class ExpandedView extends Component{
           style={{ height: 50, paddingTop: 0 }}
           itemStyle={{ height: 100, fontSize: 14 }}
           selectedValue={this.state.contract}
-          onValueChange={(itemValue, itemIndex) => this.closeExpanded(itemValue)}>
+          onValueChange={(itemValue, itemIndex) => this.closeExpanded(itemValue, this.props.rate)}>
           { this.props.contracts.contracts.map((item, i) => {
             return <Picker.Item key={i} label={item.name_contract} value={item.name_contract} />
             })
@@ -107,6 +111,8 @@ class ExpandedView extends Component{
 function bindAction(dispatch){
   return {
     pickerContract: data => dispatch(pickerContract(data)),
+    getRatePeriod: (rate, token) => dispatch(getRatePeriod(rate, token)),
+ 
   }
 }
 const mapStateToProps = state => ({

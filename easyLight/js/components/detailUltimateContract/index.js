@@ -52,11 +52,11 @@ class DetailUltimateContract extends Component {
       status: '',
       lastDayPeriod: '',
       current_reading: '',
-      contract_id: '',
       previous_reading: '',
       payday_limit: '',
       count_days: props.contracts[0].type_payment,
-      bill: '',
+      bill: undefined,
+      contract: '',
 
     };
     this.arrContracts
@@ -71,18 +71,18 @@ class DetailUltimateContract extends Component {
   }
   componentWillMount() {
     this.arrContracts = []
-    
-    const ultimateContract = this.props.screenProps.contracts.map((item, i) => {
-      
-      this.arrContracts.push(item)
-    })
-    this.setState({
-      bill: this.arrContracts[this.arrContracts.length-1].receipt
-    })
 
+    // this.props.getRatePeriod(this.state.contract.rate, this.props.token);
+    const ultimateContract = this.props.screenProps.contracts.map((item, i) => {
+        this.arrContracts.push(item)
+    })
+    // this.setState({
+    //   bill: this.arrContracts[this.arrContracts.length-1].receipt
+    // })
     // if(this.state.bill !== []){
     //   this.getStatus();
     // }
+
   }
   componentDidMount() {
     // se determina los meses que se agregaran a las fechas determinados por el tipo de pago(Mensual o Bimestral)
@@ -93,15 +93,16 @@ class DetailUltimateContract extends Component {
     else {
       addMonth = 1
     }
-
-    if(this.state.bill.length > 0) {
+    
+    if(this.state.bill != undefined) {
       this.getStatus();
       //Se obtiene las tarifas
-      this.props.getRatePeriod(this.arrContracts[this.arrContracts.length-1].rate, this.props.token);
+      this.props.getRatePeriod(this.state.rate, this.props.token);
       this.state.bill.map((item, i) => {
         arrReceipts.push(item);
       });
     }
+
   };
 
 
@@ -115,36 +116,38 @@ class DetailUltimateContract extends Component {
   }
 
   getStatus() {
-    if(this.state.count_days == 'Bimestral'){
-      count_days = 60
-    }else{
-      count_days = 30
-    }
-    var itemStatus = this.state.bill.map((item, i) => {
-      const payday = item.payday_limit.replace(/-/g, '\/')
-      limitReceipt = Date.parse(new Date(payday))
-      currentDate = Date.now()
-      firstDate = new Date(limitReceipt).setDate(new Date(limitReceipt).getDate() - count_days)
-      if (currentDate >= firstDate && currentDate <= limitReceipt) {
-        item.status = 'En proceso'
-        item.finished = 'False'
-        return item
-      } else {
-         item.status = 'Pagado'
-         item.finished = 'True'
-         return item
-      }
+    // verificar esta variable count_days
+    // if(this.state.count_days == 'Bimestral'){
+    //   count_days = 60
+    // }else{
+    //   count_days = 30
+    // }
+    // var itemStatus = this.state.bill.map((item, i) => {
+    //   const payday = item.payday_limit.replace(/-/g, '\/')
+    //   limitReceipt = Date.parse(new Date(payday))
+    //   currentDate = Date.now()
+    //   firstDate = new Date(limitReceipt).setDate(new Date(limitReceipt).getDate() - count_days)
+    //   if (currentDate >= firstDate && currentDate <= limitReceipt) {
+    //     item.status = 'En proceso'
+    //     item.finished = 'False'
+    //     return item
+    //   } else {
+    //      item.status = 'Pagado'
+    //      item.finished = 'True'
+    //      return item
+    //   }
 
-    })
-    return this.setState ({
-      bill: itemStatus
-    })
+    // })
+    // return this.setState ({
+    //   bill: itemStatus
+    // })
   }
   // funcion para obtener los datos por costos y hacer operaciones logicas
   getCost(rate_period) {
     var verano = [];
     var noverano = [];
     var kilowatt = [];
+
     // empuje de datos en el arreglo de verano y fuera de verano
     rate_period.map((period, i) => {
       if(period.period_name == 'Verano') {
@@ -154,16 +157,21 @@ class DetailUltimateContract extends Component {
         noverano.push(period);
         }
       });
-      if(arrReceipts[0].period == 'Verano'){
-        kilowatt = verano.map((rate, i)=>{
-          const { kilowatt, cost } = rate;
-          return { kilowatt, cost };
-        });
-      }
-      else {
-        kilowatt = noverano.map((rate, i)=>{
-          const { kilowatt, cost } = rate;
-          return { kilowatt, cost };
+      // Se retorna que tipo de periodo es, dependiendo del recibo
+      if(this.state.bill != undefined){
+        this.state.bill.map((bill, i)=>{
+          if(this.state.bill[i].period === 'Verano'){
+            kilowatt = verano.map((rate, i)=>{
+              const { kilowatt, cost } = rate;
+              return { kilowatt, cost };
+            });
+          }
+          else {
+            kilowatt = noverano.map((rate, i)=>{
+              const { kilowatt, cost } = rate;
+              return { kilowatt, cost };
+            })
+          }
         })
       }
     return kilowatt;
@@ -172,12 +180,15 @@ class DetailUltimateContract extends Component {
     this.getContract(nextProps)
     this.forceUpdate()
   }
+
   getContract(nextProps){
   nextProps.contracts.map((item, i) => {
     if(nextProps.valueContract === item.name_contract){
         this.setState({
           bill: item.receipt,
           count_days: item.type_payment,
+          contract: item,
+          rate: item.rate
         })
       }
     })
@@ -185,6 +196,7 @@ class DetailUltimateContract extends Component {
 
   render(){
     const { navigation, rate_period } = this.props;
+    console.log('rate_period', rate_period)
     const { status } = this.state;
     const bill = this.state.bill
     const colors = ['lightgrey','#fff'];
@@ -199,28 +211,27 @@ class DetailUltimateContract extends Component {
     return(
       <Container>
         <Content style={{backgroundColor: '#fff'}}>
-         <ExpandedView contracts={this.props.screenProps}/>
+         <ExpandedView contracts={this.props.screenProps} rate={this.state.contract.rate}/>
           <Grid>
            
-              {/* <Text style={styles.detailContract__row__top__text}>{this.arrContracts[this.arrContracts.length-1].name_contract}</Text> */}
+              {/* <Text style={styles.detailContract__row__top__text}>{this.arrContracts[0].name_contract}</Text> */}
             <Col>
               <List style={styles.list}>
-               {bill.map((item, i )=>
-                  { console.log(this.arrContracts[this.arrContracts.length-1])
+                {(bill != undefined) && bill.map((item, i )=>
+                  { 
                   return <SwipeAccordion
                     indexOpen={this.state.key}
                     keyVal={i}
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
-                    // component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={this.whileCosts}/>}
-                    component={<ItemComponent data={item} status={status} ratePeriod={rate_period} consumoPromedio={whileCosts}/>}
-                    dataAccordionContract={this.arrContracts[this.arrContracts.length-1]}
+                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={whileCosts} typePayment={this.state.count_days} />}
+                    dataAccordionContract={this.state.contract}
                     dataAccordion={item}
                     icon={<Icon style={{paddingTop: (navigation.state.routeName === 'DetailContract')? 5 : 15,color: 'steelblue',fontSize:40,textAlign:'center'}} name="information-circle" />}
                   />
-                }
-              )}
+                  }
+                )}
               </List>
             </Col>
           </Grid>
@@ -233,22 +244,38 @@ class DetailUltimateContract extends Component {
 
 class ItemComponent extends Component{
   
+  getMonthOfTypePayment(){
+    let addMonth ;
+    if(this.props.typePayment == 'Bimestral'){
+      addMonth = 2
+    }
+    else {
+      addMonth = 1
+    }
+    return addMonth
+  }
+
   render() {
+    // Cantidad de meses por tipo de pago
+    const countMonth = this.getMonthOfTypePayment()
     const receipt = this.props.data;
+    // Cantidad de KwH consumidos
     countKwh = receipt.current_reading - receipt.previous_reading
+    // Subtotal y Total
     const subTotal = this.props.consumoPromedio(this.props.ratePeriod, countKwh)
+
     total = getIVA(subTotal)
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const splitRange = receipt.payday_limit.split('-',)
     const date = new Date(receipt.payday_limit.replace(/-/g, '\/'))
     // Periodo inicial dependiendo la fecha limite de pago, calculando los dias de inicio del recibo
-    const initialPeriod = new Date(date.setDate(new Date(date).getDate() - count_days))
-    dateMonth = initialPeriod.getMonth()
-    finalRange = new Date(new Date(date).setMonth(date.getMonth()+2))
+    const initialPeriod = new Date(date.setDate(new Date(date).getDate()))
+    dateMonth = initialPeriod.getMonth()-countMonth
+    finalRange = new Date(new Date(date).setMonth(date.getMonth()+countMonth))    
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__text}>{arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()]}</Text>
+          <Text style={styles.listItem__body__text}>{arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()-countMonth]}</Text>
         </Left>
         <Body style={styles.ItemComponent.align}>
 
@@ -261,6 +288,7 @@ class ItemComponent extends Component{
     )
   }
 }
+
 function bindAction(dispatch){
   return {
     getRatePeriod: (rate, token) => dispatch(getRatePeriod(rate, token)),

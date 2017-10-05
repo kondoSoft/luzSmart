@@ -24,7 +24,7 @@ const getIVA = total => {
 
 
 const whileCosts = (kilowatt, countKwh) => {
-  console.log('kilowatt', kilowatt)
+    console.log(kilowatt, countKwh)
     var consumoTotal = 0;
     if(kilowatt){
       kilowatt = kilowatt.filter((item)=> {return (item.kilowatt>0)}).reverse()

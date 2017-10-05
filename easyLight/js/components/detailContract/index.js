@@ -60,6 +60,7 @@ class DetailContract extends Component {
       bill: props.navigation.state.params.receipt,
 
     };
+    this.getContract = this.getContract.bind(this);
     this.getStatus = this.getStatus.bind(this);
   }
 
@@ -98,7 +99,24 @@ class DetailContract extends Component {
       });
     }
   };
+  componentWillReceiveProps(nextProps){
+    this.getContract(nextProps)
+    this.forceUpdate()
+  }
 
+  getContract(nextProps){
+    console.log('next',nextProps)
+    nextProps.contracts.map((item, i) => {
+    console.log(item)
+    if(nextProps.navigation.state.params.contract.name_contract === item.name_contract){
+        this.setState({
+
+          contract: item,
+
+        }, ()=> this.forceUpdate())
+      }
+    })
+  }
 
 
   componentWillUnmount() {
@@ -150,23 +168,28 @@ class DetailContract extends Component {
     var kilowatt = [];
     // empuje de datos en el arreglo de verano y fuera de verano
     rate_period.map((period, i) => {
-      if(period.period_name == 'Verano') {
+      if(period.period_name === 'Verano') {
         verano.push(period)
         }
       else {
         noverano.push(period);
         }
       });
-      if(arrReceipts[0].period == 'Verano'){
-        kilowatt = verano.map((rate, i)=>{
-          const { kilowatt, cost } = rate;
-          return { kilowatt, cost };
-        });
-      }
-      else {
-        kilowatt = noverano.map((rate, i)=>{
-          const { kilowatt, cost } = rate;
-          return { kilowatt, cost };
+      if(this.state.bill != undefined){
+        this.state.bill.map((bill, i)=>{
+          if(this.state.bill[i].period === 'Verano'){
+            console.log('me cumpli verano')
+            kilowatt = verano.map((rate, i)=>{
+              const { kilowatt, cost } = rate;
+              return { kilowatt, cost };
+            });
+          }
+          else {
+            kilowatt = noverano.map((rate, i)=>{
+              const { kilowatt, cost } = rate;
+              return { kilowatt, cost };
+            })
+          }
         })
       }
     return kilowatt;
@@ -175,8 +198,8 @@ class DetailContract extends Component {
 
 
   render(){
-    console.log(this.props.rate_period)
-    const { navigation, rate_period } = this.props;
+    const { navigation, rate_period, contracts } = this.props;
+    console.log(rate_period, this.state.contract, numContract)
     const { status } = this.state;
     const bill = this.state.bill
     const colors = ['lightgrey','#fff'];
@@ -211,9 +234,10 @@ class DetailContract extends Component {
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
-                    // component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={this.whileCosts}/>}
-                    component={<ItemComponent data={item} status={status} ratePeriodCost={rate_period} consumoPromedio={whileCosts}/>}
-                    dataAccordionContract={this.props.navigation.state.params.contract}
+                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={whileCosts}/>}
+                    // component={<ItemComponent data={item} status={status} ratePeriodCost={rate_period} consumoPromedio={whileCosts}/>}
+                    dataAccordionContract={this.state.contract}
+                    // dataAccordionContract={this.props.navigation.state.params.contract}
                     dataAccordion={item}
                     icon={<Icon style={{paddingTop: (navigation.state.routeName === 'DetailContract')? 5 : 15,color: 'steelblue',fontSize:40,textAlign:'center'}} name="information-circle" />}
                   />
@@ -234,7 +258,7 @@ class ItemComponent extends Component{
   render() {
     const receipt = this.props.data;
     countKwh = receipt.current_reading - receipt.previous_reading
-    const subTotal = this.props.consumoPromedio(this.props.ratePeriodCost, countKwh)
+    const subTotal = this.props.consumoPromedio(this.props.ratePeriod, countKwh)
     total = getIVA(subTotal)
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const splitRange = receipt.payday_limit.split('-',)
