@@ -38,8 +38,9 @@ export default {
     marginTop: (Platform.OS === 'ios')? 5 : 0,
   },
   col__row__top__select:{
-    width: 150,
+    width: 100,
     height: 30,
+    paddingLeft: 30,
     backgroundColor: 'transparent',
     borderTopWidth: .5,
     borderBottomWidth: .5,

@@ -25,6 +25,7 @@ export type Action =
     | { type: 'GET_CONTRACT_UPDATE'}
     | { type: 'OPEN_SWIPER' }
     | { type: 'CLOSE_SWIPER' }
+    | { type: 'PICKER_CONTRACT'}
 
 
 

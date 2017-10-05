@@ -56,7 +56,6 @@ class MeasurementSingle extends Component {
   static navigationOptions = ({ navigation, screenProps }) => (
   {
     headerRight: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
-  
   });
  
   componentWillMount () {  
@@ -335,7 +334,7 @@ class MeasurementSingle extends Component {
                <Button
                   transparent
                   small
-                  onPress={() => this.props.navigation.navigate('Historial')}
+                  onPress={() => this.props.navigation.navigate('Resultados')}
                   >
                   <Text>Resultados</Text>
               </Button>

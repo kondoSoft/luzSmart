@@ -55,9 +55,11 @@ class Measurements extends Component {
     this.changeCheckedData = this.changeCheckedData.bind(this)
   }
   componentWillMount () {  
+
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentWillReceiveProps(nextProps){
+    arrayContract = []
     nextProps.screenProps.contracts.map((item, i) => {
       if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){
         arrayContract.push(item)
@@ -311,10 +313,10 @@ class Measurements extends Component {
                 </ListItem>
               </List>
             </Row>
-            <Row size={30} style={{alignItems: 'flex-start', justifyContent: 'center',paddingTop: (Platform.OS === 'android' && Screen.height <= 640)? 30 : 0}}>
+            <Row size={22} style={{alignItems: 'flex-start', justifyContent: 'center',paddingTop: (Platform.OS === 'android' && Screen.height <= 640)? 30 : 0}}>
               <Image resizeMode={'stretch'} source={require('../../../images/medidor.png')} style={styles.animatedView__image}>
                 <View style={styles.animatedView__image__view}>
-                  <View style={{flexDirection: 'row',height:40,justifyContent:'center', alignItems:'center',marginTop: 65,marginLeft:37}}>
+                  <View style={{flexDirection: 'row',height:40,justifyContent:'center', alignItems:'center',marginTop: 55,marginLeft:37}}>
                     <TextInput
                       underlineColorAndroid={'transparent'}
                       keyboardType={'numeric'}
@@ -334,6 +336,15 @@ class Measurements extends Component {
                   </Button>
                 </View>
               </Image>
+            </Row>
+            <Row size={14} style={{ justifyContent: 'center'}} >
+               <Button
+                  transparent
+                  small
+                  onPress={() => this.props.navigation.navigate('Resultados')}
+                  >
+                  <Text>Resultados</Text>
+              </Button>
             </Row>
           </Grid>
         </ScrollView>
