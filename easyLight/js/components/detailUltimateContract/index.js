@@ -21,14 +21,13 @@ import {
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-// import Header from '../header/index';
-// import Footer from '../footer/index';
 import styles from './styles';
 import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
 import { getRatePeriod, postReceipt } from '../../actions/contracts';
 import { getContract } from '../../actions/list_states_mx';
 import { getIVA, whileCosts } from '../../helpers';
+import ExpandedView from '../expandedView';
 
 var numContract = [];
 var rateArr = [];
@@ -58,7 +57,6 @@ class DetailUltimateContract extends Component {
       payday_limit: '',
       count_days: (props.contracts.length !== 0)? props.contracts[0].type_payment : '',
       // bill: ,
-
     };
     this.arrContracts
     this.getStatus = this.getStatus.bind(this);
@@ -72,7 +70,9 @@ class DetailUltimateContract extends Component {
   }
   componentWillMount() {
     this.arrContracts = []
+    
     const ultimateContract = this.props.screenProps.contracts.map((item, i) => {
+      
       this.arrContracts.push(item)
     })
     // this.setState({
@@ -99,31 +99,8 @@ class DetailUltimateContract extends Component {
       this.state.bill.map((item, i) => {
         arrReceipts.push(item);
       });
-      //se obtiene el ultimo recibo en el contrato
-      // const lastReceipt = arrReceipts[0];
-      // const lastDayLastReceipt = new Date(lastReceipt.payday_limit.replace(/-/g, '\/'));
-      // const finalLastDay = new Date(new Date(lastDayLastReceipt).setDate(lastDayLastReceipt.getDate() - addMonth)).getTime();
-      // const currentDate = Date.now();
-      // const nextPay = new Date(lastDayLastReceipt).setMonth(lastDayLastReceipt.getMonth()+ addMonth)
-      // const date = new Date(nextPay)
-      // const year = date.getFullYear();
-      // const month = date.getMonth() + 1;
-      // const day = date.getDate();
-      // const nextPayday = year + '-' + ((''+ month).length < 2 ? '0' : '') + month + '-' + (('' + day).length < 2 ? '0' : '') + day
-      // ***************** Creacion automatica de un recibo dependiendo de la fecha limite del ultimo recibo ************************``
-      // if (currentDate > finalLastDay) {
-      //   return this.setState ({
-      //   current_reading: lastReceipt.current_reading,
-      //   previous_reading: lastReceipt.current_reading,
-      //   payday_limit: nextPayday,
-      //   contract_id: numContract[0].id,
-      //   }, ()=> this.props.postReceipt(this.state, this.props.token))
-
-      // }
-
     }
   };
-
 
 
   componentWillUnmount() {
@@ -189,8 +166,20 @@ class DetailUltimateContract extends Component {
       }
     return kilowatt;
   }
-
-
+  componentWillReceiveProps(nextProps){
+    this.getContract(nextProps)
+    this.forceUpdate()
+  }
+  getContract(nextProps){
+  nextProps.contracts.map((item, i) => {
+    if(nextProps.valueContract === item.name_contract){
+        this.setState({
+          bill: item.receipt,
+          count_days: item.type_payment,
+        })
+      }
+    })
+  }
 
   render(){
     const { navigation, rate_period } = this.props;
@@ -208,14 +197,14 @@ class DetailUltimateContract extends Component {
     return(
       <Container>
         <Content style={{backgroundColor: '#fff'}}>
+         <ExpandedView contracts={this.props.screenProps}/>
           <Grid>
-            <Row style={styles.detailContract__row__top}>
-              <Text style={styles.detailContract__row__top__text}>{this.arrContracts[this.arrContracts.length-1].name_contract}</Text>
-            </Row>
+           
+              {/* <Text style={styles.detailContract__row__top__text}>{this.arrContracts[this.arrContracts.length-1].name_contract}</Text> */}
             <Col>
               <List style={styles.list}>
                {bill.map((item, i )=>
-                  {
+                  { console.log(this.arrContracts[this.arrContracts.length-1])
                   return <SwipeAccordion
                     indexOpen={this.state.key}
                     keyVal={i}
@@ -241,7 +230,7 @@ class DetailUltimateContract extends Component {
 }
 
 class ItemComponent extends Component{
-
+  
   render() {
     const receipt = this.props.data;
     countKwh = receipt.current_reading - receipt.previous_reading
@@ -280,6 +269,7 @@ function bindAction(dispatch){
 
 const mapStateToProps = state => ({
   contracts: state.list_contracts.contracts,
+  valueContract: state.list_contracts.pickerContract,
   token: state.user.token,
   rate_period: state.list_rate.rate_period,
 })

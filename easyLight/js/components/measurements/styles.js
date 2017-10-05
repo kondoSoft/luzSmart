@@ -38,18 +38,19 @@ export default {
     marginTop: (Platform.OS === 'ios')? 5 : 0,
   },
   col__row__top__select:{
-    width: 150,
+    width: 100,
     height: 30,
     backgroundColor: 'transparent',
     borderTopWidth: .5,
     borderBottomWidth: .5,
     borderLeftWidth: .5,
     borderRightWidth: .5,
+    paddingLeft: 35,
     padding: 0,
     paddingTop:5,
   },
   col__row__select__option:{
-    height: 34,
+    height: 20,
     borderBottomWidth: 0,
   },
   row__bottom__list:{
@@ -66,7 +67,7 @@ export default {
   },
   animatedView__image:{
     width: (Platform.OS === 'android' && Screen.height <= 640)? '65%' : '70%',
-    height: (Platform.OS === 'ios')? '65%' : (Screen.height <= 640)? '65%' : '68%',
+    height: (Platform.OS === 'ios')? '97%' : (Screen.height <= 640)? '65%' : '68%',
   },
   animatedView__image__view:{
     flex: 1,
