@@ -1,4 +1,5 @@
 import React,{ Component } from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, Text, View, PanResponder, Animated, Dimensions, TouchableOpacity,Platform } from 'react-native';
 import Svg from "react-native-svg";
 import {
@@ -7,6 +8,7 @@ import {
   VictoryBar,
 } from "victory-native";
 import {Icon} from 'native-base'
+import {closeSwiper, openSwiper} from '../../actions/drawer';
 let Window = Dimensions.get('window');
 var currentData;
 
@@ -23,6 +25,13 @@ class ListItemSwipe extends React.Component {
     this.state = {
       pan: new Animated.ValueXY(),
     }
+    this.closeSwiper = this.closeSwiper.bind(this)
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.isClosed) {
+      this.props.closeExpanded()
+      this.closeSwiper()
+    }
   }
   componentWillMount(){
     var springConfig = {
@@ -35,13 +44,17 @@ class ListItemSwipe extends React.Component {
         return true
       },
       onPanResponderMove            :(e,gestureState)=>{
+        if (this.props.isClosed) {
+          this.props.openSwiper()
+        }
         if (gestureState.dx < 0){
-          if (gestureState.dx <= -120) {
+          if (gestureState.dx <= -161) {
             Animated.event([null,{
-              dx : -140,
+              dx : -200,
               dy : 0
             }])(e, gestureState);
-          }else {
+          }
+          else {
             Animated.event([null,{
               dx : this.state.pan.x > 0 ? 0 : this.state.pan.x,
               dy : 0
@@ -49,21 +62,21 @@ class ListItemSwipe extends React.Component {
           }
         }
         else if (gestureState.dx > 0) {
-          if (this.props.isPremium) {
-            if (gestureState.dx >= 120) {
-            Animated.event([null,{
-              dx : 140,
-              dy : 0
-            }])(e, gestureState);
-          }else {
-              Animated.event([null,{
-                dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
-                dy : 0
-              }])(e, gestureState);
-            }
-          }else {
-             //do something...
-          }
+          // if (this.props.isPremium) {
+          //   if (gestureState.dx >= 120) {
+          //   Animated.event([null,{
+          //     dx : 140,
+          //     dy : 0
+          //   }])(e, gestureState);
+          // }else {
+          //     Animated.event([null,{
+          //       dx : this.state.pan.x<0 ? 0 : this.state.pan.x,
+          //       dy : 0
+          //     }])(e, gestureState);
+          //   }
+          // }else {
+          //    //do something...
+          // }
 
         }
 
@@ -73,33 +86,48 @@ class ListItemSwipe extends React.Component {
         if ( x == 0 ){
           this.props.onTap('DetailContract')
         }
-        if (gesture.dx < -25) {
+        if (gesture.dx < -40) {
+          // console.log('se cumplio < 25')
           Animated.spring(
             this.state.pan,
-            {toValue:{x:-120,y:0}},
+            {toValue:{x:-189,y:0}},
           ).start();
-        }
-        else if(gesture.dx > 75) {
-          Animated.spring(
-            this.state.pan,
-            {
-              ...springConfig,
-              toValue:{x:120,y:0}
-            },
-          ).start();
-        }
-        else {
+        }else if(gesture.dx < -81) {
+          // console.log('se cumplio < 81')
+          // Animated.spring(
+          //   this.state.pan,
+          //   {
+          //     ...springConfig,
+          //     toValue:{x:-160,y:0}
+          //   },
+          // ).start();
+        }else {
           this.props.closeExpanded()
-          Animated.spring(
-            this.state.pan,
-            {
-              ...springConfig,
-              toValue:{x:0,y:0}
-            },
-          ).start();
+          this.closeSwiper()
+          // Animated.spring(
+          //   this.state.pan,
+          //   {
+          //     ...springConfig,
+          //     toValue:{x:0,y:0}
+          //   },
+          // ).start();
         }
       }
   });
+  }
+  closeSwiper () {
+    var springConfig = {
+      tension: (this.props.tension)? this.props.tension : 60,
+      friction: (this.props.friction)? this.props.friction : 20,
+      velocity: (this.props.velocity)? this.props.velocity : 20
+    }
+    Animated.spring(
+      this.state.pan,
+      {
+        ...springConfig,
+        toValue:{x:0,y:0}
+      },
+    ).start();
   }
   render(){
     return(
@@ -113,7 +141,7 @@ class ListItemSwipe extends React.Component {
     )
   }
 }
-export default class SwipeAccordion extends Component{
+class SwipeAccordion extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -191,27 +219,38 @@ export default class SwipeAccordion extends Component{
   render(){
     return(
       <Animated.View style={[{height: this.state.animation, overflow:'hidden'}]}>
-        <View style={styles.swipeBack} >
+        <View style={styles.swipeBack} > 
           <TouchableOpacity
-            style={styles.swipeBack__left}
-            activeOpacity={0.5}
-            onPress={this.props.onPressLeft}
-          >
-            {/* <Text style={{ flex: 1 , textAlign: 'center'}}>hi there</Text> */}
-            <Icon name="md-create" style={{position:'relative', left:'40%', color:'#333'}}/>
-          </TouchableOpacity>
-          <View style={styles.swipeBack__body}>
-
-          </View>
-          <TouchableOpacity
-            style={styles.swipeBack__right}
-            onPress={this.toggle.bind(this)}
+            style={{ width: 63, backgroundColor: 'lightgrey'}}
+            onPress={ () => { 
+              this.props.closeSwiper()
+              this.props.onPressLeft() 
+            }}
             activeOpacity={0.6}
           >
-            {this.props.icon}
+            <Icon style={{flex:1, textAlign: 'center', marginTop: 15, fontSize: 35, color: '#fff'}} name='md-create' />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ width: 63, backgroundColor: 'steelblue'}}
+            onPress={ () => {
+              this.props.closeSwiper()
+              this.props.navigation.navigate('Historial')
+            }}
+            activeOpacity={0.6}
+          >
+            <Icon style={{flex:1, textAlign: 'center', marginTop: 15, fontSize: 35, color: '#fff'}} name='ios-book-outline' />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ width: 63, backgroundColor: 'green'}}
+            onPress={
+              this.toggle.bind(this)
+            }
+            activeOpacity={0.6}
+          >
+            <Icon style={{flex:1, textAlign: 'center', marginTop: 15, fontSize: 35, color: '#fff'}} name='ios-information-circle-outline' />
           </TouchableOpacity>
         </View>
-        <ListItemSwipe isPremium={this.props.isPremium} closeExpanded={this.closeExpanded.bind(this)} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
+        <ListItemSwipe openSwiper={this.props.openSwiper} isClosed={this.props.swiperClose} isPremium={this.props.isPremium} closeExpanded={this.closeExpanded.bind(this)} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
         <ExpandedView navigation={this.props.navigation} func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contratos') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
       </Animated.View>
     )
@@ -289,7 +328,17 @@ class ExpandedView extends Component{
     )
   }
 }
+function bindAction(dispatch){
+  return {
+    closeSwiper: () => dispatch(closeSwiper()),
+    openSwiper: () => dispatch(openSwiper())
+  }
+}
+const mapStateToProps = state => ({
+  swiperClose: state.drawer.closeSwiper,
+})
 
+export default connect(mapStateToProps, bindAction)(SwipeAccordion);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -312,6 +361,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   swipeBack:{
+    justifyContent: 'flex-end',
     height: 70,
     flexDirection: 'row',
   },

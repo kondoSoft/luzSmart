@@ -23,10 +23,10 @@ export type Action =
     | { type: 'UPDATE_USER' }
     | { type: 'GET_DATA_USER' }
     | { type: 'GET_CONTRACT_UPDATE'}
+    | { type: 'OPEN_SWIPER' }
+    | { type: 'CLOSE_SWIPER' }
+    | { type: 'PRINT_REGISTER_USER' }
     | { type: 'PICKER_CONTRACT'}
-
-
-
 
 export type Dispatch = (action:Action | Array<Action>) => any;
 export type GetState = () => Object;

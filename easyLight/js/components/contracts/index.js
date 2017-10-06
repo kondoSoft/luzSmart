@@ -94,7 +94,6 @@ class ParentSwipeContracts extends Component {
     return(
         <ScrollView
           style={{backgroundColor: '#fff'}}
-          scrollEnabled={false}
           >
           {contract.map((contract, i )=>
             <SwipeAccordion

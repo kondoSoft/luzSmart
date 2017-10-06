@@ -54,9 +54,9 @@ class DetailUltimateContract extends Component {
       current_reading: '',
       previous_reading: '',
       payday_limit: '',
-      count_days: props.contracts[0].type_payment,
       bill: undefined,
       contract: '',
+      count_days: (props.contracts.length !== 0)? props.contracts[0].type_payment : '',
 
     };
     this.arrContracts
