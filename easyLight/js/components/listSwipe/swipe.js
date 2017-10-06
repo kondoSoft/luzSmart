@@ -51,13 +51,12 @@ class ListItemSwipe extends React.Component {
           this.props.openSwiper()
         }
         if (gestureState.dx < 0){
-          if (gestureState.dx <= -161) {
+          if (gestureState.dx <= -40 && this.props.navigation.state.routeName === 'Contratos') {
             Animated.event([null,{
-              dx : -200,
+              dx : (this.props.navigation.state.routeName === 'Contratos')? -189 : -63,
               dy : 0
             }])(e, gestureState);
-          }
-          else {
+          }else {
             Animated.event([null,{
               dx : this.state.pan.x > 0 ? 0 : this.state.pan.x,
               dy : 0
@@ -89,21 +88,17 @@ class ListItemSwipe extends React.Component {
         if ( x == 0 ){
           this.props.onTap('DetailContract')
         }
+        // if (gesture.dx < -40 && this.props.navigation.state.routeName === 'DetailContract') {
+        //   Animated.spring(
+        //     this.state.pan,
+        //     {toValue:{x:-65,y:0}},
+        //   ).start();
+        // }
         if (gesture.dx < -40) {
-          // console.log('se cumplio < 25')
           Animated.spring(
             this.state.pan,
-            {toValue:{x:-189,y:0}},
+            {toValue:{x:(this.props.navigation.state.routeName === 'Contratos')? -189 : -63, y:0}},
           ).start();
-        }else if(gesture.dx < -81) {
-          // console.log('se cumplio < 81')
-          // Animated.spring(
-          //   this.state.pan,
-          //   {
-          //     ...springConfig,
-          //     toValue:{x:-160,y:0}
-          //   },
-          // ).start();
         }else {
           this.props.closeExpanded()
           this.closeSwiper()
@@ -227,27 +222,42 @@ class SwipeAccordion extends Component{
   render(){
     return(
       <Animated.View style={[{height: this.state.animation, overflow:'hidden'}]}>
-        <View style={styles.swipeBack} >
-          <TouchableOpacity
-            style={{ width: 63, backgroundColor: 'lightgrey'}}
-            onPress={ () => {
-              this.props.closeSwiper()
-              this.props.onPressLeft()
-            }}
-            activeOpacity={0.6}
-          >
-            <Icon style={{flex:1, textAlign: 'center', marginTop: 15, fontSize: 35, color: '#fff'}} name='md-create' />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ width: 63, backgroundColor: 'steelblue'}}
-            onPress={ () => {
-              this.props.closeSwiper()
-              this.props.navigation.navigate('Historial')
-            }}
-            activeOpacity={0.6}
-          >
-            <Icon style={{flex:1, textAlign: 'center', marginTop: 15, fontSize: 35, color: '#fff'}} name='ios-book-outline' />
-          </TouchableOpacity>
+        <View style={styles.swipeBack} > 
+          {
+            (this.props.navigation.state.routeName === 'Contratos')?
+              <TouchableOpacity
+                style={{ width: 63, backgroundColor: 'lightgrey'}}
+                onPress={ () => { 
+                  this.props.closeSwiper()
+                  this.props.onPressLeft() 
+                }}
+                activeOpacity={0.6}
+              >
+                <Icon style={{flex:1, textAlign: 'center', marginTop: 15, fontSize: 35, color: '#fff'}} name='md-create' />
+              </TouchableOpacity> 
+              : <View
+                  style={{ width: 63, backgroundColor: 'green' }}
+                >
+                  
+                </View>
+          }
+          {
+            (this.props.navigation.state.routeName === 'Contratos')?
+             <TouchableOpacity
+              style={{ width: 63, backgroundColor: 'steelblue'}}
+              onPress={ () => {
+                this.props.closeSwiper()
+                this.props.navigation.navigate('Historial')
+              }}
+              activeOpacity={0.6}
+            >
+              <Icon style={{flex:1, textAlign: 'center', marginTop: 15, fontSize: 35, color: '#fff'}} name='ios-book-outline' />
+            </TouchableOpacity>
+            : <View
+                style={{ width: 63, backgroundColor: 'green' }}
+              >
+              </View>
+          }
           <TouchableOpacity
             style={{ width: 63, backgroundColor: 'green'}}
             onPress={
@@ -258,7 +268,7 @@ class SwipeAccordion extends Component{
             <Icon style={{flex:1, textAlign: 'center', marginTop: 15, fontSize: 35, color: '#fff'}} name='ios-information-circle-outline' />
           </TouchableOpacity>
         </View>
-        <ListItemSwipe openSwiper={this.props.openSwiper} isClosed={this.props.swiperClose} isPremium={this.props.isPremium} closeExpanded={this.closeExpanded.bind(this)} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
+        <ListItemSwipe navigation={this.props.navigation} openSwiper={this.props.openSwiper} isClosed={this.props.swiperClose} isPremium={this.props.isPremium} closeExpanded={this.closeExpanded.bind(this)} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
         <ExpandedView navigation={this.props.navigation} func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contratos') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
       </Animated.View>
     )

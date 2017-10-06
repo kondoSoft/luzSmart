@@ -27,7 +27,7 @@ export type Action =
     | { type: 'CLOSE_SWIPER' }
     | { type: 'PRINT_REGISTER_USER' }
     | { type: 'PICKER_CONTRACT'}
-
+    | { type: 'EMAIL_VERIFICATION'}
 export type Dispatch = (action:Action | Array<Action>) => any;
 export type GetState = () => Object;
 export type PromiseAction = Promise<Action>;

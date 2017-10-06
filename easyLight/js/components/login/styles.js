@@ -1,56 +1,56 @@
 
-const React = require('react-native');
+const React = require('react-native')
 
-const { StyleSheet, Dimensions, Platform } = React;
+const { StyleSheet, Dimensions, Platform } = React
 
-const Screen = Dimensions.get('window');
+const Screen = Dimensions.get('window')
 
 export default {
   container: {
-    flex:1,
+    flex: 1
   },
-  grid:{
-    flex:1,
+  grid: {
+    flex: 1,
     // height: Screen.height,
-    paddingTop: (Platform.OS === 'ios')? 0 : 120,
+    paddingTop: (Platform.OS === 'ios') ? 0 : 120,
     backgroundColor: '#fff'
   },
-  header:{
-    backgroundColor: 'green',
+  header: {
+    backgroundColor: 'green'
   },
-  header__body:{
-    alignItems: 'center',
+  header__body: {
+    alignItems: 'center'
   },
-  header__body__title:{
-    color: 'white',
+  header__body__title: {
+    color: 'white'
   },
-  form:{
+  form: {
     marginTop: 20,
     paddingLeft: 15,
-    paddingRight: 15,
+    paddingRight: 15
   },
-  form__item:{
+  form__item: {
     marginTop: 0,
-    height: 50,
+    height: 50
   },
-  form__item__input:{
+  form__item__input: {
     height: 50,
-    top: 0,
+    top: 0
   },
   shadow: {
     flex: 1,
     width: null,
-    height: null,
+    height: null
   },
   bg: {
     flex: 1,
     padding: 0,
-    bottom: 0,
+    bottom: 0
   },
   input: {
-    marginBottom: 20,
+    marginBottom: 20
   },
-  btnView:{
+  btnView: {
     padding: 30,
     marginTop: 20,
     display: 'flex',
@@ -58,30 +58,30 @@ export default {
   },
   btn: {
     marginTop: 4,
-    backgroundColor: '#007aff',
+    backgroundColor: '#007aff'
   },
-  link:{
+  link: {
     borderBottomWidth: 2,
     borderBottomColor: 'lightgray',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   footer: {
-    height: 100,
+    height: 120,
     borderTopWidth: 0,
-    alignItems:'center',
+    alignItems: 'center'
   },
   col__inputs__login: {
     justifyContent: 'flex-end',
-    paddingLeft: 15,
+    paddingLeft: 15
   },
   field__email: {
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
-  textValidation:{
-    height:'25%',
+  textValidation: {
+    height: '25%',
     width: '94%',
     textAlign: 'center',
-    paddingTop:0,
-    color:'red',
+    paddingTop: 0,
+    color: 'red'
   }
-};
+}

@@ -11,7 +11,7 @@ export const LOGOUT = 'LOGOUT';
 export const PRINT_USER = 'PRINT_USER'
 export const PRINT_REGISTER_USER = 'PRINT_REGISTER_USER'
 export const GET_DATA_USER = 'GET_DATA_USER'
-
+export const EMAIL_VERIFICATION = 'EMAIL_VERIFICATION'
 export function setUser(token:string):Action {
   return {
     type: SET_USER,
@@ -33,6 +33,12 @@ function printUser(user, profile):Action {
 function printRegisterUser (validation):Action {
   return {
     type: PRINT_REGISTER_USER,
+    payload: validation
+  }
+}
+function emailVerification (validation):Action {
+  return {
+    type: EMAIL_VERIFICATION,
     payload: validation
   }
 }
@@ -82,8 +88,12 @@ export function loginUser(email:email, password:password, navigate):Action {
     })
     .then(res => { return res.json() })
     .then(token => { 
-      dispatch(setUser(token))
-      dispatch(getContract(token.key,navigate))
+      if (token.non_field_errors) {
+        dispatch(emailVerification(token.non_field_errors[0]))
+      }else{
+        dispatch(setUser(token))
+        dispatch(getContract(token.key,navigate))
+      }
     })
     .catch(err => console.log(err))
   }
