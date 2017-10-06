@@ -19,9 +19,9 @@ import {
   Label,
   Right,
 } from "native-base";
-import { Dimensions, Platform, Linking } from 'react-native';
+import { Dimensions, Platform, Linking, Alert, AlertIOS, } from 'react-native';
 import { Field, reduxForm } from "redux-form";
-import { setUser, loginUser, logoutUser } from "../../actions/user";
+import { setUser, loginUser, logoutUser, emailVerification } from "../../actions/user";
 import styles from "./styles";
 import { getStates } from "../../actions/list_states_mx";
 const background = require("../../../images/shadow.png");
@@ -50,6 +50,25 @@ class Login extends Component {
     this.handleContracts = this.handleContracts.bind(this);
   }
   handleContracts(){
+    if (this.props.emailActivation === 'E-mail is not verified.') {
+      if (Platform.OS === 'ios') {
+        AlertIOS.alert(
+          'Activacion de Email',
+         'Verifique su cuenta para poder iniciar sesión',
+          [
+           {text: 'OK'}
+          ]
+        )  
+      }else {
+        Alert.alert(
+          'Activacion de Email',
+         'Verifique su cuenta para poder iniciar sesión',
+          [
+           {text: 'OK'}
+          ]
+        )
+      }
+    }
     if(this.state.email != '' && this.state.password != ''){
       this.props.loginUser(this.state.email,this.state.password,this.props.navigation)
     }
@@ -194,7 +213,7 @@ class Login extends Component {
                 </Col>
               </Row>
               <View style={styles.footer}>
-                <Thumbnail style={{width:80,height:80,borderRadius:40}} source={ logoFooter } />
+                <Thumbnail style={{width:110,height:110,borderRadius:50}} source={ logoFooter } />
               </View>
             </Grid>
         </ScrollView>
@@ -212,12 +231,12 @@ function bindAction(dispatch) {
     loginUser: (email, password, navigate) => dispatch(loginUser(email, password, navigate)),
     getStates: () => dispatch(getStates()),
     logoutUser: () => dispatch(logoutUser()),
-
   };
 }
 const mapStateToProps = state => ({
   loginError: state.user.loginError,
   noPassword: state.user.noPassword,
+  emailActivation: state.user.emailVerification
 })
 
 export default connect(mapStateToProps, bindAction)(Login);
