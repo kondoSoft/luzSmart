@@ -9,6 +9,7 @@ import FabButton from '../fabButton';
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
 import { getContract, resetRate, resetMunicipality } from "../../actions/list_states_mx";
+import { resetPicketContract } from "../../actions/contracts";
 import { getUser } from '../../actions/user';
 import { whileCosts } from '../../helpers';
 // var gradientImage = require('../../../images/header.png')
@@ -23,6 +24,7 @@ class Contracts extends Component {
   }
   componentWillMount(){
     this.props.resetRate()
+    // this.props.resetPicketContract()
     this.props.resetMunicipality()
     this.setState({
       contract: this.props.contracts
@@ -38,6 +40,7 @@ class Contracts extends Component {
     getContract: React.PropTypes.func,
     resetRate: React.PropTypes.func,
     getStates: React.PropTypes.func,
+    resetPicketContract: React.PropTypes.func,
   }
   render(){
     console.log('')
@@ -140,6 +143,7 @@ function bindAction(dispatch){
     getUser: token =>dispatch(getUser(token)),
     resetRate: () => dispatch(resetRate()),
     resetMunicipality: () => dispatch(resetMunicipality()),
+    resetPicketContract: () => dispatch(resetPicketContract()),
   }
 }
 const mapStateToProps = state => ({

@@ -11,13 +11,16 @@ import {Icon} from 'native-base'
 import {closeSwiper, openSwiper} from '../../actions/drawer';
 let Window = Dimensions.get('window');
 var currentData;
+import { pickerContract } from "../../actions/contracts";
+
 
 class ListItemSwipe extends React.Component {
   static propTypes = {
     tension: React.PropTypes.number,
     friction: React.PropTypes.number,
     velocity: React.PropTypes.number,
-    component: React.PropTypes.element
+    component: React.PropTypes.element,
+    pickerContract: React.PropTypes.func,
   }
   constructor(props){
     super(props);
@@ -203,11 +206,16 @@ class SwipeAccordion extends Component{
   }
   navigateTo(route){
 
-    if (this.props.navigation.state.routeName === 'DetailContract' || this.props.navigation.state.routeName === 'Periodos') {
-
+    if (this.props.navigation.state.routeName === 'DetailContract') {
+      console.log(this.props.dataAccordionContract);
+      this.props.pickerContract(this.props.dataAccordionContract.name_contract)
       this.props.navigation.navigate('Medicion',{ receipt: this.props.dataAccordion , contract: this.props.dataAccordionContract, index: this.props.index})
 
-    }else {
+    }
+    else if( this.props.navigation.state.routeName === 'Periodos'){
+      this.props.navigation.navigate('MedicionPeriodo',{ receipt: this.props.dataAccordion , contract: this.props.dataAccordionContract, index: this.props.index})
+    }
+    else {
       this.props.navigation.navigate(route, { receipt: this.props.receipts, index: this.props.index, profile: this.props.profile, contract: this.props.dataAccordionContract})
     }
   }
@@ -341,7 +349,8 @@ class ExpandedView extends Component{
 function bindAction(dispatch){
   return {
     closeSwiper: () => dispatch(closeSwiper()),
-    openSwiper: () => dispatch(openSwiper())
+    openSwiper: () => dispatch(openSwiper()),
+    pickerContract: value => dispatch(pickerContract(value)),
   }
 }
 const mapStateToProps = state => ({
