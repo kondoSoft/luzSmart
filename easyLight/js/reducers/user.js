@@ -1,5 +1,5 @@
 import type { Action } from '../actions/types';
-import { SET_USER, LOGOUT, PRINT_USER, GET_DATA_USER, PRINT_REGISTER_USER } from '../actions/user';
+import { SET_USER, LOGOUT, PRINT_USER, GET_DATA_USER, PRINT_REGISTER_USER, EMAIL_VERIFICATION } from '../actions/user';
 
 import {REHYDRATE} from 'redux-persist/constants'
 
@@ -44,6 +44,12 @@ export default function (state:State = initialState, action:Action): State {
     return {
       ...state,
       createAccountValidation: action.payload
+    }
+  }
+  if (action.type === EMAIL_VERIFICATION) {
+    return {
+      ...state,
+      emailVerification: action.payload
     }
   }
   // else if (action.type === REHYDRATE){
