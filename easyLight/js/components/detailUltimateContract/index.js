@@ -93,7 +93,7 @@ class DetailUltimateContract extends Component {
     else {
       addMonth = 1
     }
-    
+
     if(this.state.bill != undefined) {
       this.getStatus();
       //Se obtiene las tarifas
@@ -182,8 +182,9 @@ class DetailUltimateContract extends Component {
   }
 
   getContract(nextProps){
-  nextProps.contracts.map((item, i) => {
-    if(nextProps.valueContract === item.name_contract){
+    console.log('se ejecuta', nextProps);
+    nextProps.contracts.map((item, i) => {
+      if(nextProps.valueContract === item.name_contract){
         this.setState({
           bill: item.receipt,
           count_days: item.type_payment,
@@ -196,29 +197,27 @@ class DetailUltimateContract extends Component {
 
   render(){
     const { navigation, rate_period } = this.props;
-    console.log('rate_period', rate_period)
     const { status } = this.state;
     const bill = this.state.bill
     const colors = ['lightgrey','#fff'];
     let fab = <FabButton
           navigation={navigation}
-          onTap={() => {navigation.navigate('Receipt', params)}}
+          onTap={() => {navigation.navigate('Receipt', {contract: this.state.contract} )}}
         >
           <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
-    var params;
     // Obtener datos por Periodos
     return(
       <Container>
         <Content style={{backgroundColor: '#fff'}}>
          <ExpandedView contracts={this.props.screenProps} rate={this.state.contract.rate}/>
           <Grid>
-           
+
               {/* <Text style={styles.detailContract__row__top__text}>{this.arrContracts[0].name_contract}</Text> */}
             <Col>
               <List style={styles.list}>
                 {(bill != undefined) && bill.map((item, i )=>
-                  { 
+                  {
                   return <SwipeAccordion
                     indexOpen={this.state.key}
                     keyVal={i}
@@ -243,7 +242,7 @@ class DetailUltimateContract extends Component {
 }
 
 class ItemComponent extends Component{
-  
+
   getMonthOfTypePayment(){
     let addMonth ;
     if(this.props.typePayment == 'Bimestral'){
@@ -271,7 +270,7 @@ class ItemComponent extends Component{
     // Periodo inicial dependiendo la fecha limite de pago, calculando los dias de inicio del recibo
     const initialPeriod = new Date(date.setDate(new Date(date).getDate()))
     dateMonth = initialPeriod.getMonth()-countMonth
-    finalRange = new Date(new Date(date).setMonth(date.getMonth()+countMonth))    
+    finalRange = new Date(new Date(date).setMonth(date.getMonth()+countMonth))
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>

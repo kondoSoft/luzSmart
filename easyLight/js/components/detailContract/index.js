@@ -58,6 +58,7 @@ class DetailContract extends Component {
       payday_limit: '',
       count_days: props.contracts[0].type_payment,
       bill: props.navigation.state.params.receipt,
+      onlyOneBill: props.navigation.state.params.receipt.length,
 
     };
     this.getContract = this.getContract.bind(this);
@@ -66,8 +67,8 @@ class DetailContract extends Component {
 
   static navigationOptions = ({ navigation, screenProps }) => (
   {
-    headerRight: (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract})}><Icon active style={{'color': 'white'}} name="md-arrow-forward"/></Button>,
-  
+    headerRight: (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
+
   });
 
   static propType = {
@@ -105,9 +106,7 @@ class DetailContract extends Component {
   }
 
   getContract(nextProps){
-    console.log('next',nextProps)
     nextProps.contracts.map((item, i) => {
-    console.log(item)
     if(nextProps.navigation.state.params.contract.name_contract === item.name_contract){
         this.setState({
 
@@ -178,7 +177,6 @@ class DetailContract extends Component {
       if(this.state.bill != undefined){
         this.state.bill.map((bill, i)=>{
           if(this.state.bill[i].period === 'Verano'){
-            console.log('me cumpli verano')
             kilowatt = verano.map((rate, i)=>{
               const { kilowatt, cost } = rate;
               return { kilowatt, cost };
@@ -199,7 +197,6 @@ class DetailContract extends Component {
 
   render(){
     const { navigation, rate_period, contracts } = this.props;
-    console.log(rate_period, this.state.contract, numContract)
     const { status } = this.state;
     const bill = this.state.bill
     const colors = ['lightgrey','#fff'];
@@ -234,7 +231,7 @@ class DetailContract extends Component {
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
-                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={whileCosts}/>}
+                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={whileCosts} countsReceipts={this.state.onlyOneBill}/>}
                     // component={<ItemComponent data={item} status={status} ratePeriodCost={rate_period} consumoPromedio={whileCosts}/>}
                     dataAccordionContract={this.state.contract}
                     // dataAccordionContract={this.props.navigation.state.params.contract}
@@ -254,12 +251,13 @@ class DetailContract extends Component {
 }
 
 class ItemComponent extends Component{
-  
+
   render() {
     const receipt = this.props.data;
     countKwh = receipt.current_reading - receipt.previous_reading
     const subTotal = this.props.consumoPromedio(this.props.ratePeriod, countKwh)
     total = getIVA(subTotal)
+    totalAccount = this.props.data.amount_payable
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const splitRange = receipt.payday_limit.split('-',)
     const date = new Date(receipt.payday_limit.replace(/-/g, '\/'))
@@ -270,13 +268,14 @@ class ItemComponent extends Component{
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__text}>{arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()]}</Text>
+           <Text style={styles.listItem__body__text}>{arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()]}</Text>
         </Left>
         <Body style={styles.ItemComponent.align}>
 
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{}}>{ (total != undefined) && `$`+total.toLocaleString() }</Text>
+          {/* Condicionar si esta pagado que muestra el acount... */}
+          <Text style={styles.listItem__body__view__text,{}}>{(this.props.countsReceipts <= 2) ? <Text style={styles.listItem__body__text}>{`$`+totalAccount.toLocaleString()}</Text> : (total != undefined) && `$`+total.toLocaleString() }</Text>
           <Text style={styles.listItem__body__view__text,{}}>{receipt.status}</Text>
         </Right>
       </View>

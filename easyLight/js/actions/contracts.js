@@ -10,6 +10,7 @@ const endPoint = 'http://138.68.49.119:8080';
 export const PRINT_RATE_PERIOD = 'PRINT_RATE_PERIOD';
 export const PRINT_RECEIPTS = 'PRINT_RECEIPTS';
 export const PICKER_CONTRACT = 'PICKER_CONTRACT';
+export const RESET_PICKER = 'RESET_PICKER';
 
 export function printRatePeriod(data):Action {
   return {
@@ -28,6 +29,11 @@ export function pickerContract(data):Action {
   return {
     type: PICKER_CONTRACT,
     payload: data,
+  }
+}
+export function resetPicketContract():Action{
+  return {
+    type: RESET_PICKER,
   }
 }
 export function postReceipt(list, token):Action{

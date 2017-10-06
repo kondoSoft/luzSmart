@@ -9,6 +9,7 @@ import {
   Item,
   Label,
   Input,
+  Icon,
 } from 'native-base';
 import {
   // TouchableOpacity,
@@ -48,6 +49,12 @@ class Receipt extends Component {
     setBill: React.PropTypes.func,
     getContract: React.PropTypes.func,
   }
+  static navigationOptions = ({ navigation, screenProps }) => (
+  {
+    // headerRight: (navigation.state.params) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
+    headerLeft: <Button transparent onPress={() => navigation.goBack()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>,
+
+  });
   componentWillMount () {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
    if (this.props.navigation.state.params !== undefined) {
@@ -166,6 +173,7 @@ class Receipt extends Component {
   }
   render() {
     const { navigation } = this.props;
+
     // const { bill } = navigation.state.params
     // var lastBill
     if (navigation.state.params === undefined) {
@@ -177,7 +185,7 @@ class Receipt extends Component {
     // if(bill.length >= 0) {
     //   lastBill = bill[bill.length-1]
     // }
-    // console.log(lastBill.payday_limit)
+    console.log(navigation.state.params)
     var receiptView = (
       <Container>
         <ScrollView

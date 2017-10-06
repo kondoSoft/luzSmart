@@ -198,24 +198,35 @@ const tabResults = StackNavigator(
 const tabPeriods = StackNavigator(
   {
     Periodos: {
-    screen: DetailUltimateContract,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: 'white',
-      headerStyle: { backgroundColor : '#00a85b'},
-      title: 'Periodos',
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
-    }),
-  },
-  Medicion: {
-    screen: MeasurementsCopy,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: 'white',
-      headerStyle: { backgroundColor : '#00a85b'},
-      tabBarVisible: false,
-      title: 'Medicion',
-      // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
-    }),
-  },
+      screen: DetailUltimateContract,
+      navigationOptions: ({ navigation }) => ({
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor : '#00a85b'},
+        title: 'Periodos',
+        headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+      }),
+    },
+    MedicionPeriodo: {
+      screen: MeasurementsCopy,
+      navigationOptions: ({ navigation }) => ({
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor : '#00a85b'},
+        tabBarVisible: false,
+        title: 'Medicion del Periodo',
+        // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+      }),
+    },
+    Receipt: {
+      screen: Receipt,
+      navigationOptions: ({ navigation }) => ({
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor : '#00a85b'},
+        tabBarVisible: false,
+        title: 'Recibo',
+        // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+
+      }),
+    },
 })
 
 const tabNavigation = TabNavigator(
