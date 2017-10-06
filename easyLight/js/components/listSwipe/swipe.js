@@ -207,7 +207,9 @@ class SwipeAccordion extends Component{
     })
   }
   navigateTo(route){
+
     if (this.props.navigation.state.routeName === 'DetailContract' || this.props.navigation.state.routeName === 'Periodos') {
+
       this.props.navigation.navigate('Medicion',{ receipt: this.props.dataAccordion , contract: this.props.dataAccordionContract, index: this.props.index})
 
     }else {

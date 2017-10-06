@@ -28,6 +28,7 @@ export default function(state: State = initialState, action: Action): State {
     }
   }
   if(action.type === PRINT_RATE_PERIOD) {
+
     return {
       ...state,
       rate_period: action.payload.results,

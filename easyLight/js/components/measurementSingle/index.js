@@ -55,12 +55,14 @@ class MeasurementSingle extends Component {
   }
   static navigationOptions = ({ navigation, screenProps }) => (
   {
+    headerLeft: <Button transparent onPress={() => navigation.goBack()}><Icon active style={{'color': 'white'}} name="arrow-back"/></Button>,
     headerRight: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
   });
  
-  componentWillMount () {  
+  componentWillMount () { 
+    // this.getTotalPayment() 
     this.setState({
-      itemReceipt: this.props.navigation.state.params.contract.receipt[0],
+      itemReceipt: this.props.navigation.state.params.receipt,
     })
     this.rate_contract = this.props.navigation.state.params.contract.rate
     this.contract_id = this.props.navigation.state.params.contract.id
@@ -203,9 +205,36 @@ class MeasurementSingle extends Component {
 
   }
   getTotalPayment(){
+    var verano = [];
+    var noverano = [];
+    var kilowatt = [];
+    // empuje de datos en el arreglo de verano y fuera de verano
+    this.props.rate_period.map((period, i) => {
+      if(period.period_name == 'Verano') {
+        verano.push(period)
+        }
+      else {
+        noverano.push(period);
+        }
+      });
+      // Se retorna que tipo de periodo es, dependiendo del recibo
+      if(this.state.itemReceipt != undefined){
+        if(this.state.itemReceipt.period == 'Verano'){
+          kilowatt = verano.map((rate, i)=>{
+            const { kilowatt, cost } = rate;
+            return { kilowatt, cost };
+          });
+        }
+        else {
+          kilowatt = noverano.map((rate, i)=>{
+            const { kilowatt, cost } = rate;
+            return { kilowatt, cost };
+          })
+        }
+      }
     if (this.props.rate_period.length > 0) {
       if (this.rate_contract === this.props.rate_period[0].name_rate) {
-        this.subTotal = whileCosts(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading) 
+        this.subTotal = whileCosts(kilowatt, this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading) 
         this.total = getIVA(this.subTotal);
       }
     }
@@ -248,7 +277,7 @@ class MeasurementSingle extends Component {
     }
   }
   render(){
-    this.getTotalPayment()
+    this.getTotalPayment() 
     const { navigation } = this.props;
     // Contrato que viene desde la pantalla recibos
     const { contract } = this.props.navigation.state.params;
@@ -350,9 +379,7 @@ class MeasurementSingle extends Component {
             position="bottomRight"
             onPress={() => this.setState({ active: !this.state.active })}>
             <Icon name="md-share" />
-            <Button style={{ backgroundColor: '#3B5998' }}>
-              <Icon name="logo-facebook" />
-            </Button>
+            <Button style={{ backgroundColor: '#3B5998' }}><Icon name="logo-facebook" /></Button>
           </Fab>
         </View>
         {/* {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts} /> : null} */}
