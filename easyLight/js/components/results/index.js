@@ -1,166 +1,184 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import {
+  View
+} from 'react-native'
 import {
   Container,
-  Content,
-  View,
   Text,
   Fab,
   Icon,
-  Button,
-} from 'native-base';
-import {
-  Platform
-} from 'react-native';
-import { Col, Row, Grid } from "react-native-easy-grid";
-import { Select, Option } from 'react-native-select-list';
-// import Header from '../header/index';
-// import Footer from '../footer/index';
-import styles from './styles';
-import { random, range } from "lodash";
-import Svg from "react-native-svg";
+  Button
+} from 'native-base'
+import { Grid, Col } from 'react-native-easy-grid'
+import styles from './styles'
+// import {random, range} from 'lodash'
+// import Svg from 'react-native-svg'
 import {
   VictoryChart,
-  VictoryGroup,
-  VictoryBar,
-} from "victory-native";
+  VictoryBar
+} from 'victory-native'
+import Swiper from 'react-native-swiper'
 
-class Results  extends Component {
-  constructor(props){
+class Results extends Component {
+  constructor (props) {
     super(props)
-    this.state ={
+    this.state = {
       active: false
     }
   }
-  render(){
-    const {  navigation } = this.props;
-    return(
+  render () {
+    return (
       <Container>
-        {/* <Header title="Resultados" navigation={this.props.navigation}/> */}
+        {/* <Header title='Resultados' navigation={this.props.navigation}/> */}
         <Grid style={{ backgroundColor: '#fff' }}>
-          <Row size={10} style={styles.row__top}>
-            <Select
-              selectStyle={{ width: 300}}
-              padding={10}
-              listHeight={100}
-              caretSize={0}
-              >
-              <Option
-                value={1}
-                optionStyle={styles.col__row__select__option}
-                >Consumo diario</Option>
-              <Option
-                value={2}
-                optionStyle={styles.col__row__select__option}
-                >Consumo Acumulado</Option>
-                <Option
-                  value={3}
-                  optionStyle={styles.col__row__select__option}
-                  >Gasto Energetico</Option>
-            </Select>
-          </Row>
-          <Row size={50} style={{paddingBottom: 40}}>
-            <VictoryChart domain={{x: [0, 4]}}>
-              <VictoryGroup
-                labels={["a", "b", "c"]}
-                offset={10}
-                colorScale={"qualitative"}
-              >
-                <VictoryBar
-                  data={[
-                    {x: 1, y: 1},
-                    {x: 2, y: 2},
-                    {x: 3, y: 5}
-                  ]}
-                />
-                <VictoryBar
-                  data={[
-                    {x: 1, y: 2},
-                    {x: 2, y: 1},
-                    {x: 3, y: 7}
-                  ]}
-                />
-                <VictoryBar
-                  data={[
-                    {x: 1, y: 3},
-                    {x: 2, y: 4},
-                    {x: 3, y: 9}
-                  ]}
-                />
-              </VictoryGroup>
-            </VictoryChart>
-          </Row>
-          <Row size={10} style={styles.row__center}>
-            <Select
-              selectStyle={{ width: 300}}
-              padding={10}
-              listHeight={100}
-              caretSize={0}
-              >
-              <Option
-                value={1}
-                optionStyle={styles.col__row__select__option}
-                >Consumo diario</Option>
-              <Option
-                value={2}
-                optionStyle={styles.col__row__select__option}
-                >Consumo Acumulado</Option>
-                <Option
-                  value={3}
-                  optionStyle={styles.col__row__select__option}
-                  >Gasto Energetico</Option>
-            </Select>
-          </Row>
-          <Row size={10} style={styles.row__center}>
-            <Select
-              selectStyle={{ width: 300}}
-              padding={10}
-              listHeight={100}
-              caretSize={0}
-              >
-              <Option
-                value={1}
-                optionStyle={styles.col__row__select__option}
-                >Consumo diario</Option>
-              <Option
-                value={2}
-                optionStyle={styles.col__row__select__option}
-                >Consumo Acumulado</Option>
-                <Option
-                  value={3}
-                  optionStyle={styles.col__row__select__option}
-                  >Gasto Energetico</Option>
-            </Select>
-          </Row>
-          <Row size={20} style={styles.row__bottom}> 
-            <Button small primary>
-              <Text>Exportar CSV</Text>
-            </Button>
-          </Row>
+          <Swiper>
+            <Col size={100}>
+              <Text style={styles.chartText}>Consumo diario</Text>
+              <View style={styles.containerCharts}>
+                <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}}>
+                  <VictoryBar
+                    style={styles.chartFillColor}
+                    data={[
+                      {dia: 'Lun', 'kw/h': 35},
+                      {dia: 'Mar', 'kw/h': 50},
+                      {dia: 'Mie', 'kw/h': 10},
+                      {dia: 'Jue', 'kw/h': 20},
+                      {dia: 'Vie', 'kw/h': 40},
+                      {dia: 'Sab', 'kw/h': 10},
+                      {dia: 'Dom', 'kw/h': 30}
+                    ]}
+                    x='dia'
+                    y='kw/h'
+                  />
+                </VictoryChart>
+              </View>
+              <View style={styles.containerExportButton}>
+                <Button small primary>
+                  <Text>Exportar CSV</Text>
+                </Button>
+              </View>
+            </Col>
+            <Col size={100}>
+              <Text style={styles.chartText}>Consumo Semanal</Text>
+              <View style={styles.containerCharts}>
+                <VictoryChart domainPadding={{x: 40}}>
+                  <VictoryBar
+                    style={styles.chartFillColor}
+                    data={[
+                      {sem: 'Sem1', 'kw/h': 35},
+                      {sem: 'Sem2', 'kw/h': 50},
+                      {sem: 'Sem3', 'kw/h': 10},
+                      {sem: 'Sem4', 'kw/h': 20}
+                    ]}
+                    x='sem'
+                    y='kw/h'
+                  />
+                </VictoryChart>
+              </View>
+              <View style={styles.containerExportButton}>
+                <Button small primary>
+                  <Text>Exportar CSV</Text>
+                </Button>
+              </View>
+            </Col>
+            <Col size={100}>
+              <Text style={styles.chartText}>Consumo Mensual</Text>
+              <View style={styles.containerCharts}>
+                <VictoryChart domainPadding={{x: 40}}>
+                  <VictoryBar
+                    style={styles.chartFillColor}
+                    data={[
+                      {mes: 'Ene', 'kw/h': 35},
+                      {mes: 'Feb', 'kw/h': 50},
+                      {mes: 'Mar', 'kw/h': 10},
+                      {mes: 'Abr', 'kw/h': 20},
+                      {mes: 'May', 'kw/h': 40},
+                      {mes: 'Jun', 'kw/h': 10},
+                    ]}
+                    x='mes'
+                    y='kw/h'
+                  />
+                </VictoryChart>
+              </View>
+              <View style={styles.containerExportButton}>
+                <Button small primary>
+                  <Text>Exportar CSV</Text>
+                </Button>
+              </View>
+            </Col>
+            <Col size={100}>
+              <Text style={styles.chartText}>Consumo Bimestral</Text>
+              <View style={styles.containerCharts}>
+                <VictoryChart domainPadding={{x: 40}}>
+                  <VictoryBar
+                    style={styles.chartFillColor}
+                    data={[
+                      {bimes: 'Ene', 'kw/h': 35},
+                      {bimes: 'Mar', 'kw/h': 50},
+                      {bimes: 'May', 'kw/h': 10},
+                      {bimes: 'Jul', 'kw/h': 20},
+                      {bimes: 'Sep', 'kw/h': 40},
+                      {bimes: 'Nov', 'kw/h': 10}
+                    ]}
+                    x='bimes'
+                    y='kw/h'
+                  />
+                </VictoryChart>
+              </View>
+              <View style={styles.containerExportButton}>
+                <Button small primary>
+                  <Text>Exportar CSV</Text>
+                </Button>
+              </View>
+            </Col>
+            <Col size={100}>
+              <Text style={styles.chartText}>Consumo Anual</Text>
+              <View style={styles.containerCharts}>
+                <VictoryChart domainPadding={{x: 40}}>
+                  <VictoryBar
+                    style={styles.chartFillColor}
+                    data={[
+                      {anual: '15', 'kw/h': 35},
+                      {anual: '16', 'kw/h': 50},
+                      {anual: '17', 'kw/h': 10},
+                      {anual: '18', 'kw/h': 20},
+                      {anual: '19', 'kw/h': 40}
+                    ]}
+                    x='anual'
+                    y='kw/h'
+                  />
+                </VictoryChart>
+              </View>
+              <View style={styles.containerExportButton}>
+                <Button small primary>
+                  <Text>Exportar CSV</Text>
+                </Button>
+              </View>
+            </Col>
+          </Swiper>
         </Grid>
         <Fab
           active={this.state.active}
-          direction="up"
-          containerStyle={{ bottom: 30, right: 10}}
-          style={{ backgroundColor: 'steelblue' }}
-          position="bottomRight"
+          direction='up'
+          containerStyle={{bottom: 30, right: 10}}
+          style={{backgroundColor: 'steelblue'}}
+          position='bottomRight'
           onPress={() => this.setState({ active: !this.state.active })}
           >
-          <Icon name="share" />
+          <Icon name='share' />
           {/* <Button style={{ backgroundColor: '#34A34F' }}>
-            <Icon name="logo-whatsapp" />
+            <Icon name='logo-whatsapp' />
           </Button> */}
           <Button style={{ backgroundColor: '#3B5998' }}>
-            <Icon name="logo-facebook" />
+            <Icon name='logo-facebook' />
           </Button>
           {/* <Button disabled style={{ backgroundColor: '#DD5144' }}>
-            <Icon name="mail" />
+            <Icon name='mail' />
           </Button> */}
-        </Fab>  
-       {/*  {(Platform.OS === 'ios')? <Footer navigation={navigation} viewContract={this.props.screenProps.contracts}/> : null} */}
+        </Fab>
       </Container>
     )
   }
 }
 
-
-export default Results;
+export default Results
