@@ -117,7 +117,6 @@ class DetailContract extends Component {
     })
   }
 
-
   componentWillUnmount() {
     numContract = []
     statusArr = []
@@ -133,25 +132,6 @@ class DetailContract extends Component {
     }else{
       count_days = 30
     }
-    var itemStatus = this.state.bill.map((item, i) => {
-      const payday = item.payday_limit.replace(/-/g, '\/')
-      limitReceipt = Date.parse(new Date(payday))
-      currentDate = Date.now()
-      firstDate = new Date(limitReceipt).setDate(new Date(limitReceipt).getDate() - count_days)
-      if (currentDate >= firstDate && currentDate <= limitReceipt) {
-        item.status = 'En proceso'
-        item.finished = 'False'
-        return item
-      } else {
-         item.status = 'Pagado'
-         item.finished = 'True'
-         return item
-      }
-
-    })
-    return this.setState ({
-      bill: itemStatus
-    })
   }
   getContractsId() {
     const contract = this.props.contracts.map((item,i)=>{
@@ -193,12 +173,10 @@ class DetailContract extends Component {
     return kilowatt;
   }
 
-
-
   render(){
     const { navigation, rate_period, contracts } = this.props;
     const { status } = this.state;
-    const bill = this.state.bill
+    const bill = this.state.bill;
     const colors = ['lightgrey','#fff'];
     let fab = <FabButton
           navigation={navigation}
@@ -254,6 +232,7 @@ class ItemComponent extends Component{
 
   render() {
     const receipt = this.props.data;
+    console.log('data', this.props.data)
     countKwh = receipt.current_reading - receipt.previous_reading
     const subTotal = this.props.consumoPromedio(this.props.ratePeriod, countKwh)
     total = getIVA(subTotal)
@@ -275,8 +254,9 @@ class ItemComponent extends Component{
         </Body>
         <Right style={styles.ItemComponent.align}>
           {/* Condicionar si esta pagado que muestra el acount... */}
-          <Text style={styles.listItem__body__view__text,{}}>{(this.props.countsReceipts <= 2) ? <Text style={styles.listItem__body__text}>{`$`+totalAccount.toLocaleString()}</Text> : (total != undefined) && `$`+total.toLocaleString() }</Text>
-          <Text style={styles.listItem__body__view__text,{}}>{receipt.status}</Text>
+          <Text>{(total != undefined) && `$`+total.toLocaleString() }</Text>
+          {/* <Text style={styles.listItem__body__view__text,{}}>{(this.props.countsReceipts <= 2) ? <Text style={styles.listItem__body__text}>{`$`+totalAccount.toLocaleString()}</Text> : (total != undefined) && `$`+total.toLocaleString() }</Text> */}
+          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) && 'Pagado'}</Text>
         </Right>
       </View>
     )
