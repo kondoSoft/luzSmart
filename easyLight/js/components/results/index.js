@@ -15,7 +15,8 @@ import styles from './styles'
 // import Svg from 'react-native-svg'
 import {
   VictoryChart,
-  VictoryBar
+  VictoryBar,
+  VictoryGroup
 } from 'victory-native'
 import Swiper from 'react-native-swiper'
 
@@ -107,6 +108,31 @@ class Results extends Component {
               </View>
             </Col>
             <Col size={100}>
+              <Text style={styles.chartText}>Gasto Promedio Mensual</Text>
+              <View style={styles.containerCharts}>
+                <VictoryChart domainPadding={{x: 40}}>
+                  <VictoryBar
+                    style={styles.chartFillColor}
+                    data={[
+                      {mes: 'Ene', 'kw/h': 35},
+                      {mes: 'Feb', 'kw/h': 50},
+                      {mes: 'Mar', 'kw/h': 10},
+                      {mes: 'Abr', 'kw/h': 20},
+                      {mes: 'May', 'kw/h': 40},
+                      {mes: 'Jun', 'kw/h': 10, fill:'#000'}
+                    ]}
+                    x='mes'
+                    y='kw/h'
+                  />
+                </VictoryChart>
+              </View>
+              <View style={styles.containerExportButton}>
+                <Button small primary>
+                  <Text>Exportar CSV</Text>
+                </Button>
+              </View>
+            </Col>
+            <Col size={100}>
               <Text style={styles.chartText}>Consumo Bimestral</Text>
               <View style={styles.containerCharts}>
                 <VictoryChart domainPadding={{x: 40}}>
@@ -147,6 +173,62 @@ class Results extends Component {
                     x='anual'
                     y='kw/h'
                   />
+                </VictoryChart>
+              </View>
+              <View style={styles.containerExportButton}>
+                <Button small primary>
+                  <Text>Exportar CSV</Text>
+                </Button>
+              </View>
+            </Col>
+            <Col size={100}>
+              <Text style={styles.chartText}>Consumo y Ahorro</Text>
+              <View style={styles.containerCharts}>
+                <VictoryChart domainPadding={{x: 40}} domain={[0, 6]} >
+                  <VictoryGroup
+                    offset={10}
+                    // data={[
+                    //   {mes: 'Ene', y: 1},
+                    //   {mes: 'Feb', y: 2},
+                    //   {mes: 'Mar', y: 5}
+                    // ]}
+                    // x='mes'
+                  >
+                    <VictoryBar
+                      style={styles.chartFillConsumo}
+                      data={[
+                        {mes: 'Ene', y: 1},
+                        {mes: 'Feb', y: 2},
+                        {mes: 'Mar', y: 5},
+                        {mes: 'Abr', y: 4},
+                        {mes: 'May', y: 6},
+                        {mes: 'Jun', y: 2}
+                      ]}
+                      x='mes'
+                    />
+                    <VictoryBar
+                      data={[
+                        {mes: 'Ene', y: 1},
+                        {mes: 'Feb', y: 3},
+                        {mes: 'Mar', y: 5},
+                        {mes: 'Abr', y: 8},
+                        {mes: 'May', y: 2},
+                        {mes: 'Jun', y: 4}
+                      ]}
+                      x='mes'
+                    />
+                    <VictoryBar
+                      data={[
+                        {mes: 'Ene', y: 2},
+                        {mes: 'Feb', y: 4},
+                        {mes: 'Mar', y: 6},
+                        {mes: 'Abr', y: 3},
+                        {mes: 'May', y: 1},
+                        {mes: 'Jun', y: 9}
+                      ]}
+                      x='mes'
+                    />
+                  </VictoryGroup>
                 </VictoryChart>
               </View>
               <View style={styles.containerExportButton}>

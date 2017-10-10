@@ -28,5 +28,10 @@ export default {
     data: {
       fill: '#c43a31'
     }
+  },
+  chartFillConsumo: {
+    data: {
+      fill: '#0F0'
+    }
   }
 }
