@@ -232,7 +232,6 @@ class ItemComponent extends Component{
 
   render() {
     const receipt = this.props.data;
-    console.log('data', this.props.data)
     countKwh = receipt.current_reading - receipt.previous_reading
     const subTotal = this.props.consumoPromedio(this.props.ratePeriod, countKwh)
     total = getIVA(subTotal)

@@ -2,8 +2,8 @@
 import type { Action } from './types';
 import { getContract } from "./list_states_mx";
 
-// const endPoint = 'http://138.68.49.119:8080';
-const endPoint = 'http://127.0.0.1:8000';
+const endPoint = 'http://138.68.49.119:8080';
+// const endPoint = 'http://127.0.0.1:8000';
 
 
 export const SET_USER = 'SET_USER';
@@ -87,7 +87,7 @@ export function loginUser(email:email, password:password, navigate):Action {
       })
     })
     .then(res => { return res.json() })
-    .then(token => { 
+    .then(token => {
       if (token.non_field_errors) {
         dispatch(emailVerification(token.non_field_errors[0]))
       }else{
@@ -128,7 +128,7 @@ export function registerUser(list):Action{
      body: data
     })
     .then(res=> { return res.json() })
-    .then( validation => { 
+    .then( validation => {
       dispatch(printRegisterUser(validation))
     })
     .catch(err => console.log(err))

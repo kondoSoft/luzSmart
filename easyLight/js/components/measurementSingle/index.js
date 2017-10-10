@@ -20,8 +20,8 @@ import { Select, Option } from 'react-native-select-list';
 import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
-import { patchReceipt, getRatePeriod } from '../../actions/contracts'
-import { getIVA, whileCosts } from '../../helpers';
+import { patchReceipt, getRatePeriod, postRecord } from '../../actions/contracts'
+import { getIVA, whileCosts, getWeekday } from '../../helpers';
 
 
 let Screen = Dimensions.get('window')
@@ -44,7 +44,10 @@ class MeasurementSingle extends Component {
         current_data: 0,
         payday_limit: '',
       },
-      kwhValidation: 'KWh'
+      kwhValidation: 'KWh',
+      record: {
+
+      },
     }
     this.contract_id;
     this.subTotal;
@@ -58,9 +61,8 @@ class MeasurementSingle extends Component {
     headerLeft: <Button transparent onPress={() => navigation.goBack()}><Icon active style={{'color': 'white'}} name="arrow-back"/></Button>,
     headerRight: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
   });
- 
-  componentWillMount () { 
-    // this.getTotalPayment() 
+
+  componentWillMount () {
     this.setState({
       itemReceipt: this.props.navigation.state.params.receipt,
     })
@@ -83,14 +85,15 @@ class MeasurementSingle extends Component {
         let filItemID = nextProps.screenProps.contracts.filter((item,i)=>{
               return item.id === this.contract_id;
             })
-        let prevCurrentReading = this.state.itemReceipt.current_reading;
+        let prevCurrentReading = this.state.itemReceipt.current_reading_updated;
         let nextCurrentReading = filItemID[0].receipt[0].current_reading;
         if (nextCurrentReading > prevCurrentReading) {
           this.setState({
             itemReceipt:{
               id: this.state.itemReceipt.id,
               previous_reading: this.state.itemReceipt.previous_reading,
-              current_reading: nextCurrentReading,
+              current_reading: this.state.itemReceipt.current_reading,
+              current_reading_updated: nextCurrentReading,
               payday_limit: this.state.itemReceipt.payday_limit,
               period: this.state.itemReceipt.period,
               amount_payable: this.state.itemReceipt.amount_payable,
@@ -101,21 +104,22 @@ class MeasurementSingle extends Component {
         let filItemID = nextProps.screenProps.contracts.filter((item,i)=>{
               return item.id === this.contract_id;
             })
-        let prevCurrentReading = this.state.itemReceipt.current_reading;
+        let prevCurrentReading = this.state.itemReceipt.current_reading_updated;
         let nextCurrentReading = filItemID[0].receipt[0].current_reading;
         if (nextCurrentReading > prevCurrentReading) {
           this.setState({
             itemReceipt:{
               id: this.state.itemReceipt.id,
               previous_reading: this.state.itemReceipt.previous_reading,
-              current_reading: nextCurrentReading,
+              current_reading: this.state.itemReceipt.current_reading,
+              current_reading_updated: nextCurrentReading,
               payday_limit: this.state.itemReceipt.payday_limit,
               period: this.state.itemReceipt.period,
               amount_payable: this.state.itemReceipt.amount_payable,
             }
           })
         }
-      } 
+      }
     }
   }
   componentWillUnmount () {
@@ -139,21 +143,66 @@ class MeasurementSingle extends Component {
       itemReceipt: contract.receipt[0]
     })
   }
+
+  setRecord(){
+    //Fecha de actualizacion de record
+    const date = new Date()
+    //Dia de la semana
+    const weekday = getWeekday(date)
+    //Fecha inicial del recibo
+    const paydayLimit = new Date(this.state.itemReceipt.payday_limit)
+    // Consumo diario
+    const { current_reading_updated, current_reading } = this.state.itemReceipt
+    // Obtener valor del dia
+    const dailyConsumption = this.state.current_data - current_reading_updated
+    // Dias transcurridos
+    const timeDiff = Math.abs(date.getTime() - paydayLimit.getTime())
+    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    const cumulativeConsumption = this.state.current_data - current_reading
+
+    // const fractionDay = Math.abs(date.getTime() - this.state.record.getTime())
+    // console.log(Math.ceil(fractionDay/ (1000 * 3600 * 24)));
+
+    this.setState({
+      record:{
+        contract_id: this.contract_id,
+        date: date,
+        day: weekday,
+        daily_reading: this.state.current_data,
+        hours_elapsed: 0,
+        hours_totals: 0,
+        days_elapsed: diffDays,
+        days_totals: diffDays,
+        daily_consumption: dailyConsumption,
+        cumulative_consumption: this.state.current_data - current_reading,
+        actual_consumption:cumulativeConsumption,
+        average_global: cumulativeConsumption / diffDays,
+        rest_day: 0,
+        projection: 0
+      }
+    })
+  }
+
   setRatePeriod(contract){
     this.rate_contract = contract.rate
     this.props.getRatePeriod(this.rate_contract, this.props.token)
   }
   sendCurrentData(id){
-    if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading) {
+    if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading_updated) {
         this.props.patchReceipt(this.state.current_data, this.props.token, id,this.props.navigation)
+
+        this.setRecord()
+
         this.setState({
           kwhValidation: require('../../../images/succes.png')
         },()=>{
          this.changeCheckedData()
          this.getTotalPayment()
          this.forceUpdate()
+         this.props.postRecord(this.state, this.props.screenProps.token)
         })
-      // this.props.navigation.goBack()  
+      // this.props.navigation.goBack()
     }else{
       if (this.state.current_data === '') {
         AlertIOS.alert(
@@ -162,17 +211,17 @@ class MeasurementSingle extends Component {
           [
             {text: 'OK'},
           ],
-        )  
-      }else if(this.state.current_data < this.state.itemReceipt.current_reading){
+        )
+      }else if(this.state.current_data <= this.state.itemReceipt.current_reading_updated){
         AlertIOS.alert(
           'Validacion',
           'Los datos introducidos debe ser mayor a la ultima lectura diaria',
           [
             {text: 'OK'},
           ],
-        ) 
+        )
       }
-      
+
     }
   }
   setDataContract(contract_id){
@@ -234,7 +283,7 @@ class MeasurementSingle extends Component {
       }
     if (this.props.rate_period.length > 0) {
       if (this.rate_contract === this.props.rate_period[0].name_rate) {
-        this.subTotal = whileCosts(kilowatt, this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading) 
+        this.subTotal = whileCosts(kilowatt, this.state.itemReceipt.current_reading_updated - this.state.itemReceipt.previous_reading)
         this.total = getIVA(this.subTotal);
       }
     }
@@ -277,7 +326,8 @@ class MeasurementSingle extends Component {
     }
   }
   render(){
-    this.getTotalPayment() 
+    console.log('state', this.state.record);
+    this.getTotalPayment()
     const { navigation } = this.props;
     // Contrato que viene desde la pantalla recibos
     const { contract } = this.props.navigation.state.params;
@@ -327,11 +377,11 @@ class MeasurementSingle extends Component {
                 </ListItem>
                 <ListItem last>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Ultima Lectura Diaria</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading)}</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading_updated)}</Text>
                 </ListItem>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Consumo en KWh</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading === undefined)? 0 : this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading }</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading_updated === undefined)? 0 : this.state.itemReceipt.current_reading_updated - this.state.itemReceipt.previous_reading }</Text>
                 </ListItem>
               </List>
             </Row>
@@ -391,6 +441,7 @@ function bindAction(dispatch) {
   return {
     patchReceipt: (data, token, id,navigation) => dispatch(patchReceipt(data, token, id,navigation)),
     getRatePeriod: (rate, token) => dispatch(getRatePeriod(rate, token)),
+    postRecord: (data, token) => dispatch(postRecord(data, token))
   };
 }
 const mapStateToProps = state => ({

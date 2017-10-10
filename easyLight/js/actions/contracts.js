@@ -2,8 +2,8 @@ import type { Action } from './types';
 import { getContract } from './list_states_mx';
 
 
-// const endPoint = 'http://138.68.49.119:8080';
-const endPoint = 'http://127.0.0.1:8000';
+const endPoint = 'http://138.68.49.119:8080';
+// const endPoint = 'http://127.0.0.1:8000';
 
 
 
@@ -37,7 +37,6 @@ export function resetPicketContract():Action{
   }
 }
 export function postReceipt(list, token):Action{
-  console.log('list', list)
   return dispatch => {
     return fetch(endPoint+'/receipt/',{
       method: 'POST',
@@ -63,6 +62,7 @@ export function postReceipt(list, token):Action{
   }
 }
 export function postRecord(list, token):Action{
+  console.log('list', list);
   return dispatch => {
     return fetch(endPoint+'/records/',{
       method: 'POST',
@@ -72,16 +72,24 @@ export function postRecord(list, token):Action{
        'Authorization': 'Token ' + token
      },
      body: JSON.stringify({
-        payday_limit: list.payday_limit,
-        amount_payable: list.amount_payable,
-        current_reading: list.current_reading,
-        previous_reading: list.previous_reading,
-        contract: list.contract_id,
-        period: list.period
+        date: list.record.date,
+        day: list.record.day,
+        daily_reading: list.record.daily_reading,
+        hours_elapsed: list.record.hours_elapsed,
+        hours_totals: list.record.hours_totals,
+        days_elapsed: list.record.days_elapsed,
+        days_totals: list.record.days_totals,
+        daily_consumption: list.record.daily_consumption,
+        cumulative_consumption: list.record.cumulative_consumption,
+        actual_consumption: list.record.actual_consumption,
+        average_global: list.record.average_global,
+        rest_day: list.record.rest_day,
+        projection: list.record.projection,
+        contracts: list.contract_id,
       })
     })
     .then(res => {return res.json()})
-    .then(res => {console.log('res',res)})
+    .then(res => {console.log('res2',res)})
     .catch(err => console.log(err))
   }
 }

@@ -22,7 +22,7 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 // import { Select, Option } from 'react-native-select-list';
 import styles from './styles';
-import { postReceipt } from '../../actions/contracts';
+import { postReceipt, postRecord } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
 import { getWeekday } from "../../helpers"
@@ -42,6 +42,9 @@ class Receipt extends Component {
         previous_reading_ui: 0,
         period: '',
         status: false,
+        record: {
+
+        }
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
       this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
@@ -137,12 +140,53 @@ class Receipt extends Component {
       );
     }
   }
+
+  setRecord(){
+    //Fecha inicial del recibo
+    const paydayLimit = this.state.payday_limit
+    //Dia de la semana
+    const weekday = getWeekday(paydayLimit)
+    // Consumo diario
+    const { current_reading } = this.state
+    // Dias transcurridos
+    // const timeDiff = Math.abs(date.getTime() - paydayLimit.getTime())
+    // const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    // const cumulativeConsumption = this.state.current_data - current_reading
+
+    // const fractionDay = Math.abs(date.getTime() - this.state.record.getTime())
+    // console.log(Math.ceil(fractionDay/ (1000 * 3600 * 24)));
+
+    this.setState({
+      record:{
+        contract_id: this.state.contract_id,
+        date: paydayLimit,
+        day: weekday,
+        daily_reading: current_reading,
+        hours_elapsed: 0,
+        hours_totals: 0,
+        days_elapsed: 0,
+        days_totals: 0,
+        daily_consumption: 0,
+        cumulative_consumption: 0,
+        actual_consumption:0,
+        average_global: 0,
+        rest_day: 0,
+        projection: 0
+      }
+    })
+  }
   sendData() {
     if (this.dataValidate(this.state)) {
+      this.setRecord()
       // se agrega estatus y despues se hace un post
       this.setState({
         status: true
-      },() => this.props.postReceipt(this.state, this.props.token))
+      },() => {
+        this.props.postReceipt(this.state, this.props.token)
+        this.props.postRecord(this.state, this.props.screenProps.token)
+      }
+    )
       this.showAlert();
 
       setTimeout( () => {
@@ -160,6 +204,7 @@ class Receipt extends Component {
     }
 
   }
+
   dataValidate(data) {
     const {
       amount_payable,
@@ -179,8 +224,6 @@ class Receipt extends Component {
     }
   }
   render() {
-    console.log('me ejecuto', this.props.contracts)
-    // console.log('function', getWeekday('10/08/2017'))
     const { navigation } = this.props;
 
     // const { bill } = navigation.state.params
@@ -388,6 +431,7 @@ class Receipt extends Component {
 function bindAction(dispatch) {
   return {
     postReceipt: (list, token) => dispatch(postReceipt(list, token)),
+    postRecord: (data, token) => dispatch(postRecord(data, token)),
     getContract: (token, navigation) => dispatch(getContract(token, navigation)),
   };
 }
