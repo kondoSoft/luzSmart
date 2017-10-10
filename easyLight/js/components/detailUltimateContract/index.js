@@ -69,13 +69,19 @@ class DetailUltimateContract extends Component {
     getRatePeriod: React.PropTypes.func,
     postReceipt: React.PropTypes.func,
   }
-  componentWillMount() {
+  componentWillMount () {
     this.arrContracts = []
-
     // this.props.getRatePeriod(this.state.contract.rate, this.props.token);
     const ultimateContract = this.props.screenProps.contracts.map((item, i) => {
         this.arrContracts.push(item)
     })
+    if (this.arrContracts.length === 1) {
+       this.setState({
+        bill: this.arrContracts[0].receipt
+       }, () => {
+        this.props.getRatePeriod(this.props.screenProps.contracts[0].rate, this.props.token)
+       })
+    }
     // this.setState({
     //   bill: this.arrContracts[this.arrContracts.length-1].receipt
     // })
@@ -84,7 +90,7 @@ class DetailUltimateContract extends Component {
     // }
 
   }
-  componentDidMount() {
+  componentDidMount () {
     // se determina los meses que se agregaran a las fechas determinados por el tipo de pago(Mensual o Bimestral)
     let addMonth ;
     if(this.state.count_days == 'Bimestral'){
@@ -209,7 +215,11 @@ class DetailUltimateContract extends Component {
     return(
       <Container>
         <Content style={{backgroundColor: '#fff'}}>
-         <ExpandedView contracts={this.props.screenProps} rate={this.state.contract.rate}/>
+        {
+          (this.arrContracts.length === 1)?
+            <Text style={{ backgroundColor: 'grey', height: 30, textAlign: 'center', padding: 2, color: '#FFF' }}>{this.arrContracts[0].name_contract}</Text>
+          : <ExpandedView contracts={this.props.screenProps} rate={this.state.contract.rate}/>
+        }
           <Grid>
 
               {/* <Text style={styles.detailContract__row__top__text}>{this.arrContracts[0].name_contract}</Text> */}
@@ -261,7 +271,6 @@ class ItemComponent extends Component{
     countKwh = receipt.current_reading - receipt.previous_reading
     // Subtotal y Total
     const subTotal = this.props.consumoPromedio(this.props.ratePeriod, countKwh)
-
     total = getIVA(subTotal)
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const splitRange = receipt.payday_limit.split('-',)
