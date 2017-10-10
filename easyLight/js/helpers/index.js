@@ -5,6 +5,8 @@ const getWeekday = (date) => {
   return date
 }
 
+
+
 const getIVA = total => {
   if (total) {
     if (typeof total === 'string') {

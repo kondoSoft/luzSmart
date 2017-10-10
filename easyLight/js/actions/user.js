@@ -87,7 +87,7 @@ export function loginUser(email:email, password:password, navigate):Action {
       })
     })
     .then(res => { return res.json() })
-    .then(token => { 
+    .then(token => {
       if (token.non_field_errors) {
         dispatch(emailVerification(token.non_field_errors[0]))
       }else{
@@ -128,7 +128,7 @@ export function registerUser(list):Action{
      body: data
     })
     .then(res=> { return res.json() })
-    .then( validation => { 
+    .then( validation => {
       dispatch(printRegisterUser(validation))
     })
     .catch(err => console.log(err))
