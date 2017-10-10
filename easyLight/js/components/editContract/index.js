@@ -26,7 +26,8 @@ import {
   ScrollView,
   TextInput,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
+  AlertIOS
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -126,7 +127,29 @@ class EditContracts extends Component {
     var id = this.props.navigation.state.params.id
     if (this.dataValidate(this.state)) {
       this.props.updateContract(this.state, this.props.token, id)
-      this.props.navigation.goBack()
+      if (Platform.OS === 'ios') {
+        AlertIOS.alert(
+          'Datos Actualizados',
+          'Se han actualizado los datos del contrato',
+          [
+            {
+              text: 'OK',
+              onPress: () => { this.props.navigation.goBack() }
+            }
+          ]
+        )
+      }else {
+        Alert.alert(
+          'Datos Actualizados',
+          'Se han actualizado los datos del contrato',
+          [
+            {
+              text: 'OK',
+              onPress: () => { this.props.navigation.goBack() }
+            }
+          ]
+        )
+      }
     }else {
       Alert.alert(
         'Datos incompletos',
