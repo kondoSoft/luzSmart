@@ -1,27 +1,29 @@
 export default {
-  frontView:{
-    height:50,
-    backgroundColor:'#fff',
+  frontView: {
+    flexDirection: 'row',
+    height: 50,
+    backgroundColor: '#fff',
     borderBottomWidth: 0.5,
-    borderColor:'lightgrey',
-    paddingLeft:30,
-    paddingRight:30,
-    justifyContent:'center'
+    borderColor: 'lightgrey',
+    paddingLeft: 30,
+    paddingRight: 30,
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
-  frontView__Text:{
-    fontSize:16,
+  frontView__Text: {
+    fontSize: 16
   },
-  backView:{
-    height:80,
-    backgroundColor:'lightgrey',
-    paddingLeft:30,
-    paddingRight:30,
-    paddingTop:10,
-    paddingBottom:5
+  backView: {
+    height: 80,
+    backgroundColor: 'lightgrey',
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingTop: 10,
+    paddingBottom: 5
   },
-  backView__Text:{
+  backView__Text: {
     color: 'black',
-    flex:1,
-    fontSize:16,
-  },
+    flex: 1,
+    fontSize: 16
+  }
 }
