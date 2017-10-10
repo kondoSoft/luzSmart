@@ -43,11 +43,9 @@ class Contracts extends Component {
     resetPicketContract: React.PropTypes.func,
   }
   render(){
-    console.log('')
     const { navigation, profile } = this.props
     const { state } = navigation
     const { contract }= this.state
-    console.log(this.props.contracts)
     var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts" )}}>
         <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: (Platform.OS === 'ios')? 30 : 33, color: '#fff'}}>+</Text>
       </FabButton>

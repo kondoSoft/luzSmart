@@ -25,7 +25,7 @@ import styles from './styles';
 import { postReceipt } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
-
+import { getWeekday } from "../../helpers"
 var contract;
 
 class Receipt extends Component {
@@ -41,6 +41,7 @@ class Receipt extends Component {
         current_reading_ui: 0,
         previous_reading_ui: 0,
         period: '',
+        status: false,
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
       this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
@@ -138,10 +139,15 @@ class Receipt extends Component {
   }
   sendData() {
     if (this.dataValidate(this.state)) {
-      this.props.postReceipt(this.state, this.props.token);
+      // se agrega estatus y despues se hace un post
+      this.setState({
+        status: true
+      },() => this.props.postReceipt(this.state, this.props.token))
       this.showAlert();
-      this.props.navigation.navigate('Contratos', this.props.getContract(this.props.screenProps.token, this.props.navigation));
 
+      setTimeout( () => {
+        this.props.navigation.navigate('Contratos', this.props.getContract(this.props.screenProps.token, this.props.navigation));
+      }, 3000)
     }
     else {
       Alert.alert(
@@ -152,6 +158,7 @@ class Receipt extends Component {
         ],
       );
     }
+
   }
   dataValidate(data) {
     const {
@@ -172,6 +179,8 @@ class Receipt extends Component {
     }
   }
   render() {
+    console.log('me ejecuto', this.props.contracts)
+    // console.log('function', getWeekday('10/08/2017'))
     const { navigation } = this.props;
 
     // const { bill } = navigation.state.params
@@ -185,7 +194,6 @@ class Receipt extends Component {
     // if(bill.length >= 0) {
     //   lastBill = bill[bill.length-1]
     // }
-    console.log(navigation.state.params)
     var receiptView = (
       <Container>
         <ScrollView
@@ -386,6 +394,7 @@ function bindAction(dispatch) {
 const mapStateToProps = state => ({
   newContract: state.list_contracts.newContract,
   token: state.user.token,
+  contracts: state.list_contracts.contracts
 });
 
 export default connect(mapStateToProps, bindAction)(Receipt);

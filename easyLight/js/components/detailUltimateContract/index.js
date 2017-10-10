@@ -182,7 +182,6 @@ class DetailUltimateContract extends Component {
   }
 
   getContract(nextProps){
-    console.log('se ejecuta', nextProps);
     nextProps.contracts.map((item, i) => {
       if(nextProps.valueContract === item.name_contract){
         this.setState({

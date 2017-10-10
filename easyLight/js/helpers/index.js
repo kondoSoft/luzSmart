@@ -1,4 +1,9 @@
-
+const getWeekday = (date) => {
+  date = new Date(date);
+  days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
+  date = days[date.getDay()]
+  return date
+}
 
 const getIVA = total => {
   if (total) {
@@ -55,4 +60,5 @@ const whileCosts = (kilowatt, countKwh) => {
 export {
   getIVA,
   whileCosts,
+  getWeekday,
 }

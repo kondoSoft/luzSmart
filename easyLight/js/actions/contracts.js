@@ -2,8 +2,8 @@ import type { Action } from './types';
 import { getContract } from './list_states_mx';
 
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 
@@ -37,8 +37,34 @@ export function resetPicketContract():Action{
   }
 }
 export function postReceipt(list, token):Action{
+  console.log('list', list)
   return dispatch => {
     return fetch(endPoint+'/receipt/',{
+      method: 'POST',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       'Authorization': 'Token ' + token
+     },
+     body: JSON.stringify({
+        payday_limit: list.payday_limit,
+        amount_payable: list.amount_payable,
+        current_reading: list.current_reading,
+        current_reading_updated: list.current_reading,
+        previous_reading: list.previous_reading,
+        contract: list.contract_id,
+        period: list.period,
+        status: list.status,
+      })
+    })
+    .then(res => {return res.json()})
+    .then(res => {console.log('res',res)})
+    .catch(err => console.log(err))
+  }
+}
+export function postRecord(list, token):Action{
+  return dispatch => {
+    return fetch(endPoint+'/records/',{
       method: 'POST',
       headers: {
        'Accept': 'application/json',
@@ -70,7 +96,7 @@ export function patchReceipt(data, token, id,navigation):Action{
        'Authorization': 'Token '+token
       },
       body: JSON.stringify({
-        current_reading: data
+        current_reading_updated: data
       })
     })
     .then(res => {return res.json()})
