@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {
   Text,
-  Platform,
   ScrollView,
   View,
   Animated,
@@ -55,7 +54,6 @@ export default class Faq extends Component {
     }
   }
   render () {
-    const { navigation } = this.props
     return (
       <Container style={{backgroundColor: '#fff'}}>
         <View style={{backgroundColor: 'lightgrey', flex: 0.3, alignItems: 'center', justifyContent: 'center'}}>
@@ -69,9 +67,7 @@ export default class Faq extends Component {
                   key={i}
                   frontData={faq.question}
                   accordionData={faq.answer}
-                >
-                  
-                </AccordionView>
+                />
               )
             })
           }
@@ -135,7 +131,6 @@ class AccordionView extends Component {
           </View>
           <View style={styles.backView} onLayout={this._setMaxHeight.bind(this)}>
             {<Text style={styles.backView__Text}>{this.props.accordionData}</Text>}
-            {/*this.props.children*/}
           </View>
         </Animated.View>
       </TouchableOpacity>
