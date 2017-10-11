@@ -192,6 +192,7 @@ class MeasurementSingle extends Component {
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading_updated) {
         this.props.patchReceipt(this.state.current_data, this.props.token, id,this.props.navigation)
 
+        // Se agrega los datos de record en el state
         this.setRecord()
 
         this.setState({
@@ -200,6 +201,7 @@ class MeasurementSingle extends Component {
          this.changeCheckedData()
          this.getTotalPayment()
          this.forceUpdate()
+         //Se genera el record con la ultima medicion
          this.props.postRecord(this.state, this.props.screenProps.token)
         })
       // this.props.navigation.goBack()
@@ -326,7 +328,6 @@ class MeasurementSingle extends Component {
     }
   }
   render(){
-    console.log('state', this.state.record);
     this.getTotalPayment()
     const { navigation } = this.props;
     // Contrato que viene desde la pantalla recibos
