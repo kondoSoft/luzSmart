@@ -86,7 +86,7 @@ class ListItemSwipe extends React.Component {
       onPanResponderRelease        : (e, gesture) => {
         var x = parseInt(JSON.stringify(this.state.pan.x))
         if ( x == 0 ){
-          this.props.onTap('DetailContract')
+            this.props.onTap('DetailContract')
         }
         // if (gesture.dx < -40 && this.props.navigation.state.routeName === 'DetailContract') {
         //   Animated.spring(
@@ -207,12 +207,15 @@ class SwipeAccordion extends Component{
   navigateTo(route){
 
     if (this.props.navigation.state.routeName === 'DetailContract') {
-      this.props.pickerContract(this.props.dataAccordionContract.name_contract)
-      this.props.navigation.navigate('Medicion',{ receipt: this.props.dataAccordion , contract: this.props.dataAccordionContract, index: this.props.index})
-
+     if(this.props.keyVal === 0){
+       this.props.pickerContract(this.props.dataAccordionContract.name_contract)
+       this.props.navigation.navigate('Medicion',{ receipt: this.props.dataAccordion , contract: this.props.dataAccordionContract, index: this.props.index})
+     }
     }
     else if( this.props.navigation.state.routeName === 'Periodos'){
+      if(this.props.keyVal === 0){
       this.props.navigation.navigate('MedicionPeriodo',{ receipt: this.props.dataAccordion , contract: this.props.dataAccordionContract, index: this.props.index})
+      }
     }
     else {
       this.props.navigation.navigate(route, { receipt: this.props.receipts, index: this.props.index, profile: this.props.profile, contract: this.props.dataAccordionContract})
@@ -221,23 +224,23 @@ class SwipeAccordion extends Component{
   render(){
     return(
       <Animated.View style={[{height: this.state.animation, overflow:'hidden'}]}>
-        <View style={styles.swipeBack} > 
+        <View style={styles.swipeBack} >
           {
             (this.props.navigation.state.routeName === 'Contratos')?
               <TouchableOpacity
                 style={{ width: 63, backgroundColor: 'lightgrey'}}
-                onPress={ () => { 
+                onPress={ () => {
                   this.props.closeSwiper()
-                  this.props.onPressLeft() 
+                  this.props.onPressLeft()
                 }}
                 activeOpacity={0.6}
               >
                 <Icon style={{flex:1, textAlign: 'center', marginTop: 15, fontSize: 35, color: '#fff'}} name='md-create' />
-              </TouchableOpacity> 
+              </TouchableOpacity>
               : <View
                   style={{ width: 63, backgroundColor: 'green' }}
                 >
-                  
+
                 </View>
           }
           {
@@ -267,7 +270,7 @@ class SwipeAccordion extends Component{
             <Icon style={{flex:1, textAlign: 'center', marginTop: 15, fontSize: 35, color: '#fff'}} name='ios-information-circle-outline' />
           </TouchableOpacity>
         </View>
-        <ListItemSwipe navigation={this.props.navigation} openSwiper={this.props.openSwiper} isClosed={this.props.swiperClose} isPremium={this.props.isPremium} closeExpanded={this.closeExpanded.bind(this)} style={this.props.style} component={this.props.component} onTap={this.navigateTo}  onLayout={this._setMinHeight.bind(this)}  />
+        <ListItemSwipe navigation={this.props.navigation} openSwiper={this.props.openSwiper} isClosed={this.props.swiperClose} isPremium={this.props.isPremium} closeExpanded={this.closeExpanded.bind(this)} style={this.props.style} component={this.props.component}  onLayout={this._setMinHeight.bind(this)} onTap={this.navigateTo}/>
         <ExpandedView navigation={this.props.navigation} func={this._setMaxHeight.bind(this)} data={(this.props.navigation.state.routeName == 'Contratos') ? this.props.dataAccordionContract : this.props.dataAccordion}/>
       </Animated.View>
     )

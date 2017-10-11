@@ -57,12 +57,34 @@ export function postReceipt(list, token):Action{
       })
     })
     .then(res => {return res.json()})
-    .then(res => {console.log('res',res)})
+    .catch(err => console.log(err))
+  }
+}
+export function postProjectReceipt(list, token):Action{
+  return dispatch => {
+    return fetch(endPoint+'/receipt/',{
+      method: 'POST',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       'Authorization': 'Token ' + token
+     },
+     body: JSON.stringify({
+        payday_limit: list.payday_limit,
+        amount_payable: 0,
+        current_reading: list.current_reading,
+        current_reading_updated: list.current_reading,
+        previous_reading: list.current_reading,
+        contract: list.contract_id,
+        period: list.period,
+        // status: list.status,
+      })
+    })
+    .then(res => {return res.json()})
     .catch(err => console.log(err))
   }
 }
 export function postRecord(list, token):Action{
-  console.log('list', list);
   return dispatch => {
     return fetch(endPoint+'/records/',{
       method: 'POST',

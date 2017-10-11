@@ -67,7 +67,8 @@ class DetailContract extends Component {
 
   static navigationOptions = ({ navigation, screenProps }) => (
   {
-    headerRight: (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
+
+    headerRight: (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract, receipt: navigation.state.params.receipt[0]})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
 
   });
 
@@ -246,16 +247,15 @@ class ItemComponent extends Component{
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-           <Text style={styles.listItem__body__text}>{arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()]}</Text>
+           <Text style={styles.listItem__body__text}>{(receipt.status) ? arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()] : arrMonth[finalRange.getMonth()]}</Text>
         </Left>
         <Body style={styles.ItemComponent.align}>
 
         </Body>
         <Right style={styles.ItemComponent.align}>
-          {/* Condicionar si esta pagado que muestra el acount... */}
-          <Text>{(total != undefined) && `$`+total.toLocaleString() }</Text>
+          <Text>{(receipt.status) ? receipt.amaunt_payable : (total !== undefined) && `$`+total.toLocaleString() }</Text>
           {/* <Text style={styles.listItem__body__view__text,{}}>{(this.props.countsReceipts <= 2) ? <Text style={styles.listItem__body__text}>{`$`+totalAccount.toLocaleString()}</Text> : (total != undefined) && `$`+total.toLocaleString() }</Text> */}
-          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) && 'Pagado'}</Text>
+          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
         </Right>
       </View>
     )

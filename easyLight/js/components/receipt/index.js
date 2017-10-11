@@ -22,7 +22,7 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 // import { Select, Option } from 'react-native-select-list';
 import styles from './styles';
-import { postReceipt, postRecord } from '../../actions/contracts';
+import { postReceipt, postRecord, postProjectReceipt } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
 import { getWeekday } from "../../helpers"
@@ -184,6 +184,7 @@ class Receipt extends Component {
         status: true
       },() => {
         this.props.postReceipt(this.state, this.props.token)
+        this.props.postProjectReceipt(this.state, this.props.screenProps.token)
         this.props.postRecord(this.state, this.props.screenProps.token)
       }
     )
@@ -432,6 +433,7 @@ function bindAction(dispatch) {
   return {
     postReceipt: (list, token) => dispatch(postReceipt(list, token)),
     postRecord: (data, token) => dispatch(postRecord(data, token)),
+    postProjectReceipt: (list, token) => dispatch(postProjectReceipt(list, token)),
     getContract: (token, navigation) => dispatch(getContract(token, navigation)),
   };
 }
