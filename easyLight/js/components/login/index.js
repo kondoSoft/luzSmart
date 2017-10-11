@@ -43,8 +43,8 @@ class Login extends Component {
       name: "",
       loginNavigate: false,
       validation: '',
-      email: '',
-      password: '',
+      email: 'wallas@mail.com',
+      password: 'password123',
     };
     this.reGex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
     this.handleContracts = this.handleContracts.bind(this);
