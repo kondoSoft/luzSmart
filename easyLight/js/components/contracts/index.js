@@ -11,7 +11,11 @@ import { openDrawer } from "../../actions/drawer";
 import { getContract, resetRate, resetMunicipality } from "../../actions/list_states_mx";
 import { resetPicketContract } from "../../actions/contracts";
 import { getUser } from '../../actions/user';
-import { whileCosts } from '../../helpers';
+import { 
+  whileCosts,
+  // getDayInDates,
+  // getKwHrsTransCurrid
+} from '../../helpers';
 // var gradientImage = require('../../../images/header.png')
 
 
