@@ -14,7 +14,7 @@ export default {
     fontSize: 16
   },
   backView: {
-    height: 80,
+    height: 460,
     backgroundColor: 'lightgrey',
     paddingLeft: 30,
     paddingRight: 30,
