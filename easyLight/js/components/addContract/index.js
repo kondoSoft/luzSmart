@@ -260,14 +260,26 @@ class AddContracts extends Component {
         >{item.state}</Option>
       )
     })
+    optionsStates.unshift(<Option value={'nulo'}>Seleccione su estado</Option>)
     if (Platform.OS === 'android') {
       optionsStates = this.props.states_mx.map((item,i)=>{
         return(
           <Picker.Item key={i} label={item.state} value={i}/>
         )
       })
+      optionsStates.unshift(<Picker.Item value={'nulo'} label={'Seleccione su estado'} />)
     }
-    
+    var periodItems = (
+      arrRangeDate.map((item, i)=>{
+          console.log('arrRange', item)
+          return <Option
+            key={i}
+            value={i}
+            optionStyle={styles.select__option}
+            >{item}</Option>
+        })
+    ) 
+    periodItems.unshift(<Option value={'nulo'}>Seleccione periodo</Option>)
     var periodSummer = (
       <Select
         selectStyle={styles.select}
@@ -276,17 +288,18 @@ class AddContracts extends Component {
         caretSize={0}
         onSelect={value => this.handlePeriodSummer(value)}
         >
-        {/* <Option>Periodo</Option> */}
-        {arrRangeDate.map((item, i)=>{
-          console.log('arrRange', item)
-          return <Option
-            key={i}
-            value={i}
-            optionStyle={styles.select__option}
-            >{item}</Option>
-        })}
+        {periodItems}
       </Select>
     )
+    var munItems = (
+      this.props.municipality_mx.map((item,i)=>{
+          return (<Option
+            key={i}
+            value={item}
+            optionStyle={styles.select__option}
+            >{item.name_mun}</Option>)
+        }))
+    munItems.unshift(<Option value={'nulo'}>Seleccione Municipio</Option>)
     var selectMun = (
     <Select
       selectStyle={styles.select}
@@ -296,16 +309,23 @@ class AddContracts extends Component {
       defaultValue={'Estados'}
       onSelect={(value, key) => this.handleMunicipality(value, key)}
       >
-        {this.props.municipality_mx.map((item,i)=>{
-          console.log('muni', item)
-          return (<Option
-            key={i}
-            value={item}
-            optionStyle={styles.select__option}
-            >{item.name_mun}</Option>)
-        })}
+      {munItems}
     </Select>
     )
+    var rateItems = []
+    if (this.state.rates.length != 0) {
+     rateItems = this.state.rates.map((rate,i) => {
+        return (
+          <Option
+          key={i}
+          optionStyle={styles.select__option}
+          >
+            {rate}
+          </Option>
+        )
+      })
+    }
+    rateItems.unshift(<Option value={'Nulo'}>Seleccione Tarifa</Option>)
     var selectRate = (
       <Select
         selectStyle={styles.select}
@@ -314,7 +334,7 @@ class AddContracts extends Component {
         caretSize={0}
         getRate
         >
-          {
+          {/*
             (this.state.rates.length != 0)&&
               this.state.rates.map((rate,i)=>{
                 console.log('rate', rate)
@@ -323,7 +343,8 @@ class AddContracts extends Component {
                 optionStyle={styles.select__option}
                 >{rate}</Option>)
               })
-          }
+          */}
+         {rateItems}
       </Select>
     )
     if (Platform.OS === 'android') {
@@ -408,6 +429,7 @@ class AddContracts extends Component {
                   defaultValue='27'
                   onSelect={(value, key) => this.handleState(value, key)}
                   >
+                  {/* <Option value={'nulo'}>Seleccione su estado</Option> */}
                   {optionsStates}
                 </Select> :
                 <View style={styles.selectPicker}>
