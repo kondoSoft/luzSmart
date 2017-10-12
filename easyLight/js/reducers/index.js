@@ -7,6 +7,8 @@ import list_contracts from "./list_contracts";
 import list_states_mx from "./list_states_mx";
 import list_mun_mx from "./list_mun_mx";
 import list_rate from "./list_rates";
+import list_records from "./list_records";
+
 
 export default combineReducers({
   form: formReducer,
@@ -17,5 +19,6 @@ export default combineReducers({
   list_states_mx,
   list_mun_mx,
   list_rate,
+  list_records,
 
 });
