@@ -23,7 +23,7 @@ import FabButton from '../fabButton';
 import { patchReceipt, getRatePeriod, postRecord, getRecord } from '../../actions/contracts'
 import { 
   getIVA, 
-  whileCosts, 
+  costProject, 
   getWeekday, 
   getDayInDates, 
   getHoursTotals, 
@@ -35,7 +35,6 @@ import {
 
 let Screen = Dimensions.get('window')
 
-var selectContract
 var arrayContract = []
 class MeasurementSingle extends Component {
   constructor(props){
@@ -91,7 +90,6 @@ class MeasurementSingle extends Component {
     if (arrayContract.length === 1) {
       this.setReceiptByOneContract(arrayContract[0])
     }
-    selectContract = this.selectContracts(arrayContract)
     if(this.contract_id != undefined){
       if (this.props.screenProps.contracts === 1) {
         let filItemID = nextProps.screenProps.contracts.filter((item,i)=>{
@@ -140,6 +138,12 @@ class MeasurementSingle extends Component {
     
     
   }
+  setReceiptByOneContract(contract){
+    this.setState({
+      type_payment: arrayContract[0].type_payment,
+      itemReceipt: contract.receipt[0],
+    })
+  }
   componentWillUnmount () {
     this.keyboardDidHideListener.remove();
   }
@@ -154,12 +158,6 @@ class MeasurementSingle extends Component {
     },1000);
     this.setState({
       current_data: '',
-    })
-  }
-  setReceiptByOneContract(contract){
-    this.setState({
-      type_payment: arrayContract[0].type_payment,
-      itemReceipt: contract.receipt[0],
     })
   }
   // *******************  Funciones para RECORDS ********************
@@ -235,6 +233,7 @@ class MeasurementSingle extends Component {
     this.rate_contract = contract.rate
     this.props.getRatePeriod(this.rate_contract, this.props.token)
   }
+
   sendCurrentData(id){
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading_updated) {
         this.props.patchReceipt(this.state.current_data, this.props.token, id,this.props.navigation)
@@ -328,46 +327,9 @@ class MeasurementSingle extends Component {
       //Realiza el Calculo y lo muestra
     if (this.props.rate_period.length > 0) {
       if (this.rate_contract === this.props.rate_period[0].name_rate) {
-        this.subTotal = whileCosts(kilowatt, this.state.itemReceipt.current_reading_updated - this.state.itemReceipt.previous_reading)
+        this.subTotal = costProject(kilowatt, this.state.itemReceipt.current_reading_updated - this.state.itemReceipt.previous_reading)
         this.total = getIVA(this.subTotal);
       }
-    }
-  }
-  selectContracts(contracts){
-    if(contracts.length === 1){
-     return <Text>#{contracts[0].number_contract}</Text>
-    }else if(contracts.length > 1){
-      if (Platform.OS === 'ios') {
-     return (<Select
-          selectStyle={styles.col__row__top__select}
-          padding={5}
-          listHeight={100}
-          caretSize={0}
-          onSelect={(id) => this.setDataContract(id)}
-          >
-          {contracts.map((item,i)=>{
-              return <Option
-                key={i}
-                value={item.id}
-                optionStyle={styles.col__row__select__option}
-                > {'#' + item.number_contract }</Option>
-              })
-          }
-        </Select>)
-    }else{
-      return (<View style={styles.selectPicker}>
-          <Picker
-            style={{flex:1}}
-            selectedValue={this.contract_id}
-            onValueChange={(itemValue, id) => this.setDataContract(itemValue)}>
-            {
-              contracts.map((item,i)=>{
-                return <Picker.Item key={i} label={`#${item.number_contract}`} value={item.id} />
-              })
-            }
-          </Picker>
-        </View>)
-        }
     }
   }
   render(){

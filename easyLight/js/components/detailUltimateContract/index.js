@@ -26,7 +26,7 @@ import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
 import { getRatePeriod, postReceipt } from '../../actions/contracts';
 import { getContract } from '../../actions/list_states_mx';
-import { getIVA, whileCosts } from '../../helpers';
+import { getIVA, costProject } from '../../helpers';
 import ExpandedView from '../expandedView';
 
 var numContract = [];
@@ -233,7 +233,7 @@ class DetailUltimateContract extends Component {
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
-                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={whileCosts} typePayment={this.state.count_days} />}
+                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={costProject} typePayment={this.state.count_days} />}
                     dataAccordionContract={this.state.contract}
                     dataAccordion={item}
                     icon={<Icon style={{paddingTop: (navigation.state.routeName === 'DetailContract')? 5 : 15,color: 'steelblue',fontSize:40,textAlign:'center'}} name="information-circle" />}

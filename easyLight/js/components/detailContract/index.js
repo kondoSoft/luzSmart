@@ -26,9 +26,9 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import styles from './styles';
 import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
-import { getRatePeriod, postReceipt } from '../../actions/contracts';
+import { getRatePeriod, postReceipt, getRecord, resetRecord } from '../../actions/contracts';
 import { getContract } from '../../actions/list_states_mx';
-import { getIVA, whileCosts } from '../../helpers';
+import { getIVA, costProject } from '../../helpers';
 
 var numContract = [];
 var rateArr = [];
@@ -41,8 +41,7 @@ var currentDate;
 var firstDate;
 var type_payment;
 var consumoPromedio = 0;
-var countKwh = 0;
-var total;
+var that
 
 class DetailContract extends Component {
   constructor(props) {
@@ -59,27 +58,30 @@ class DetailContract extends Component {
       count_days: props.contracts[0].type_payment,
       bill: props.navigation.state.params.receipt,
       onlyOneBill: props.navigation.state.params.receipt.length,
+      contract: '',
 
     };
-    this.getContract = this.getContract.bind(this);
     this.getStatus = this.getStatus.bind(this);
+    this.returnScreen = this.returnScreen.bind(this)
+    that = this
   }
 
   static navigationOptions = ({ navigation, screenProps }) => (
   {
-
     headerRight: (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract, receipt: navigation.state.params.receipt[0]})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
-
+    headerLeft: <Button transparent onPress={() => that.__proto__.returnScreen()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>
   });
-
-  static propType = {
-    getRatePeriod: React.PropTypes.func,
-    postReceipt: React.PropTypes.func,
-  };
+  returnScreen() {
+    that.props.resetRecord()
+    that.props.navigation.goBack()
+  }
   componentWillMount() {
-    // if(this.state.bill !== []){
-    //   this.getStatus();
-    // }
+    this.setState({
+      contract: this.props.navigation.state.params.contract,
+    },() => {
+      this.props.getRatePeriod(this.state.contract.rate, this.props.screenProps.token)
+      this.props.getRecord(this.state.contract.id)
+    })
     this.getContractsId();
   }
   componentDidMount() {
@@ -95,28 +97,12 @@ class DetailContract extends Component {
     if(this.state.bill.length > 0) {
       this.getStatus();
       //Se obtiene las tarifas
-      this.props.getRatePeriod(numContract[0].rate, this.props.token);
+      this.props.getRatePeriod(numContract[0].rate, this.props.screenProps.token);
       this.state.bill.map((item, i) => {
         arrReceipts.push(item);
       });
     }
   };
-  componentWillReceiveProps(nextProps){
-    this.getContract(nextProps)
-    this.forceUpdate()
-  }
-
-  getContract(nextProps){
-    nextProps.contracts.map((item, i) => {
-    if(nextProps.navigation.state.params.contract.name_contract === item.name_contract){
-        this.setState({
-
-          contract: item,
-
-        }, ()=> this.forceUpdate())
-      }
-    })
-  }
 
   componentWillUnmount() {
     numContract = []
@@ -124,7 +110,6 @@ class DetailContract extends Component {
     consumoTotal = 0;
     consumoPromedio = 0;
     // kilowatt = []
-    countKwh = 0;
   }
 
   getStatus() {
@@ -181,17 +166,10 @@ class DetailContract extends Component {
     const colors = ['lightgrey','#fff'];
     let fab = <FabButton
           navigation={navigation}
-          onTap={() => {navigation.navigate('Receipt', params)}}
+          onTap={() => {navigation.navigate('Receipt',{ contract: this.state.contract})}}
         >
           <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
         </FabButton>
-    var params;
-    if(bill.length > 0) {
-      params = { contract: numContract[0], bill: bill }
-    }
-    else{
-      params = { contract: numContract[0] }
-    }
     // Obtener datos por Periodos
     return(
       <Container>
@@ -210,8 +188,8 @@ class DetailContract extends Component {
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
-                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} consumoPromedio={whileCosts} countsReceipts={this.state.onlyOneBill}/>}
-                    // component={<ItemComponent data={item} status={status} ratePeriodCost={rate_period} consumoPromedio={whileCosts}/>}
+                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} record={this.props.records.reverse()[i]} consumoPromedio={costProject} countsReceipts={this.state.onlyOneBill}/>}
+                    // component={<ItemComponent data={item} status={status} ratePeriodCost={rate_period} consumoPromedio={costProject}/>}
                     dataAccordionContract={this.state.contract}
                     // dataAccordionContract={this.props.navigation.state.params.contract}
                     dataAccordion={item}
@@ -231,12 +209,46 @@ class DetailContract extends Component {
 
 class ItemComponent extends Component{
 
+  constructor(props){
+    super(props);
+    this.state = {
+      countKwh: '',
+      total: '0',
+      amount_payable: 0,
+    }
+    this.getCost = this.getCost.bind(this)
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.record){
+      const total = this.getCost(nextProps.ratePeriod, nextProps.record.projection)
+      this.setState({
+        countKwh: nextProps.record.projection,
+        total: total,
+      })
+    }
+    if(nextProps.data){
+      this.setState({
+        amount_payable: nextProps.data.amount_payable, 
+      })
+    }
+  }
+
+  getCost(ratePeriod, projection){
+    // subTotal
+    const subTotal = this.props.consumoPromedio(ratePeriod, projection)
+    // Total
+    const total = getIVA(subTotal)
+    return total
+  }
+
   render() {
+    console.log('TOTAL>>', this.state.total)
+    // Declaracion de recibo
     const receipt = this.props.data;
-    countKwh = receipt.current_reading - receipt.previous_reading
-    const subTotal = this.props.consumoPromedio(this.props.ratePeriod, countKwh)
-    total = getIVA(subTotal)
-    totalAccount = this.props.data.amount_payable
+    // Declaracion de KwH proyectado
+    const { countKwh, amount_payable } = this.state
+
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const splitRange = receipt.payday_limit.split('-',)
     const date = new Date(receipt.payday_limit.replace(/-/g, '\/'))
@@ -253,7 +265,7 @@ class ItemComponent extends Component{
 
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text>{(receipt.status) ? receipt.amaunt_payable : (total !== undefined) && `$`+total.toLocaleString() }</Text>
+          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? `$`+ amount_payable : (this.state.total)? `$ ${this.state.total.toLocaleString()}` : '$0'}</Text>
           {/* <Text style={styles.listItem__body__view__text,{}}>{(this.props.countsReceipts <= 2) ? <Text style={styles.listItem__body__text}>{`$`+totalAccount.toLocaleString()}</Text> : (total != undefined) && `$`+total.toLocaleString() }</Text> */}
           <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
         </Right>
@@ -266,12 +278,14 @@ function bindAction(dispatch){
     getRatePeriod: (rate, token) => dispatch(getRatePeriod(rate, token)),
     postReceipt: (list, token) => dispatch(postReceipt(list, token)),
     getContract: token => dispatch(getContract(token)),
+    getRecord: contract_id => dispatch(getRecord(contract_id)),
+    resetRecord: () => dispatch(resetRecord())
   }
 }
 
 const mapStateToProps = state => ({
   contracts: state.list_contracts.contracts,
-  token: state.user.token,
   rate_period: state.list_rate.rate_period,
+  records: state.list_records.results,
 })
 export default connect(mapStateToProps, bindAction)(DetailContract);

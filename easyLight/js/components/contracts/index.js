@@ -12,7 +12,7 @@ import { getContract, resetRate, resetMunicipality } from "../../actions/list_st
 import { resetPicketContract } from "../../actions/contracts";
 import { getUser } from '../../actions/user';
 import { 
-  whileCosts,
+  costProject,
   // getDayInDates,
   // getKwHrsTransCurrid
 } from '../../helpers';

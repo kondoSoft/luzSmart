@@ -162,7 +162,6 @@ export function getContract(token, navigate):Action{
     })
     .then(res => {return res.json()})
     .then(res=> {
-      console.log('getContract', res)
       dispatch(printContract(res))
       if(!token.non_field_errors && navigate.state.routeName != 'Medicion' && navigate.state.routeName != 'Mediciones' && navigate.state.routeName != 'MedicionPeriodo'){
         navigate.navigate('Contratos')

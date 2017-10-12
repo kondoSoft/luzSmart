@@ -148,14 +148,6 @@ class Receipt extends Component {
     const weekday = getWeekday(paydayLimit)
     // Consumo diario
     const { current_reading } = this.state
-    // Dias transcurridos
-    // const timeDiff = Math.abs(date.getTime() - paydayLimit.getTime())
-    // const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-    // const cumulativeConsumption = this.state.current_data - current_reading
-
-    // const fractionDay = Math.abs(date.getTime() - this.state.record.getTime())
-    // console.log(Math.ceil(fractionDay/ (1000 * 3600 * 24)));
 
     this.setState({
       record:{

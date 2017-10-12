@@ -29,6 +29,7 @@ export type Action =
     | { type: 'PICKER_CONTRACT'}
     | { type: 'EMAIL_VERIFICATION'}
     | { type: 'PRINT_RECORD'}
+    | { type: 'RESET_RECORD'}
     
 export type Dispatch = (action:Action | Array<Action>) => any;
 export type GetState = () => Object;
