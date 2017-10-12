@@ -29,13 +29,13 @@ import {
   getHoursTotals, 
   getFinalDate,
   getProjected,
+  getRangeMonth,
 } from '../../helpers';
 
 
 let Screen = Dimensions.get('window')
 
 var selectContract
-var rangeDate
 var arrayContract = []
 class MeasurementSingle extends Component {
   constructor(props){
@@ -72,6 +72,7 @@ class MeasurementSingle extends Component {
   });
 
   componentWillMount () {
+
     this.setState({
       itemReceipt: this.props.navigation.state.params.receipt,
     })
@@ -100,6 +101,7 @@ class MeasurementSingle extends Component {
         let nextCurrentReading = filItemID[0].receipt[0].current_reading_updated;
         if (nextCurrentReading > prevCurrentReading) {
           this.setState({
+            type_payment: arrayContract[0].type_payment,
             itemReceipt:{
               id: this.state.itemReceipt.id,
               previous_reading: this.state.itemReceipt.previous_reading,
@@ -108,7 +110,8 @@ class MeasurementSingle extends Component {
               payday_limit: this.state.itemReceipt.payday_limit,
               period: this.state.itemReceipt.period,
               amount_payable: this.state.itemReceipt.amount_payable,
-            }
+            },
+            type_payment: arrayContract[0].type_payment,
           })
         }
       }else {
@@ -119,6 +122,7 @@ class MeasurementSingle extends Component {
         let nextCurrentReading = filItemID[0].receipt[0].current_reading_updated;
         if (nextCurrentReading > prevCurrentReading) {
           this.setState({
+            type_payment: arrayContract[0].type_payment,
             itemReceipt:{
               id: this.state.itemReceipt.id,
               previous_reading: this.state.itemReceipt.previous_reading,
@@ -127,12 +131,13 @@ class MeasurementSingle extends Component {
               payday_limit: this.state.itemReceipt.payday_limit,
               period: this.state.itemReceipt.period,
               amount_payable: this.state.itemReceipt.amount_payable,
-            }
+            },
+            
           })
         }
       }
     }
-
+    
     
   }
   componentWillUnmount () {
@@ -153,7 +158,8 @@ class MeasurementSingle extends Component {
   }
   setReceiptByOneContract(contract){
     this.setState({
-      itemReceipt: contract.receipt[0]
+      type_payment: arrayContract[0].type_payment,
+      itemReceipt: contract.receipt[0],
     })
   }
   // *******************  Funciones para RECORDS ********************
@@ -193,7 +199,6 @@ class MeasurementSingle extends Component {
     // promedio Global
     const average = (cumulativeConsumption / diffDays).toFixed(4)
     // Se obtiene el valor proyectado
-
     const projection = getProjected(cumulativeConsumption, average, restDay)
     // Se obtiene de nuevo Record
     this.props.getRecord(this.contract_id)
@@ -210,17 +215,13 @@ class MeasurementSingle extends Component {
         days_totals: diffDays.toFixed(4),
         daily_consumption: dailyConsumption.toFixed(4),
         cumulative_consumption: cumulativeConsumption,
-        // update por dia
-        actual_consumption:cumulativeConsumption,
+        projected_payment: 0,
         average_global: average,
         rest_day: restDay,
         projection: projection,
-      }
-    } 
-    // () => {
-    //   this.props.getRecord(this.contract_id)
-    // }
-    )
+      },
+
+    })
   }
 
   getPropsByNextRecords(props){
@@ -295,12 +296,7 @@ class MeasurementSingle extends Component {
       this.props.getRatePeriod(this.rate_contract, this.props.token)
     })
   }
-  // Funcion rango de fecha
-  setRangeDate(firstMonth, finalMonth){
-    const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-    return rangeDate = arrMonth[firstMonth] + '-' + arrMonth[finalMonth]
 
-  }
   getTotalPayment(){
     var verano = [];
     var noverano = [];
@@ -379,19 +375,10 @@ class MeasurementSingle extends Component {
     const { navigation } = this.props;
     // Contrato que viene desde la pantalla recibos
     const { contract } = this.props.navigation.state.params;
-    if(this.state.type_payment == 'Bimestral'){
-      count_days = 60
-    }else{
-      count_days = 30
-    }
-    const payday_limit = this.state.itemReceipt.payday_limit.replace(/-/g, '\/')
-    const finalMonth = new Date(payday_limit)
-    const firstMonth = new Date(finalMonth).setDate(new Date(finalMonth).getDate() - count_days)
-    this.setRangeDate(new Date(firstMonth).getMonth(), finalMonth.getMonth())
+    const rangeDate = getRangeMonth(this.state.type_payment, this.state.itemReceipt.payday_limit)
     // Rango automatico del periodo
     const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
-    // Select Contract
-    console.log('this.props.record', this.props.record)
+    // Obtener Record
     this.getPropsByNextRecords(this.props.record)
     return(
       <Container style={{backgroundColor: '#fff'}}>
