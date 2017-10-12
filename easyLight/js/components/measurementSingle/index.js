@@ -26,7 +26,6 @@ import {
   whileCosts, 
   getWeekday, 
   getDayInDates, 
-  getKwHrsTransCurrid, 
   getHoursTotals, 
   getFinalDate,
   getProjected,
@@ -188,9 +187,9 @@ class MeasurementSingle extends Component {
     // Consumo diario
     const { current_reading_updated, current_reading } = this.state.itemReceipt
     // Obtener valor del dia
-    const dailyConsumption = getKwHrsTransCurrid(current_reading, current_reading_updated, diffDays)
-    // Consumo Acumulado
-    const cumulativeConsumption = current_reading_updated - current_reading
+    const dailyConsumption = current_reading_updated - current_reading
+    // Consumo
+    const cumulativeConsumption = this.state.current_data - current_reading
     // promedio Global
     const average = (cumulativeConsumption / diffDays).toFixed(4)
     // Se obtiene el valor proyectado

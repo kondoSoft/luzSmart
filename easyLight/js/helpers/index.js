@@ -64,15 +64,10 @@ const getDayInDates = (fechaMinima, fechaMaxima) => {
   let daysInHours = daysInMinutes / 24
   return daysInHours
 }
-const getKwHrsTransCurrid = (kwInicial, kwFinal, translatedDays) => {
-  let diffKw = kwFinal - kwInicial
-  let perDays = diffKw / translatedDays
-  return perDays
-}
 
 const getProjected = ( consumo, average, restDay) => {
-  let mult = consumo * average
-  let projected = mult / restDay
+  let mult = restDay * average
+  let projected = mult + consumo
   return projected
 }
 
@@ -89,7 +84,6 @@ const getTotalDays = (timeInitial, timeFinal) => {
   return getHoursTotals(timeInitial, timeFinal) / 24
 }
 const getFinalDate = (typePayment, paydayLimit) => {
-  // let fechaInicial =
   var cantidadMeses;
   if(typePayment === 'Bimestral'){
     cantidadMeses = 2
@@ -100,7 +94,6 @@ const getFinalDate = (typePayment, paydayLimit) => {
   let newMonth = paydayLimit.getMonth()+cantidadMeses
   let newDate = new Date(paydayLimit.getFullYear(), newMonth, paydayLimit.getDate())
   let getDays = getTotalDays(paydayLimit, newDate )
-  // new Date(limitReceipt).setDate(new Date(limitReceipt).getDate() - count_days
   return Math.ceil(getDays)
 }
 
@@ -112,7 +105,6 @@ export {
   whileCosts,
   getWeekday,
   getDayInDates,
-  getKwHrsTransCurrid,
   getMinimunYears,
   getHoursTotals,
   getFinalDate,
