@@ -16,7 +16,6 @@ export default {
     justifyContent: 'center'
   },
   containerExportButton: {
-    padding: 25,
     alignSelf: 'center'
   },
   chartText: {
@@ -33,5 +32,11 @@ export default {
     data: {
       fill: '#0F0'
     }
+  },
+  selectContract: {
+    flex: 0.5,
+    justifyContent: 'center',
+    margin: 0,
+    padding: 0
   }
 }
