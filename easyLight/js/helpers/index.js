@@ -84,17 +84,34 @@ const getTotalDays = (timeInitial, timeFinal) => {
   return getHoursTotals(timeInitial, timeFinal) / 24
 }
 const getFinalDate = (typePayment, paydayLimit) => {
-  var cantidadMeses;
+  let MonthToPlus = getMonthByTypePayment (typePayment)
+  let newMonth = paydayLimit.getMonth()+MonthToPlus
+  let newDate = new Date(paydayLimit.getFullYear(), newMonth, paydayLimit.getDate())
+  let getDays = getTotalDays(paydayLimit, newDate )
+  
+  return Math.ceil(getDays)
+}
+
+const getMonthByTypePayment = typePayment => {
+  let cantidadMeses;
   if(typePayment === 'Bimestral'){
     cantidadMeses = 2
   }
   else {
     cantidadMeses = 1
   }
-  let newMonth = paydayLimit.getMonth()+cantidadMeses
-  let newDate = new Date(paydayLimit.getFullYear(), newMonth, paydayLimit.getDate())
-  let getDays = getTotalDays(paydayLimit, newDate )
-  return Math.ceil(getDays)
+  return cantidadMeses
+}
+
+const getRangeMonth = (typePayment, paydayLimit) => {
+  let MonthToPlus = getMonthByTypePayment (typePayment)
+  let arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+  let initialDate = new Date(paydayLimit)
+  let diffDate = initialDate.getMonth()+MonthToPlus
+  let finalDate = new Date(initialDate.getFullYear(), diffDate, initialDate.getDate())
+  let rangeDate =  arrMonth[initialDate.getMonth()] + '-' + arrMonth[finalDate.getMonth()] 
+
+  return rangeDate
 }
 
 const getMinimunYears = year => {
@@ -110,4 +127,6 @@ export {
   getFinalDate,
   getTotalDays,
   getProjected,
+  getMonthByTypePayment,
+  getRangeMonth,
 }

@@ -169,7 +169,7 @@ class Receipt extends Component {
         days_totals: 0,
         daily_consumption: 0,
         cumulative_consumption: 0,
-        actual_consumption:0,
+        projected_payment: 0,
         average_global: 0,
         rest_day: 0,
         projection: 0

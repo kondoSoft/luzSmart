@@ -99,6 +99,7 @@ export function postProjectReceipt(list, token):Action{
   }
 }
 export function postRecord(list, token):Action{
+  console.log('list', list)
   return dispatch => {
     return fetch(endPoint+'/records/',{
       method: 'POST',
@@ -117,14 +118,15 @@ export function postRecord(list, token):Action{
         days_totals: list.record.days_totals,
         daily_consumption: list.record.daily_consumption,
         cumulative_consumption: list.record.cumulative_consumption,
-        actual_consumption: list.record.actual_consumption,
         average_global: list.record.average_global,
         rest_day: list.record.rest_day,
         projection: list.record.projection,
+        projected_payment: list.record.projected_payment,
         contracts: list.record.contract_id,
       })
     })
     .then(res => {return res.json()})
+    .then(res => console.log('res', res))
     .catch(err => console.log(err))
   }
 }
