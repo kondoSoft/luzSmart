@@ -184,7 +184,6 @@ class Receipt extends Component {
         status: true
       },() => {
         this.props.postReceipt(this.state, this.props.token)
-        this.props.postProjectReceipt(this.state, this.props.screenProps.token)
         this.props.postRecord(this.state, this.props.screenProps.token)
       }
     )

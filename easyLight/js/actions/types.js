@@ -28,6 +28,8 @@ export type Action =
     | { type: 'PRINT_REGISTER_USER' }
     | { type: 'PICKER_CONTRACT'}
     | { type: 'EMAIL_VERIFICATION'}
+    | { type: 'PRINT_RECORD'}
+    
 export type Dispatch = (action:Action | Array<Action>) => any;
 export type GetState = () => Object;
 export type PromiseAction = Promise<Action>;

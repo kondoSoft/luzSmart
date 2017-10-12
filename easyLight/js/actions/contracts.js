@@ -6,7 +6,7 @@ const endPoint = 'http://138.68.49.119:8080';
 // const endPoint = 'http://127.0.0.1:8000';
 
 
-
+export const PRINT_RECORD = 'PRINT_RECORD';
 export const PRINT_RATE_PERIOD = 'PRINT_RATE_PERIOD';
 export const PRINT_RECEIPTS = 'PRINT_RECEIPTS';
 export const PICKER_CONTRACT = 'PICKER_CONTRACT';
@@ -36,6 +36,14 @@ export function resetPicketContract():Action{
     type: RESET_PICKER,
   }
 }
+
+export function printRecord(data):Action{
+  return {
+    type: PRINT_RECORD,
+    payload: data,
+  }
+}
+
 export function postReceipt(list, token):Action{
   return dispatch => {
     return fetch(endPoint+'/receipt/',{
@@ -57,10 +65,16 @@ export function postReceipt(list, token):Action{
       })
     })
     .then(res => {return res.json()})
+    .then(res => dispatch(postProjectReceipt(res, token)))
     .catch(err => console.log(err))
   }
 }
 export function postProjectReceipt(list, token):Action{
+  let date = new Date(list.payday_limit)
+  let year = date.getFullYear();
+  let month = date.getMonth()+1;
+  let day = date.getDate();
+  let dateFormat = year + '-' + month + '-' + day
   return dispatch => {
     return fetch(endPoint+'/receipt/',{
       method: 'POST',
@@ -70,12 +84,12 @@ export function postProjectReceipt(list, token):Action{
        'Authorization': 'Token ' + token
      },
      body: JSON.stringify({
-        payday_limit: list.payday_limit,
+        payday_limit: dateFormat,
         amount_payable: 0,
         current_reading: list.current_reading,
         current_reading_updated: list.current_reading,
         previous_reading: list.current_reading,
-        contract: list.contract_id,
+        contract: list.contract,
         period: list.period,
         // status: list.status,
       })
@@ -107,11 +121,25 @@ export function postRecord(list, token):Action{
         average_global: list.record.average_global,
         rest_day: list.record.rest_day,
         projection: list.record.projection,
-        contracts: list.contract_id,
+        contracts: list.record.contract_id,
       })
     })
     .then(res => {return res.json()})
-    .then(res => {console.log('res2',res)})
+    .catch(err => console.log(err))
+  }
+}
+export function getRecord(id):Action{
+  return dispatch => {
+    return fetch(endPoint+'/records/?contract_id=' + id ,{
+      method: 'GET',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       // 'Authorization': 'Token '+token
+      },
+    })
+    .then(res => {return res.json()})
+    .then(res=> dispatch(printRecord(res)))
     .catch(err => console.log(err))
   }
 }

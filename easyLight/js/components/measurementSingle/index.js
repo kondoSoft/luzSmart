@@ -20,8 +20,17 @@ import { Select, Option } from 'react-native-select-list';
 import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
-import { patchReceipt, getRatePeriod, postRecord } from '../../actions/contracts'
-import { getIVA, whileCosts, getWeekday } from '../../helpers';
+import { patchReceipt, getRatePeriod, postRecord, getRecord } from '../../actions/contracts'
+import { 
+  getIVA, 
+  whileCosts, 
+  getWeekday, 
+  getDayInDates, 
+  getKwHrsTransCurrid, 
+  getHoursTotals, 
+  getFinalDate,
+  getProjected,
+} from '../../helpers';
 
 
 let Screen = Dimensions.get('window')
@@ -53,6 +62,7 @@ class MeasurementSingle extends Component {
     this.subTotal;
     this.total;
     this.rate_contract;
+    this.propsNextRecords;
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
     this.changeCheckedData = this.changeCheckedData.bind(this)
   }
@@ -69,8 +79,10 @@ class MeasurementSingle extends Component {
     this.rate_contract = this.props.navigation.state.params.contract.rate
     this.contract_id = this.props.navigation.state.params.contract.id
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    this.props.getRecord(this.contract_id)
   }
   componentWillReceiveProps(nextProps){
+
     nextProps.screenProps.contracts.map((item, i) => {
       if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){
         arrayContract.push(item)
@@ -86,7 +98,7 @@ class MeasurementSingle extends Component {
               return item.id === this.contract_id;
             })
         let prevCurrentReading = this.state.itemReceipt.current_reading_updated;
-        let nextCurrentReading = filItemID[0].receipt[0].current_reading;
+        let nextCurrentReading = filItemID[0].receipt[0].current_reading_updated;
         if (nextCurrentReading > prevCurrentReading) {
           this.setState({
             itemReceipt:{
@@ -105,7 +117,7 @@ class MeasurementSingle extends Component {
               return item.id === this.contract_id;
             })
         let prevCurrentReading = this.state.itemReceipt.current_reading_updated;
-        let nextCurrentReading = filItemID[0].receipt[0].current_reading;
+        let nextCurrentReading = filItemID[0].receipt[0].current_reading_updated;
         if (nextCurrentReading > prevCurrentReading) {
           this.setState({
             itemReceipt:{
@@ -121,6 +133,8 @@ class MeasurementSingle extends Component {
         }
       }
     }
+
+    
   }
   componentWillUnmount () {
     this.keyboardDidHideListener.remove();
@@ -143,46 +157,79 @@ class MeasurementSingle extends Component {
       itemReceipt: contract.receipt[0]
     })
   }
-
+  // *******************  Funciones para RECORDS ********************
   setRecord(){
+    // Obtiene el ultimo dato actualizado
+    const lastRecord = this.propsNextRecords[this.propsNextRecords.length-1]
     //Fecha de actualizacion de record
-    const date = new Date()
+    const date = new Date()    
+    const year = date.getFullYear();
+    const month = date.getMonth()+1; 
+    const day = date.getDate();
+    const dateFormat = year + '-' + month + '-' + day
     //Dia de la semana
     const weekday = getWeekday(date)
     //Fecha inicial del recibo
     const paydayLimit = new Date(this.state.itemReceipt.payday_limit)
+    // Obtener los dias restantes dependiendo el tipo pago
+    const typePayment = arrayContract[0].type_payment
+    // const restDay = getRestDay(typePayment, paydayLimit)
+    // Horas Totales
+    const hoursTotals = getHoursTotals(paydayLimit.getTime(), date.getTime())
+    const totalDays = getFinalDate(typePayment, paydayLimit)
+    // Horas transcurridas
+    const hoursElapsed = hoursTotals - lastRecord.hours_totals
+    // Dias transcurridos
+    const diffDays = getDayInDates(paydayLimit, date)
+    // Dias Restantes
+    const restDay = totalDays - Math.ceil(diffDays)
+    // Dias transcurridos desde el ultimo record
+    const diffDaysLastRecord = diffDays - lastRecord.days_totals
     // Consumo diario
     const { current_reading_updated, current_reading } = this.state.itemReceipt
     // Obtener valor del dia
-    const dailyConsumption = this.state.current_data - current_reading_updated
-    // Dias transcurridos
-    const timeDiff = Math.abs(date.getTime() - paydayLimit.getTime())
-    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const dailyConsumption = getKwHrsTransCurrid(current_reading, current_reading_updated, diffDays)
+    // Consumo Acumulado
+    const cumulativeConsumption = current_reading_updated - current_reading
+    // promedio Global
+    const average = (cumulativeConsumption / diffDays).toFixed(4)
+    // Se obtiene el valor proyectado
 
-    const cumulativeConsumption = this.state.current_data - current_reading
-
-    // const fractionDay = Math.abs(date.getTime() - this.state.record.getTime())
-    // console.log(Math.ceil(fractionDay/ (1000 * 3600 * 24)));
+    const projection = getProjected(cumulativeConsumption, average, restDay)
+    // Se obtiene de nuevo Record
+    this.props.getRecord(this.contract_id)
 
     this.setState({
       record:{
         contract_id: this.contract_id,
-        date: date,
+        date: dateFormat,
         day: weekday,
         daily_reading: this.state.current_data,
-        hours_elapsed: 0,
-        hours_totals: 0,
-        days_elapsed: diffDays,
-        days_totals: diffDays,
-        daily_consumption: dailyConsumption,
-        cumulative_consumption: this.state.current_data - current_reading,
+        hours_elapsed: hoursElapsed.toFixed(4),
+        hours_totals: hoursTotals.toFixed(4),
+        days_elapsed: diffDaysLastRecord.toFixed(4),
+        days_totals: diffDays.toFixed(4),
+        daily_consumption: dailyConsumption.toFixed(4),
+        cumulative_consumption: cumulativeConsumption,
+        // update por dia
         actual_consumption:cumulativeConsumption,
-        average_global: cumulativeConsumption / diffDays,
-        rest_day: 0,
-        projection: 0
+        average_global: average,
+        rest_day: restDay,
+        projection: projection,
       }
-    })
+    } 
+    // () => {
+    //   this.props.getRecord(this.contract_id)
+    // }
+    )
   }
+
+  getPropsByNextRecords(props){
+    this.propsNextRecords = props
+
+  }
+
+  // *********************************************************
 
   setRatePeriod(contract){
     this.rate_contract = contract.rate
@@ -283,6 +330,7 @@ class MeasurementSingle extends Component {
           })
         }
       }
+      //Realiza el Calculo y lo muestra
     if (this.props.rate_period.length > 0) {
       if (this.rate_contract === this.props.rate_period[0].name_rate) {
         this.subTotal = whileCosts(kilowatt, this.state.itemReceipt.current_reading_updated - this.state.itemReceipt.previous_reading)
@@ -341,10 +389,11 @@ class MeasurementSingle extends Component {
     const finalMonth = new Date(payday_limit)
     const firstMonth = new Date(finalMonth).setDate(new Date(finalMonth).getDate() - count_days)
     this.setRangeDate(new Date(firstMonth).getMonth(), finalMonth.getMonth())
-
     // Rango automatico del periodo
     const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
     // Select Contract
+    console.log('this.props.record', this.props.record)
+    this.getPropsByNextRecords(this.props.record)
     return(
       <Container style={{backgroundColor: '#fff'}}>
         <ScrollView
@@ -442,12 +491,14 @@ function bindAction(dispatch) {
   return {
     patchReceipt: (data, token, id,navigation) => dispatch(patchReceipt(data, token, id,navigation)),
     getRatePeriod: (rate, token) => dispatch(getRatePeriod(rate, token)),
-    postRecord: (data, token) => dispatch(postRecord(data, token))
+    postRecord: (data, token) => dispatch(postRecord(data, token)),
+    getRecord: (id) => dispatch(getRecord(id)),
   };
 }
 const mapStateToProps = state => ({
   token: state.user.token,
   rate_period: state.list_rate.rate_period,
   contracts: state.list_contracts.contracts,
+  record: state.list_records.results,
 });
 export default connect(mapStateToProps, bindAction)(MeasurementSingle)
