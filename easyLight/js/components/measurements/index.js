@@ -21,7 +21,7 @@ import styles from './styles'
 import AnimatedView from '../animatedView/index'
 import FabButton from '../fabButton'
 import { patchReceipt, getRatePeriod } from '../../actions/contracts'
-import { getIVA, whileCosts } from '../../helpers'
+import { getIVA, costProject } from '../../helpers'
 import { captureScreen } from 'react-native-view-shot'
 // import { ShareDialog } from 'react-native-fbsdk';
 
@@ -218,7 +218,7 @@ class Measurements extends Component {
     // console.log('this.rate_contract', this.rate_contract)
     if (this.props.rate_period.length > 0) {
       if (this.rate_contract === this.props.rate_period[0].name_rate) {
-        this.subTotal = whileCosts(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading)
+        this.subTotal = costProject(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading)
         this.total = getIVA(this.subTotal);
       }
     }

@@ -26,8 +26,7 @@ const getIVA = total => {
   }
 }
 
-const whileCosts = (kilowatt, countKwh) => {
-    // console.log(kilowatt, countKwh)
+const costProject = (kilowatt, countKwh) => {
   var consumoTotal = 0
   if (kilowatt) {
     kilowatt = kilowatt.filter((item) => { return (item.kilowatt > 0) }).reverse()
@@ -119,7 +118,7 @@ const getMinimunYears = year => {
 }
 export {
   getIVA,
-  whileCosts,
+  costProject,
   getWeekday,
   getDayInDates,
   getMinimunYears,

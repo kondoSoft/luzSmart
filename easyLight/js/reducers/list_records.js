@@ -1,5 +1,5 @@
 import type { Action } from "../actions/types";
-import { PRINT_RECORD } from "../actions/contracts";
+import { PRINT_RECORD, RESET_RECORD } from "../actions/contracts";
 export type State = {
   list: string
 };
@@ -13,6 +13,12 @@ export default function(state: State = initialState, action: Action): State {
 		return{
 			...state,
 			results: action.payload.results
+		}
+	}
+	if ( action.type === RESET_RECORD) {
+		return{
+			...state,
+			results:[]
 		}
 	}
 	return state;

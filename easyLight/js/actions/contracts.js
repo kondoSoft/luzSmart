@@ -11,6 +11,7 @@ export const PRINT_RATE_PERIOD = 'PRINT_RATE_PERIOD';
 export const PRINT_RECEIPTS = 'PRINT_RECEIPTS';
 export const PICKER_CONTRACT = 'PICKER_CONTRACT';
 export const RESET_PICKER = 'RESET_PICKER';
+export const RESET_RECORD = 'RESET_RECORD'
 
 export function printRatePeriod(data):Action {
   return {
@@ -41,6 +42,12 @@ export function printRecord(data):Action{
   return {
     type: PRINT_RECORD,
     payload: data,
+  }
+}
+
+export function resetRecord():Action{
+  return {
+    type: RESET_RECORD
   }
 }
 
