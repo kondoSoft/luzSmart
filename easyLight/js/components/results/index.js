@@ -32,7 +32,7 @@ class Results extends Component {
       <Container>
         {/* <Header title='Resultados' navigation={this.props.navigation}/> */}
         <Grid style={{ backgroundColor: '#fff' }}>
-          <Swiper>
+          <Swiper showsButtons={true}>
             <Col size={100}>
               <Text style={styles.chartText}>Consumo diario</Text>
               <View style={styles.containerCharts}>
