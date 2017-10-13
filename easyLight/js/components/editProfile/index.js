@@ -118,7 +118,7 @@ class EditProfile extends Component {
       changePassword,
       user,
       password,
-      messageError,
+      messageError
     } = this.state
     if (this.fromValidation(this.state) && changePassword && this.passwordValidation(this.state)) {
       this.props.updateUser(this.state, this.props.screenProps.token)

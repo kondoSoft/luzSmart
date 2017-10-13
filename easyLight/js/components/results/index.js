@@ -77,7 +77,6 @@ class Results extends Component {
     return data
   }
   render () {
-    console.log('STATE>>', this.state.results)
     return (
       <Container>
         {/* <Header title='Resultados' navigation={this.props.navigation}/> */}

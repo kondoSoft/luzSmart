@@ -153,6 +153,7 @@ export function updateProfile(data, token):Action{
         name: data.file.fileName,
       })
     }
+    formData.append('premium', data.profile.premium)
     return fetch(endPoint+'/user/profile/'+ data.user.pk + '/', {
       method:'PUT',
       headers:{
