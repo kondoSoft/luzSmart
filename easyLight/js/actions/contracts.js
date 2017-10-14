@@ -105,8 +105,32 @@ export function postProjectReceipt(list, token):Action{
     .catch(err => console.log(err))
   }
 }
+export function patchNewReceipt(data, id, token):Action{
+  return dispatch => {
+    return fetch(endPoint+'/receipt/'+ id + '/',{
+      method: 'PATCH',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       'Authorization': 'Token '+token
+      },
+      body: JSON.stringify({
+        payday_limit: data.payday_limit,
+        amount_payable: data.amount_payable,
+        current_reading: data.current_reading,
+        current_reading_updated: data.current_reading,
+        previous_reading: data.previous_reading,
+        contract: data.contract,
+        period: data.period,
+        status: true,
+      })
+    })
+    .then(res => {return res.json()})
+    .then(res => dispatch(postProjectReceipt(res, token)))
+    .catch(err => console.log(err))
+  }
+}
 export function postRecord(list, token):Action{
-  console.log('list', list)
   return dispatch => {
     return fetch(endPoint+'/records/',{
       method: 'POST',

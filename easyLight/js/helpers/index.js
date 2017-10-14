@@ -116,6 +116,66 @@ const getRangeMonth = (typePayment, paydayLimit) => {
 const getMinimunYears = year => {
   return year - 18
 }
+
+const setRecord = data => {
+  console.log('HASTA AQUI TODO BIEN')
+  // Obtiene el ultimo dato actualizado
+  const lastRecord = data.lastRecord
+  //Fecha de actualizacion de record
+  const date = new Date()    
+  const year = date.getFullYear();
+  const month = date.getMonth()+1; 
+  const day = date.getDate();
+  const dateFormat = year + '-' + month + '-' + day
+  //Dia de la semana
+  const weekday = getWeekday(date)
+  //Fecha inicial del recibo
+  const paydayLimit = new Date(data.itemReceipt.payday_limit)
+  // Obtener los dias restantes dependiendo el tipo pago
+  const typePayment = data.type_payment
+  // const restDay = getRestDay(typePayment, paydayLimit)
+  // Horas Totales
+  const hoursTotals = getHoursTotals(paydayLimit.getTime(), date.getTime())
+  const totalDays = getFinalDate(typePayment, paydayLimit)
+  // Horas transcurridas
+  const hoursElapsed = hoursTotals - lastRecord.hours_totals
+  // Dias transcurridos
+  const diffDays = getDayInDates(paydayLimit, date)
+  // Dias Restantes
+  const restDay = totalDays - Math.ceil(diffDays)
+  // Dias transcurridos desde el ultimo record
+  const diffDaysLastRecord = diffDays - lastRecord.days_totals
+  // Consumo diario
+  const { current_reading_updated, current_reading } = data.itemReceipt
+  // Obtener valor del dia
+  const dailyConsumption = current_reading_updated - current_reading
+  // Consumo
+  const cumulativeConsumption = data.current_data - current_reading
+  // promedio Global
+  const average = (cumulativeConsumption / diffDays).toFixed(4)
+  // Se obtiene el valor proyectado
+  const projection = getProjected(cumulativeConsumption, average, restDay)
+  const projectedPayment = costProject(data.ratePeriod, projection)
+  const record = {
+    contract_id: data.contract_id,
+    date: dateFormat,
+    day: weekday,
+    daily_reading: data.current_data,
+    hours_elapsed: hoursElapsed.toFixed(4),
+    hours_totals: hoursTotals.toFixed(4),
+    days_elapsed: diffDaysLastRecord.toFixed(4),
+    days_totals: diffDays.toFixed(4),
+    daily_consumption: dailyConsumption.toFixed(4),
+    cumulative_consumption: cumulativeConsumption,
+    projected_payment: projectedPayment,
+    average_global: average,
+    rest_day: restDay,
+    projection: projection,
+  }
+  console.log('helpers', record)
+  return record
+
+}
 export {
   getIVA,
   costProject,
@@ -128,4 +188,5 @@ export {
   getProjected,
   getMonthByTypePayment,
   getRangeMonth,
+  setRecord,
 }
