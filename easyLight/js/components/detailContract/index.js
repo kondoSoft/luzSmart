@@ -162,8 +162,11 @@ class DetailContract extends Component {
   render(){
     const { navigation, rate_period, contracts } = this.props;
     const { status } = this.state;
-    const bill = this.state.bill;
+    var bill = this.state.bill;
     const colors = ['lightgrey','#fff'];
+    bill = bill.sort((a, b)=> {
+      return b.id - a.id
+    })
     let fab = <FabButton
           navigation={navigation}
           onTap={() => {navigation.navigate('Receipt',{ contract: this.state.contract})}}
@@ -255,7 +258,8 @@ class ItemComponent extends Component{
 
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment)? `$ ${parseFloat(this.state.projected_payment).toLocaleString()}` : '$0'}</Text>
+          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment) ? `$ ${parseFloat(this.state.projected_payment).toLocaleString()}` : '$0'}</Text>
+          {console.log('item', this.state.projected_payment)}
           {/* <Text style={styles.listItem__body__view__text,{}}>{(this.props.countsReceipts <= 2) ? <Text style={styles.listItem__body__text}>{`$`+totalAccount.toLocaleString()}</Text> : (total != undefined) && `$`+total.toLocaleString() }</Text> */}
           <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
         </Right>

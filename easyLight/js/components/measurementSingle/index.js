@@ -76,8 +76,9 @@ class MeasurementSingle extends Component {
     this.props.getRecord(this.contract_id)
   }
   componentWillReceiveProps(nextProps){
+    console.log('record', nextProps.record)
     nextProps.record.map((item,i) => {
-      if(i === nextProps.record.length-1){
+      if(i === 0){
         this.setState({
           projected_payment: item.projected_payment
         })
@@ -304,7 +305,7 @@ class MeasurementSingle extends Component {
             <Row size={4} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
               <View style={styles.grid__row__top__view}>
-                <Text>{`$${this.state.projected_payment.toLocaleString()}`}</Text>
+                <Text>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
                 <Text>Proyectado</Text>
               </View>
             </Row>

@@ -118,7 +118,6 @@ const getMinimunYears = year => {
 }
 
 const setRecord = data => {
-  console.log('HASTA AQUI TODO BIEN')
   // Obtiene el ultimo dato actualizado
   const lastRecord = data.lastRecord
   //Fecha de actualizacion de record
@@ -172,7 +171,6 @@ const setRecord = data => {
     rest_day: restDay,
     projection: projection,
   }
-  console.log('helpers', record)
   return record
 
 }

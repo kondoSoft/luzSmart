@@ -22,10 +22,10 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 // import { Select, Option } from 'react-native-select-list';
 import styles from './styles';
-import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt, setRecord } from '../../actions/contracts';
+import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
-import { getWeekday } from "../../helpers"
+import { getWeekday, setRecord as helperRecord } from "../../helpers"
 var contract;
 
 class Receipt extends Component {
@@ -141,32 +141,32 @@ class Receipt extends Component {
     }
   }
   // Record 
-  // setRecord(){
-  //   //Fecha inicial del recibo
-  //   const paydayLimit = this.state.payday_limit
-  //   //Dia de la semana
-  //   const weekday = getWeekday(paydayLimit)
-  //   // Consumo diario
-  //   const { current_reading } = this.state
-  //   this.setState({
-  //     record:{
-  //       contract_id: this.state.contract_id,
-  //       date: paydayLimit,
-  //       day: weekday,
-  //       daily_reading: current_reading,
-  //       hours_elapsed: 0,
-  //       hours_totals: 0,
-  //       days_elapsed: 0,
-  //       days_totals: 0,
-  //       daily_consumption: 0,
-  //       cumulative_consumption: 0,
-  //       projected_payment: 0,
-  //       average_global: 0,
-  //       rest_day: 0,
-  //       projection: 0
-  //     }
-  //   })
-  // }
+  setRecord(){
+    //Fecha inicial del recibo
+    const paydayLimit = this.state.payday_limit
+    //Dia de la semana
+    const weekday = getWeekday(paydayLimit)
+    // Consumo diario
+    const { current_reading } = this.state
+    this.setState({
+      record:{
+        contract_id: this.state.contract_id,
+        date: paydayLimit,
+        day: weekday,
+        daily_reading: current_reading,
+        hours_elapsed: 0,
+        hours_totals: 0,
+        days_elapsed: 0,
+        days_totals: 0,
+        daily_consumption: 0,
+        cumulative_consumption: 0,
+        projected_payment: 0,
+        average_global: 0,
+        rest_day: 0,
+        projection: 0
+      }
+    })
+  }
   getRate(receipt){
   var verano = [];
   var noverano = [];
@@ -207,19 +207,16 @@ class Receipt extends Component {
       current_data: this.state.current_reading,
       ratePeriod: ratePeriod,
     }
-    console.log(data)
-    const record = setRecord(data)
+
+    const record = helperRecord(data)
     this.setState({
       record
     })
-
   }
   sendData() {
     const { navigation } = this.props
     const { contract } = navigation.state.params
     const { receipt, records } = contract
-
-    console.log('id', )
     
     if (this.dataValidate(this.state)) {
       // se agrega estatus y despues se hace un post
@@ -227,19 +224,18 @@ class Receipt extends Component {
         status: true
       },() => {
         if(receipt.length > 0){
+          new Promise((resolve, reject) => {
             this.setRecordState(receipt[0])
-          // new Promise((resolve, reject) => {
-          //   console.log('hay recibos')
-          // })
-          // .then(()=>{
-          //   this.props.patchNewReceipt(this.state, receipt[0].id, this.props.screenProps.token, navigation)
-          //   this.props.postRecord(this.state, this.props.screenProps.token)
-          // })
+            resolve(true)
+          })
+          .then((result)=>{
+            this.props.patchNewReceipt(this.state, receipt[0].id, this.props.screenProps.token, navigation)
+            this.props.postRecord(this.state, this.props.screenProps.token)
+          })
         } 
         else {
           var RecordPromise = new Promise((resolve, reject) => {
-            console.log('No hay recibos')
-            // this.setRecord()
+            this.setRecord()
             resolve(true)
           })
 
