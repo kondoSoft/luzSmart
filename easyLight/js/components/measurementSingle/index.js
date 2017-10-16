@@ -22,14 +22,8 @@ import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
 import { patchReceipt, getRatePeriod, postRecord, getRecord } from '../../actions/contracts'
 import { 
-  getIVA, 
-  costProject, 
-  getWeekday, 
-  getDayInDates, 
-  getHoursTotals, 
-  getFinalDate,
-  getProjected,
   getRangeMonth,
+  setRecord,
 } from '../../helpers';
 
 
@@ -55,6 +49,7 @@ class MeasurementSingle extends Component {
       record: {
 
       },
+      projected_payment: '',
     }
     this.contract_id;
     this.subTotal;
@@ -81,7 +76,14 @@ class MeasurementSingle extends Component {
     this.props.getRecord(this.contract_id)
   }
   componentWillReceiveProps(nextProps){
-
+    console.log('record', nextProps.record)
+    nextProps.record.map((item,i) => {
+      if(i === 0){
+        this.setState({
+          projected_payment: item.projected_payment
+        })
+      }
+    })
     nextProps.screenProps.contracts.map((item, i) => {
       if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){
         arrayContract.push(item)
@@ -161,64 +163,23 @@ class MeasurementSingle extends Component {
     })
   }
   // *******************  Funciones para RECORDS ********************
-  setRecord(){
+  setRecordState(){
+    const ratePeriod = this.getRate()
     // Obtiene el ultimo dato actualizado
     const lastRecord = this.propsNextRecords[this.propsNextRecords.length-1]
-    //Fecha de actualizacion de record
-    const date = new Date()    
-    const year = date.getFullYear();
-    const month = date.getMonth()+1; 
-    const day = date.getDate();
-    const dateFormat = year + '-' + month + '-' + day
-    //Dia de la semana
-    const weekday = getWeekday(date)
-    //Fecha inicial del recibo
-    const paydayLimit = new Date(this.state.itemReceipt.payday_limit)
-    // Obtener los dias restantes dependiendo el tipo pago
-    const typePayment = arrayContract[0].type_payment
-    // const restDay = getRestDay(typePayment, paydayLimit)
-    // Horas Totales
-    const hoursTotals = getHoursTotals(paydayLimit.getTime(), date.getTime())
-    const totalDays = getFinalDate(typePayment, paydayLimit)
-    // Horas transcurridas
-    const hoursElapsed = hoursTotals - lastRecord.hours_totals
-    // Dias transcurridos
-    const diffDays = getDayInDates(paydayLimit, date)
-    // Dias Restantes
-    const restDay = totalDays - Math.ceil(diffDays)
-    // Dias transcurridos desde el ultimo record
-    const diffDaysLastRecord = diffDays - lastRecord.days_totals
-    // Consumo diario
-    const { current_reading_updated, current_reading } = this.state.itemReceipt
-    // Obtener valor del dia
-    const dailyConsumption = current_reading_updated - current_reading
-    // Consumo
-    const cumulativeConsumption = this.state.current_data - current_reading
-    // promedio Global
-    const average = (cumulativeConsumption / diffDays).toFixed(4)
-    // Se obtiene el valor proyectado
-    const projection = getProjected(cumulativeConsumption, average, restDay)
     // Se obtiene de nuevo Record
     this.props.getRecord(this.contract_id)
-
+    const data = {
+      contract_id: this.contract_id,
+      lastRecord: lastRecord,
+      itemReceipt: this.state.itemReceipt,
+      type_payment: arrayContract[0].type_payment,
+      current_data: this.state.current_data,
+      ratePeriod: ratePeriod,
+    }
+    const record = setRecord(data)
     this.setState({
-      record:{
-        contract_id: this.contract_id,
-        date: dateFormat,
-        day: weekday,
-        daily_reading: this.state.current_data,
-        hours_elapsed: hoursElapsed.toFixed(4),
-        hours_totals: hoursTotals.toFixed(4),
-        days_elapsed: diffDaysLastRecord.toFixed(4),
-        days_totals: diffDays.toFixed(4),
-        daily_consumption: dailyConsumption.toFixed(4),
-        cumulative_consumption: cumulativeConsumption,
-        projected_payment: 0,
-        average_global: average,
-        rest_day: restDay,
-        projection: projection,
-      },
-
+      record
     })
   }
 
@@ -239,16 +200,15 @@ class MeasurementSingle extends Component {
         this.props.patchReceipt(this.state.current_data, this.props.token, id,this.props.navigation)
 
         // Se agrega los datos de record en el state
-        this.setRecord()
-
+        this.setRecordState()
+        this.props.getRecord(this.contract_id)
         this.setState({
           kwhValidation: require('../../../images/succes.png')
         },()=>{
          this.changeCheckedData()
-         this.getTotalPayment()
-         this.forceUpdate()
          //Se genera el record con la ultima medicion
          this.props.postRecord(this.state, this.props.screenProps.token)
+
         })
       // this.props.navigation.goBack()
     }else{
@@ -296,13 +256,13 @@ class MeasurementSingle extends Component {
     })
   }
 
-  getTotalPayment(){
+  getRate(){
     var verano = [];
     var noverano = [];
     var kilowatt = [];
     // empuje de datos en el arreglo de verano y fuera de verano
     this.props.rate_period.map((period, i) => {
-      if(period.period_name == 'Verano') {
+      if(period.period_name === 'Verano') {
         verano.push(period)
         }
       else {
@@ -312,28 +272,20 @@ class MeasurementSingle extends Component {
       // Se retorna que tipo de periodo es, dependiendo del recibo
       if(this.state.itemReceipt != undefined){
         if(this.state.itemReceipt.period == 'Verano'){
-          kilowatt = verano.map((rate, i)=>{
+          return kilowatt = verano.map((rate, i)=>{
             const { kilowatt, cost } = rate;
             return { kilowatt, cost };
           });
         }
         else {
-          kilowatt = noverano.map((rate, i)=>{
+          return kilowatt = noverano.map((rate, i)=>{
             const { kilowatt, cost } = rate;
             return { kilowatt, cost };
           })
         }
       }
-      //Realiza el Calculo y lo muestra
-    if (this.props.rate_period.length > 0) {
-      if (this.rate_contract === this.props.rate_period[0].name_rate) {
-        this.subTotal = costProject(kilowatt, this.state.itemReceipt.current_reading_updated - this.state.itemReceipt.previous_reading)
-        this.total = getIVA(this.subTotal);
-      }
-    }
   }
   render(){
-    this.getTotalPayment()
     const { navigation } = this.props;
     // Contrato que viene desde la pantalla recibos
     const { contract } = this.props.navigation.state.params;
@@ -353,7 +305,7 @@ class MeasurementSingle extends Component {
             <Row size={4} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
               <View style={styles.grid__row__top__view}>
-                <Text>{(this.total != undefined)? `$${this.total.toLocaleString()}` : `$ 0`}</Text>
+                <Text>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
                 <Text>Proyectado</Text>
               </View>
             </Row>

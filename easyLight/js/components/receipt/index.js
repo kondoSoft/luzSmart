@@ -22,10 +22,10 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 // import { Select, Option } from 'react-native-select-list';
 import styles from './styles';
-import { postReceipt, postRecord, postProjectReceipt } from '../../actions/contracts';
+import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
-import { getWeekday } from "../../helpers"
+import { getWeekday, setRecord as helperRecord } from "../../helpers"
 var contract;
 
 class Receipt extends Component {
@@ -124,7 +124,7 @@ class Receipt extends Component {
         'Contrato',
        'Desea agregar un historial al contrato Mi Casa?',
        [
-         {text: 'No', onPress: () => this.props.navigation.navigate('Contracts')},
+         {text: 'No', onPress: () => this.props.navigation.navigate('Contracts', this.props.getContract(this.props.screenProps.token, this.props.navigation))},
          {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
        ],
       );
@@ -134,13 +134,13 @@ class Receipt extends Component {
         'Contrato',
         'Desea agregar un historial al contrato Mi Casa?',
         [
-          { text: 'No', onPress: () => this.props.navigation.navigate('Contracts') },
+          { text: 'No', onPress: () => this.props.navigation.navigate('Contracts', this.props.getContract(this.props.screenProps.token, this.props.navigation)) },
           { text: 'Si', onPress: () => this.props.navigation.navigate('History') },
         ],
       );
     }
   }
-
+  // Record 
   setRecord(){
     //Fecha inicial del recibo
     const paydayLimit = this.state.payday_limit
@@ -148,7 +148,6 @@ class Receipt extends Component {
     const weekday = getWeekday(paydayLimit)
     // Consumo diario
     const { current_reading } = this.state
-
     this.setState({
       record:{
         contract_id: this.state.contract_id,
@@ -168,22 +167,87 @@ class Receipt extends Component {
       }
     })
   }
+  getRate(receipt){
+  var verano = [];
+  var noverano = [];
+  var kilowatt = [];
+  // empuje de datos en el arreglo de verano y fuera de verano
+  this.props.rate_period.map((period, i) => {
+    if(period.period_name === 'Verano') {
+      verano.push(period)
+      }
+    else {
+      noverano.push(period);
+      }
+    });
+    // Se retorna que tipo de periodo es, dependiendo del recibo
+    if(receipt != undefined){
+      if(receipt.period == 'Verano'){
+        return kilowatt = verano.map((rate, i)=>{
+          const { kilowatt, cost } = rate;
+          return { kilowatt, cost };
+        });
+      }
+      else {
+        return kilowatt = noverano.map((rate, i)=>{
+          const { kilowatt, cost } = rate;
+          return { kilowatt, cost };
+        })
+      }
+    }
+  }
+  setRecordState(receipt) {
+    const ratePeriod = this.getRate(receipt)
+    const lastRecord = this.props.record[this.props.record.length - 1]
+    const data = {
+      contract_id: this.state.contract_id,
+      lastRecord: lastRecord,
+      itemReceipt: receipt,
+      type_payment: contract.type_payment,
+      current_data: this.state.current_reading,
+      ratePeriod: ratePeriod,
+    }
+
+    const record = helperRecord(data)
+    this.setState({
+      record
+    })
+  }
   sendData() {
+    const { navigation } = this.props
+    const { contract } = navigation.state.params
+    const { receipt, records } = contract
+    
     if (this.dataValidate(this.state)) {
-      this.setRecord()
       // se agrega estatus y despues se hace un post
       this.setState({
         status: true
       },() => {
-        this.props.postReceipt(this.state, this.props.token)
-        this.props.postRecord(this.state, this.props.screenProps.token)
-      }
-    )
-      this.showAlert();
+        if(receipt.length > 0){
+          new Promise((resolve, reject) => {
+            this.setRecordState(receipt[0])
+            resolve(true)
+          })
+          .then((result)=>{
+            this.props.patchNewReceipt(this.state, receipt[0].id, this.props.screenProps.token, navigation)
+            this.props.postRecord(this.state, this.props.screenProps.token)
+          })
+        } 
+        else {
+          var RecordPromise = new Promise((resolve, reject) => {
+            this.setRecord()
+            resolve(true)
+          })
 
-      setTimeout( () => {
-        this.props.navigation.navigate('Contratos', this.props.getContract(this.props.screenProps.token, this.props.navigation));
-      }, 3000)
+          RecordPromise.then((result) => {
+            this.props.postReceipt(this.state, this.props.screenProps.token)
+            this.props.postRecord(this.state, this.props.screenProps.token)
+          })
+        }
+      }
+    ) 
+      //Condicion para show alert en caso de historial ya registrado.
+      this.showAlert();
     }
     else {
       Alert.alert(
@@ -217,7 +281,6 @@ class Receipt extends Component {
   }
   render() {
     const { navigation } = this.props;
-
     // const { bill } = navigation.state.params
     // var lastBill
     if (navigation.state.params === undefined) {
@@ -426,12 +489,13 @@ function bindAction(dispatch) {
     postRecord: (data, token) => dispatch(postRecord(data, token)),
     postProjectReceipt: (list, token) => dispatch(postProjectReceipt(list, token)),
     getContract: (token, navigation) => dispatch(getContract(token, navigation)),
+    patchNewReceipt: (data, id, token, navigation) => dispatch(patchNewReceipt(data, id, token, navigation)),
   };
 }
 const mapStateToProps = state => ({
   newContract: state.list_contracts.newContract,
-  token: state.user.token,
-  contracts: state.list_contracts.contracts
+  rate_period: state.list_rate.rate_period,
+  record: state.list_records.results,
 });
 
 export default connect(mapStateToProps, bindAction)(Receipt);

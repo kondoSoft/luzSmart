@@ -111,7 +111,7 @@ class ParentSwipeContracts extends Component {
               receipts={contract.receipt}
               navigation={navigation}
               dataAccordionContract={contract}
-              component={<ItemComponent data={contract}/>}
+              component={<ItemComponent data={contract} key={i} />}
               icon={<Icon style={styles.icon} name="information-circle"/>}
               onPressLeft={() => navigation.navigate('EditContracts', contract)}
             />)}

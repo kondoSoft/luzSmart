@@ -162,8 +162,11 @@ class DetailContract extends Component {
   render(){
     const { navigation, rate_period, contracts } = this.props;
     const { status } = this.state;
-    const bill = this.state.bill;
+    var bill = this.state.bill;
     const colors = ['lightgrey','#fff'];
+    bill = bill.sort((a, b)=> {
+      return b.id - a.id
+    })
     let fab = <FabButton
           navigation={navigation}
           onTap={() => {navigation.navigate('Receipt',{ contract: this.state.contract})}}
@@ -212,42 +215,32 @@ class ItemComponent extends Component{
   constructor(props){
     super(props);
     this.state = {
-      countKwh: '',
-      total: '0',
       amount_payable: 0,
+      projected_payment: 0,
     }
-    this.getCost = this.getCost.bind(this)
+    // this.getCost = this.getCost.bind(this)
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.record){
-      const total = this.getCost(nextProps.ratePeriod, nextProps.record.projection)
-      this.setState({
-        countKwh: nextProps.record.projection,
-        total: total,
-      })
-    }
+
     if(nextProps.data){
+
       this.setState({
         amount_payable: nextProps.data.amount_payable, 
       })
     }
-  }
-
-  getCost(ratePeriod, projection){
-    // subTotal
-    const subTotal = this.props.consumoPromedio(ratePeriod, projection)
-    // Total
-    const total = getIVA(subTotal)
-    return total
+    if(nextProps.record){
+      this.setState({
+        projected_payment: nextProps.record.projected_payment,
+      })
+    }
   }
 
   render() {
-    console.log('TOTAL>>', this.state.total)
     // Declaracion de recibo
     const receipt = this.props.data;
     // Declaracion de KwH proyectado
-    const { countKwh, amount_payable } = this.state
+    const { amount_payable } = this.state
 
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const splitRange = receipt.payday_limit.split('-',)
@@ -265,7 +258,8 @@ class ItemComponent extends Component{
 
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? `$`+ amount_payable : (this.state.total)? `$ ${this.state.total.toLocaleString()}` : '$0'}</Text>
+          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment) ? `$ ${parseFloat(this.state.projected_payment).toLocaleString()}` : '$0'}</Text>
+          {console.log('item', this.state.projected_payment)}
           {/* <Text style={styles.listItem__body__view__text,{}}>{(this.props.countsReceipts <= 2) ? <Text style={styles.listItem__body__text}>{`$`+totalAccount.toLocaleString()}</Text> : (total != undefined) && `$`+total.toLocaleString() }</Text> */}
           <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
         </Right>
