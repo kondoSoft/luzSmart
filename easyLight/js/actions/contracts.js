@@ -2,8 +2,8 @@ import type { Action } from './types';
 import { getContract } from './list_states_mx';
 
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 export const PRINT_RECORD = 'PRINT_RECORD';
@@ -141,6 +141,7 @@ export function postRecord(list, token):Action{
      },
      body: JSON.stringify({
         date: list.record.date,
+        datetime: list.record.datetime,
         day: list.record.day,
         daily_reading: list.record.daily_reading,
         hours_elapsed: list.record.hours_elapsed,
@@ -161,6 +162,7 @@ export function postRecord(list, token):Action{
   }
 }
 export function getRecord(id):Action{
+  console.log('id',id)
   return dispatch => {
     return fetch(endPoint+'/records/?contract_id=' + id ,{
       method: 'GET',

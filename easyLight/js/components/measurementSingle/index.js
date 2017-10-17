@@ -49,7 +49,7 @@ class MeasurementSingle extends Component {
       record: {
 
       },
-      projected_payment: '',
+      projected_payment: 0,
     }
     this.contract_id;
     this.subTotal;
@@ -66,7 +66,6 @@ class MeasurementSingle extends Component {
   });
 
   componentWillMount () {
-
     this.setState({
       itemReceipt: this.props.navigation.state.params.receipt,
     })
@@ -76,14 +75,15 @@ class MeasurementSingle extends Component {
     this.props.getRecord(this.contract_id)
   }
   componentWillReceiveProps(nextProps){
-    console.log('record', nextProps.record)
+    console.log(nextProps.record)
     nextProps.record.map((item,i) => {
-      if(i === 0){
+      if(i === nextProps.record.length-1){
         this.setState({
           projected_payment: item.projected_payment
         })
       }
     })
+
     nextProps.screenProps.contracts.map((item, i) => {
       if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){
         arrayContract.push(item)
@@ -137,8 +137,6 @@ class MeasurementSingle extends Component {
         }
       }
     }
-    
-    
   }
   setReceiptByOneContract(contract){
     this.setState({
@@ -201,13 +199,13 @@ class MeasurementSingle extends Component {
 
         // Se agrega los datos de record en el state
         this.setRecordState()
-        this.props.getRecord(this.contract_id)
         this.setState({
           kwhValidation: require('../../../images/succes.png')
         },()=>{
          this.changeCheckedData()
          //Se genera el record con la ultima medicion
          this.props.postRecord(this.state, this.props.screenProps.token)
+         this.props.getRecord(this.contract_id)
 
         })
       // this.props.navigation.goBack()
@@ -287,6 +285,7 @@ class MeasurementSingle extends Component {
   }
   render(){
     const { navigation } = this.props;
+    console.log('record', this.props)
     // Contrato que viene desde la pantalla recibos
     const { contract } = this.props.navigation.state.params;
     const rangeDate = getRangeMonth(this.state.type_payment, this.state.itemReceipt.payday_limit)

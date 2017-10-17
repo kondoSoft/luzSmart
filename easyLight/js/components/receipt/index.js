@@ -77,7 +77,6 @@ class Receipt extends Component {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   handlePaydayLimit(date){
-
     const initialDateRange = new Date(contract.initialDateRange).getTime();
     const finalDateRange = new Date(contract.finalDateRange).getTime();
     const limitReceipt = new Date(date).getTime();
@@ -96,8 +95,8 @@ class Receipt extends Component {
     }
     else {
       this.setState({
-        payday_limit: date,
-      });
+        payday_limit: date
+      })
     }
   }
   handleAmountPayable(text){
@@ -152,6 +151,7 @@ class Receipt extends Component {
       record:{
         contract_id: this.state.contract_id,
         date: paydayLimit,
+        datetime: paydayLimit+'T12:00:00Z',
         day: weekday,
         daily_reading: current_reading,
         hours_elapsed: 0,
