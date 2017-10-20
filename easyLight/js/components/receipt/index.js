@@ -25,6 +25,7 @@ import styles from './styles';
 import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
+import { putRecord } from "../../actions/contracts";
 import { getWeekday, setRecord as helperRecord } from "../../helpers"
 var contract;
 
@@ -49,10 +50,7 @@ class Receipt extends Component {
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
       this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
     }
-  static propType = {
-    setBill: React.PropTypes.func,
-    getContract: React.PropTypes.func,
-  }
+
   static navigationOptions = ({ navigation, screenProps }) => (
   {
     // headerRight: (navigation.state.params) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
@@ -195,6 +193,9 @@ class Receipt extends Component {
         })
       }
     }
+    this.setState({
+      rate_period_state: kilowatt
+    })  
   }
   setRecordState(receipt) {
     const ratePeriod = this.getRate(receipt)
@@ -230,7 +231,7 @@ class Receipt extends Component {
           })
           .then((result)=>{
             this.props.patchNewReceipt(this.state, receipt[0].id, this.props.screenProps.token, navigation)
-            this.props.postRecord(this.state, this.props.screenProps.token)
+            this.props.putRecord(this.state, this.props.screenProps.token)
           })
         } 
         else {
@@ -490,6 +491,7 @@ function bindAction(dispatch) {
     postProjectReceipt: (list, token) => dispatch(postProjectReceipt(list, token)),
     getContract: (token, navigation) => dispatch(getContract(token, navigation)),
     patchNewReceipt: (data, id, token, navigation) => dispatch(patchNewReceipt(data, id, token, navigation)),
+    putRecord: (data, token) => dispatch(putRecord(data, token)),
   };
 }
 const mapStateToProps = state => ({

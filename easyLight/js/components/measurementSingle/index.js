@@ -75,7 +75,6 @@ class MeasurementSingle extends Component {
     this.props.getRecord(this.contract_id)
   }
   componentWillReceiveProps(nextProps){
-    console.log(nextProps.record)
     nextProps.record.map((item,i) => {
       if(i === nextProps.record.length-1){
         this.setState({
@@ -285,7 +284,6 @@ class MeasurementSingle extends Component {
   }
   render(){
     const { navigation } = this.props;
-    console.log('record', this.props)
     // Contrato que viene desde la pantalla recibos
     const { contract } = this.props.navigation.state.params;
     const rangeDate = getRangeMonth(this.state.type_payment, this.state.itemReceipt.payday_limit)

@@ -160,7 +160,6 @@ class DetailContract extends Component {
   }
 
   render(){
-    console.log('record', this.props)
     const { navigation, rate_period, contracts } = this.props;
     const { status } = this.state;
     var bill = this.state.bill;
@@ -259,7 +258,6 @@ class ItemComponent extends Component{
         </Body>
         <Right style={styles.ItemComponent.align}>
           <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment) ? `$ ${parseFloat(this.state.projected_payment).toLocaleString()}` : '$0'}</Text>
-          {console.log('item', this.state)}
           {/* <Text style={styles.listItem__body__view__text,{}}>{(this.props.countsReceipts <= 2) ? <Text style={styles.listItem__body__text}>{`$`+totalAccount.toLocaleString()}</Text> : (total != undefined) && `$`+total.toLocaleString() }</Text> */}
           <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
         </Right>

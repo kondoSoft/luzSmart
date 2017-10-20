@@ -106,6 +106,7 @@ export function postProjectReceipt(list, token):Action{
   }
 }
 export function patchNewReceipt(data, id, token):Action{
+
   return dispatch => {
     return fetch(endPoint+'/receipt/'+ id + '/',{
       method: 'PATCH',
@@ -123,6 +124,7 @@ export function patchNewReceipt(data, id, token):Action{
         contract: data.contract,
         period: data.period,
         status: true,
+
       })
     })
     .then(res => {return res.json()})
@@ -161,8 +163,30 @@ export function postRecord(list, token):Action{
     .catch(err => console.log(err))
   }
 }
+export function putRecord(list, token):Action{
+  console.log('list',list.current_reading)
+  return dispatch => {
+    return fetch(endPoint+'/records/?contract_id=' + list.contract_id + '&kwh=' + list.current_reading,{
+      method: 'PUT',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       'Authorization': 'Token ' + token
+     },
+     body: JSON.stringify({
+        date: list.payday_limit,
+        daily_reading: list.current_reading,
+        rest_day: list.record.rest_day,
+        projected_payment: list.amount_payable,
+        contracts: list.contract_id,
+      })
+    })
+    .then(res => {return res.json()})
+    .then(res => {console.log('res', res)})
+    .catch(err => console.log(err))
+  }
+}
 export function getRecord(id):Action{
-  console.log('id',id)
   return dispatch => {
     return fetch(endPoint+'/records/?contract_id=' + id ,{
       method: 'GET',
