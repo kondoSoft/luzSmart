@@ -164,7 +164,7 @@ export function postRecord(list, token):Action{
   }
 }
 export function putRecord(list, token):Action{
-  console.log('list',list.current_reading)
+  console.log('list',list)
   return dispatch => {
     return fetch(endPoint+'/records/?contract_id=' + list.contract_id + '&kwh=' + list.current_reading,{
       method: 'PUT',

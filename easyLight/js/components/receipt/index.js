@@ -199,6 +199,7 @@ class Receipt extends Component {
   }
   setRecordState(receipt) {
     const ratePeriod = this.getRate(receipt)
+    console.log('me ejecuto', ratePeriod)
     const lastRecord = this.props.record[this.props.record.length - 1]
     const data = {
       contract_id: this.state.contract_id,
@@ -206,12 +207,13 @@ class Receipt extends Component {
       itemReceipt: receipt,
       type_payment: contract.type_payment,
       current_data: this.state.current_reading,
-      ratePeriod: ratePeriod,
+      
     }
 
     const record = helperRecord(data)
     this.setState({
-      record
+      record,
+      ratePeriod: ratePeriod,
     })
   }
   sendData() {
