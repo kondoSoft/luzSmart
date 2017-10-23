@@ -171,6 +171,22 @@ export function getContract(token, navigate):Action{
   }
 }
 
+export function deleteContract(id, token, navigation):Action{
+  return dispatch => {
+    return fetch(endPoint+'/contract/'+ id +'/', {
+      method: 'DELETE',
+      headers:{
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Token '+ token
+      }
+    })
+    // .then(res => { return res.json()})
+    .then(res => { dispatch(getContract(token, navigation)) })
+    .catch(err => console.log(err))
+  }
+}
+
 export function getTips(token):Action{
   return dispatch => {
     return fetch(endPoint + '/tips/', {
@@ -189,7 +205,7 @@ export function getTips(token):Action{
 
 
 
-export function updateContract(data, token, id) {
+export function updateContract(data, token, id, navigation) {
   return dispatch => {
     var formData = new FormData();
     formData.append('name_contract', data.name)
@@ -217,7 +233,7 @@ export function updateContract(data, token, id) {
 
     fetch(endPoint+'/contract/'+id+'/', fetchOptions)
     .then(res => {return res.json()})
-    .then(res => {dispatch(getContract(token))})
+    .then(res => {dispatch(getContract(token, navigation))})
     .catch(err => console.error(err))
   }
 }

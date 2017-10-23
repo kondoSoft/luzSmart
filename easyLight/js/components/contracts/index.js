@@ -39,13 +39,6 @@ class Contracts extends Component {
 
   }
 
-  static propType = {
-    getRate: React.PropTypes.func,
-    getContract: React.PropTypes.func,
-    resetRate: React.PropTypes.func,
-    getStates: React.PropTypes.func,
-    resetPicketContract: React.PropTypes.func,
-  }
   render(){
     const { navigation, profile } = this.props
     const { state } = navigation
