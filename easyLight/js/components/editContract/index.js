@@ -34,13 +34,14 @@ import { Select, Option } from 'react-native-select-list';
 import styles from './styles';
 import {
   getMunicipality,
-  resetMunicipality,
-  postContract,
   getRate,
   resetRate,
-  updateContract
+  updateContract,
+  deleteContract,
+  getContract,
 } from '../../actions/list_states_mx'
 import ImagePicker from 'react-native-image-picker';
+import { NavigationActions } from 'react-navigation';
 
 
 let Screen = Dimensions.get('window')
@@ -74,13 +75,6 @@ class EditContracts extends Component {
     }
     this.handleRate = this.handleRate.bind(this)
     this.createRateSelect = this.createRateSelect.bind(this)
-  }
-  static propType = {
-    postContract: React.PropTypes.func,
-    getMunicipality: React.PropTypes.func,
-    resetMunicipality: React.PropTypes.func,
-    getRate: React.PropTypes.func,
-
   }
 
   selectPhotoTapped() {
@@ -126,7 +120,7 @@ class EditContracts extends Component {
   sendData(){
     var id = this.props.navigation.state.params.id
     if (this.dataValidate(this.state)) {
-      this.props.updateContract(this.state, this.props.token, id)
+      this.props.updateContract(this.state, this.props.token, id, this.props.navigation)
       if (Platform.OS === 'ios') {
         AlertIOS.alert(
           'Datos Actualizados',
@@ -159,6 +153,42 @@ class EditContracts extends Component {
         ],
       )
     }
+  }
+  
+  ejectDelete(id, token){
+    this.props.deleteContract(id, token, this.props.navigation)
+    // const resetAction = NavigationActions.reset({
+    //   index: 0,
+    //   actions: [
+    //     NavigationActions.navigate({ routeName: 'Contratos'})
+    //   ]
+    // })
+    // this.props.navigation.dispatch(resetAction)
+  }
+
+  buttonDelete(id, token){
+    
+    if (Platform.OS === 'ios') {
+      AlertIOS.alert(
+        'Eliminar Contrato',
+       'Desea eliminar el contrato?',
+       [
+         {text: 'No' },
+         {text: 'Si', onPress: () => this.ejectDelete(id, token)},
+       ],
+      );
+    }
+    else{
+      Alert.alert(
+        'Datos incompletos',
+        'Todos los campos son obligatorios',
+        [
+          {text: 'Aceptar'},
+        ],
+      )
+    }
+    
+    
   }
   dataValidate(data){
     const {
@@ -283,7 +313,6 @@ class EditContracts extends Component {
     }
   }
   render(){
-
     const {
       navigation,
       states_mx,
@@ -339,11 +368,21 @@ class EditContracts extends Component {
             </Row>
             <Row size={5} style={[styles.row__bottom,{ paddingBottom: (Platform.OS === 'ios')? 30 : 0}]}>
               <Button
-                small
+                large
                 primary
                 onPress={() => this.sendData()}
                 >
                 <Text>Actualizar</Text>
+              </Button>
+              
+            </Row>
+            <Row size={5} style={[styles.row__bottom,{ paddingBottom: (Platform.OS === 'ios')? 0 : 0}]}>
+              <Button
+                small
+                danger
+                onPress={() => this.buttonDelete(this.props.navigation.state.params.id, this.props.screenProps.token)}
+                >
+                <Text>Eliminar</Text>
               </Button>
             </Row>
           </Grid>
@@ -361,12 +400,12 @@ class EditContracts extends Component {
 }
 function bindAction(dispatch){
   return {
-    postContract: (list, rate, token) =>dispatch(postContract(list, rate, token)),
     getMunicipality: state_id =>dispatch(getMunicipality(state_id)),
-    resetMunicipality: () => dispatch(resetMunicipality()),
     getRate: (mun_id, token) => dispatch(getRate(mun_id, token)),
     resetRate: ()=> dispatch(resetRate()),
-    updateContract: (data, token, id)=> dispatch(updateContract(data, token, id))
+    updateContract: (data, token, id, navigation)=> dispatch(updateContract(data, token, id, navigation)),
+    deleteContract: (id, token, navigation) => dispatch(deleteContract(id, token, navigation)),
+    getContract: (token, navigation) => dispatch(getContract(token, navigation))
   }
 }
 const mapStateToProps = state => ({

@@ -216,11 +216,9 @@ class Receipt extends Component {
       ratePeriod: ratePeriod,
     })
   }
-  sendData() {
+  sendData(contract) {
     const { navigation } = this.props
-    const { contract } = navigation.state.params
-    const { receipt, records } = contract
-    
+    const receipt  = contract.receipt
     if (this.dataValidate(this.state)) {
       // se agrega estatus y despues se hace un post
       this.setState({
@@ -292,6 +290,7 @@ class Receipt extends Component {
     else {
       contract = navigation.state.params.contract;
     }
+
     // if(bill.length >= 0) {
     //   lastBill = bill[bill.length-1]
     // }
@@ -375,7 +374,7 @@ class Receipt extends Component {
               <Row style={styles.col__bottom__row__bottom}>
                 <Button
                   style={{ height: 35}}
-                  onPress={()=>this.sendData()}
+                  onPress={()=>this.sendData(contract)}
                   >
                   <Text>Agregar</Text>
                 </Button>
@@ -472,7 +471,7 @@ class Receipt extends Component {
                 <Row style={styles.col__bottom__row__bottom}>
                   <Button
                     style={{ height: 35}}
-                    onPress={()=>this.sendData()}
+                    onPress={()=>this.sendData(contract)}
                     >
                     <Text>Agregar</Text>
                   </Button>

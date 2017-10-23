@@ -202,7 +202,7 @@ export function getRecord(id):Action{
   }
 }
 
-export function patchReceipt(data, token, id,navigation):Action{
+export function patchReceipt(data, token, id, navigation):Action{
   return dispatch => {
     return fetch(endPoint+'/receipt/'+ id + '/',{
       method: 'PATCH',
