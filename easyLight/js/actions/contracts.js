@@ -2,8 +2,8 @@ import type { Action } from './types';
 import { getContract } from './list_states_mx';
 
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 export const PRINT_RECORD = 'PRINT_RECORD';
@@ -106,6 +106,7 @@ export function postProjectReceipt(list, token):Action{
   }
 }
 export function patchNewReceipt(data, id, token):Action{
+
   return dispatch => {
     return fetch(endPoint+'/receipt/'+ id + '/',{
       method: 'PATCH',
@@ -123,6 +124,7 @@ export function patchNewReceipt(data, id, token):Action{
         contract: data.contract,
         period: data.period,
         status: true,
+
       })
     })
     .then(res => {return res.json()})
@@ -141,6 +143,7 @@ export function postRecord(list, token):Action{
      },
      body: JSON.stringify({
         date: list.record.date,
+        datetime: list.record.datetime,
         day: list.record.day,
         daily_reading: list.record.daily_reading,
         hours_elapsed: list.record.hours_elapsed,
@@ -157,6 +160,29 @@ export function postRecord(list, token):Action{
       })
     })
     .then(res => {return res.json()})
+    .catch(err => console.log(err))
+  }
+}
+export function putRecord(list, token):Action{
+  console.log('list',list)
+  return dispatch => {
+    return fetch(endPoint+'/records/?contract_id=' + list.contract_id + '&kwh=' + list.current_reading,{
+      method: 'PUT',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       'Authorization': 'Token ' + token
+     },
+     body: JSON.stringify({
+        date: list.payday_limit,
+        daily_reading: list.current_reading,
+        rest_day: list.record.rest_day,
+        projected_payment: list.amount_payable,
+        contracts: list.contract_id,
+      })
+    })
+    .then(res => {return res.json()})
+    .then(res => {console.log('res', res)})
     .catch(err => console.log(err))
   }
 }

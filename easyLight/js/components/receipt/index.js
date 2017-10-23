@@ -25,6 +25,7 @@ import styles from './styles';
 import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
+import { putRecord } from "../../actions/contracts";
 import { getWeekday, setRecord as helperRecord } from "../../helpers"
 var contract;
 
@@ -49,10 +50,7 @@ class Receipt extends Component {
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
       this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
     }
-  static propType = {
-    setBill: React.PropTypes.func,
-    getContract: React.PropTypes.func,
-  }
+
   static navigationOptions = ({ navigation, screenProps }) => (
   {
     // headerRight: (navigation.state.params) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
@@ -77,7 +75,6 @@ class Receipt extends Component {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   handlePaydayLimit(date){
-
     const initialDateRange = new Date(contract.initialDateRange).getTime();
     const finalDateRange = new Date(contract.finalDateRange).getTime();
     const limitReceipt = new Date(date).getTime();
@@ -96,8 +93,8 @@ class Receipt extends Component {
     }
     else {
       this.setState({
-        payday_limit: date,
-      });
+        payday_limit: date
+      })
     }
   }
   handleAmountPayable(text){
@@ -152,6 +149,7 @@ class Receipt extends Component {
       record:{
         contract_id: this.state.contract_id,
         date: paydayLimit,
+        datetime: paydayLimit+'T12:00:00Z',
         day: weekday,
         daily_reading: current_reading,
         hours_elapsed: 0,
@@ -195,9 +193,13 @@ class Receipt extends Component {
         })
       }
     }
+    this.setState({
+      rate_period_state: kilowatt
+    })  
   }
   setRecordState(receipt) {
     const ratePeriod = this.getRate(receipt)
+    console.log('me ejecuto', ratePeriod)
     const lastRecord = this.props.record[this.props.record.length - 1]
     const data = {
       contract_id: this.state.contract_id,
@@ -205,12 +207,13 @@ class Receipt extends Component {
       itemReceipt: receipt,
       type_payment: contract.type_payment,
       current_data: this.state.current_reading,
-      ratePeriod: ratePeriod,
+      
     }
 
     const record = helperRecord(data)
     this.setState({
-      record
+      record,
+      ratePeriod: ratePeriod,
     })
   }
   sendData() {
@@ -230,7 +233,7 @@ class Receipt extends Component {
           })
           .then((result)=>{
             this.props.patchNewReceipt(this.state, receipt[0].id, this.props.screenProps.token, navigation)
-            this.props.postRecord(this.state, this.props.screenProps.token)
+            this.props.putRecord(this.state, this.props.screenProps.token)
           })
         } 
         else {
@@ -490,6 +493,7 @@ function bindAction(dispatch) {
     postProjectReceipt: (list, token) => dispatch(postProjectReceipt(list, token)),
     getContract: (token, navigation) => dispatch(getContract(token, navigation)),
     patchNewReceipt: (data, id, token, navigation) => dispatch(patchNewReceipt(data, id, token, navigation)),
+    putRecord: (data, token) => dispatch(putRecord(data, token)),
   };
 }
 const mapStateToProps = state => ({

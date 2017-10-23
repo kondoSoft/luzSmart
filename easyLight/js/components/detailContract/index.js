@@ -222,7 +222,6 @@ class ItemComponent extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-
     if(nextProps.data){
 
       this.setState({
@@ -259,7 +258,6 @@ class ItemComponent extends Component{
         </Body>
         <Right style={styles.ItemComponent.align}>
           <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment) ? `$ ${parseFloat(this.state.projected_payment).toLocaleString()}` : '$0'}</Text>
-          {console.log('item', this.state.projected_payment)}
           {/* <Text style={styles.listItem__body__view__text,{}}>{(this.props.countsReceipts <= 2) ? <Text style={styles.listItem__body__text}>{`$`+totalAccount.toLocaleString()}</Text> : (total != undefined) && `$`+total.toLocaleString() }</Text> */}
           <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
         </Right>

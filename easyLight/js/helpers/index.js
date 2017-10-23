@@ -158,6 +158,7 @@ const setRecord = data => {
   const record = {
     contract_id: data.contract_id,
     date: dateFormat,
+    datetime:dateFormat+'T12:00:00Z',
     day: weekday,
     daily_reading: data.current_data,
     hours_elapsed: hoursElapsed.toFixed(4),
