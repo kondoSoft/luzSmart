@@ -23,6 +23,8 @@ import Swiper from 'react-native-swiper'
 import { Select, Option } from 'react-native-select-list'
 import { getUser } from '../../actions/user'
 import { getRecord } from '../../actions/contracts'
+var moment = require('moment');
+// var mom = moment().format();
 
 class Results extends Component {
   constructor (props) {
@@ -63,8 +65,10 @@ class Results extends Component {
     const {
       results
     } = this.state
+
     var days = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']
     var data = []
+
     days.map((day) => {
       results.map((item, i) => {
         if (day === item.day.slice(0, 3)) {
@@ -75,6 +79,101 @@ class Results extends Component {
       })
     })
     return data
+  }
+  dataGenMonth(){
+    const {
+      results
+    } = this.state
+
+    var temporalMonth = []
+    var temporalArrKw = []
+    var resultMonth = {}
+
+    const data = results.map((item, i) => {
+      const date = new Date(item.date)
+      const getMonthYear = moment(date).month()
+      const getDaysOfMonth = moment(date).daysInMonth()
+      const costAvg = item.projection/getDaysOfMonth
+
+      return { mes: 'mes'+getMonthYear, 'kwh': item.cumulative_consumption, 'costAvgMonth': costAvg}
+    })
+    if (data.length > 0) {
+      temporalMonth = data[0].mes
+      data.map((item, i) => {
+        if(item.mes == temporalMonth) {
+          temporalArrKw.push({kwh: item.kwh, costAvg: item.costAvgMonth})
+        } else {
+          resultMonth[temporalMonth] = temporalArrKw
+          temporalMonth = item.mes
+          temporalArrKw = []
+          temporalArrKw.push({kwh: item.kwh, costAvg: item.costAvgMonth})
+          resultMonth[temporalMonth] = temporalArrKw
+        }
+      })
+    }
+    const getGreatest = kwhary => {
+    var tempGreatest = 0
+    return kwhary.map(kwh => {
+
+      kwh.kwh > tempGreatest ? tempGreatest = { kwh: kwh.kwh, costAvgMonth: kwh.costAvg} : {kwh: 0, costAvg: 0}
+      return tempGreatest
+    })
+  }
+    const resultMonthFiltered = Object.keys(resultMonth).map(monthKey =>{
+      const kwh = getGreatest(resultMonth[monthKey])[0]
+      return { mes: monthKey , kwhMonth: parseInt(kwh.kwh), costAvgMonth: kwh.costAvgMonth}
+    })
+    const dataMonthFilter = resultMonthFiltered.slice(0, 5)
+    return dataMonthFilter.reverse()
+  }
+
+  dataGenWeek () {
+    const {
+      results
+    } = this.state
+    // var data = []
+    var arrWeekEquals = []
+    var temporalWeek = []
+    var temporalArrKw = []
+    var resultWeek = {}
+    var greatest = 0
+    
+    const data = results.map((item, i) => {
+      const date = new Date(item.date)
+      const getWeekYear = moment(date).week()
+
+      return { Sem: 'Sem'+getWeekYear, 'kwh': item.cumulative_consumption}
+    })
+    if(data.length > 0){
+      temporalWeek = data[0].Sem
+      data.map((item, i) => {
+        if(item.Sem == temporalWeek){
+          temporalArrKw.push(item.kwh)
+        } else {
+          resultWeek[temporalWeek] = temporalArrKw
+          temporalWeek = item.Sem
+          temporalArrKw = []
+          temporalArrKw.push(item.kwh)
+          resultWeek[temporalWeek] = temporalArrKw
+        }
+      })
+    }
+    
+    const resultWeekFiltered = Object.keys(resultWeek).map(weekKey =>{
+      const kwh = this.getGreatest(resultWeek[weekKey])[0]
+
+      return { sem: weekKey , kwh: parseInt(kwh)}
+    })
+    const dataWeekFilter = resultWeekFiltered.slice(0, 5)
+    return dataWeekFilter.reverse()
+  }
+  getGreatest(kwhary){
+    var tempGreatest = 0
+    return kwhary.map(kwh => {
+      kwh > tempGreatest ? tempGreatest = kwh : null
+
+      return tempGreatest
+    })
   }
   render () {
     return (
@@ -112,14 +211,9 @@ class Results extends Component {
                   <VictoryChart domainPadding={{x: 40}}>
                     <VictoryBar
                       style={styles.chartFillColor}
-                      data={[
-                        {sem: 'Sem1', 'kw/h': 35},
-                        {sem: 'Sem2', 'kw/h': 50},
-                        {sem: 'Sem3', 'kw/h': 10},
-                        {sem: 'Sem4', 'kw/h': 20}
-                      ]}
+                      data={this.dataGenWeek()}
                       x='sem'
-                      y='kw/h'
+                      y='kwh'
                     />
                   </VictoryChart>
                 </View>
@@ -135,16 +229,9 @@ class Results extends Component {
                   <VictoryChart domainPadding={{x: 40}}>
                     <VictoryBar
                       style={styles.chartFillColor}
-                      data={[
-                        {mes: 'Ene', 'kw/h': 35},
-                        {mes: 'Feb', 'kw/h': 50},
-                        {mes: 'Mar', 'kw/h': 10},
-                        {mes: 'Abr', 'kw/h': 20},
-                        {mes: 'May', 'kw/h': 40},
-                        {mes: 'Jun', 'kw/h': 10},
-                      ]}
+                      data={this.dataGenMonth()}
                       x='mes'
-                      y='kw/h'
+                      y='kwhMonth'
                     />
                   </VictoryChart>
                 </View>
@@ -160,16 +247,9 @@ class Results extends Component {
                   <VictoryChart domainPadding={{x: 40}}>
                     <VictoryBar
                       style={styles.chartFillColor}
-                      data={[
-                        {mes: 'Ene', 'kw/h': 35},
-                        {mes: 'Feb', 'kw/h': 50},
-                        {mes: 'Mar', 'kw/h': 10},
-                        {mes: 'Abr', 'kw/h': 20},
-                        {mes: 'May', 'kw/h': 40},
-                        {mes: 'Jun', 'kw/h': 10, fill: '#000'}
-                      ]}
+                      data={this.dataGenMonth()}
                       x='mes'
-                      y='kw/h'
+                      y='kwhAvgMonth'
                     />
                   </VictoryChart>
                 </View>
