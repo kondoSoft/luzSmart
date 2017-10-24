@@ -61,6 +61,7 @@ class Results extends Component {
     } = this.props
     getRecord(value)
   }
+  // Funcion para generar datos de consumo Diario
   dataGenDaily () {
     const {
       results
@@ -80,6 +81,7 @@ class Results extends Component {
     })
     return data
   }
+  // Funcion para generar datos Consumo Mensual y Promedio de Gasto Mensual
   dataGenMonth(){
     const {
       results
@@ -93,20 +95,22 @@ class Results extends Component {
       const date = new Date(item.date)
       const getMonthYear = moment(date).month()
       const getDaysOfMonth = moment(date).daysInMonth()
-      const costAvg = item.projection/getDaysOfMonth
-
-      return { mes: 'mes'+getMonthYear, 'kwh': item.cumulative_consumption, 'costAvgMonth': costAvg}
+      let costAvg = 0;
+      if(item.projection != 0){
+        costAvg = item.projection/getDaysOfMonth
+      }
+      return { mes: getMonthYear, 'kwh': item.cumulative_consumption, 'costAvgMonth': costAvg}
     })
     if (data.length > 0) {
       temporalMonth = data[0].mes
       data.map((item, i) => {
         if(item.mes == temporalMonth) {
-          temporalArrKw.push({kwh: item.kwh, costAvg: item.costAvgMonth})
+          temporalArrKw.push({mes: item.mes, kwh: item.kwh, costAvg: item.costAvgMonth})
         } else {
           resultMonth[temporalMonth] = temporalArrKw
           temporalMonth = item.mes
           temporalArrKw = []
-          temporalArrKw.push({kwh: item.kwh, costAvg: item.costAvgMonth})
+          temporalArrKw.push({mes: item.mes, kwh: item.kwh, costAvg: item.costAvgMonth})
           resultMonth[temporalMonth] = temporalArrKw
         }
       })
@@ -114,19 +118,26 @@ class Results extends Component {
     const getGreatest = kwhary => {
     var tempGreatest = 0
     return kwhary.map(kwh => {
-
-      kwh.kwh > tempGreatest ? tempGreatest = { kwh: kwh.kwh, costAvgMonth: kwh.costAvg} : {kwh: 0, costAvg: 0}
+      kwh.kwh > tempGreatest ? tempGreatest = { kwh: kwh.kwh, costAvgMonth: kwh.costAvg} : tempGreatest = {kwh: 0, costAvgMonth: 0}
       return tempGreatest
-    })
-  }
-    const resultMonthFiltered = Object.keys(resultMonth).map(monthKey =>{
+      })
+    }
+    const resultMonthFiltered = Object.keys(resultMonth).map((monthKey) =>{
       const kwh = getGreatest(resultMonth[monthKey])[0]
-      return { mes: monthKey , kwhMonth: parseInt(kwh.kwh), costAvgMonth: kwh.costAvgMonth}
+      arrMonth = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
+      return { mes: arrMonth[monthKey] , kwhMonth: parseInt(kwh.kwh), costAvgMonth: kwh.costAvgMonth}
     })
+    console.log(resultMonthFiltered)
     const dataMonthFilter = resultMonthFiltered.slice(0, 5)
-    return dataMonthFilter.reverse()
+    return dataMonthFilter
   }
-
+  // Funcion para generar datos Bimestrasl
+  dataGenBiMonth(){
+    const {
+      results
+    } = this.state
+  }
+  // Funcion para generar datos de consumo por Semana
   dataGenWeek () {
     const {
       results
@@ -249,7 +260,7 @@ class Results extends Component {
                       style={styles.chartFillColor}
                       data={this.dataGenMonth()}
                       x='mes'
-                      y='kwhAvgMonth'
+                      y='costAvgMonth'
                     />
                   </VictoryChart>
                 </View>
@@ -265,14 +276,7 @@ class Results extends Component {
                   <VictoryChart domainPadding={{x: 40}}>
                     <VictoryBar
                       style={styles.chartFillColor}
-                      data={[
-                        {bimes: 'Ene', 'kw/h': 35},
-                        {bimes: 'Mar', 'kw/h': 50},
-                        {bimes: 'May', 'kw/h': 10},
-                        {bimes: 'Jul', 'kw/h': 20},
-                        {bimes: 'Sep', 'kw/h': 40},
-                        {bimes: 'Nov', 'kw/h': 10}
-                      ]}
+                      data={this.dataGenMonth()}
                       x='bimes'
                       y='kw/h'
                     />
