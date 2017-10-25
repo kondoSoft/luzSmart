@@ -68,18 +68,27 @@ class Results extends Component {
     } = this.state
 
     var days = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']
-    var data = []
+    var arrWeek = []
+    var temporalDay = []
+    var temporalArrKw = []
+    var resultDay = {}
+    const data = results.map((item, i) => {
+      const date = new Date(item.date)
+      const getWeek = moment(date).week()
+      
+      return { week: getWeek, item: item}
 
-    days.map((day) => {
-      results.map((item, i) => {
-        if (day === item.day.slice(0, 3)) {
-          data.push({dia: day, 'kw/h': parseInt(item.cumulative_consumption)})
-        } else {
-          data.push({dia: day, 'kw/h': 0})
+    })
+    if (data.length > 0) {
+      temporalDay = data[0].week
+      data.map((item,i) => {
+        if(item.week == temporalDay) {
+          temporalArrKw.push({day: item.item.day, kwh: item.item.daily_consumption.slice(0, 3)})
+          resultDay[temporalDay] = temporalArrKw
         }
       })
-    })
-    return data
+    }
+    return temporalArrKw.reverse()
   }
   // Funcion para generar datos Consumo Mensual y Promedio de Gasto Mensual
   dataGenMonth(){
@@ -106,6 +115,7 @@ class Results extends Component {
       data.map((item, i) => {
         if(item.mes == temporalMonth) {
           temporalArrKw.push({mes: item.mes, kwh: item.kwh, costAvg: item.costAvgMonth})
+          resultMonth[temporalMonth] = temporalArrKw
         } else {
           resultMonth[temporalMonth] = temporalArrKw
           temporalMonth = item.mes
@@ -127,15 +137,78 @@ class Results extends Component {
       arrMonth = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
       return { mes: arrMonth[monthKey] , kwhMonth: parseInt(kwh.kwh), costAvgMonth: kwh.costAvgMonth}
     })
-    console.log(resultMonthFiltered)
+
     const dataMonthFilter = resultMonthFiltered.slice(0, 5)
     return dataMonthFilter
   }
-  // Funcion para generar datos Bimestrasl
-  dataGenBiMonth(){
+
+  // Funcion para promedio mensual
+  dataGenAvgMonth(){
     const {
       results
     } = this.state
+
+    var temporalMonth = []
+    var temporalArrKw = []
+    var resultMonth = {}
+
+    const data = results.map((item, i) => {
+      const date = new Date(item.date)
+      const getMonthYear = moment(date).month()
+      const getDaysOfMonth = moment(date).daysInMonth()
+      let costAvg = 0;
+      if(item.projection != 0){
+        costAvg = item.projection/getDaysOfMonth
+      }
+      return { mes: getMonthYear, 'kwh': item.cumulative_consumption, 'costAvgMonth': costAvg}
+    })
+  }
+  // Funcion para generar datos Bimestrasl
+
+  dataGenYear(){
+    const {
+      results
+    } = this.state
+    var temporalYear = []
+    var temporalArrKw = []
+    var resultYear = {}
+
+    const data = results.map((item, i) => {
+      const date = new Date(item.date)
+      const getYear = moment(date).year()
+
+      return { year: getYear, 'kwh': item.cumulative_consumption}
+    })
+    if (data.length > 0) {
+      temporalYear = data[0].year
+      data.map((item, i) => {
+        
+        if(item.year == temporalYear) {
+          temporalArrKw.push({year: item.year, kwh: item.kwh})
+          resultYear[temporalYear] = temporalArrKw
+        } else {
+          resultYear[temporalYear] = temporalArrKw
+          temporalYear = item.year
+          temporalArrKw = []
+          temporalArrKw.push({year: item.year, kwh: item.kwh})
+          resultYear[temporalYear] = temporalArrKw
+        }
+      })
+    }
+    const getGreatest = kwhary => {
+      var tempGreatest = 0
+      return kwhary.map(kwh => {
+        kwh.kwh > tempGreatest ? tempGreatest = { kwh: kwh.kwh} : tempGreatest = {kwh: 0}
+        return tempGreatest
+        })
+      }
+    const resultYearFiltered = Object.keys(resultYear).map((yearKey) =>{
+      const kwh = getGreatest(resultYear[yearKey])[0]
+
+      return { year: yearKey , kwh: parseInt(kwh.kwh)}
+    })
+    return resultYearFiltered
+
   }
   // Funcion para generar datos de consumo por Semana
   dataGenWeek () {
@@ -182,7 +255,6 @@ class Results extends Component {
     var tempGreatest = 0
     return kwhary.map(kwh => {
       kwh > tempGreatest ? tempGreatest = kwh : null
-
       return tempGreatest
     })
   }
@@ -205,8 +277,8 @@ class Results extends Component {
                     <VictoryBar
                       style={styles.chartFillColor}
                       data={this.dataGenDaily()}
-                      x='dia'
-                      y='kw/h'
+                      x='day'
+                      y='kwh'
                     />
                   </VictoryChart>
                 </View>
@@ -253,56 +325,32 @@ class Results extends Component {
                 </View>
               </Col>
               <Col size={100}>
-                <Text style={styles.chartText}>Gasto Promedio Mensual</Text>
-                <View style={styles.containerCharts}>
-                  <VictoryChart domainPadding={{x: 40}}>
-                    <VictoryBar
-                      style={styles.chartFillColor}
-                      data={this.dataGenMonth()}
-                      x='mes'
-                      y='costAvgMonth'
-                    />
-                  </VictoryChart>
-                </View>
-                <View style={styles.containerExportButton}>
-                  <Button small primary>
-                    <Text>Exportar CSV</Text>
-                  </Button>
-                </View>
-              </Col>
-              <Col size={100}>
-                <Text style={styles.chartText}>Consumo Bimestral</Text>
-                <View style={styles.containerCharts}>
-                  <VictoryChart domainPadding={{x: 40}}>
-                    <VictoryBar
-                      style={styles.chartFillColor}
-                      data={this.dataGenMonth()}
-                      x='bimes'
-                      y='kw/h'
-                    />
-                  </VictoryChart>
-                </View>
-                <View style={styles.containerExportButton}>
-                  <Button small primary>
-                    <Text>Exportar CSV</Text>
-                  </Button>
-                </View>
-              </Col>
-              <Col size={100}>
                 <Text style={styles.chartText}>Consumo Anual</Text>
                 <View style={styles.containerCharts}>
                   <VictoryChart domainPadding={{x: 40}}>
                     <VictoryBar
                       style={styles.chartFillColor}
-                      data={[
-                        {anual: '15', 'kw/h': 35},
-                        {anual: '16', 'kw/h': 50},
-                        {anual: '17', 'kw/h': 10},
-                        {anual: '18', 'kw/h': 20},
-                        {anual: '19', 'kw/h': 40}
-                      ]}
-                      x='anual'
-                      y='kw/h'
+                      data={this.dataGenYear()}
+                      x='year'
+                      y='kwh'
+                    />
+                  </VictoryChart>
+                </View>
+                <View style={styles.containerExportButton}>
+                  <Button small primary>
+                    <Text>Exportar CSV</Text>
+                  </Button>
+                </View>
+              </Col>
+              <Col size={100}>
+                <Text style={styles.chartText}>Gasto Promedio Mensual</Text>
+                <View style={styles.containerCharts}>
+                  <VictoryChart domainPadding={{x: 40}}>
+                    <VictoryBar
+                      style={styles.chartFillColor}
+                      data={this.dataGenAvgMonth()}
+                      x='mes'
+                      y='costAvgMonth'
                     />
                   </VictoryChart>
                 </View>
@@ -318,12 +366,6 @@ class Results extends Component {
                   <VictoryChart domainPadding={{x: 40}} domain={[0, 6]} >
                     <VictoryGroup
                       offset={10}
-                      // data={[
-                      //   {mes: 'Ene', y: 1},
-                      //   {mes: 'Feb', y: 2},
-                      //   {mes: 'Mar', y: 5}
-                      // ]}
-                      // x='mes'
                     >
                       <VictoryBar
                         style={styles.chartFillConsumo}

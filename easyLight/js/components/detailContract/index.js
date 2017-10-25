@@ -191,7 +191,7 @@ class DetailContract extends Component {
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
-                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} record={this.props.records.reverse()[i]} consumoPromedio={costProject} countsReceipts={this.state.onlyOneBill}/>}
+                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} record={this.props.records[i]} consumoPromedio={costProject} countsReceipts={this.state.onlyOneBill}/>}
                     // component={<ItemComponent data={item} status={status} ratePeriodCost={rate_period} consumoPromedio={costProject}/>}
                     dataAccordionContract={this.state.contract}
                     // dataAccordionContract={this.props.navigation.state.params.contract}
@@ -240,7 +240,6 @@ class ItemComponent extends Component{
     const receipt = this.props.data;
     // Declaracion de KwH proyectado
     const { amount_payable } = this.state
-
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const splitRange = receipt.payday_limit.split('-',)
     const date = new Date(receipt.payday_limit.replace(/-/g, '\/'))

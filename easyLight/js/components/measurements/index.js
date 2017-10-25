@@ -49,6 +49,7 @@ class Measurements extends Component {
       record: {
 
       },
+      projected_payment: 0,
 
     }
     this.contract_id
@@ -62,6 +63,13 @@ class Measurements extends Component {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentWillReceiveProps (nextProps) {
+
+    if(nextProps.record[0]){
+      this.setState({
+        projected_payment: nextProps.record[0].projected_payment
+      })
+    }
+
     arrayContract = []
     nextProps.screenProps.contracts.map((item, i) => {
       if (item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1) {
@@ -211,11 +219,9 @@ class Measurements extends Component {
   // Funcion rango de fecha
   setRangeDate (firstMonth, finalMonth) {
     const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-    return rangeDate = arrMonth[firstMonth] + '-' + arrMonth[finalMonth]
+    return rasngeDate = arrMonth[firstMonth] + '-' + arrMonth[finalMonth]
   }
   getTotalPayment () {
-    // console.log('rate_period', this.props.rate_period)
-    // console.log('this.rate_contract', this.rate_contract)
     if (this.props.rate_period.length > 0) {
       if (this.rate_contract === this.props.rate_period[0].name_rate) {
         this.subTotal = costProject(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading)
@@ -285,7 +291,6 @@ class Measurements extends Component {
     const finalMonth = new Date(payday_limit)
     const firstMonth = new Date(finalMonth).setDate(new Date(finalMonth).getDate() - count_days)
     this.setRangeDate(new Date(firstMonth).getMonth(), finalMonth.getMonth())
-
     // Rango automatico del periodo
     const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
     // Select Contract
@@ -300,7 +305,7 @@ class Measurements extends Component {
             <Row size={4} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
               <View style={styles.grid__row__top__view}>
-                <Text>{(this.total != undefined) ? `$${this.total.toLocaleString()}` : `$ 0`}</Text>
+                <Text>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
                 <Text>Proyectado</Text>
               </View>
             </Row>
@@ -393,6 +398,7 @@ function bindAction (dispatch) {
 const mapStateToProps = state => ({
   token: state.user.token,
   rate_period: state.list_rate.rate_period,
-  contracts: state.list_contracts.contracts
+  contracts: state.list_contracts.contracts,
+  record: state.list_records.results,
 })
 export default connect(mapStateToProps, bindAction)(Measurements)
