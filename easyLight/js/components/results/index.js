@@ -17,7 +17,8 @@ import {connect} from 'react-redux'
 import {
   VictoryChart,
   VictoryBar,
-  VictoryGroup
+  VictoryGroup,
+  VictoryLine,
 } from 'victory-native'
 import Swiper from 'react-native-swiper'
 import { Select, Option } from 'react-native-select-list'
@@ -134,7 +135,7 @@ class Results extends Component {
     }
     const resultMonthFiltered = Object.keys(resultMonth).map((monthKey) =>{
       const kwh = getGreatest(resultMonth[monthKey])[0]
-      arrMonth = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
+      const arrMonth = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
       return { mes: arrMonth[monthKey] , kwhMonth: parseInt(kwh.kwh), costAvgMonth: kwh.costAvgMonth}
     })
 
@@ -148,21 +149,39 @@ class Results extends Component {
       results
     } = this.state
 
-    var temporalMonth = []
-    var temporalArrKw = []
-    var resultMonth = {}
+    var arrMonthFinished = []
+    var arrStatusFalse = []
 
-    const data = results.map((item, i) => {
+    results.map((item, i) => {
       const date = new Date(item.date)
       const getMonthYear = moment(date).month()
+      const arrMonth = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
       const getDaysOfMonth = moment(date).daysInMonth()
+     
       let costAvg = 0;
       if(item.projection != 0){
         costAvg = item.projection/getDaysOfMonth
       }
-      return { mes: getMonthYear, 'kwh': item.cumulative_consumption, 'costAvgMonth': costAvg}
+      console.log('costAvg', costAvg)
+
+      if(item.status){
+        arrMonthFinished.push({month: arrMonth[getMonthYear], cost: parseInt(item.amount_payable), status: item.status, label: item.amount_payable})
+      } else {
+        arrStatusFalse.push(item)
+        const lastItem = arrStatusFalse[0]
+        console.log(arrStatusFalse)
+        arrMonthFinished.map((item, i)=>{
+          if(item.status === false){
+            arrStatusFalse.pop()
+          }
+        })
+        arrMonthFinished.pop()
+        arrMonthFinished.push({month: arrMonth[getMonthYear], cost: Math.round(lastItem.projected_payment), status: item.status, label: lastItem.projected_payment.slice(0,5), fill: '#069b1c'})
+      }
     })
 
+    console.log('arr', arrMonthFinished)
+    return arrMonthFinished.reverse()
   }
   // Funcion para generar datos Bimestrasl
 
@@ -292,7 +311,7 @@ class Results extends Component {
               <Col size={100}>
                 <Text style={styles.chartText}>Consumo Semanal</Text>
                 <View style={styles.containerCharts}>
-                  <VictoryChart domainPadding={{x: 40}}>
+                  <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}}>
                     <VictoryBar
                       style={styles.chartFillColor}
                       data={this.dataGenWeek()}
@@ -310,7 +329,7 @@ class Results extends Component {
               <Col size={100}>
                 <Text style={styles.chartText}>Consumo Mensual</Text>
                 <View style={styles.containerCharts}>
-                  <VictoryChart domainPadding={{x: 40}}>
+                  <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}}>
                     <VictoryBar
                       style={styles.chartFillColor}
                       data={this.dataGenMonth()}
@@ -328,7 +347,7 @@ class Results extends Component {
               <Col size={100}>
                 <Text style={styles.chartText}>Consumo Anual</Text>
                 <View style={styles.containerCharts}>
-                  <VictoryChart domainPadding={{x: 40}}>
+                  <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}}>
                     <VictoryBar
                       style={styles.chartFillColor}
                       data={this.dataGenYear()}
@@ -344,16 +363,31 @@ class Results extends Component {
                 </View>
               </Col>
               <Col size={100}>
-                <Text style={styles.chartText}>Gasto Promedio Mensual</Text>
+                <Text style={styles.chartText}>Gasto Promedio Por Periodo</Text>
                 <View style={styles.containerCharts}>
-                  <VictoryChart domainPadding={{x: 40}}>
+                  <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}}>
+                    <VictoryGroup >
+                      <VictoryLine
+                        data={this.dataGenAvgMonth()}
+                        x='month'
+                        y='cost'
+                      />
+                      <VictoryBar
+                        style={styles.chartFillColor}
+                        data={this.dataGenAvgMonth()}
+                        x='month'
+                        y='cost'
+                      />
+                    </VictoryGroup>
+                  </VictoryChart>
+                  {/*<VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}}>
                     <VictoryBar
                       style={styles.chartFillColor}
                       data={this.dataGenAvgMonth()}
-                      x='mes'
-                      y='costAvgMonth'
+                      x='month'
+                      y='cost'
                     />
-                  </VictoryChart>
+                  </VictoryChart>*/}
                 </View>
                 <View style={styles.containerExportButton}>
                   <Button small primary>

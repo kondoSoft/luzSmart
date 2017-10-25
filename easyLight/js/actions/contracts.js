@@ -2,8 +2,8 @@ import type { Action } from './types';
 import { getContract } from './list_states_mx';
 
 
-// const endPoint = 'http://138.68.49.119:8080';
-const endPoint = 'http://127.0.0.1:8000';
+const endPoint = 'http://138.68.49.119:8080';
+// const endPoint = 'http://127.0.0.1:8000';
 
 
 export const PRINT_RECORD = 'PRINT_RECORD';
@@ -134,13 +134,14 @@ export function patchNewReceipt(data, id, token):Action{
   }
 }
 export function postRecord(list, token):Action{
+  
   var status;
   if(list.record.status){
     status= true
   }else{
     status= false
   }
-  console.log('listPost',status)
+  console.log('listPost',list)
   return dispatch => {
     return fetch(endPoint+'/records/',{
       method: 'POST',
