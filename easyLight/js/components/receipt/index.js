@@ -144,7 +144,7 @@ class Receipt extends Component {
     //Dia de la semana
     const weekday = getWeekday(paydayLimit)
     // Consumo diario
-    const { current_reading } = this.state
+    const { current_reading, previous_reading} = this.state
     this.setState({
       record:{
         contract_id: this.state.contract_id,
@@ -157,7 +157,7 @@ class Receipt extends Component {
         days_elapsed: 0,
         days_totals: 0,
         daily_consumption: 0,
-        cumulative_consumption: 0,
+        cumulative_consumption: current_reading - previous_reading,
         projected_payment: this.state.amount_payable,
         amount_payable: this.state.amount_payable,
         average_global: 0,

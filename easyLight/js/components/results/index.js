@@ -162,6 +162,7 @@ class Results extends Component {
       }
       return { mes: getMonthYear, 'kwh': item.cumulative_consumption, 'costAvgMonth': costAvg}
     })
+
   }
   // Funcion para generar datos Bimestrasl
 
