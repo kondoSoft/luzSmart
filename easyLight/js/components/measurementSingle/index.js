@@ -75,13 +75,12 @@ class MeasurementSingle extends Component {
     this.props.getRecord(this.contract_id)
   }
   componentWillReceiveProps(nextProps){
-    nextProps.record.map((item,i) => {
-      if(i === nextProps.record.length-1){
-        this.setState({
-          projected_payment: item.projected_payment
-        })
-      }
-    })
+    if(nextProps.record[0]){
+      this.setState({
+        projected_payment: nextProps.record[0].projected_payment
+      })
+    }
+
 
     nextProps.screenProps.contracts.map((item, i) => {
       if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){

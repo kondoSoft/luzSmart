@@ -144,7 +144,7 @@ class Receipt extends Component {
     //Dia de la semana
     const weekday = getWeekday(paydayLimit)
     // Consumo diario
-    const { current_reading } = this.state
+    const { current_reading, previous_reading} = this.state
     this.setState({
       record:{
         contract_id: this.state.contract_id,
@@ -157,11 +157,14 @@ class Receipt extends Component {
         days_elapsed: 0,
         days_totals: 0,
         daily_consumption: 0,
-        cumulative_consumption: 0,
-        projected_payment: 0,
+        cumulative_consumption: current_reading - previous_reading,
+        projected_payment: this.state.amount_payable,
+        amount_payable: this.state.amount_payable,
         average_global: 0,
         rest_day: 0,
-        projection: 0
+        projection: 0,
+        status: true,
+
       }
     })
   }
@@ -199,7 +202,6 @@ class Receipt extends Component {
   }
   setRecordState(receipt) {
     const ratePeriod = this.getRate(receipt)
-    console.log('me ejecuto', ratePeriod)
     const lastRecord = this.props.record[this.props.record.length - 1]
     const data = {
       contract_id: this.state.contract_id,
@@ -214,6 +216,7 @@ class Receipt extends Component {
     this.setState({
       record,
       ratePeriod: ratePeriod,
+      status: true,
     })
   }
   sendData(contract) {
@@ -239,7 +242,6 @@ class Receipt extends Component {
             this.setRecord()
             resolve(true)
           })
-
           RecordPromise.then((result) => {
             this.props.postReceipt(this.state, this.props.screenProps.token)
             this.props.postRecord(this.state, this.props.screenProps.token)
@@ -247,6 +249,8 @@ class Receipt extends Component {
         }
       }
     ) 
+      
+
       //Condicion para show alert en caso de historial ya registrado.
       this.showAlert();
     }

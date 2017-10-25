@@ -72,7 +72,8 @@ export function postReceipt(list, token):Action{
       })
     })
     .then(res => {return res.json()})
-    .then(res => dispatch(postProjectReceipt(res, token)))
+    .then(res => {
+      dispatch(postProjectReceipt(res, token))})
     .catch(err => console.log(err))
   }
 }
@@ -133,6 +134,13 @@ export function patchNewReceipt(data, id, token):Action{
   }
 }
 export function postRecord(list, token):Action{
+  var status;
+  if(list.record.status){
+    status= true
+  }else{
+    status= false
+  }
+  console.log('listPost',status)
   return dispatch => {
     return fetch(endPoint+'/records/',{
       method: 'POST',
@@ -156,15 +164,17 @@ export function postRecord(list, token):Action{
         rest_day: list.record.rest_day,
         projection: list.record.projection,
         projected_payment: list.record.projected_payment,
+        amount_payable: list.record.amount_payable,
         contracts: list.record.contract_id,
+        status: status
       })
     })
     .then(res => {return res.json()})
+    .then(res => {console.log('postRecord',res)})
     .catch(err => console.log(err))
   }
 }
 export function putRecord(list, token):Action{
-  console.log('list',list)
   return dispatch => {
     return fetch(endPoint+'/records/?contract_id=' + list.contract_id + '&kwh=' + list.current_reading,{
       method: 'PUT',
@@ -175,10 +185,14 @@ export function putRecord(list, token):Action{
      },
      body: JSON.stringify({
         date: list.payday_limit,
+        datetime: list.record.datetime,
         daily_reading: list.current_reading,
         rest_day: list.record.rest_day,
         projected_payment: list.amount_payable,
+        amount_payable: list.amount_payable,
         contracts: list.contract_id,
+        ratePeriod: list.ratePeriod,
+        status: list.status
       })
     })
     .then(res => {return res.json()})

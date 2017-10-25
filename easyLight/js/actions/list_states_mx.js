@@ -181,7 +181,6 @@ export function deleteContract(id, token, navigation):Action{
         'Authorization': 'Token '+ token
       }
     })
-    // .then(res => { return res.json()})
     .then(res => { dispatch(getContract(token, navigation)) })
     .catch(err => console.log(err))
   }
