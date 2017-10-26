@@ -151,12 +151,15 @@ class Results extends Component {
     var arrMonthFinished = []
     var arrStatusFalse = []
 
+
     //Costos de datos pagados y map de barra
+
     results.map((item, i) => {
       const date = new Date(item.date)
       const getMonthYear = moment(date).month()
       const arrMonth = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
       const getDaysOfMonth = moment(date).daysInMonth()
+     
       let costAvg = 0;
       if(item.projection != 0){
 
@@ -164,17 +167,20 @@ class Results extends Component {
       }else{
         costAvg = item.amount_payable
       }
+
       if(item.status){
         arrMonthFinished.push({month: arrMonth[getMonthYear], cost: parseInt(item.amount_payable), costavg: costAvg, status: item.status, label: item.amount_payable})
       } else {
         arrStatusFalse.push(item)
         const lastItem = arrStatusFalse[0]
+
         arrMonthFinished.map((item, i)=>{
           if(item.status === false){
             arrStatusFalse.pop()
           }
         })
         arrMonthFinished.pop()
+ tuesdayCommit
         arrMonthFinished.push({month: arrMonth[getMonthYear], cost: Math.round(lastItem.projected_payment), costavg: costAvg , status: item.status, label: lastItem.projected_payment.slice(0,5), fill: '#069b1c'})
       }
 
@@ -228,6 +234,7 @@ class Results extends Component {
     })
 
     return printGraph.reverse().slice(0,5)
+
   }
   // Funcion para generar datos por años
 
