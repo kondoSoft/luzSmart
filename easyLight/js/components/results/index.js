@@ -159,7 +159,7 @@ class Results extends Component {
       const getMonthYear = moment(date).month()
       const arrMonth = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
       const getDaysOfMonth = moment(date).daysInMonth()
-     
+
       let costAvg = 0;
       if(item.projection != 0){
 
@@ -180,7 +180,7 @@ class Results extends Component {
           }
         })
         arrMonthFinished.pop()
- tuesdayCommit
+ 
         arrMonthFinished.push({month: arrMonth[getMonthYear], cost: Math.round(lastItem.projected_payment), costavg: costAvg , status: item.status, label: lastItem.projected_payment.slice(0,5), fill: '#069b1c'})
       }
 
