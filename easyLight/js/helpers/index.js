@@ -139,12 +139,14 @@ const setRecord = data => {
   const totalDays = getFinalDate(typePayment, paydayLimit)
   // Horas transcurridas
   const hoursElapsed = hoursTotals - lastRecord.hours_totals
+
   // Dias transcurridos
   const diffDays = getDayInDates(paydayLimit, date)
   // Dias Restantes
   const restDay = totalDays - Math.ceil(diffDays)
   // Dias transcurridos desde el ultimo record
   const diffDaysLastRecord = diffDays - lastRecord.days_totals
+  console.log('diffDaysLastRecord', diffDaysLastRecord);
   // Consumo diario
   const { current_reading_updated, current_reading } = data.itemReceipt
   // Obtener valor del dia

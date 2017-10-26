@@ -21,7 +21,7 @@ import styles from './styles'
 import AnimatedView from '../animatedView/index'
 import FabButton from '../fabButton'
 import { patchReceipt, getRatePeriod } from '../../actions/contracts'
-import { getIVA, costProject } from '../../helpers'
+import { getIVA, costProject, setRecord } from '../../helpers'
 import { captureScreen } from 'react-native-view-shot'
 // import { ShareDialog } from 'react-native-fbsdk';
 
@@ -162,6 +162,7 @@ class Measurements extends Component {
 
   //PATCH Receipt
   sendCurrentData(id){
+    
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading) {
         this.props.patchReceipt(this.state.current_data, this.props.token, id, this.props.navigation)
         this.setState({

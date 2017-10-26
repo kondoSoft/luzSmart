@@ -250,7 +250,7 @@ class Results extends Component {
       const date = new Date(item.date)
       const getYear = moment(date).year()
 
-      return { year: getYear, 'kwh': item.cumulative_consumption}
+      return { year: getYear, 'kwh': item.daily_reading}
     })
     if (data.length > 0) {
       temporalYear = data[0].year
@@ -268,18 +268,14 @@ class Results extends Component {
         }
       })
     }
-    console.log(resultYear);
-    const getGreatest = kwhary => {
-      var tempGreatest = 0
-      return kwhary.map(kwh => {
-        kwh.kwh > tempGreatest ? tempGreatest = { kwh: kwh.kwh} : tempGreatest = {kwh: 0}
-        return tempGreatest
-        })
+
+    const getResult = kwhary => {
+      const kwh = kwhary[0].kwh - kwhary[kwhary.length-1].kwh
+      return { kwh: kwh }
       }
     const resultYearFiltered = Object.keys(resultYear).map((yearKey) =>{
 
-      const kwh = getGreatest(resultYear[yearKey])[0]
-
+      const kwh = getResult(resultYear[yearKey])
       return { year: yearKey , kwh: parseInt(kwh.kwh), label:kwh.kwh}
     })
 
