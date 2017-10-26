@@ -168,7 +168,6 @@ class Measurements extends Component {
           kwhValidation: require('../../../images/succes.png')
         },()=>{
          this.changeCheckedData()
-         this.getTotalPayment()
          this.forceUpdate()
         })
     }else{
@@ -216,19 +215,7 @@ class Measurements extends Component {
       this.setRecord()
     })
   }
-  // Funcion rango de fecha
-  setRangeDate (firstMonth, finalMonth) {
-    const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-    return rasngeDate = arrMonth[firstMonth] + '-' + arrMonth[finalMonth]
-  }
-  getTotalPayment () {
-    if (this.props.rate_period.length > 0) {
-      if (this.rate_contract === this.props.rate_period[0].name_rate) {
-        this.subTotal = costProject(this.props.rate_period,this.state.itemReceipt.current_reading - this.state.itemReceipt.previous_reading)
-        this.total = getIVA(this.subTotal);
-      }
-    }
-  }
+
   selectContracts (contracts) {
     if (contracts.length === 1) {
       return <Text>#{contracts[0].number_contract}</Text>
@@ -278,7 +265,6 @@ class Measurements extends Component {
   }
 
   render () {
-    this.getTotalPayment()
     const { navigation } = this.props
     // Contrato que viene desde la pantalla recibos
     const { contracts } = this.props.screenProps
@@ -287,10 +273,6 @@ class Measurements extends Component {
     } else {
       count_days = 30
     }
-    const payday_limit = this.state.itemReceipt.payday_limit.replace(/-/g, '\/')
-    const finalMonth = new Date(payday_limit)
-    const firstMonth = new Date(finalMonth).setDate(new Date(finalMonth).getDate() - count_days)
-    this.setRangeDate(new Date(firstMonth).getMonth(), finalMonth.getMonth())
     // Rango automatico del periodo
     const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
     // Select Contract
