@@ -79,7 +79,7 @@ const getHoursTotals = (timeInitial, timeFinal) => {
   return diffHour
 }
 const getTotalDays = (timeInitial, timeFinal) => {
-  
+
   return getHoursTotals(timeInitial, timeFinal) / 24
 }
 const getFinalDate = (typePayment, paydayLimit) => {
@@ -87,7 +87,7 @@ const getFinalDate = (typePayment, paydayLimit) => {
   let newMonth = paydayLimit.getMonth()+MonthToPlus
   let newDate = new Date(paydayLimit.getFullYear(), newMonth, paydayLimit.getDate())
   let getDays = getTotalDays(paydayLimit, newDate )
-  
+
   return Math.ceil(getDays)
 }
 
@@ -108,7 +108,7 @@ const getRangeMonth = (typePayment, paydayLimit) => {
   let initialDate = new Date(paydayLimit)
   let diffDate = initialDate.getMonth()+MonthToPlus
   let finalDate = new Date(initialDate.getFullYear(), diffDate, initialDate.getDate())
-  let rangeDate =  arrMonth[initialDate.getMonth()] + '-' + arrMonth[finalDate.getMonth()] 
+  let rangeDate =  arrMonth[initialDate.getMonth()] + '-' + arrMonth[finalDate.getMonth()]
 
   return rangeDate
 }
@@ -120,10 +120,11 @@ const getMinimunYears = year => {
 const setRecord = data => {
   // Obtiene el ultimo dato actualizado
   const lastRecord = data.lastRecord
+  const amount_payable = data.amount_payable
   //Fecha de actualizacion de record
-  const date = new Date()    
+  const date = new Date()
   const year = date.getFullYear();
-  const month = date.getMonth()+1; 
+  const month = date.getMonth()+1;
   const day = date.getDate();
   const dateFormat = year + '-' + month + '-' + day
   //Dia de la semana
@@ -171,6 +172,7 @@ const setRecord = data => {
     average_global: average,
     rest_day: restDay,
     projection: projection,
+    amount_payable: amount_payable,
   }
   return record
 

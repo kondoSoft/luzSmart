@@ -21,7 +21,7 @@ import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
 import { patchReceipt, getRatePeriod, postRecord, getRecord } from '../../actions/contracts'
-import { 
+import {
   getRangeMonth,
   setRecord,
 } from '../../helpers';
@@ -130,7 +130,7 @@ class MeasurementSingle extends Component {
               period: this.state.itemReceipt.period,
               amount_payable: this.state.itemReceipt.amount_payable,
             },
-            
+
           })
         }
       }
@@ -172,6 +172,7 @@ class MeasurementSingle extends Component {
       type_payment: arrayContract[0].type_payment,
       current_data: this.state.current_data,
       ratePeriod: ratePeriod,
+      amount_payable: 0,
     }
     const record = setRecord(data)
     this.setState({

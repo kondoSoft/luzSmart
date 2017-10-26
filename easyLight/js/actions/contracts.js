@@ -140,7 +140,7 @@ export function postRecord(list, token):Action{
   }else{
     status= false
   }
-  console.log('listPost',status)
+  console.log('listPost',list)
   return dispatch => {
     return fetch(endPoint+'/records/',{
       method: 'POST',
