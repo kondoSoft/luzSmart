@@ -180,7 +180,7 @@ class Results extends Component {
           }
         })
         arrMonthFinished.pop()
- 
+
         arrMonthFinished.push({month: arrMonth[getMonthYear], cost: Math.round(lastItem.projected_payment), costavg: costAvg , status: item.status, label: lastItem.projected_payment.slice(0,5), fill: '#069b1c'})
       }
 
@@ -229,8 +229,15 @@ class Results extends Component {
 
     //Array para imprimir la grafica con costo promedio
     const printGraph = mapKeyMonth.map((item, i) => {
-      (item.status === false) ? fill = '#069b1c' : fill = "darkred"
-      return { month: item.month, cost: item.cost, promCost:  parseInt(promCost.promCost), status: item.status, fill: fill}
+      let avgCost;
+      if (promCost != undefined){
+        avgCost = promCost
+      }else{
+        avgCost = {promCost: '0'}
+      }
+      console.log(avgCost);
+      (item.status === false) ? fill = '#069b1c' : fill = "red"
+      return { month: item.month, cost: item.cost, promCost:  parseInt(avgCost.promCost), status: item.status, fill: fill}
     })
 
     return printGraph.reverse().slice(0,5)
@@ -330,7 +337,14 @@ class Results extends Component {
       return tempGreatest
     })
   }
+
   render () {
+    const arrMonthAvg = this.dataGenAvgMonth().map((item,i)=>{
+      console.log(item.month)
+      return item.month
+
+    })
+    console.log(arrMonthAvg);
     return (
       <Container>
         {/* <Header title='Resultados' navigation={this.props.navigation}/> */}
@@ -421,7 +435,7 @@ class Results extends Component {
               <Col size={100}>
                 <Text style={styles.chartText}>Gasto Promedio Por Periodo</Text>
                 <View style={styles.containerCharts}>
-                  <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domain={{ x: [0, 12], y: [0, 1000] }} domainPadding={{x: 50, y:40}} size={4}>
+                  <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domain={{ x: [0, 6], y: [0, 1000] }} domainPadding={{x: 50, y:40}} size={4}>
                     <VictoryGroup >
 
                       <VictoryBar
@@ -429,18 +443,18 @@ class Results extends Component {
                         data={this.dataGenAvgMonth()}
                         x='month'
                         y='cost'
-                        categories={{
-                          x: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
-                        }}
+                        // categories={{
+                        //   x: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
+                        // }}
+                        categories={{x: arrMonthAvg}}
                       />
                       <VictoryLine
                         data={this.dataGenAvgMonth()}
                         x='month'
                         y='promCost'
                         labels={(datum) => datum.y}
-                        categories={{
-                          x: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
-                        }}
+                        categories={{x: arrMonthAvg}}
+
                       />
                     </VictoryGroup>
                   </VictoryChart>
