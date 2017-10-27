@@ -162,6 +162,8 @@ class MeasurementSingle extends Component {
   setRecordState(){
     const ratePeriod = this.getRate()
     // Obtiene el ultimo dato actualizado
+    // const lastRecord = this.propsNextRecords[0]
+    // 
     const lastRecord = this.propsNextRecords[this.propsNextRecords.length-1]
     // Se obtiene de nuevo Record
     this.props.getRecord(this.contract_id)
@@ -172,6 +174,7 @@ class MeasurementSingle extends Component {
       type_payment: arrayContract[0].type_payment,
       current_data: this.state.current_data,
       ratePeriod: ratePeriod,
+      amount_payable: 0,
     }
     const record = setRecord(data)
     this.setState({

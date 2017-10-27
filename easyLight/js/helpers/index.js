@@ -120,6 +120,7 @@ const getMinimunYears = year => {
 const setRecord = data => {
   // Obtiene el ultimo dato actualizado
   const lastRecord = data.lastRecord
+  const amount_payable = data.amount_payable
   //Fecha de actualizacion de record
   const date = new Date()    
   const year = date.getFullYear();
@@ -171,6 +172,7 @@ const setRecord = data => {
     average_global: average,
     rest_day: restDay,
     projection: projection,
+    amount_payable: amount_payable,
   }
   return record
 
