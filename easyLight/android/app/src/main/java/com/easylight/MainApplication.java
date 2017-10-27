@@ -43,6 +43,11 @@ public class MainApplication extends Application implements ReactApplication {
             new CodePush(null, getApplicationContext(), BuildConfig.DEBUG)
       );
     }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
   };
 
   @Override

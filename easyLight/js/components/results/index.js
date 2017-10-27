@@ -77,7 +77,7 @@ class Results extends Component {
     const data = results.map((item, i) => {
       const date = new Date(item.date)
       const getWeek = moment(date).week()
-      
+
       return { week: getWeek, item: item}
 
     })
@@ -149,7 +149,6 @@ class Results extends Component {
     const {
       results
     } = this.state
-
     var arrMonthFinished = []
     var arrStatusFalse = []
     //Costos de datos pagados y map de barra
@@ -158,11 +157,14 @@ class Results extends Component {
       const getMonthYear = moment(date).month()
       const arrMonth = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
       const getDaysOfMonth = moment(date).daysInMonth()
+
       let costAvg = 0;
       if(item.projection != 0){
+
         costAvg = item.projection/getDaysOfMonth
       }else{
         costAvg = item.amount_payable
+
     }
 
     if(item.status){
@@ -180,6 +182,7 @@ class Results extends Component {
 
       arrMonthFinished.push({month: arrMonth[getMonthYear], cost: Math.round(lastItem.projected_payment), costavg: costAvg , status: item.status, label: lastItem.projected_payment.slice(0,5), fill: '#069b1c'})
       }
+
     })
     // se ańade mapeo de barra mas promedio de grafica en linea
     var sumArr = [];
@@ -236,6 +239,36 @@ class Results extends Component {
       })
     return printGraph.reverse().slice(0,5)
 
+    const greatestArrTotal = itemSumTotal =>{
+      var tempGreatest = 0
+      return itemSumTotal.map(cost => {
+        cost > tempGreatest ? tempGreatest = cost : null
+        return tempGreatest
+      })
+    }
+    const valueFinal = greatestArrTotal(tempSumArrTotal)[0]
+
+    sumTotal = valueFinal + valueCostFalse
+    if(sumTotal){
+      divForAvg = (sumTotal / arrMonthFinished.length)
+      promCost = { promCost: divForAvg.toFixed(2)}
+    }
+
+    //Array para imprimir la grafica con costo promedio
+    const printGraph = mapKeyMonth.map((item, i) => {
+      let avgCost;
+      if (promCost != undefined){
+        avgCost = promCost
+      }else{
+        avgCost = {promCost: '0'}
+      }
+      console.log(avgCost);
+      (item.status === false) ? fill = '#069b1c' : fill = "red"
+      return { month: item.month, cost: item.cost, promCost:  parseInt(avgCost.promCost), status: item.status, fill: fill}
+    })
+
+    return printGraph.reverse().slice(0,5)
+
   }
   // Funcion para generar datos por años
 
@@ -256,7 +289,7 @@ class Results extends Component {
     if (data.length > 0) {
       temporalYear = data[0].year
       data.map((item, i) => {
-        
+
         if(item.year == temporalYear) {
           temporalArrKw.push({year: item.year, kwh: item.kwh})
           resultYear[temporalYear] = temporalArrKw
@@ -269,16 +302,17 @@ class Results extends Component {
         }
       })
     }
+
     const getResult = kwhary => {
       const kwh = kwhary[0].kwh - kwhary[kwhary.length-1].kwh
       return { kwh: kwh }
       }
     const resultYearFiltered = Object.keys(resultYear).map((yearKey) =>{
+
       const kwh = getResult(resultYear[yearKey])
       return { year: yearKey , kwh: parseInt(kwh.kwh), label:kwh.kwh}
     })
     return resultYearFiltered
-
   }
   // Funcion para generar datos de consumo por Semana
   dataGenWeek () {
@@ -291,7 +325,7 @@ class Results extends Component {
     var temporalArrKw = []
     var resultWeek = {}
     var greatest = 0
-    
+
     const data = results.map((item, i) => {
       const date = new Date(item.date)
       const getWeekYear = moment(date).week()
@@ -312,7 +346,7 @@ class Results extends Component {
         }
       })
     }
-    
+
     const resultWeekFiltered = Object.keys(resultWeek).map(weekKey =>{
       const kwh = this.getGreatest(resultWeek[weekKey])[0]
 
@@ -328,6 +362,7 @@ class Results extends Component {
       return tempGreatest
     })
   }
+
   render () {
     const arrMonthAvg = this.dataGenAvgMonth().map((item,i)=>{
       console.log(item.month)
@@ -348,7 +383,6 @@ class Results extends Component {
               <Col size={100}>
                 <Text style={styles.chartText}>Consumo diario</Text>
                 <View style={styles.containerCharts}>
-                 
                 </View>
                 <View style={styles.containerExportButton}>
                   <Button small primary>
@@ -401,6 +435,7 @@ class Results extends Component {
                       data={this.dataGenYear()}
                       x='year'
                       y='kwh'
+
                     />
                   </VictoryChart>
                 </View>
@@ -420,17 +455,16 @@ class Results extends Component {
                         data={this.dataGenAvgMonth()}
                         x='month'
                         y='cost'
-                        // categories={{
-                        //   x: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
-                        // }}
-                        // categories={{x: arrMonthAvg}}
+
+                        categories={{x: arrMonthAvg}}
+
                       />
                       <VictoryLine
                         data={this.dataGenAvgMonth()}
                         x='month'
                         y='promCost'
                         labels={(datum) => datum.y}
-                        // categories={{x: arrMonthAvg}}
+                        categories={{x: arrMonthAvg}}
 
                       />
                     </VictoryGroup>
@@ -446,6 +480,8 @@ class Results extends Component {
                 <Text style={styles.chartText}>Consumo y Ahorro</Text>
                 <View style={styles.containerCharts}>
                    {/* <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}} domain={[0, 6]} >                    <VictoryGroup
+
+
                       offset={10}
                     >
                       <VictoryBar

@@ -79,7 +79,7 @@ const getHoursTotals = (timeInitial, timeFinal) => {
   return diffHour
 }
 const getTotalDays = (timeInitial, timeFinal) => {
-  
+
   return getHoursTotals(timeInitial, timeFinal) / 24
 }
 const getFinalDate = (typePayment, paydayLimit) => {
@@ -87,7 +87,7 @@ const getFinalDate = (typePayment, paydayLimit) => {
   let newMonth = paydayLimit.getMonth()+MonthToPlus
   let newDate = new Date(paydayLimit.getFullYear(), newMonth, paydayLimit.getDate())
   let getDays = getTotalDays(paydayLimit, newDate )
-  
+
   return Math.ceil(getDays)
 }
 
@@ -108,7 +108,7 @@ const getRangeMonth = (typePayment, paydayLimit) => {
   let initialDate = new Date(paydayLimit)
   let diffDate = initialDate.getMonth()+MonthToPlus
   let finalDate = new Date(initialDate.getFullYear(), diffDate, initialDate.getDate())
-  let rangeDate =  arrMonth[initialDate.getMonth()] + '-' + arrMonth[finalDate.getMonth()] 
+  let rangeDate =  arrMonth[initialDate.getMonth()] + '-' + arrMonth[finalDate.getMonth()]
 
   return rangeDate
 }
@@ -122,9 +122,9 @@ const setRecord = data => {
   const lastRecord = data.lastRecord
   const amount_payable = data.amount_payable
   //Fecha de actualizacion de record
-  const date = new Date()    
+  const date = new Date()
   const year = date.getFullYear();
-  const month = date.getMonth()+1; 
+  const month = date.getMonth()+1;
   const day = date.getDate();
   const dateFormat = year + '-' + month + '-' + day
   //Dia de la semana
@@ -139,12 +139,14 @@ const setRecord = data => {
   const totalDays = getFinalDate(typePayment, paydayLimit)
   // Horas transcurridas
   const hoursElapsed = hoursTotals - lastRecord.hours_totals
+
   // Dias transcurridos
   const diffDays = getDayInDates(paydayLimit, date)
   // Dias Restantes
   const restDay = totalDays - Math.ceil(diffDays)
   // Dias transcurridos desde el ultimo record
   const diffDaysLastRecord = diffDays - lastRecord.days_totals
+  console.log('diffDaysLastRecord', diffDaysLastRecord);
   // Consumo diario
   const { current_reading_updated, current_reading } = data.itemReceipt
   // Obtener valor del dia

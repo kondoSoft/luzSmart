@@ -162,6 +162,7 @@ class Measurements extends Component {
 
   //PATCH Receipt
   sendCurrentData(id){
+    
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading) {
         this.props.patchReceipt(this.state.current_data, this.props.token, id, this.props.navigation)
         this.setState({
@@ -265,7 +266,6 @@ class Measurements extends Component {
   }
 
   render () {
-
     const { navigation } = this.props
     // Contrato que viene desde la pantalla recibos
     const { contracts } = this.props.screenProps
@@ -274,7 +274,9 @@ class Measurements extends Component {
     } else {
       count_days = 30
     }
+
      // Rango automatico del periodo
+
     const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
     // Select Contract
     return(

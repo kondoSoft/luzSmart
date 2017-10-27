@@ -134,6 +134,7 @@ export function patchNewReceipt(data, id, token):Action{
   }
 }
 export function postRecord(list, token):Action{
+  
   var status;
   if(list.record.status){
     status= true
