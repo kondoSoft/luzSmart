@@ -423,14 +423,14 @@ class Results extends Component {
                         // categories={{
                         //   x: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
                         // }}
-                        // categories={{x: arrMonthAvg}}
+                        categories={{x: arrMonthAvg}}
                       />
                       <VictoryLine
                         data={this.dataGenAvgMonth()}
                         x='month'
                         y='promCost'
                         labels={(datum) => datum.y}
-                        // categories={{x: arrMonthAvg}}
+                        categories={{x: arrMonthAvg}}
 
                       />
                     </VictoryGroup>
