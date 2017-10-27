@@ -7,7 +7,11 @@ import {
   Text,
   Fab,
   Icon,
-  Button
+  Button,
+  Card,
+  CardItem,
+  Body,
+  Content,
 } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import styles from './styles'
@@ -19,6 +23,7 @@ import {
   VictoryBar,
   VictoryGroup,
   VictoryLine,
+  VictoryStack,
 } from 'victory-native'
 import Swiper from 'react-native-swiper'
 import { Select, Option } from 'react-native-select-list'
@@ -231,7 +236,7 @@ class Results extends Component {
         avgCost = {promCost: '0'}
       }
       console.log(avgCost);
-      (item.status === false) ? fill = '#069b1c' : fill = "red"
+      (item.status === false) ? fill = 'gold' : fill = "#069b1c"
       return { month: item.month, cost: item.cost, promCost:  parseInt(avgCost.promCost), status: item.status, fill: fill}
       })
     return printGraph.reverse().slice(0,5)
@@ -345,15 +350,79 @@ class Results extends Component {
           </Row>
           <Row style={{flex: 10}}>
             <Swiper showsButtons>
-              <Col size={100}>
-                <Text style={styles.chartText}>Consumo diario</Text>
-                <View style={styles.containerCharts}>
-                 
+              <Col size={50}>
+                {/* <Text style={styles.chartText}>Consumo diario</Text> */}
+                <View style={{
+                  // height: '55%',
+                  flex: 1,
+                  backgroundColor: 'red',
+                  marginTop: 40,
+                  // alignItems: 'center',
+                  flexDirection: 'row',
+                  paddingLeft: 40,
+                  paddingRight: 40,
+                }}>
+                  <View style={{ flex: 2, backgroundColor: 'green', flexDirection: 'column', }}>
+                    <Content style={{ backgroundColor: 'blue'}}>
+                      <Card style={{ marginTop: 50 }}>
+                        <CardItem style={{ }}>
+                          <Text style={{ fontSize:30, textAlign: 'center', width: '100%'  }}>
+                            DAC
+                          </Text>
+                        </CardItem>
+                        <CardItem> 
+                          <Text style={{ fontWeight: 'bold', backgroundColor: 'gold', fontSize:30, textAlign: 'center', width: '100%' }}>
+                            $5,000
+                          </Text>
+                        </CardItem>
+                        <CardItem style={{ }}>
+                          <Text style={{ fontSize:20, textAlign: 'center', width: '100%'}}>
+                            4.7 kwh/día
+                          </Text>
+                        </CardItem>
+                      </Card>
+                    </Content>
+                    
+                  </View>
+                  <View style={{ flex: 1, backgroundColor: 'yellow'}}>
+                    <VictoryStack 
+                      colorScale={["tomato", "yellow", "red"]}
+                      // domain={{x: [0, 100], y: [0, 1]}}
+                      // domainPadding={{x: [10, -10], y: 5}}
+                      height={300}
+                    >
+                      <VictoryBar
+                        data={[{x: "a", y: 5}]}
+                      />
+                      <VictoryBar
+                        data={[{x: "a", y: 4}]}
+                      />
+                      <VictoryBar
+                        data={[{x: "a", y: 5}]}
+                      />
+                    </VictoryStack>
+                  </View>  
                 </View>
-                <View style={styles.containerExportButton}>
-                  <Button small primary>
-                    <Text>Exportar CSV</Text>
-                  </Button>
+                <View style={{
+                  // height: '55%',
+                  flex: 1,
+                  backgroundColor: 'orange',
+                  alignContent: 'center',
+                  flexDirection: 'row',
+                  paddingLeft: 40,
+                  paddingRight: 40,
+                }}>
+                  <View style={{ flex: 2 }}>
+                    <Card style={{ flex: 0 }}>
+                      <CardItem>
+                        <Body>
+                          <Text style={{ fontSize:14 }}>
+                             La proyección indica que su proyeccion de "Mi Casa" <Text style={{ fontWeight: 'bold', fontSize:15 }}>se encuenta en tarifa de alto consumo (DAC) </Text>
+                          </Text>
+                        </Body>
+                      </CardItem>
+                    </Card>
+                  </View>
                 </View>
               </Col>
               <Col size={100}>
