@@ -27,6 +27,7 @@ import { getRecord } from '../../actions/contracts'
 var moment = require('moment');
 // var mom = moment().format();
 var promCost;
+
 class Results extends Component {
   constructor (props) {
     super(props)
@@ -150,10 +151,7 @@ class Results extends Component {
     } = this.state
     var arrMonthFinished = []
     var arrStatusFalse = []
-
-
     //Costos de datos pagados y map de barra
-
     results.map((item, i) => {
       const date = new Date(item.date)
       const getMonthYear = moment(date).month()
@@ -166,24 +164,24 @@ class Results extends Component {
         costAvg = item.projection/getDaysOfMonth
       }else{
         costAvg = item.amount_payable
+
+    }
+
+    if(item.status){
+      arrMonthFinished.push({month: arrMonth[getMonthYear], cost: parseInt(item.amount_payable), costavg: costAvg, status: item.status, label: item.amount_payable})
+    } else {
+      arrStatusFalse.push(item)
+      const lastItem = arrStatusFalse[0]
+
+      arrMonthFinished.map((item, i)=>{
+        if(item.status === false){
+          arrStatusFalse.pop()
+        }
+      })
+      arrMonthFinished.pop()
+
+      arrMonthFinished.push({month: arrMonth[getMonthYear], cost: Math.round(lastItem.projected_payment), costavg: costAvg , status: item.status, label: lastItem.projected_payment.slice(0,5), fill: '#069b1c'})
       }
-
-      if(item.status){
-        arrMonthFinished.push({month: arrMonth[getMonthYear], cost: parseInt(item.amount_payable), costavg: costAvg, status: item.status, label: item.amount_payable})
-      } else {
-        arrStatusFalse.push(item)
-        const lastItem = arrStatusFalse[0]
-
-        arrMonthFinished.map((item, i)=>{
-          if(item.status === false){
-            arrStatusFalse.pop()
-          }
-        })
-        arrMonthFinished.pop()
-
-        arrMonthFinished.push({month: arrMonth[getMonthYear], cost: Math.round(lastItem.projected_payment), costavg: costAvg , status: item.status, label: lastItem.projected_payment.slice(0,5), fill: '#069b1c'})
-      }
-
 
     })
     // se ańade mapeo de barra mas promedio de grafica en linea
@@ -211,6 +209,35 @@ class Results extends Component {
 
       return { month: item.month, cost: item.cost, status: item.status , fill: '#069b1c'}
     })
+
+    const greatestArrTotal = itemSumTotal =>{
+      var tempGreatest = 0
+      return itemSumTotal.map(cost => {
+        cost > tempGreatest ? tempGreatest = cost : null
+        return tempGreatest
+      })
+    }
+    const valueFinal = greatestArrTotal(tempSumArrTotal)[0]
+
+    sumTotal = valueFinal + valueCostFalse
+    if(sumTotal){
+      divForAvg = (sumTotal / arrMonthFinished.length)
+      promCost = { promCost: divForAvg.toFixed(2)}
+    }
+
+    //Array para imprimir la grafica con costo promedio
+    const printGraph = mapKeyMonth.map((item, i) => {
+      let avgCost;
+      if (promCost != undefined){
+        avgCost = promCost
+      }else{
+        avgCost = {promCost: '0'}
+      }
+      console.log(avgCost);
+      (item.status === false) ? fill = '#069b1c' : fill = "red"
+      return { month: item.month, cost: item.cost, promCost:  parseInt(avgCost.promCost), status: item.status, fill: fill}
+      })
+    return printGraph.reverse().slice(0,5)
 
     const greatestArrTotal = itemSumTotal =>{
       var tempGreatest = 0
@@ -285,9 +312,7 @@ class Results extends Component {
       const kwh = getResult(resultYear[yearKey])
       return { year: yearKey , kwh: parseInt(kwh.kwh), label:kwh.kwh}
     })
-
     return resultYearFiltered
-
   }
   // Funcion para generar datos de consumo por Semana
   dataGenWeek () {
@@ -342,7 +367,6 @@ class Results extends Component {
     const arrMonthAvg = this.dataGenAvgMonth().map((item,i)=>{
       console.log(item.month)
       return item.month
-
     })
     console.log(arrMonthAvg);
     return (
@@ -359,17 +383,6 @@ class Results extends Component {
               <Col size={100}>
                 <Text style={styles.chartText}>Consumo diario</Text>
                 <View style={styles.containerCharts}>
-                  <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}}>
-                    <VictoryBar
-                      style={styles.chartFillColor}
-                      data={this.dataGenDaily()}
-                      x='day'
-                      y='kwh'
-                      categories={{
-                        x:['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom',]
-                      }}
-                    />
-                  </VictoryChart>
                 </View>
                 <View style={styles.containerExportButton}>
                   <Button small primary>
@@ -433,20 +446,18 @@ class Results extends Component {
                 </View>
               </Col>
               <Col size={100}>
-                <Text style={styles.chartText}>Gasto Promedio Por Periodo</Text>
+                <Text style={styles.chartText}>Gasto Promedio por Periodo</Text>
                 <View style={styles.containerCharts}>
                   <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domain={{ x: [0, 6], y: [0, 1000] }} domainPadding={{x: 50, y:40}} size={4}>
                     <VictoryGroup >
-
                       <VictoryBar
                         style={styles.chartFillColor}
                         data={this.dataGenAvgMonth()}
                         x='month'
                         y='cost'
-                        // categories={{
-                        //   x: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
-                        // }}
+
                         categories={{x: arrMonthAvg}}
+
                       />
                       <VictoryLine
                         data={this.dataGenAvgMonth()}
@@ -468,8 +479,9 @@ class Results extends Component {
               <Col size={100}>
                 <Text style={styles.chartText}>Consumo y Ahorro</Text>
                 <View style={styles.containerCharts}>
-                  <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}} domain={[0, 6]} >
-                    <VictoryGroup
+                   {/* <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}} domain={[0, 6]} >                    <VictoryGroup
+
+
                       offset={10}
                     >
                       <VictoryBar
@@ -507,7 +519,7 @@ class Results extends Component {
                         x='mes'
                       />
                     </VictoryGroup>
-                  </VictoryChart>
+                  </VictoryChart> */}
                 </View>
                 <View style={styles.containerExportButton}>
                   <Button small primary>

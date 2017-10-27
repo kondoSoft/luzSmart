@@ -274,7 +274,9 @@ class Measurements extends Component {
     } else {
       count_days = 30
     }
-    // Rango automatico del periodo
+
+     // Rango automatico del periodo
+
     const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
     // Select Contract
     return(

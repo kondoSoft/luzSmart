@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import CodePush from "react-native-code-push";
+
 import { connect } from "react-redux";
 import { Container, Content, Text, View } from "native-base";
 import Modal from "react-native-modalbox";
 import MainStackRouter from "./Routers/MainStackRouter";
 import ProgressBar from "./components/loaders/ProgressBar";
-
+import CodePush from "react-native-code-push";
 import theme from "./themes/base-theme";
 
 const styles = StyleSheet.create({
