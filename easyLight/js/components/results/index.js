@@ -38,10 +38,23 @@ class Results extends Component {
     super(props)
     this.state = {
       active: false,
-      results: []
+      results: [],
+      dataKwh: 100,
     }
     this.onSelect = this.onSelect.bind(this)
     this.dataGenDaily = this.dataGenDaily.bind(this)
+  }
+  componentDidMount(){
+    // setTimeout(()=>{
+    //   this.setState({
+    //     dataKwh: 250
+    //   })
+    // },5000)
+    // setTimeout(()=>{
+    //   this.setState({
+    //     dataKwh: 450
+    //   })
+    // },10000)
   }
   componentWillReceiveProps (nextProps) {
     const {
@@ -334,11 +347,12 @@ class Results extends Component {
     })
   }
   render () {
+    
     const arrMonthAvg = this.dataGenAvgMonth().map((item,i)=>{
       console.log(item.month)
       return item.month
     })
-    console.log(arrMonthAvg);
+    console.log(this.state.dataKwh);
     return (
       <Container>
         {/* <Header title='Resultados' navigation={this.props.navigation}/> */}
@@ -384,29 +398,71 @@ class Results extends Component {
                     
                   </Col>
                   <Col size={2} style={{ 
-                    // flex: 0, 
-                    backgroundColor: 'blue',
-                    // height: '55%',
-                    justifyContent: 'center'
+                    flex: 1, 
+                    // backgroundColor: 'blue',
+                    // height: '40%',
+                    justifyContent: 'center',
+
                     }}
                   >
-                    <VictoryStack 
-                      style={{ margin: 0 }}
-                      colorScale={["#069b1c", "yellow", "tomato"]}
-                      domain={{x: [1, 2], y: [0, 1000]}}
-                      // animate={{ duration: 1000, easing: 'bounce' }}
-                    >
-                      <VictoryBar
-                        data={[{x: "b", y: 200}]}
-                      />
-                      <VictoryBar
-                        data={[{x: "b", y: 100}]}
-                      />
-                      <VictoryBar
-                        data={[{x: "b", y: 100}]}
-                      />
-                     
-                    </VictoryStack>
+                    <View style={{ flex: 1, paddingLeft: 5, justifyContent: 'center' }}>
+                      
+                      { (this.state.dataKwh <= 200) ?
+                          <VictoryStack 
+                            style={{ margin: 0, data: { width: 50 } }}
+                            colorScale={["#069b1c", "yellow", "tomato"]}
+                            domain={{x: [1, 2], y: [0, 1000]}}
+                            // animate={{ duration: 1000, easing: 'bounce' }}
+                            >
+                            <VictoryBar data={[{x: "b", y: (this.state.dataKwh)}]}/>
+
+                          </VictoryStack> 
+                          : (this.state.dataKwh > 200 && this.state.dataKwh <= 400) ? 
+                          <VictoryStack 
+                            style={{ margin: 0, data: { width: 50 } }}
+                            colorScale={["#069b1c", "yellow", "tomato"]}
+                            domain={{x: [1, 2], y: [0, 1000]}}
+                            // animate={{ duration: 1000, easing: 'bounce' }}
+                            >
+                            <VictoryBar data={[{x: "b", y: 200}]}/> 
+                            <VictoryBar data={[{x: "b", y: (this.state.dataKwh-200)}]}/>
+
+                          </VictoryStack> 
+                          : (this.state.dataKwh > 400) &&  
+                          <VictoryStack 
+                            style={{ margin: 0, data: { width: 50 } }}
+                            colorScale={["#069b1c", "yellow", "tomato"]}
+                            domain={{x: [1, 2], y: [0, 1000]}}
+                            // animate={{ duration: 1000, easing: 'bounce' }}
+                            >
+                            <VictoryBar data={[{x: "b", y: 200}]}/> 
+                            <VictoryBar data={[{x: "b", y: 200}]}/>
+                            <VictoryBar data={[{x: "b", y: (this.state.dataKwh-400)}]}/>
+
+                          </VictoryStack> 
+
+                        // console.log('1')
+                    
+
+                        // <View>
+                        //   {console.log('2')}
+                        //   <VictoryBar
+                        //   data={[{x: "b", y: 200}]}
+                        //   />
+                        //   <VictoryBar
+                        //   data={[{x: "b", y: (dataKwh-200)}]}
+                        //   />
+                        // </View>
+                        // else if(dataKwh > 400){
+                        // <VictoryBar
+                        //   data={[{x: "b", y: 200}]}
+                        // />
+                        // }
+                      }
+                       
+                      
+                    </View>
+                  
                     
                   </Col>  
                 </View>
