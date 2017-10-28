@@ -350,32 +350,31 @@ class Results extends Component {
           </Row>
           <Row style={{flex: 10}}>
             <Swiper showsButtons>
-              <Col size={50}>
+              <Col size={1}>
                 {/* <Text style={styles.chartText}>Consumo diario</Text> */}
-                <View style={{
+               <View style={{
                   // height: '55%',
                   flex: 1,
-                  backgroundColor: 'red',
                   marginTop: 40,
                   // alignItems: 'center',
                   flexDirection: 'row',
                   paddingLeft: 40,
                   paddingRight: 40,
                 }}>
-                  <View style={{ flex: 2, backgroundColor: 'green', flexDirection: 'column', }}>
-                    <Content style={{ backgroundColor: 'blue'}}>
-                      <Card style={{ marginTop: 50 }}>
-                        <CardItem style={{ }}>
+                 <Col size={70} style={{ flex: 2, flexDirection: 'column', }}>
+                    <Content >
+                      <Card style={{ marginTop: 50, backgroundColor: 'transparent' }}>
+                        <CardItem style={{ backgroundColor: 'transparent' }}>
                           <Text style={{ fontSize:30, textAlign: 'center', width: '100%'  }}>
                             DAC
                           </Text>
                         </CardItem>
-                        <CardItem> 
-                          <Text style={{ fontWeight: 'bold', backgroundColor: 'gold', fontSize:30, textAlign: 'center', width: '100%' }}>
+                        <CardItem style={{ backgroundColor: 'transparent' }}> 
+                          <Text style={{ fontWeight: 'bold', fontSize:30, textAlign: 'center', width: '100%' }}>
                             $5,000
                           </Text>
                         </CardItem>
-                        <CardItem style={{ }}>
+                        <CardItem style={{ backgroundColor: 'transparent' }}>
                           <Text style={{ fontSize:20, textAlign: 'center', width: '100%'}}>
                             4.7 kwh/día
                           </Text>
@@ -383,30 +382,37 @@ class Results extends Component {
                       </Card>
                     </Content>
                     
-                  </View>
-                  <View style={{ flex: 1, backgroundColor: 'yellow'}}>
+                  </Col>
+                  <Col size={2} style={{ 
+                    // flex: 0, 
+                    backgroundColor: 'blue',
+                    // height: '55%',
+                    justifyContent: 'center'
+                    }}
+                  >
                     <VictoryStack 
-                      colorScale={["tomato", "yellow", "red"]}
-                      // domain={{x: [0, 100], y: [0, 1]}}
-                      // domainPadding={{x: [10, -10], y: 5}}
-                      height={300}
+                      style={{ margin: 0 }}
+                      colorScale={["#069b1c", "yellow", "tomato"]}
+                      domain={{x: [1, 2], y: [0, 1000]}}
+                      // animate={{ duration: 1000, easing: 'bounce' }}
                     >
                       <VictoryBar
-                        data={[{x: "a", y: 5}]}
+                        data={[{x: "b", y: 200}]}
                       />
                       <VictoryBar
-                        data={[{x: "a", y: 4}]}
+                        data={[{x: "b", y: 100}]}
                       />
                       <VictoryBar
-                        data={[{x: "a", y: 5}]}
+                        data={[{x: "b", y: 100}]}
                       />
+                     
                     </VictoryStack>
-                  </View>  
+                    
+                  </Col>  
                 </View>
                 <View style={{
                   // height: '55%',
                   flex: 1,
-                  backgroundColor: 'orange',
                   alignContent: 'center',
                   flexDirection: 'row',
                   paddingLeft: 40,
