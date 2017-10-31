@@ -16,8 +16,57 @@ import {
   Row,
   Grid
 } from 'react-native-easy-grid';
+import { NativeModules } from 'react-native'
+const { InAppUtils } = NativeModules
 
+  var products = [
+    'com.xyz.abc',
+  ];
+  var productIdentifier = 'com.xyz.abc';
+ 
+
+  InAppUtils.loadProducts(products, (error, products) => {
+     //update store here.
+     [    
+        { 
+          price: 89,
+          identifier: 'premium 1 mes',
+          currencySymbol: '$',
+          priceString: '$89.00',
+          title: 'Cuenta Premium'
+        },
+      ]
+     
+  });
+  // InAppUtils.canMakePayments((canMakePayments) => {
+  //      if(!canMakePayments) {
+  //         Alert.alert('Not Allowed', 'This device is not allowed to make purchases. Please check restrictions on device');
+  //      }
+  //   })
+
+  
+
+  // InAppUtils.purchaseProduct(productIdentifier, (error, response) => {
+  //    // NOTE for v3.0: User can cancel the payment which will be available as error object here.
+  //    if(response && response.productIdentifier) {
+  //       Alert.alert('Purchase Successful', 'Your Transaction ID is ' + response.transactionIdentifier);
+  //       //unlock store here.
+  //    }
+  // });
+
+  // InAppUtils.canMakePayments((enabled) => {
+  //   if(enabled) {
+  //     Alert.alert('IAP enabled');
+  //   } else {
+  //     Alert.alert('IAP disabled');
+  //   }
+  // });
+  
 class Configuration extends Component {
+  
+
+    
+
   render(){
     return(
       <Container>
