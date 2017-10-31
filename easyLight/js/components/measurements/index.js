@@ -21,7 +21,7 @@ import styles from './styles'
 import AnimatedView from '../animatedView/index'
 import FabButton from '../fabButton'
 import { patchReceipt, getRatePeriod } from '../../actions/contracts'
-import { getIVA, costProject, setRecord } from '../../helpers'
+import { getIVA, setRecord } from '../../helpers'
 import { captureScreen } from 'react-native-view-shot'
 // import { ShareDialog } from 'react-native-fbsdk';
 

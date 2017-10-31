@@ -72,7 +72,7 @@ class Results extends Component {
     items = contracts.map((item, i) => {
       return <Option key={i} value={item.id}>{item.name_contract}</Option>
     })
-    items.unshift(<Option value={'nulo'}>Selecione contrato</Option>)
+    items.unshift(<Option key={0} value={'nulo'}>Selecione contrato</Option>)
     return items
   }
   onSelect (value) {
@@ -248,7 +248,6 @@ class Results extends Component {
       }else{
         avgCost = {promCost: '0'}
       }
-      console.log(avgCost);
       (item.status === false) ? fill = 'gold' : fill = "#069b1c"
       return { month: item.month, cost: item.cost, promCost:  parseInt(avgCost.promCost), status: item.status, fill: fill}
       })
@@ -349,10 +348,8 @@ class Results extends Component {
   render () {
     
     const arrMonthAvg = this.dataGenAvgMonth().map((item,i)=>{
-      console.log(item.month)
       return item.month
     })
-    console.log(this.state.dataKwh);
     return (
       <Container>
         {/* <Header title='Resultados' navigation={this.props.navigation}/> */}

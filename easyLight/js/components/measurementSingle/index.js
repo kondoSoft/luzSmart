@@ -99,7 +99,7 @@ class MeasurementSingle extends Component {
         let nextCurrentReading = filItemID[0].receipt[0].current_reading_updated;
         if (nextCurrentReading > prevCurrentReading) {
           this.setState({
-            type_payment: arrayContract[0].type_payment,
+            // type_payment: arrayContract[0].type_payment,
             itemReceipt:{
               id: this.state.itemReceipt.id,
               previous_reading: this.state.itemReceipt.previous_reading,
@@ -256,9 +256,17 @@ class MeasurementSingle extends Component {
   }
 
   getRate(){
+    let valueTypePayment;
+    if(arrayContract[0].type_payment == 'Bimestral')
+    {
+      valueTypePayment = 2
+    }else{
+      valueTypePayment = 1
+    }
     var verano = [];
     var noverano = [];
     var kilowatt = [];
+
     // empuje de datos en el arreglo de verano y fuera de verano
     this.props.rate_period.map((period, i) => {
       if(period.period_name === 'Verano') {
@@ -272,13 +280,14 @@ class MeasurementSingle extends Component {
       if(this.state.itemReceipt != undefined){
         if(this.state.itemReceipt.period == 'Verano'){
           return kilowatt = verano.map((rate, i)=>{
-            const { kilowatt, cost } = rate;
+            const { kilowatt, cost } =  {kilowatt: rate.kilowatt * valueTypePayment, cost: rate.cost };
             return { kilowatt, cost };
           });
         }
         else {
           return kilowatt = noverano.map((rate, i)=>{
-            const { kilowatt, cost } = rate;
+            const { kilowatt, cost } = { kilowatt: rate.kilowatt * valueTypePayment, cost: rate.cost };
+            
             return { kilowatt, cost };
           })
         }

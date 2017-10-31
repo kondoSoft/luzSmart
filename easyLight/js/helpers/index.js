@@ -27,20 +27,32 @@ const getIVA = total => {
 }
 
 const costProject = (kilowatt, countKwh) => {
-  var consumoTotal = 0
-  if (kilowatt) {
-    kilowatt = kilowatt.filter((item) => { return (item.kilowatt > 0) }).reverse()
 
+  console.log('kilowatts', kilowatt, countKwh)
+
+  var consumoTotal = 0
+
+  if (kilowatt) {
+    kilowatt = kilowatt.filter((item) => { 
+      console.log('item', item)
+      return (item.cost > 0) 
+    }).reverse()
     while (countKwh >= 0 && kilowatt.length > 0) {
+      console.log(kilowatt)
       let range = kilowatt.pop()
-      if (countKwh > range.kilowatt) {
-        let consumo = countKwh - range.kilowatt
-        countKwh -= range.kilowatt
-        consumo = range.kilowatt * range.cost
+      console.log(kilowatt, range)
+      let valueKilowatt = range.kilowatt 
+      if (countKwh > valueKilowatt) {
+
+        let consumo = countKwh - valueKilowatt
+        countKwh -= valueKilowatt
+        consumo = valueKilowatt * range.cost
         consumoTotal += consumo
       }
-
-      while (kilowatt.length == 0 && countKwh > 0) {
+      
+      while (kilowatt.length === 0 && countKwh > 0) {
+        // range = kilowatt.pop()
+        console.log('last', countKwh, range.cost)
         consumo = countKwh * range.cost
         consumoTotal += consumo
         countKwh -= range.kilowatt
@@ -156,6 +168,9 @@ const setRecord = data => {
   // Se obtiene el valor proyectado
   const projection = getProjected(cumulativeConsumption, average, restDay)
   const projectedPayment = costProject(data.ratePeriod, projection)
+  const projectedPaymentIVA = getIVA(projectedPayment)
+  
+  // const projectedPayment = 0
   const record = {
     contract_id: data.contract_id,
     date: dateFormat,
@@ -168,7 +183,7 @@ const setRecord = data => {
     days_totals: diffDays.toFixed(4),
     daily_consumption: dailyConsumption.toFixed(4),
     cumulative_consumption: cumulativeConsumption,
-    projected_payment: projectedPayment,
+    projected_payment: projectedPaymentIVA,
     average_global: average,
     rest_day: restDay,
     projection: projection,

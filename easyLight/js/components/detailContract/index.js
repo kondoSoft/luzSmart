@@ -56,8 +56,8 @@ class DetailContract extends Component {
       previous_reading: '',
       payday_limit: '',
       count_days: props.contracts[0].type_payment,
-      bill: props.navigation.state.params.receipt,
-      onlyOneBill: props.navigation.state.params.receipt.length,
+      bill: (props.navigation.state.params) ? props.navigation.state.params.receipt : undefined, 
+      onlyOneBill: (props.navigation.state.params) && props.navigation.state.params.receipt.length,
       contract: '',
 
     };
@@ -66,21 +66,31 @@ class DetailContract extends Component {
     that = this
   }
 
-  static navigationOptions = ({ navigation, screenProps }) => (
-  {
-    headerRight: (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract, receipt: navigation.state.params.receipt[0]})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
-    headerLeft: <Button transparent onPress={() => that.__proto__.returnScreen()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>
-  });
+  static navigationOptions = ({ navigation, screenProps }) => 
+   
+    ({
+      headerRight: (navigation.state.params != undefined) && (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract, receipt: navigation.state.params.receipt[0]})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
+      headerLeft: <Button transparent onPress={() => that.__proto__.returnScreen()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>
+    });
+
   returnScreen() {
     that.props.resetRecord()
     that.props.navigation.goBack()
   }
   componentWillMount() {
+    let rate;
+    let id;
+    
+    
     this.setState({
-      contract: this.props.navigation.state.params.contract,
+      contract: (this.props.navigation.state.params) && this.props.navigation.state.params.contract,
     },() => {
-      this.props.getRatePeriod(this.state.contract.rate, this.props.screenProps.token)
-      this.props.getRecord(this.state.contract.id)
+      if(this.state.contract){
+        id = this.state.contract.id
+        rate = this.state.contract.rate
+      }
+      this.props.getRatePeriod(rate, this.props.screenProps.token)
+      this.props.getRecord(id)
     })
     this.getContractsId();
   }
@@ -93,15 +103,15 @@ class DetailContract extends Component {
     else {
       addMonth = 1
     }
-
-    if(this.state.bill.length > 0) {
-      this.getStatus();
-      //Se obtiene las tarifas
-      this.props.getRatePeriod(numContract[0].rate, this.props.screenProps.token);
-      this.state.bill.map((item, i) => {
-        arrReceipts.push(item);
-      });
-    }
+    if(this.state.bill){ 
+      if(this.state.bill.length > 0) {
+        this.getStatus();
+        //Se obtiene las tarifas
+        this.props.getRatePeriod(numContract[0].rate, this.props.screenProps.token);
+        this.state.bill.map((item, i) => {
+         arrReceipts.push(item);
+        });
+      }}
   };
 
   componentWillUnmount() {
@@ -121,8 +131,10 @@ class DetailContract extends Component {
   }
   getContractsId() {
     const contract = this.props.contracts.map((item,i)=>{
-      if (item.id == this.props.navigation.state.params.index){
-        return numContract.push(item)
+      if(this.props.navigation.state.params){
+        if (item.id == this.props.navigation.state.params.index){
+          return numContract.push(item)
+        }
       }
     })
   }
@@ -164,9 +176,11 @@ class DetailContract extends Component {
     const { status } = this.state;
     var bill = this.state.bill;
     const colors = ['lightgrey','#fff'];
-    bill = bill.sort((a, b)=> {
-      return b.id - a.id
-    })
+    if(bill){
+      bill = bill.sort((a, b)=> {
+        return b.id - a.id
+      })
+    }
     let fab = <FabButton
           navigation={navigation}
           onTap={() => {navigation.navigate('Receipt',{ contract: this.state.contract})}}
@@ -179,11 +193,11 @@ class DetailContract extends Component {
         <Content style={{backgroundColor: '#fff'}}>
           <Grid>
             <Row style={styles.detailContract__row__top}>
-              <Text style={styles.detailContract__row__top__text}>{this.props.navigation.state.params.contract.name_contract}</Text>
+              <Text style={styles.detailContract__row__top__text}>{(this.props.navigation.state.params) && this.props.navigation.state.params.contract.name_contract}</Text>
             </Row>
             <Col>
               <List style={styles.list}>
-               {bill.map((item, i )=>
+               {(bill) && bill.map((item, i )=>
                   {
                   return <SwipeAccordion
                     indexOpen={this.state.key}
