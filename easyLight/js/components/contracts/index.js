@@ -51,7 +51,7 @@ class Contracts extends Component {
       <Container>
         <ParentSwipeContracts
           contract={ this.props.contracts }
-
+          
           navigation={ navigation }
           isPremium={ this.props.profile.premium }
         />

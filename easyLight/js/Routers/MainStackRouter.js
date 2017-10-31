@@ -198,7 +198,7 @@ const tabResults = StackNavigator(
 const tabPeriods = StackNavigator(
   {
     Periodos: {
-      screen: DetailUltimateContract,
+      screen: DetailContract,
       navigationOptions: ({ navigation }) => ({
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
