@@ -20,24 +20,13 @@ import { NativeModules } from 'react-native'
 const { InAppUtils } = NativeModules
 
   var products = [
-    'com.xyz.abc',
+    'com.kondosoft.easylight.premium',
+    'com.kondosoft.easylight.threemonth',
   ];
-  var productIdentifier = 'com.xyz.abc';
+  var productIdentifier = 'com.kondosoft.easylight.premium';
  
 
-  InAppUtils.loadProducts(products, (error, products) => {
-     //update store here.
-     [    
-        { 
-          price: 89,
-          identifier: 'premium 1 mes',
-          currencySymbol: '$',
-          priceString: '$89.00',
-          title: 'Cuenta Premium'
-        },
-      ]
-     
-  });
+
   // InAppUtils.canMakePayments((canMakePayments) => {
   //      if(!canMakePayments) {
   //         Alert.alert('Not Allowed', 'This device is not allowed to make purchases. Please check restrictions on device');
@@ -64,7 +53,26 @@ const { InAppUtils } = NativeModules
   
 class Configuration extends Component {
   
-
+  componentWillMount(){
+    InAppUtils.loadProducts(products, (error, products) => {
+     // update store here.
+     console.log(error, products)
+     
+     // InAppUtils.purchaseProduct(products[0], (error, response) => {
+     //    if (response && response.products) {
+     //      console.log('Purchase Successful. Your Transaction ID is ' + response);
+     //    }
+     //  });
+     
+    });
+    InAppUtils.receiptData((error, receiptData)=> {
+    if(error) {
+      console.log('itunes Error', 'Receipt not found.', error, receiptData);
+    } else {
+      console.log('receiptdata: ', receiptData);
+    }
+  });
+  }
     
 
   render(){

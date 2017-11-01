@@ -47,6 +47,7 @@
 		6016931592B74A698B1973A3 /* SanFranciscoBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F919827E3CAF4DFFB1CC8CCC /* SanFranciscoBold.ttf */; };
 		66FB995852FB4DD388B938CC /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3069A3FB613E40F8B53715A8 /* Foundation.ttf */; };
 		6A9EE4981FA80C3800F27FEA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9EE4971FA80C3800F27FEA /* StoreKit.framework */; };
+		6A9EE5341FA9439200F27FEA /* libInAppUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9EE4D41FA8D06100F27FEA /* libInAppUtils.a */; };
 		6AE1AA621FA38FA100FEEC7E /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AE1AA5E1FA38FA100FEEC7E /* FBSDKLoginKit.framework */; };
 		6AE1AA631FA38FA100FEEC7E /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AE1AA5F1FA38FA100FEEC7E /* Bolts.framework */; };
 		6AE1AA641FA38FA100FEEC7E /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AE1AA601FA38FA100FEEC7E /* FBSDKCoreKit.framework */; };
@@ -73,7 +74,6 @@
 		A89E687DFFF34004A72A41E7 /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 401C8FB71FAE4DCF80A449BC /* Andale Mono.ttf */; };
 		AE6595A9355D457EBCE6AB0D /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FD63DEE96DB42B5A52B70BD /* Rubik-Medium.ttf */; };
 		B3DBCA0AB8CC4EF192A66FAD /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD0CD31AAF794BFB85AB1276 /* Rubik-BlackItalic.ttf */; };
-		B7A5AB3B97764EA6B4E31D9F /* libInAppUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 991AE25B70584C3188033B01 /* libInAppUtils.a */; };
 		BD5758A3089D4CC0B62981CA /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58ED0F727153493698A525A8 /* rubicon-icon-font.ttf */; };
 		C9AD82A2E8664BCBA0874CDF /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5FE3AF64F7C045A2B204145C /* SimpleLineIcons.ttf */; };
 		D49CF86BF10E418AA8182828 /* Skia.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E6E6BC06D4A44C1A34A02E9 /* Skia.ttf */; };
@@ -469,6 +469,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A9EE5341FA9439200F27FEA /* libInAppUtils.a in Frameworks */,
 				44128149BA744D2B944E286C /* libz.tbd in Frameworks */,
 				6AE1AA6E1FA3964A00FEEC7E /* libCodePush.a in Frameworks */,
 				6AE1AAEC1FA39C7300FEEC7E /* libRNSVG.a in Frameworks */,
@@ -490,7 +491,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				6AE1AA621FA38FA100FEEC7E /* FBSDKLoginKit.framework in Frameworks */,
 				6AE1AA631FA38FA100FEEC7E /* Bolts.framework in Frameworks */,
-				B7A5AB3B97764EA6B4E31D9F /* libInAppUtils.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1587,6 +1587,10 @@
 				INFOPLIST_FILE = EasyLight/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1620,6 +1624,10 @@
 				INFOPLIST_FILE = EasyLight/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
