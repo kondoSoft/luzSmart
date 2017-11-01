@@ -64,13 +64,6 @@ class AddContracts extends Component {
         rates: []
     }
   }
-  static propType = {
-    postContract: React.PropTypes.func,
-    getMunicipality: React.PropTypes.func,
-    resetMunicipality: React.PropTypes.func,
-    getRate: React.PropTypes.func,
-
-  }
   selectPhotoTapped() {
     const options = {
       quality: 1.0,

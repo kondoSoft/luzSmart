@@ -15,13 +15,7 @@ import { pickerContract } from "../../actions/contracts";
 
 
 class ListItemSwipe extends React.Component {
-  static propTypes = {
-    tension: React.PropTypes.number,
-    friction: React.PropTypes.number,
-    velocity: React.PropTypes.number,
-    component: React.PropTypes.element,
-    pickerContract: React.PropTypes.func,
-  }
+
   constructor(props){
     super(props);
 

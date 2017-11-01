@@ -19,12 +19,6 @@ class BlankPage extends Component {
   static navigationOptions = {
     header: null
   };
-  static propTypes = {
-    name: React.PropTypes.string,
-    index: React.PropTypes.number,
-    list: React.PropTypes.arrayOf(React.PropTypes.string),
-    openDrawer: React.PropTypes.func
-  };
 
   render() {
     const { props: { name, index, list } } = this;
