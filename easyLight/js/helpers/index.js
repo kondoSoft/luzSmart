@@ -34,13 +34,10 @@ const costProject = (kilowatt, countKwh) => {
 
   if (kilowatt) {
     kilowatt = kilowatt.filter((item) => { 
-      console.log('item', item)
       return (item.cost > 0) 
     }).reverse()
     while (countKwh >= 0 && kilowatt.length > 0) {
-      console.log(kilowatt)
       let range = kilowatt.pop()
-      console.log(kilowatt, range)
       let valueKilowatt = range.kilowatt 
       if (countKwh > valueKilowatt) {
 
@@ -52,7 +49,6 @@ const costProject = (kilowatt, countKwh) => {
       
       while (kilowatt.length === 0 && countKwh > 0) {
         // range = kilowatt.pop()
-        console.log('last', countKwh, range.cost)
         consumo = countKwh * range.cost
         consumoTotal += consumo
         countKwh -= range.kilowatt

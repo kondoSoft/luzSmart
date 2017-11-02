@@ -26,17 +26,17 @@ class Home extends Component {
   static navigationOptions = {
     header: null
   };
-  static propTypes = {
-    name: React.PropTypes.string,
-    setIndex: React.PropTypes.func,
-    list: React.PropTypes.arrayOf(React.PropTypes.string),
-    openDrawer: React.PropTypes.func
-  };
 
   newPage(index) {
     this.props.setIndex(index);
     Actions.blankPage();
   }
+   static propTypes = {
+    name: React.PropTypes.string,
+    setIndex: React.PropTypes.func,
+    list: React.PropTypes.arrayOf(React.PropTypes.string),
+    openDrawer: React.PropTypes.func
+  };
 
   render() {
     return (

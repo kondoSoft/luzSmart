@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
+  Alert,
 } from 'react-native';
 import {
   Container,
@@ -17,7 +18,53 @@ import {
   Grid
 } from 'react-native-easy-grid';
 
+import { NativeModules } from 'react-native';
+
+global.PaymentRequest = require('react-native-payments').PaymentRequest;
+
+const METHOD_DATA = [{
+  supportedMethods: ['apple-pay'],
+  data: {
+    merchantIdentifier: 'merchant.com.kondosoft.easylight.premium',
+    supportedNetworks: ['visa', 'mastercard'],
+    countryCode: 'MX',
+    currencyCode: 'MXN'
+  }
+}];
+
+const DETAILS = {
+  id: 'basic-example',
+  displayItems: [
+    {
+      label: 'Premium Mensual',
+      amount: { currency: 'MXN', value: '89.00' }
+    },
+    {
+      label: 'Premium Anual',
+      amount: { currency: 'MXN', value: '890.00' }
+    }
+  ],
+  total: {
+    label: 'Merchant Name',
+    amount: { currency: 'MXN', value: '15.00' }
+  }
+};
+const OPTIONS = {
+  requestPayerName: true
+};
+const paymentRequest = new PaymentRequest(METHOD_DATA, DETAILS, OPTIONS);
+
 class Configuration extends Component {
+  
+  componentWillMount(){
+
+  }
+  payOneMonth(){
+    // paymentRequest.show()
+    // console.log(PaymentDetails)
+    console.log(paymentRequest._details.displayItems)
+  }
+
   render(){
     return(
       <Container>
@@ -32,7 +79,14 @@ class Configuration extends Component {
           <Row size={14} style={{alignItems: 'center',justifyContent:'space-around'}}>
             <View style={{flexDirection:'column',alignItems:'center'}}>
               <Text>Mensual</Text>
-              <Button style={{backgroundColor:'#42c2f4',width: 130,alignItems:'center',justifyContent:'center'}}>
+              <Button style={{
+                backgroundColor:'#42c2f4',
+                width: 130,
+                alignItems:'center',
+                justifyContent:'center', 
+                }}
+                onPress={() => this.payOneMonth(paymentRequest)}
+               >
                 <Text style={{color:'#fff'}}>$89.00</Text>
               </Button>
             </View>

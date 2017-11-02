@@ -65,10 +65,7 @@ class DetailUltimateContract extends Component {
   // static navigationOptions = {
   //   title: 'Detail'
   // };
-  static propType = {
-    getRatePeriod: React.PropTypes.func,
-    postReceipt: React.PropTypes.func,
-  }
+
   componentWillMount () {
     this.arrContracts = []
     // this.props.getRatePeriod(this.state.contract.rate, this.props.token);

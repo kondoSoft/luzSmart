@@ -20,10 +20,7 @@ class ExpandedView extends Component{
     this._setMinHeight = this._setMinHeight.bind(this)
     this.closeExpanded = this.closeExpanded.bind(this)
   }
-  static propType = {
-    pickerContract: React.PropTypes.func,
-    getRatePeriod: React.PropTypes.func,
-  }
+
   closeExpanded(itemValue, rate){
     
     this.props.pickerContract(itemValue)
