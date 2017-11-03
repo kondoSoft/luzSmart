@@ -24,6 +24,7 @@ import { patchReceipt, getRatePeriod, postRecord, getRecord } from '../../action
 import { 
   getRangeMonth,
   setRecord,
+  getDateBetweenPeriods,
 } from '../../helpers';
 
 
@@ -49,6 +50,7 @@ class MeasurementSingle extends Component {
       record: {
 
       },
+      type_payment: this.props.navigation.state.params.contract.type_payment,
       projected_payment: 0,
     }
     this.contract_id;
@@ -73,6 +75,9 @@ class MeasurementSingle extends Component {
     this.contract_id = this.props.navigation.state.params.contract.id
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     this.props.getRecord(this.contract_id)
+
+
+
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.record[0]){
@@ -161,6 +166,11 @@ class MeasurementSingle extends Component {
   // *******************  Funciones para RECORDS ********************
   setRecordState(){
     const ratePeriod = this.getRate()
+
+    let contract;
+    if(this.props.navigation.state.params){
+      contract = this.props.navigation.state.params.contract
+    }
     // Obtiene el ultimo dato actualizado
     // const lastRecord = this.propsNextRecords[0]
     // 
@@ -175,6 +185,7 @@ class MeasurementSingle extends Component {
       current_data: this.state.current_data,
       ratePeriod: ratePeriod,
       amount_payable: 0,
+      contract: contract,
     }
     const record = setRecord(data)
     this.setState({
@@ -196,16 +207,19 @@ class MeasurementSingle extends Component {
 
   sendCurrentData(id){
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading_updated) {
-        this.props.patchReceipt(this.state.current_data, this.props.token, id,this.props.navigation)
+        // this.props.patchReceipt(this.state.current_data, this.props.token, id,this.props.navigation)
 
         // Se agrega los datos de record en el state
-        this.setRecordState()
+        // this.setRecordState()
         this.setState({
           kwhValidation: require('../../../images/succes.png')
         },()=>{
          this.changeCheckedData()
          //Se genera el record con la ultima medicion
-         this.props.postRecord(this.state, this.props.screenProps.token)
+          
+         getDateBetweenPeriods(this.props.navigation.state.params.contract, this.state.itemReceipt)
+
+         // this.props.postRecord(this.state, this.props.screenProps.token)
          this.props.getRecord(this.contract_id)
 
         })
@@ -280,13 +294,13 @@ class MeasurementSingle extends Component {
       if(this.state.itemReceipt != undefined){
         if(this.state.itemReceipt.period == 'Verano'){
           return kilowatt = verano.map((rate, i)=>{
-            const { kilowatt, cost } =  {kilowatt: rate.kilowatt * valueTypePayment, cost: rate.cost };
+            const { kilowatt, cost } =  {kilowatt: rate.kilowatt, cost: rate.cost };
             return { kilowatt, cost };
           });
         }
         else {
           return kilowatt = noverano.map((rate, i)=>{
-            const { kilowatt, cost } = { kilowatt: rate.kilowatt * valueTypePayment, cost: rate.cost };
+            const { kilowatt, cost } = { kilowatt: rate.kilowatt, cost: rate.cost };
             
             return { kilowatt, cost };
           })

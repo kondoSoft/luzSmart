@@ -1,3 +1,5 @@
+var moment = require('moment');
+
 const getWeekday = (date) => {
   date = new Date(date)
   days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
@@ -27,8 +29,6 @@ const getIVA = total => {
 }
 
 const costProject = (kilowatt, countKwh) => {
-
-  console.log('kilowatts', kilowatt, countKwh)
 
   var consumoTotal = 0
 
@@ -61,6 +61,20 @@ const costProject = (kilowatt, countKwh) => {
     }
   }
 }
+
+const getDateBetweenPeriods = (contract, receipt) => {
+  const initialDatePeriod = moment(contract.initialDateRange)
+  const finalDatePeriod = moment(contract.finalDateRange)
+  const payday = moment(receipt.payday_limit)
+  const getRange = getRangeMonth(contract.type_payment, receipt.payday_limit)
+  const getMixPeriod;
+  
+  console.log(getRange)
+  return console.log(contract, 'contract')
+
+
+}
+
 const getDayInDates = (fechaMinima, fechaMaxima) => {
   let fechaMin = Date.parse(fechaMinima)
   let fechaMax = Date.parse(fechaMaxima)
@@ -113,10 +127,15 @@ const getMonthByTypePayment = typePayment => {
 const getRangeMonth = (typePayment, paydayLimit) => {
   let MonthToPlus = getMonthByTypePayment (typePayment)
   let arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-  let initialDate = new Date(paydayLimit)
-  let diffDate = initialDate.getMonth()+MonthToPlus
-  let finalDate = new Date(initialDate.getFullYear(), diffDate, initialDate.getDate())
-  let rangeDate =  arrMonth[initialDate.getMonth()] + '-' + arrMonth[finalDate.getMonth()] 
+
+  let initialDate = moment(paydayLimit)
+  let getMonthPlus = initialDate.month()+MonthToPlus
+  let getYear = initialDate.year()
+  let getDay = initialDate.date()
+  let finalDate = new Date(getYear, getMonthPlus, getDay)
+  let momentFinalDate = moment(finalDate)
+
+  let rangeDate =  arrMonth[initialDate.month()] + '-' + arrMonth[momentFinalDate.month()] 
 
   return rangeDate
 }
@@ -201,4 +220,6 @@ export {
   getMonthByTypePayment,
   getRangeMonth,
   setRecord,
+  // ------------------
+  getDateBetweenPeriods,
 }

@@ -17,52 +17,49 @@ import {
   Row,
   Grid
 } from 'react-native-easy-grid';
-
 import { NativeModules } from 'react-native';
+const { InAppUtils } = NativeModules
 
-global.PaymentRequest = require('react-native-payments').PaymentRequest;
+var products = [
+   'com.kondosoft.easylight.item',
+];
 
-const METHOD_DATA = [{
-  supportedMethods: ['apple-pay'],
-  data: {
-    merchantIdentifier: 'merchant.com.kondosoft.easylight.premium',
-    supportedNetworks: ['visa', 'mastercard'],
-    countryCode: 'MX',
-    currencyCode: 'MXN'
-  }
-}];
 
-const DETAILS = {
-  id: 'basic-example',
-  displayItems: [
-    {
-      label: 'Premium Mensual',
-      amount: { currency: 'MXN', value: '89.00' }
-    },
-    {
-      label: 'Premium Anual',
-      amount: { currency: 'MXN', value: '890.00' }
-    }
-  ],
-  total: {
-    label: 'Merchant Name',
-    amount: { currency: 'MXN', value: '15.00' }
-  }
-};
-const OPTIONS = {
-  requestPayerName: true
-};
-const paymentRequest = new PaymentRequest(METHOD_DATA, DETAILS, OPTIONS);
 
 class Configuration extends Component {
   
-  componentWillMount(){
 
+  componentWillMount(){
+    InAppUtils.restorePurchases((error, response) => {
+     if(error) {
+        Alert.alert('itunes Error', 'Could not connect to itunes store.');
+     } else {
+        Alert.alert('Restore Successful', 'Successfully restores all your purchases.');
+        console.log('response', response)
+        if (response.length === 0) {
+          Alert.alert('No Purchases', "We didn't find any purchases to restore.");
+          return;
+        }
+
+        response.forEach((purchase) => {
+          if (purchase.productIdentifier === 'com.kondosoft.easylight.item') {
+            // Handle purchased product.
+          }
+        });
+     }
+  });
+    
   }
-  payOneMonth(){
-    // paymentRequest.show()
-    // console.log(PaymentDetails)
-    console.log(paymentRequest._details.displayItems)
+
+  payOneMonth() {
+    console.log('products', products)
+    console.log('in', InAppUtils)
+
+    InAppUtils.loadProducts(products, (error, products) => {
+      //update store here.
+      
+      console.log('InAppUtils',products, error)
+    });
   }
 
   render(){
@@ -85,7 +82,7 @@ class Configuration extends Component {
                 alignItems:'center',
                 justifyContent:'center', 
                 }}
-                onPress={() => this.payOneMonth(paymentRequest)}
+                onPress={() => this.payOneMonth(products)}
                >
                 <Text style={{color:'#fff'}}>$89.00</Text>
               </Button>
