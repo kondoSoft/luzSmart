@@ -165,7 +165,8 @@ class MeasurementSingle extends Component {
   }
   // *******************  Funciones para RECORDS ********************
   setRecordState(){
-    const ratePeriod = this.getRate()
+         
+    const ratePeriod = getDateBetweenPeriods(this.props.navigation.state.params.contract, this.state.itemReceipt, this.props.rate_period)
 
     let contract;
     if(this.props.navigation.state.params){
@@ -181,7 +182,7 @@ class MeasurementSingle extends Component {
       contract_id: this.contract_id,
       lastRecord: lastRecord,
       itemReceipt: this.state.itemReceipt,
-      type_payment: arrayContract[0].type_payment,
+      type_payment: this.state.type_payment,
       current_data: this.state.current_data,
       ratePeriod: ratePeriod,
       amount_payable: 0,
@@ -207,19 +208,17 @@ class MeasurementSingle extends Component {
 
   sendCurrentData(id){
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading_updated) {
-        // this.props.patchReceipt(this.state.current_data, this.props.token, id,this.props.navigation)
+        this.props.patchReceipt(this.state.current_data, this.props.token, id,this.props.navigation)
 
         // Se agrega los datos de record en el state
-        // this.setRecordState()
+        this.setRecordState()
         this.setState({
           kwhValidation: require('../../../images/succes.png')
         },()=>{
          this.changeCheckedData()
          //Se genera el record con la ultima medicion
           
-         getDateBetweenPeriods(this.props.navigation.state.params.contract, this.state.itemReceipt)
-
-         // this.props.postRecord(this.state, this.props.screenProps.token)
+         this.props.postRecord(this.state, this.props.screenProps.token)
          this.props.getRecord(this.contract_id)
 
         })
