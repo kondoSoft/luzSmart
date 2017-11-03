@@ -1,3 +1,5 @@
+var moment = require('moment');
+
 const getWeekday = (date) => {
   date = new Date(date)
   days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
@@ -27,9 +29,7 @@ const getIVA = total => {
 }
 
 const costProject = (kilowatt, countKwh) => {
-
-  console.log('kilowatts', kilowatt, countKwh)
-
+  console.log(kilowatt)
   var consumoTotal = 0
 
   if (kilowatt) {
@@ -61,6 +61,58 @@ const costProject = (kilowatt, countKwh) => {
     }
   }
 }
+
+const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
+        
+  const dateLimit = moment(receipt.payday_limit)
+  const typePayment = (contract.type_payment == 'Bimestral') ? 2 : 1;
+
+    const dateFinal = (dateLimit, typePayment) => {
+      const monthsToAdd = dateLimit.month()+typePayment
+      const finalDate = moment(new Date(dateLimit.year(), monthsToAdd, dateLimit.date()))
+      dateLimit = moment(dateLimit)
+      return { dateInitialReceipt: dateLimit, dateFinalReceipt: finalDate}
+    }
+  // *****************************************************
+  var ratePeriodFinal;
+
+  const initialDatePeriod = moment(contract.initialDateRange)
+  const finalDatePeriod = moment(contract.finalDateRange)
+  const monthFinalDatePeriod = finalDatePeriod.month()
+  const rangeDatePeriod = dateFinal(dateLimit, typePayment)
+  const { dateInitialReceipt, dateFinalReceipt } = rangeDatePeriod
+
+  // empuje de datos en el arreglo de verano y fuera de verano
+  var verano = [];
+  var noverano = [];
+  var sendPeriod
+  ratePeriod.map((period, i) => {
+    if(period.period_name === 'Verano') {
+      verano.push(period)
+      }
+    else {
+      noverano.push(period);
+      }
+    });
+
+  if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt > finalDatePeriod){
+    var outputPeriod = []
+    ratePeriod.map((period, i) => {
+      if(typePayment === 2){
+        outputPeriod.push({ period_name: period.period_name, kilowatt: period.kilowatt, cost: period.cost})
+      }
+    })
+    outputPeriod.splice(3,1);
+    sendPeriod = outputPeriod
+  }else if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt < finalDatePeriod){
+    sendPeriod = verano
+  }else{
+    sendPeriod = noverano
+  }
+
+  return sendPeriod
+}
+
 const getDayInDates = (fechaMinima, fechaMaxima) => {
   let fechaMin = Date.parse(fechaMinima)
   let fechaMax = Date.parse(fechaMaxima)
@@ -92,8 +144,11 @@ const getTotalDays = (timeInitial, timeFinal) => {
 }
 const getFinalDate = (typePayment, paydayLimit) => {
   let MonthToPlus = getMonthByTypePayment (typePayment)
-  let newMonth = paydayLimit.getMonth()+MonthToPlus
-  let newDate = new Date(paydayLimit.getFullYear(), newMonth, paydayLimit.getDate())
+  paydayLimit = moment(paydayLimit)
+  let newMonth = paydayLimit.month()+MonthToPlus
+  let year = paydayLimit.year()
+  let day = paydayLimit.date()
+  let newDate = new Date(year, newMonth, day)
   let getDays = getTotalDays(paydayLimit, newDate )
   
   return Math.ceil(getDays)
@@ -113,10 +168,15 @@ const getMonthByTypePayment = typePayment => {
 const getRangeMonth = (typePayment, paydayLimit) => {
   let MonthToPlus = getMonthByTypePayment (typePayment)
   let arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-  let initialDate = new Date(paydayLimit)
-  let diffDate = initialDate.getMonth()+MonthToPlus
-  let finalDate = new Date(initialDate.getFullYear(), diffDate, initialDate.getDate())
-  let rangeDate =  arrMonth[initialDate.getMonth()] + '-' + arrMonth[finalDate.getMonth()] 
+
+  let initialDate = moment(paydayLimit)
+  let getMonthPlus = initialDate.month()+MonthToPlus
+  let getYear = initialDate.year()
+  let getDay = initialDate.date()
+  let finalDate = new Date(getYear, getMonthPlus, getDay)
+  let momentFinalDate = moment(finalDate)
+
+  let rangeDate =  arrMonth[initialDate.month()] + '-' + arrMonth[momentFinalDate.month()] 
 
   return rangeDate
 }
@@ -141,6 +201,9 @@ const setRecord = data => {
   const paydayLimit = new Date(data.itemReceipt.payday_limit)
   // Obtener los dias restantes dependiendo el tipo pago
   const typePayment = data.type_payment
+
+  console.log(typePayment, paydayLimit)
+
   // const restDay = getRestDay(typePayment, paydayLimit)
   // Horas Totales
   const hoursTotals = getHoursTotals(paydayLimit.getTime(), date.getTime())
@@ -201,4 +264,6 @@ export {
   getMonthByTypePayment,
   getRangeMonth,
   setRecord,
+  // ------------------
+  getDateBetweenPeriods,
 }
