@@ -21,48 +21,40 @@ import { NativeModules } from 'react-native';
 const { InAppUtils } = NativeModules
 
 var products = [
-   'com.kondosoft.easylight.item',
+   'com.kondosoft.easylight.threemonth',
+   'com.kondosoft.easylight.premium'
 ];
 
 
 
 class Configuration extends Component {
   
+  constructor(props){
+    super(props)
+    this.state = {
+      products : [ ]
 
+      
+    }
+  }
   componentWillMount(){
-    InAppUtils.restorePurchases((error, response) => {
-     if(error) {
-        Alert.alert('itunes Error', 'Could not connect to itunes store.');
-     } else {
-        Alert.alert('Restore Successful', 'Successfully restores all your purchases.');
-        console.log('response', response)
-        if (response.length === 0) {
-          Alert.alert('No Purchases', "We didn't find any purchases to restore.");
-          return;
-        }
 
-        response.forEach((purchase) => {
-          if (purchase.productIdentifier === 'com.kondosoft.easylight.item') {
-            // Handle purchased product.
-          }
-        });
-     }
-  });
-    
+    InAppUtils.loadProducts(products, (error, products) => {
+      this.setState({
+        products
+      })
+    });
   }
 
   payOneMonth() {
     console.log('products', products)
     console.log('in', InAppUtils)
 
-    InAppUtils.loadProducts(products, (error, products) => {
-      //update store here.
-      
-      console.log('InAppUtils',products, error)
-    });
+    
   }
 
   render(){
+    console.log(this.state.products)
     return(
       <Container>
         <Grid style={{backgroundColor:'#fff'}}>
@@ -74,25 +66,24 @@ class Configuration extends Component {
             </Text>
           </Col>
           <Row size={14} style={{alignItems: 'center',justifyContent:'space-around'}}>
-            <View style={{flexDirection:'column',alignItems:'center'}}>
-              <Text>Mensual</Text>
-              <Button style={{
-                backgroundColor:'#42c2f4',
-                width: 130,
-                alignItems:'center',
-                justifyContent:'center', 
-                }}
-                onPress={() => this.payOneMonth(products)}
-               >
-                <Text style={{color:'#fff'}}>$89.00</Text>
-              </Button>
-            </View>
-            <View style={{flexDirection:'column',alignItems:'center'}}>
-              <Text>Anual</Text>
-              <Button style={{backgroundColor:'#42c2f4',width: 130,alignItems:'center',justifyContent:'center'}}>
-                <Text style={{color:'#fff'}}>$890.00</Text>
-              </Button>
-            </View>
+            {
+              this.state.products.map((item, i)=>{
+
+                return (<View key={i} style={{flexDirection:'column',alignItems:'center'}}>
+                  <Text>{item.title}</Text>
+                  <Button style={{
+                    backgroundColor:'#42c2f4',
+                    width: 130,
+                    alignItems:'center',
+                    justifyContent:'center', 
+                    }}
+                    // onPress={() => this.payOneMonth(products)}
+                   >
+                    <Text style={{color:'#fff'}}>{item.priceString}</Text>
+                  </Button>
+                </View>)
+              })
+            }
           </Row>
           <Col size={55} style={{alignItems:'center'}}>
             <Text style={{fontSize:18,height:30}}>Premium</Text>
