@@ -11,7 +11,8 @@ export const PRINT_RATE_PERIOD = 'PRINT_RATE_PERIOD';
 export const PRINT_RECEIPTS = 'PRINT_RECEIPTS';
 export const PICKER_CONTRACT = 'PICKER_CONTRACT';
 export const RESET_PICKER = 'RESET_PICKER';
-export const RESET_RECORD = 'RESET_RECORD'
+export const RESET_RECORD = 'RESET_RECORD';
+export const PRINT_HISTORY = 'PRINT_HISTORY';
 
 export function printRatePeriod(data):Action {
   return {
@@ -247,6 +248,29 @@ export function getRatePeriod(rate, token):Action{
     })
     .then(res => {return res.json()})
     .then(res=> dispatch(printRatePeriod(res)))
+    .catch(err => console.log(err))
+  }
+}
+
+export function postHistory(list, token):Action{
+  console.log(list)
+  return dispatch=>{
+    return fetch(endPoint+'/history/',{
+      method: 'POST',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       'Authorization': 'Token '+token
+      },
+      body: JSON.stringify({
+        contracts: list.contract_id,
+        // period_name: 
+        // date: list.payday_limit,
+        // datetime: list.record.datetime,
+      })
+    })
+    .then(res => {return res.json()})
+    .then(res => {console.log(res)})
     .catch(err => console.log(err))
   }
 }

@@ -165,7 +165,7 @@ class MeasurementSingle extends Component {
   setRecordState(){
          
     const ratePeriod = getDateBetweenPeriods(this.props.navigation.state.params.contract, this.state.itemReceipt, this.props.rate_period)
-
+    console.log(ratePeriod)
     let contract;
     if(this.props.navigation.state.params){
       contract = this.props.navigation.state.params.contract

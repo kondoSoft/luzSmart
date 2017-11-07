@@ -98,6 +98,7 @@ const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
     var outputPeriod = []
     ratePeriod.map((period, i) => {
       if(typePayment === 2){
+        console.log('estoy en los dos')
         outputPeriod.push({ period_name: period.period_name, kilowatt: period.kilowatt, cost: period.cost})
       }
       else{
@@ -119,21 +120,25 @@ const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
 
   }
   else if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt < finalDatePeriod){
+    console.log('estoy en verano')
     var outputPeriod = []
     if(typePayment === 2){
-      outputPeriod.push({ period_name: verano.period_name, kilowatt: verano.kilowatt*2, cost: verano.cost})
+      
+      sendPeriod = verano
     }else{
-      outputPeriod.push({period_name: verano.period_name, kilowatt: verano.kilowatt, cost: verano.cost}) 
+      sendPeriod = verano 
     }
-    sendPeriod = outputPeriod
+    // sendPeriod = outputPeriod
   }
   else{
+    console.log('estoy en no verano')
+
     if(typePayment === 2){
-      outputPeriod.push({ period_name: noverano.period_name, kilowatt: noverano.kilowatt*2, cost: noverano.cost})
+      sendPeriod = noverano
     }else{
-      outputPeriod.push({period_name: noverano.period_name, kilowatt: noverano.kilowatt, cost: noverano.cost}) 
+      sendPeriod = noverano
     }
-    sendPeriod = outputPeriod
+    
   }
 
   return sendPeriod
@@ -247,6 +252,7 @@ const setRecord = data => {
   // Consumo
   const cumulativeConsumption = data.current_data - current_reading
   // promedio Global
+  console.log('diffDays',diffDays)
   const average = (cumulativeConsumption / diffDays).toFixed(4)
   // Se obtiene el valor proyectado
   const projection = getProjected(cumulativeConsumption, average, restDay)

@@ -25,8 +25,9 @@ import styles from './styles';
 import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
-import { putRecord } from "../../actions/contracts";
+import { putRecord, postHistory } from "../../actions/contracts";
 import { getWeekday, setRecord as helperRecord } from "../../helpers"
+var moment = require('moment');
 var contract;
 
 class Receipt extends Component {
@@ -115,6 +116,27 @@ class Receipt extends Component {
       previous_reading_ui: event.nativeEvent.text,
     });
   }
+  sendDataHisoty(){
+    console.log('this.state', this.state)
+    const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    const setPayday_limit = moment(this.state.payday_limit)
+    const monthPayday_Limit = setPayday_limit.month()
+    const yearPayday_Limit = setPayday_limit.year()
+    console.log(arrMonth[monthPayday_Limit])
+    this.setState({
+      postHistory: {
+        contract_id: this.state.contract_id,
+        period_name: arrMonth[monthPayday_Limit] + ' ' + yearPayday_Limit,
+        kilowatt: this.state.current_reading,
+        cost: this.state.amount_payable,
+      }
+    }, () => {
+       this.props.postHistory(this.state.postHistory, this.props.screenProps.token)
+    // this.props.getContract(this.props.screenProps.token, this.props.navigation)
+    // this.props.navigation.navigate('History')
+    })
+   
+  }
   showAlert(){
     if (Platform.OS === 'ios') {
       AlertIOS.alert(
@@ -122,7 +144,7 @@ class Receipt extends Component {
        'Desea agregar un historial al contrato Mi Casa?',
        [
          {text: 'No', onPress: () => this.props.navigation.navigate('Contracts', this.props.getContract(this.props.screenProps.token, this.props.navigation))},
-         {text: 'Si', onPress: () => this.props.navigation.navigate('History')},
+         {text: 'Si', onPress: () => this.sendDataHisoty()},
        ],
       );
     }
@@ -132,7 +154,7 @@ class Receipt extends Component {
         'Desea agregar un historial al contrato Mi Casa?',
         [
           { text: 'No', onPress: () => this.props.navigation.navigate('Contracts', this.props.getContract(this.props.screenProps.token, this.props.navigation)) },
-          { text: 'Si', onPress: () => this.props.navigation.navigate('History') },
+          { text: 'Si', onPress: () => this.sendDataHisoty() },
         ],
       );
     }
@@ -497,6 +519,8 @@ function bindAction(dispatch) {
     getContract: (token, navigation) => dispatch(getContract(token, navigation)),
     patchNewReceipt: (data, id, token, navigation) => dispatch(patchNewReceipt(data, id, token, navigation)),
     putRecord: (data, token) => dispatch(putRecord(data, token)),
+    postHistory: (list, token) => dispatch(postHistory(list, token)),
+
   };
 }
 const mapStateToProps = state => ({
