@@ -29,7 +29,7 @@ const getIVA = total => {
 }
 
 const costProject = (kilowatt, countKwh) => {
-  console.log(kilowatt)
+  console.log('costProject',kilowatt)
   var consumoTotal = 0
 
   if (kilowatt) {
@@ -63,10 +63,9 @@ const costProject = (kilowatt, countKwh) => {
 }
 
 const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
-        
+  
   const dateLimit = moment(receipt.payday_limit)
   const typePayment = (contract.type_payment == 'Bimestral') ? 2 : 1;
-
     const dateFinal = (dateLimit, typePayment) => {
       const monthsToAdd = dateLimit.month()+typePayment
       const finalDate = moment(new Date(dateLimit.year(), monthsToAdd, dateLimit.date()))
@@ -99,15 +98,47 @@ const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
     var outputPeriod = []
     ratePeriod.map((period, i) => {
       if(typePayment === 2){
+        console.log('estoy en los dos')
         outputPeriod.push({ period_name: period.period_name, kilowatt: period.kilowatt, cost: period.cost})
       }
+      else{
+        diffInitial = finalDatePeriod.diff(dateInitialReceipt, 'days')
+        diffFinal = dateFinalReceipt.diff(finalDatePeriod, 'days')
+        if (diffInitial > diffFinal){
+          sendPeriod = verano
+        }
+        else{
+          sendPeriod = noverano
+        }
+
+      }
     })
-    outputPeriod.splice(3,1);
-    sendPeriod = outputPeriod
-  }else if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt < finalDatePeriod){
-    sendPeriod = verano
-  }else{
-    sendPeriod = noverano
+    if(outputPeriod.length > 0){
+      outputPeriod.splice(3,1);
+      sendPeriod = outputPeriod
+    }
+
+  }
+  else if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt < finalDatePeriod){
+    console.log('estoy en verano')
+    var outputPeriod = []
+    if(typePayment === 2){
+      
+      sendPeriod = verano
+    }else{
+      sendPeriod = verano 
+    }
+    // sendPeriod = outputPeriod
+  }
+  else{
+    console.log('estoy en no verano')
+
+    if(typePayment === 2){
+      sendPeriod = noverano
+    }else{
+      sendPeriod = noverano
+    }
+    
   }
 
   return sendPeriod
@@ -202,8 +233,6 @@ const setRecord = data => {
   // Obtener los dias restantes dependiendo el tipo pago
   const typePayment = data.type_payment
 
-  console.log(typePayment, paydayLimit)
-
   // const restDay = getRestDay(typePayment, paydayLimit)
   // Horas Totales
   const hoursTotals = getHoursTotals(paydayLimit.getTime(), date.getTime())
@@ -223,6 +252,7 @@ const setRecord = data => {
   // Consumo
   const cumulativeConsumption = data.current_data - current_reading
   // promedio Global
+  console.log('diffDays',diffDays)
   const average = (cumulativeConsumption / diffDays).toFixed(4)
   // Se obtiene el valor proyectado
   const projection = getProjected(cumulativeConsumption, average, restDay)

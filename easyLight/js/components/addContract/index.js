@@ -208,7 +208,6 @@ class AddContracts extends Component {
     
   }
   componentWillReceiveProps(nextProps){
-    console.log('willReceiv', nextProps)
     if (typeof nextProps.mun_rate === 'string') {
       //array of rates
       const rates = ['TARIFA 1', 'TARIFA 1A', 'TARIFA 1B', 'TARIFA 1C', 'TARIFA 1D', 'TARIFA 1E', 'TARIFA 1F']
@@ -243,7 +242,6 @@ class AddContracts extends Component {
     }
   }
   render(){
-    console.log('render', this.props)
     const { navigation, states_mx, municipality_mx, mun_rate } = this.props
     optionsStates = this.props.states_mx.map((item,i)=>{
       return (<Option
@@ -264,7 +262,6 @@ class AddContracts extends Component {
     }
     var periodItems = (
       arrRangeDate.map((item, i)=>{
-          console.log('arrRange', item)
           return <Option
             key={i}
             value={i}
@@ -272,7 +269,7 @@ class AddContracts extends Component {
             >{item}</Option>
         })
     ) 
-    periodItems.unshift(<Option value={'nulo'}>Seleccione periodo</Option>)
+    periodItems.unshift(<Option value={'nulo'}>Seleccione periodo de verano</Option>)
     var periodSummer = (
       <Select
         selectStyle={styles.select}
@@ -379,6 +376,7 @@ class AddContracts extends Component {
               (this.state.rates.length != 0)&&
                 this.state.rates.map((rate,i)=>{
                 return <Picker.Item
+                          key={i}
                           label={rate}
                           value={rate}
                         />

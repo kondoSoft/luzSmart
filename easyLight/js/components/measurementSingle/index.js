@@ -104,7 +104,6 @@ class MeasurementSingle extends Component {
         let nextCurrentReading = filItemID[0].receipt[0].current_reading_updated;
         if (nextCurrentReading > prevCurrentReading) {
           this.setState({
-            // type_payment: arrayContract[0].type_payment,
             itemReceipt:{
               id: this.state.itemReceipt.id,
               previous_reading: this.state.itemReceipt.previous_reading,
@@ -114,7 +113,6 @@ class MeasurementSingle extends Component {
               period: this.state.itemReceipt.period,
               amount_payable: this.state.itemReceipt.amount_payable,
             },
-            type_payment: arrayContract[0].type_payment,
           })
         }
       }else {
@@ -125,7 +123,7 @@ class MeasurementSingle extends Component {
         let nextCurrentReading = filItemID[0].receipt[0].current_reading_updated;
         if (nextCurrentReading > prevCurrentReading) {
           this.setState({
-            type_payment: arrayContract[0].type_payment,
+            // type_payment: arrayContract[0].type_payment,
             itemReceipt:{
               id: this.state.itemReceipt.id,
               previous_reading: this.state.itemReceipt.previous_reading,
@@ -167,14 +165,13 @@ class MeasurementSingle extends Component {
   setRecordState(){
          
     const ratePeriod = getDateBetweenPeriods(this.props.navigation.state.params.contract, this.state.itemReceipt, this.props.rate_period)
-
+    console.log(ratePeriod)
     let contract;
     if(this.props.navigation.state.params){
       contract = this.props.navigation.state.params.contract
     }
     // Obtiene el ultimo dato actualizado
-    // const lastRecord = this.propsNextRecords[0]
-    // 
+
     const lastRecord = this.propsNextRecords[this.propsNextRecords.length-1]
     // Se obtiene de nuevo Record
     this.props.getRecord(this.contract_id)
@@ -244,68 +241,32 @@ class MeasurementSingle extends Component {
 
     }
   }
-  setDataContract(contract_id){
-    this.contract_id = contract_id;
-    const itemContract = []
-    var itemReceipt;
-    var type_payment;
+  // setDataContract(contract_id){
+  //   this.contract_id = contract_id;
+  //   const itemContract = []
+  //   var itemReceipt;
+  //   var type_payment;
 
-    var arrContracts = this.props.screenProps.contracts.map((item, i) => {
-      if(item.id == contract_id){
-        this.rate_contract = item.rate
-        type_payment = item.type_payment;
-        itemContract.push(item.receipt);
-      }
-    })
-    itemContract.map((item,i)=>{
-      itemReceipt = item[0]
-    })
-    this.setState({
-      itemReceipt,
-      type_payment: type_payment
-    },()=>{
-      this.props.getRatePeriod(this.rate_contract, this.props.token)
-    })
-  }
+  //   var arrContracts = this.props.screenProps.contracts.map((item, i) => {
+  //     if(item.id == contract_id){
+  //       this.rate_contract = item.rate
+  //       type_payment = item.type_payment;
+  //       itemContract.push(item.receipt);
+  //     }
+  //   })
+  //   // console.log('itemContract', itemContract)
+  //   itemContract.map((item,i)=>{
+  //     itemReceipt = item[0]
+  //   })
+  //   this.setState({
+  //     itemReceipt,
+  //     type_payment: type_payment
+  //   },()=>{
+  //     this.props.getRatePeriod(this.rate_contract, this.props.token)
+  //   })
+  // }
 
-  getRate(){
-    let valueTypePayment;
-    if(arrayContract[0].type_payment == 'Bimestral')
-    {
-      valueTypePayment = 2
-    }else{
-      valueTypePayment = 1
-    }
-    var verano = [];
-    var noverano = [];
-    var kilowatt = [];
 
-    // empuje de datos en el arreglo de verano y fuera de verano
-    this.props.rate_period.map((period, i) => {
-      if(period.period_name === 'Verano') {
-        verano.push(period)
-        }
-      else {
-        noverano.push(period);
-        }
-      });
-      // Se retorna que tipo de periodo es, dependiendo del recibo
-      if(this.state.itemReceipt != undefined){
-        if(this.state.itemReceipt.period == 'Verano'){
-          return kilowatt = verano.map((rate, i)=>{
-            const { kilowatt, cost } =  {kilowatt: rate.kilowatt, cost: rate.cost };
-            return { kilowatt, cost };
-          });
-        }
-        else {
-          return kilowatt = noverano.map((rate, i)=>{
-            const { kilowatt, cost } = { kilowatt: rate.kilowatt, cost: rate.cost };
-            
-            return { kilowatt, cost };
-          })
-        }
-      }
-  }
   render(){
     const { navigation } = this.props;
     // Contrato que viene desde la pantalla recibos
