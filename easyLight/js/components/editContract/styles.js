@@ -15,6 +15,7 @@ export default {
       alignItems: 'center',
       justifyContent:'center',
       width:'100%',
+      paddingTop: 10,
     },
     row__top__col__right__icon:{
       paddingRight: 30,
@@ -24,19 +25,21 @@ export default {
       marginLeft: (Platform.OS === 'ios')? 10 : 5,
       backgroundColor: '#e2e2e2',
       width: '85%',
-      marginTop:20,
+      marginTop: 5,
     },
     select:{
       width: '85%',
-      marginTop:20,
-      margin: 10,
+      marginTop: 5,
       backgroundColor:'#fff',
       borderBottomWidth:1,
       borderTopWidth:1,
       borderLeftWidth:1,
       borderRightWidth:1,
       borderColor: 'lightgrey',
-      position:'relative',
+      marginRight: (Platform.OS === 'ios')? 10 : 5,
+      marginLeft: (Platform.OS === 'ios')? 10 : 5,
+
+      // position:'relative',
       left:'30%'
     },
     row__bottom__view__top:{
@@ -59,13 +62,14 @@ export default {
     row__bottom:{
       justifyContent: 'center',
       paddingTop: 0,
-      paddingBottom: (Platform.OS === 'ios')? 30 : 0,
+      paddingBottom: (Platform.OS === 'ios')? 20 : 0,
       flexDirection: 'row',
       width:'100%',
     },
     select__option:{
       height: 30,
-      borderBottomWidth: 0
+      borderBottomWidth: 0,
+
     },
     selectPicker:{
       borderTopWidth:1,

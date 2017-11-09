@@ -198,7 +198,7 @@ const getMonthByTypePayment = typePayment => {
 
 const getRangeMonth = (typePayment, paydayLimit) => {
   let MonthToPlus = getMonthByTypePayment (typePayment)
-  let arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+  let arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
 
   let initialDate = moment(paydayLimit)
   let getMonthPlus = initialDate.month()+MonthToPlus

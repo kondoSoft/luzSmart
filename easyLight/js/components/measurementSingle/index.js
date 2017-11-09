@@ -241,31 +241,6 @@ class MeasurementSingle extends Component {
 
     }
   }
-  // setDataContract(contract_id){
-  //   this.contract_id = contract_id;
-  //   const itemContract = []
-  //   var itemReceipt;
-  //   var type_payment;
-
-  //   var arrContracts = this.props.screenProps.contracts.map((item, i) => {
-  //     if(item.id == contract_id){
-  //       this.rate_contract = item.rate
-  //       type_payment = item.type_payment;
-  //       itemContract.push(item.receipt);
-  //     }
-  //   })
-  //   // console.log('itemContract', itemContract)
-  //   itemContract.map((item,i)=>{
-  //     itemReceipt = item[0]
-  //   })
-  //   this.setState({
-  //     itemReceipt,
-  //     type_payment: type_payment
-  //   },()=>{
-  //     this.props.getRatePeriod(this.rate_contract, this.props.token)
-  //   })
-  // }
-
 
   render(){
     const { navigation } = this.props;
@@ -285,42 +260,52 @@ class MeasurementSingle extends Component {
           >
           <Grid style={{height:Screen.height}}>
             <Row size={4} style={styles.grid__row__top}>
-              <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
-              <View style={styles.grid__row__top__view}>
-                <Text>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
-                <Text>Proyectado</Text>
+              <Text style={styles.grid__row__top__text}>Gasto de Luz:</Text>
+              <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
+                <Text style={{ fontSize: 14 }}>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
+                <Text >Proyectado</Text>
               </View>
             </Row>
             <Col size={6} style={styles.grid__col__select}>
               <Row style={styles.grid__col__select__row__top}>
-                <Text style={styles.grid__row__top__view}>Contrato</Text>
-                  <Text>#{contract.number_contract}</Text>
+                <Text style={styles.grid__row__top__view}>Contrato:</Text>
+                <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
+                  <Text style={{ fontSize: 14, flex: 1 }}>#{contract.number_contract}</Text>
+                </View>
               </Row>
               <Row style={styles.grid__col__select__row__bottom}>
-                <Text style={styles.grid__row__top__view}>Periodo</Text>
-                { TextReceipt }
+                <Text style={styles.grid__row__top__view}>Periodo:</Text>
+                <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
+                  { TextReceipt }
+                </View>
               </Row>
             </Col>
-            <Row size={12}>
+            <Row size={15}>
               <List style={styles.row__bottom__list}>
                 <ListItem last style={styles.row__bottom__list__listItem}>
-                  <Text style={styles.row__bottom__list__listItem__textTop}>Lectura Inicial</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.previous_reading}</Text>
+                  <Text style={styles.row__bottom__list__listItem__textTop}>Lectura Inicial:</Text>
+                  <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
+                    <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.previous_reading}</Text>
+                  </View>
                 </ListItem>
                 <ListItem last>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Ultima Lectura Diaria</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading_updated)}</Text>
+                  <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
+                    <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading_updated)}</Text>
+                  </View>
                 </ListItem>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Consumo en KWh</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading_updated === undefined)? 0 : this.state.itemReceipt.current_reading_updated - this.state.itemReceipt.previous_reading }</Text>
+                  <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
+                    <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading_updated === undefined)? 0 : this.state.itemReceipt.current_reading_updated - this.state.itemReceipt.previous_reading }</Text>
+                  </View>
                 </ListItem>
               </List>
             </Row>
-            <Row size={20} style={{alignItems: 'flex-start', justifyContent: 'center',paddingTop: (Platform.OS === 'android' && Screen.height <= 640)? 20 : 0}}>
+            <Row size={25} style={{alignItems: 'center', justifyContent: 'center',paddingTop: (Platform.OS === 'android' && Screen.height <= 640)? 20 : 0}}>
               <Image resizeMode={'stretch'} source={require('../../../images/medidor.png')} style={styles.animatedView__image}>
                 <View style={styles.animatedView__image__view}>
-                  <View style={{flexDirection: 'row',height:40,justifyContent:'center', alignItems:'center',marginTop: 65,marginLeft:37}}>
+                  <View style={{flexDirection: 'row',height:40,justifyContent:'center', alignItems:'center', marginTop: 65,marginLeft:37}}>
                     <TextInput
                       underlineColorAndroid={'transparent'}
                       keyboardType={'numeric'}
@@ -329,19 +314,22 @@ class MeasurementSingle extends Component {
                       value={this.state.current_data}
                       onFocus={ () => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 185 : 300 }) }
                     />
-                    {(typeof this.state.kwhValidation != 'string')? <Image style={{width:35,height:30,marginRight:0}} source={this.state.kwhValidation}/> : <Text style={{color: 'grey'}}>{this.state.kwhValidation}</Text>}
+                    {(typeof this.state.kwhValidation != 'string')? <Image style={{width:35,height:30,marginRight:0}} source={this.state.kwhValidation}/> : <Text style={{color: 'grey', marginTop: 13 }}>{this.state.kwhValidation}</Text>}
                   </View>
-                  <Button
-                    small
-                    style={styles.animatedView__image__view__btn}
-                    onPress={() => this.sendCurrentData(this.state.itemReceipt.id)}
-                    >
-                    <Text>Enter</Text>
-                  </Button>
+                  <View>
+                    <Button
+                      small
+                      style={styles.animatedView__image__view__btn}
+                      onPress={() => this.sendCurrentData(this.state.itemReceipt.id)}
+                      >
+                      <Text>Enter</Text>
+                    </Button>
+                    
+                  </View>
                 </View>
               </Image>
             </Row>
-            <Row size={10} style={{ justifyContent: 'center'}} >
+            <Row size={13} style={{ justifyContent: 'center'}} >
                <Button
                   transparent
                   small
