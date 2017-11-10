@@ -29,9 +29,7 @@ const getIVA = total => {
 }
 
 const costProject = (kilowatt, countKwh) => {
-  console.log('costProject',kilowatt)
-  var consumoTotal = 0
-
+  var consumoTotal = 0;
   if (kilowatt) {
     kilowatt = kilowatt.filter((item) => { 
       return (item.cost > 0) 
@@ -40,30 +38,24 @@ const costProject = (kilowatt, countKwh) => {
       let range = kilowatt.pop()
       let valueKilowatt = range.kilowatt 
       if (countKwh > valueKilowatt) {
-
         let consumo = countKwh - valueKilowatt
         countKwh -= valueKilowatt
         consumo = valueKilowatt * range.cost
         consumoTotal += consumo
       }
-      
-      while (kilowatt.length === 0 && countKwh > 0) {
+      if (kilowatt.length === 0 && countKwh > 0) {
         // range = kilowatt.pop()
         consumo = countKwh * range.cost
         consumoTotal += consumo
-        countKwh -= range.kilowatt
-
-        if (countKwh < range.kilowatt) {
-          countKwh = 0
-        }
-        return consumoTotal
       }
     }
   }
+  return consumoTotal
+
 }
 
 const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
-  
+  console.log(contract, receipt, ratePeriod)
   const dateLimit = moment(receipt.payday_limit)
   const typePayment = (contract.type_payment == 'Bimestral') ? 2 : 1;
     const dateFinal = (dateLimit, typePayment) => {
@@ -94,11 +86,11 @@ const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
       }
     });
 
-  if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt > finalDatePeriod){
+  if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt > finalDatePeriod || dateInitialReceipt < initialDatePeriod && dateFinalReceipt > initialDatePeriod){
     var outputPeriod = []
     ratePeriod.map((period, i) => {
       if(typePayment === 2){
-        console.log('estoy en los dos')
+        // console.log('estoy en los dos')
         outputPeriod.push({ period_name: period.period_name, kilowatt: period.kilowatt, cost: period.cost})
       }
       else{
@@ -120,7 +112,7 @@ const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
 
   }
   else if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt < finalDatePeriod){
-    console.log('estoy en verano')
+    // console.log('estoy en verano')
     var outputPeriod = []
     if(typePayment === 2){
       
@@ -131,7 +123,7 @@ const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
     // sendPeriod = outputPeriod
   }
   else{
-    console.log('estoy en no verano')
+    // console.log('estoy en no verano')
 
     if(typePayment === 2){
       sendPeriod = noverano
@@ -147,11 +139,13 @@ const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
 const getDayInDates = (fechaMinima, fechaMaxima) => {
   let fechaMin = Date.parse(fechaMinima)
   let fechaMax = Date.parse(fechaMaxima)
+  // console.log('fechas', fechaMaxima, fechaMinima)
   let time = fechaMax - fechaMin
   let daysInMiliSeconds = time / 1000
   let daysInSeconds = daysInMiliSeconds / 60
   let daysInMinutes = daysInSeconds / 60
   let daysInHours = daysInMinutes / 24
+
   return daysInHours
 }
 
@@ -241,6 +235,7 @@ const setRecord = data => {
   const hoursElapsed = hoursTotals - lastRecord.hours_totals
   // Dias transcurridos
   const diffDays = getDayInDates(paydayLimit, date)
+
   // Dias Restantes
   const restDay = totalDays - Math.ceil(diffDays)
   // Dias transcurridos desde el ultimo record
@@ -252,7 +247,7 @@ const setRecord = data => {
   // Consumo
   const cumulativeConsumption = data.current_data - current_reading
   // promedio Global
-  console.log('diffDays',diffDays)
+  // console.log('diffDays',diffDays)
   const average = (cumulativeConsumption / diffDays).toFixed(4)
   // Se obtiene el valor proyectado
   const projection = getProjected(cumulativeConsumption, average, restDay)
