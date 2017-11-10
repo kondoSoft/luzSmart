@@ -48,6 +48,7 @@ let Screen = Dimensions.get('window')
 var arrRangeDate = []
 var arrRangeMonth= []
 var arrRange = []
+var that
 class EditContracts extends Component {
 
   constructor(props){
@@ -75,8 +76,18 @@ class EditContracts extends Component {
     }
     this.handleRate = this.handleRate.bind(this)
     this.createRateSelect = this.createRateSelect.bind(this)
+    that = this
   }
+  static navigationOptions = ({ navigation, screenProps }) => 
+   
+    ({
+      headerLeft: <Button transparent onPress={() => that.__proto__.returnScreen()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>
+    });
 
+  returnScreen() {
+    that.props.resetRate()
+    that.props.navigation.goBack()
+  }
   selectPhotoTapped() {
     const options = {
       quality: 1.0,
@@ -220,7 +231,7 @@ class EditContracts extends Component {
       return(
         <Select
           selectStyle={styles.select}
-          padding={10}
+          // padding={10}
           listHeight={250}
           caretSize={0}
           getRate
@@ -291,14 +302,15 @@ class EditContracts extends Component {
         this.props.getRate(item.id, this.props.token)
       }
     })
+    console.log('nextProps', nextProps)
     if (typeof nextProps.mun_rate === 'string') {
       //array of rates
       const rates = ['TARIFA 1', 'TARIFA 1A', 'TARIFA 1B', 'TARIFA 1C', 'TARIFA 1D', 'TARIFA 1E', 'TARIFA 1F']
       // put inside of an array the municipality rate
-      const rate_unique = [nextProps.mun_rate]
+      const rate_unique = [this.props.navigation.state.params.rate]
       //function that return a condiciton => return all rates that are different from the municipality
       const inRates = (rate) => {
-        return rate != nextProps.mun_rate
+        return rate != this.props.navigation.state.params.rate
       }
       //filter the array of rates => return a new array with all rates except the munucipality rate
       var rate = rates.filter(inRates)
@@ -323,7 +335,7 @@ class EditContracts extends Component {
       <Container style={{backgroundColor:'#fff'}}>
         <ScrollView scrollEnabled={false}>
           <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
-            <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
+            <Row size={7} style={{ justifyContent: 'center', paddingTop: 10, paddingBottom: 10}}>
               <Left style={{marginLeft:19}}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                   <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
@@ -339,7 +351,7 @@ class EditContracts extends Component {
               </Right>
             </Row>
             <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
-            <Col size={ (Platform.OS === 'ios')? 40 : 29 } style={ styles.col__form }>
+            <Col size={ (Platform.OS === 'ios')? 39 : 29 } style={ styles.col__form }>
               <Item fixedLabel style={styles.col__form__item}>
                 <Input value={navigation.state.params['number_contract']} editable={false} keyboardType={'numeric'} style={{paddingLeft:10}}/>
               </Item>
@@ -366,7 +378,7 @@ class EditContracts extends Component {
                 </Body>
               </View>
             </Row>
-            <Row size={5} style={[styles.row__bottom,{ paddingBottom: (Platform.OS === 'ios')? 30 : 0}]}>
+            <Row size={6} style={[styles.row__bottom,{ paddingBottom: (Platform.OS === 'ios')? 30 : 0}]}>
               <Button
                 large
                 primary

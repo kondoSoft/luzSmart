@@ -24,10 +24,14 @@ export default {
       marginLeft: (Platform.OS === 'ios')? 10 : 5,
       backgroundColor: 'lightgray',
       width: '85%',
+      marginBottom: 5,
+
     },
     select:{
       width: '94%',
       margin: 10,
+      marginTop: 5,
+      marginBottom: 5,
       backgroundColor:'#fff',
       borderBottomWidth:1,
       borderTopWidth:1,
@@ -35,20 +39,7 @@ export default {
       borderRightWidth:1,
       borderColor: 'lightgrey',
     },
-    row__bottom__view__top:{
-      marginTop: 0,
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      paddingRight: 25,
-    },
-    row__bottom__view__bottom:{
-      marginTop: 0,
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
+
     CheckBox:{
       marginRight: 15,
     },

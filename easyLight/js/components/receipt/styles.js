@@ -29,8 +29,8 @@ export default {
     borderBottomWidth: 2,
     borderRightWidth: 2,
     borderTopWidth: 2,
-    marginBottom: 10,
-    marginTop: 10,
+    marginBottom: 5,
+    marginTop: 5,
     paddingTop: 5,
   },
   form__item__datepicker:{
@@ -49,7 +49,7 @@ export default {
     marginTop: 5,
   },
   col__bottom__row__bottom:{
-    paddingTop: 20,
+    // paddingTop: 20,
   },
   touchable__text:{
     color: 'green',

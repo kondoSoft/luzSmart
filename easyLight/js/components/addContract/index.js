@@ -64,6 +64,8 @@ class AddContracts extends Component {
         rates: []
     }
   }
+ 
+
   selectPhotoTapped() {
     const options = {
       quality: 1.0,
@@ -125,16 +127,18 @@ class AddContracts extends Component {
     this.setState({municipality: value.id});
   }
   handlePeriodSummer(value){
-    const initialRange = arrRange[value].initialRange
-    const finalRange = arrRange[value].finalRange
-    const monthInitial = initialRange.getMonth()+1
-    const monthFinal = finalRange.getMonth()+1
-    const initialDateRange = initialRange.getFullYear() + '-' + ((''+monthInitial).length<2 ? '0': '') + monthInitial + '-' +  ((''+initialRange.getDay()).length<2 ? '0' : '') + initialRange.getDay()
-    const finalDateRange = finalRange.getFullYear() + '-' + ((''+monthFinal).length<2 ? '0' : '') + monthFinal + '-' +  ((''+finalRange.getDay()).length<2 ? '0' : '') + finalRange.getDay()
-    this.setState({
-      initialDateRange,
-      finalDateRange,
-    })
+    if (value){
+      const initialRange = arrRange[value].initialRange
+      const finalRange = arrRange[value].finalRange
+      const monthInitial = initialRange.getMonth()+1
+      const monthFinal = finalRange.getMonth()+1
+      const initialDateRange = initialRange.getFullYear() + '-' + ((''+monthInitial).length<2 ? '0': '') + monthInitial + '-' +  ((''+initialRange.getDay()).length<2 ? '0' : '') + initialRange.getDay()
+      const finalDateRange = finalRange.getFullYear() + '-' + ((''+monthFinal).length<2 ? '0' : '') + monthFinal + '-' +  ((''+finalRange.getDay()).length<2 ? '0' : '') + finalRange.getDay()
+      this.setState({
+        initialDateRange,
+        finalDateRange,
+      })
+    }
   }
   handleTypePayment(event){
     this.setState({type_payment: event.nativeEvent.text});
@@ -269,7 +273,7 @@ class AddContracts extends Component {
             >{item}</Option>
         })
     ) 
-    periodItems.unshift(<Option value={'nulo'}>Seleccione periodo de verano</Option>)
+    periodItems.unshift(<Option value={null}>Seleccione periodo de verano</Option>)
     var periodSummer = (
       <Select
         selectStyle={styles.select}
@@ -315,7 +319,7 @@ class AddContracts extends Component {
         )
       })
     }
-    rateItems.unshift(<Option value={'Nulo'}>Seleccione Tarifa</Option>)
+    rateItems.unshift(<Option value={0}>{this.state.rates[0]}</Option>)
     var selectRate = (
       <Select
         selectStyle={styles.select}
@@ -389,7 +393,7 @@ class AddContracts extends Component {
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <ScrollView scrollEnabled={false}>
-          <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
+          <Grid style={{alignItems: 'center',height: Screen.height / 1.1}}>
             <Row size={7} style={{ justifyContent: 'center', paddingTop: 5, paddingBottom: 5}}>
               <Left style={{marginLeft:19}}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
@@ -406,10 +410,10 @@ class AddContracts extends Component {
               </Right>
             </Row>
             <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
-            <Col size={ (Platform.OS === 'ios')? 40 : 29 } style={ styles.col__form }>
+            <Col size={29} style={ styles.col__form }>
               <Form>
                 <Item fixedLabel style={styles.col__form__item}>
-                  <Input keyboardType={'numeric'} placeholder={'No Contrato'} style={{paddingLeft:10,paddingTop:15}} onChange={event => this.handleNumberContract(event)}/>
+                  <Input keyboardType={'numeric'} placeholder={'No. Contrato'} style={{paddingLeft:10,paddingTop:5}} onChange={event => this.handleNumberContract(event)}/>
                 </Item>
               { (Platform.OS === 'ios')?
                 <Select
@@ -432,28 +436,21 @@ class AddContracts extends Component {
                   </Picker>
                 </View>
               }
-              { (municipality_mx.length == 0) ? <View style={{height:40,marginTop:10,marginBottom:10}}/> : selectMun}
-              {/* { (mun_rate.length == 0) ? <View style={{height:40,marginTop:0,marginBottom:0}}/> : <Text style={{height:40,marginTop:0,marginLeft:(Platform.OS === 'ios')? 10 : 5,
-                                                                                                                            marginRight:(Platform.OS === 'ios')? 10 : 5,
-                                                                                                                            textAlignVertical:'center',
-                                                                                                                            paddingLeft:10,
-                                                                                                                            paddingTop:7,
-                                                                                                                            textAlign:'left'}}>
-                                                                                                                            {mun_rate}
-                                                                                                                          </Text>} */}
-              { (mun_rate.length != 0) ? selectRate : <View style={{height:40,marginTop:10,marginBottom:10}}/> }
+              { (municipality_mx.length == 0) ? <View style={{height:30,marginTop:5,marginBottom:5}}/> : selectMun }
+
+              { (mun_rate.length != 0) ? selectRate : <View style={{height:30,marginTop:5,marginBottom:5}}/> }
               { periodSummer }
               </Form>
             </Col>
             {(Platform.OS === 'ios')? <View style={{height:15}}></View> : <View style={{height: 0}}></View>}
-            <Row size={6} style={{marginBottom:(Platform.OS === 'ios')? 20 : 0}}>
-              <View style={styles.row__bottom__view__top}>
+            <Row size={6} style={{ alignItems: 'center', justifyContent: 'center', marginBottom:(Platform.OS === 'ios')? 20 : 0}}>
+              <View style={{flexDirection: 'row'}}>
                 <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('mensual')}/>
                 <Body style={{ flex: 0 }}>
                   <Text>Mensual</Text>
                 </Body>
               </View>
-              <View style={ styles.row__bottom__view__bottom }>
+              <View style={{flexDirection: 'row'}}>
                 <CheckBox checked={this.state.checkedBi} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('bimestral')}/>
                 <Body style={{ flex: 0 }}>
                   <Text>Bimestral</Text>

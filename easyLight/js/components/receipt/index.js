@@ -419,7 +419,7 @@ class Receipt extends Component {
             style={{backgroundColor: '#fff'}}
             >
             <Grid style={styles.grid}>
-              <Col size={75}>
+              <Col size={65}>
                 <Form style={styles.form}>
                   <Item inlineLabel last style={styles.form__item__title}>
                     <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
@@ -493,7 +493,7 @@ class Receipt extends Component {
                   </Item>
                 </Form>
               </Col>
-              <Col size={25} style={styles.col__bottom}>
+              <Col size={10} style={styles.col__bottom}>
                 <Row style={styles.col__bottom__row__bottom}>
                   <Button
                     style={{ height: 35}}
