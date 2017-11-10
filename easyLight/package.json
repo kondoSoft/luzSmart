@@ -28,6 +28,7 @@
     "react-native-snap-carousel": "^2.3.1",
     "react-native-svg": "^5.2.0",
     "react-native-swipe-list-view": "^0.4.1",
+    "react-native-swipeable": "^0.6.0",
     "react-native-swipeout": "^2.1.2",
     "react-native-swiper": "^1.5.4",
     "react-native-view-shot": "^2.1.0",
