@@ -46,7 +46,7 @@ var that
 class DetailContract extends Component {
   constructor(props) {
     super(props);
-
+    console.log('props.contracts', props.contracts)
     this.state = {
       key: null,
       status: '',
@@ -55,7 +55,7 @@ class DetailContract extends Component {
       contract_id: '',
       previous_reading: '',
       payday_limit: '',
-      count_days: props.contracts[0].type_payment,
+      count_days: (props.contracts.length > 0) && props.contracts[0].type_payment,
       bill: (props.navigation.state.params) ? props.navigation.state.params.receipt : undefined, 
       onlyOneBill: (props.navigation.state.params) && props.navigation.state.params.receipt.length,
       contract: '',
