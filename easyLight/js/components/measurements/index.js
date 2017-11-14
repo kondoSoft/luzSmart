@@ -63,7 +63,7 @@ class Measurements extends Component {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
   componentWillReceiveProps (nextProps) {
-
+    console.log('Measurements', nextProps)
     if(nextProps.record[0]){
       this.setState({
         projected_payment: nextProps.record[0].projected_payment

@@ -54,8 +54,26 @@ const costProject = (kilowatt, countKwh) => {
 
 }
 
+const costProjectDac = (highConsumption, countKwh) =>{
+  console.log('costProjectDac', highConsumption, countKwh)
+}
+
+const funcHighConsumptionPeriod = (highConsumption, contract) => {
+  let currentDate = new Date()
+  let momentCurrentDate = moment(currentDate)
+  let monthCurrentDate = momentCurrentDate.month()
+  let arrMonth = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
+  let stringMonthCurrent = arrMonth[monthCurrentDate]
+  let arrHighConsumption = []
+  highConsumption.map((item,i)=>{
+    if(stringMonthCurrent === item.month){
+      arrHighConsumption.push({period_name: item.month, kwhVerano: item.cost_verano, kwhNoVerano: item.cost_no_verano, kwhUniqueRate: item.unique_rate, fixedCharge: item.fixed_charge})
+    }
+  })
+  
+  return arrHighConsumption
+}
 const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
-  console.log(contract, receipt, ratePeriod)
   const dateLimit = moment(receipt.payday_limit)
   const typePayment = (contract.type_payment == 'Bimestral') ? 2 : 1;
     const dateFinal = (dateLimit, typePayment) => {
@@ -214,6 +232,7 @@ const setRecord = data => {
   // Obtiene el ultimo dato actualizado
   const lastRecord = data.lastRecord
   const amount_payable = data.amount_payable
+
   //Fecha de actualizacion de record
   const date = new Date()    
   const year = date.getFullYear();
@@ -251,8 +270,18 @@ const setRecord = data => {
   const average = (cumulativeConsumption / diffDays).toFixed(4)
   // Se obtiene el valor proyectado
   const projection = getProjected(cumulativeConsumption, average, restDay)
-  const projectedPayment = costProject(data.ratePeriod, projection)
-  const projectedPaymentIVA = getIVA(projectedPayment)
+  // const highConsumption = funcHighConsumptionPeriod()
+  console.log(data)
+  if(data.contract.high_consumption){
+    const arrHighConsumption = funcHighConsumptionPeriod(data.highConsumption, data.contract)
+    const costProjectByDac = costProjectDac(arrHighConsumption, projection)
+    // console.log('data.dac',costProjectByDac)
+  }else{
+    const projectedPayment = costProject(data.ratePeriod, projection)
+    const projectedPaymentIVA = getIVA(projectedPayment)
+
+  }
+  // const projectedPaymentIVA = getIVA(projectedPayment)
   
   // const projectedPayment = 0
   const record = {
@@ -267,7 +296,7 @@ const setRecord = data => {
     days_totals: diffDays.toFixed(4),
     daily_consumption: dailyConsumption.toFixed(4),
     cumulative_consumption: cumulativeConsumption,
-    projected_payment: projectedPaymentIVA,
+    // projected_payment: projectedPaymentIVA,
     average_global: average,
     rest_day: restDay,
     projection: projection,
@@ -289,6 +318,6 @@ export {
   getMonthByTypePayment,
   getRangeMonth,
   setRecord,
-  // ------------------
+  funcHighConsumptionPeriod,
   getDateBetweenPeriods,
 }

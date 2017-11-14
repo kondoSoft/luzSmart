@@ -127,13 +127,13 @@ class AddContracts extends Component {
     this.setState({municipality: value.id});
   }
   handlePeriodSummer(value){
-    if (value){
+    if (value >= 0){
       const initialRange = arrRange[value].initialRange
       const finalRange = arrRange[value].finalRange
       const monthInitial = initialRange.getMonth()+1
       const monthFinal = finalRange.getMonth()+1
-      const initialDateRange = initialRange.getFullYear() + '-' + ((''+monthInitial).length<2 ? '0': '') + monthInitial + '-' +  ((''+initialRange.getDay()).length<2 ? '0' : '') + initialRange.getDay()
-      const finalDateRange = finalRange.getFullYear() + '-' + ((''+monthFinal).length<2 ? '0' : '') + monthFinal + '-' +  ((''+finalRange.getDay()).length<2 ? '0' : '') + finalRange.getDay()
+      const initialDateRange = initialRange.getFullYear() + '-' + ((''+monthInitial).length<2 ? '0': '') + monthInitial + '-' +  ((''+initialRange.getDate()).length<2 ? '0' : '') + initialRange.getDate()
+      const finalDateRange = finalRange.getFullYear() + '-' + ((''+monthFinal).length<2 ? '0' : '') + monthFinal + '-' +  ((''+finalRange.getDate()).length<2 ? '0' : '') + finalRange.getDate()
       this.setState({
         initialDateRange,
         finalDateRange,
@@ -188,7 +188,6 @@ class AddContracts extends Component {
 
   }
 
-  // falta condicion para hacer check en uno u otro
   handleCheckedMen(check){
     if (check === 'mensual') {
       this.setState({
@@ -280,7 +279,7 @@ class AddContracts extends Component {
         padding={10}
         listHeight={200}
         caretSize={0}
-        onSelect={value => this.handlePeriodSummer(value)}
+        onSelect={(value) => this.handlePeriodSummer(value)}
         >
         {periodItems}
       </Select>
