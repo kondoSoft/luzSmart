@@ -13,10 +13,26 @@ export const PICKER_CONTRACT = 'PICKER_CONTRACT';
 export const RESET_PICKER = 'RESET_PICKER';
 export const RESET_RECORD = 'RESET_RECORD';
 export const PRINT_HISTORY = 'PRINT_HISTORY';
+export const PRINT_REGION = 'PRINT_REGION';
+export const PRINT_HIGH_CONSUMPTION = 'PRINT_HIGH_CONSUMPTION';
+
+
 
 export function printRatePeriod(data):Action {
   return {
     type: PRINT_RATE_PERIOD,
+    payload: data,
+  };
+}
+export function printRegion(data):Action {
+  return {
+    type: PRINT_REGION,
+    payload: data,
+  };
+}
+export function printHighConsumption(data):Action {
+  return {
+    type: PRINT_HIGH_CONSUMPTION,
     payload: data,
   };
 }
@@ -53,6 +69,7 @@ export function resetRecord():Action{
 }
 
 export function postReceipt(list, token):Action{
+
   return dispatch => {
     return fetch(endPoint+'/receipt/',{
       method: 'POST',
@@ -67,13 +84,14 @@ export function postReceipt(list, token):Action{
         current_reading: list.current_reading,
         current_reading_updated: list.current_reading,
         previous_reading: list.previous_reading,
-        contract: list.contract_id,
+        contract: list.array_contract.id,
         period: list.period,
         status: list.status,
       })
     })
     .then(res => {return res.json()})
     .then(res => {
+
       dispatch(postProjectReceipt(res, token))})
     .catch(err => console.log(err))
   }
@@ -253,7 +271,6 @@ export function getRatePeriod(rate, token):Action{
 }
 
 export function postHistory(list, token):Action{
-  console.log(list)
   return dispatch=>{
     return fetch(endPoint+'/history/',{
       method: 'POST',
@@ -271,6 +288,39 @@ export function postHistory(list, token):Action{
     })
     .then(res => {return res.json()})
     .then(res => {console.log(res)})
+    .catch(err => console.log(err))
+  }
+}
+
+export function getRegion(token):Action{
+
+  return dispatch=>{
+    return fetch(endPoint+'/region/',{
+      method: 'GET',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       'Authorization': 'Token '+token
+      },
+    })
+    .then(res => {return res.json()})
+    .then(res => dispatch(printRegion(res)))
+    .catch(err => console.log(err))
+  }
+}
+
+export function getHighConsumption(region_id, token): Action{
+  return dispatch=>{
+    return fetch(endPoint+'/high_consumption/?region_id='+ region_id,{
+      method: 'GET',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       'Authorization': 'Token '+token
+      },
+    })
+    .then(res => {return res.json()})
+    .then(res => dispatch(printHighConsumption(res)))
     .catch(err => console.log(err))
   }
 }

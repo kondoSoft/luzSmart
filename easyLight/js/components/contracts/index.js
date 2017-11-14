@@ -9,7 +9,7 @@ import FabButton from '../fabButton';
 import { setIndex } from "../../actions/list";
 import { openDrawer } from "../../actions/drawer";
 import { getContract, resetRate, resetMunicipality } from "../../actions/list_states_mx";
-import { resetPicketContract } from "../../actions/contracts";
+import { resetPicketContract, getRegion } from "../../actions/contracts";
 import { getUser } from '../../actions/user';
 import { 
   costProject,
@@ -28,15 +28,11 @@ class Contracts extends Component {
   }
   componentWillMount(){
     this.props.resetRate()
-    // this.props.resetPicketContract()
     this.props.resetMunicipality()
+    this.props.getRegion(this.props.screenProps.token)
     this.setState({
       contract: this.props.contracts
     })
-  }
-  componentWillReceiveProps(nextProps){
-    // this.props.getContract(nextProps.token, nextProps.navigation)
-
   }
 
   render(){
@@ -139,6 +135,7 @@ function bindAction(dispatch){
     resetRate: () => dispatch(resetRate()),
     resetMunicipality: () => dispatch(resetMunicipality()),
     resetPicketContract: () => dispatch(resetPicketContract()),
+    getRegion: token => dispatch(getRegion(token)),
   }
 }
 const mapStateToProps = state => ({

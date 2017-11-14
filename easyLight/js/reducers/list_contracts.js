@@ -1,7 +1,7 @@
 import type { Action } from "../actions/types";
 import { SET_BILL, SET_INDEX } from "../actions/contracts";
 import { GET_CONTRACT, SUCCES_CONTRACT, GET_TIPS } from "../actions/list_states_mx"
-import { PRINT_RECEIPTS, PICKER_CONTRACT, RESET_PICKER } from "../actions/contracts"
+import { PRINT_RECEIPTS, PICKER_CONTRACT, RESET_PICKER, PRINT_REGION, PRINT_HIGH_CONSUMPTION } from "../actions/contracts"
 export type State = {
   list: string
 };
@@ -11,7 +11,10 @@ const initialState = {
   newContract:[],
   tips: [],
   selectedIndex: undefined,
-  pickerContract: []
+  pickerContract: [],
+  region: [],
+  highConsumption: [],
+
 };
 
 export default function(state: State = initialState, action: Action): State {
@@ -56,6 +59,18 @@ export default function(state: State = initialState, action: Action): State {
     return {
       ...state,
       pickerContract: [],
+    }
+  }
+  if ( action.type === PRINT_REGION){
+    return{
+      ...state,
+      region: action.payload.results
+    }
+  }
+  if ( action.type === PRINT_HIGH_CONSUMPTION){
+    return{
+      ...state,
+      highConsumption: action.payload.results
     }
   }
   return state;

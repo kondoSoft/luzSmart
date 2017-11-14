@@ -26,7 +26,7 @@ import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt } from '..
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
 import { putRecord, postHistory } from "../../actions/contracts";
-import { getWeekday, setRecord as helperRecord } from "../../helpers"
+import { getWeekday, setRecord as helperRecord, funcHighConsumptionPeriod } from "../../helpers"
 var moment = require('moment');
 var contract;
 
@@ -38,7 +38,7 @@ class Receipt extends Component {
         amount_payable: 0,
         current_reading: 0,
         previous_reading: 0,
-        contract_id: 0,
+        array_contract: [],
         amount_payable_ui: '',
         current_reading_ui: 0,
         previous_reading_ui: 0,
@@ -61,13 +61,18 @@ class Receipt extends Component {
   componentWillMount () {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
    if (this.props.navigation.state.params !== undefined) {
-     this.setState({contract_id: this.props.navigation.state.params.contract.id})
+     this.setState({array_contract: this.props.navigation.state.params.contract})
+     // this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region.id,this.props.screenProps.token)
    }
   }
   componentWillReceiveProps(nextProps){
     if(this.props.navigation.state.params === undefined){
-      this.setState({contract_id: nextProps.newContract.id})
+      this.setState({array_contract: nextProps.newContract})
     }
+
+    this.setState({
+      highConsumption: this.props.highConsumption,
+    })
   }
   componentWillUnmount () {
     this.keyboardDidHideListener.remove();
@@ -117,15 +122,13 @@ class Receipt extends Component {
     });
   }
   sendDataHisoty(){
-    console.log('this.state', this.state)
     const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
     const setPayday_limit = moment(this.state.payday_limit)
     const monthPayday_Limit = setPayday_limit.month()
     const yearPayday_Limit = setPayday_limit.year()
-    console.log(arrMonth[monthPayday_Limit])
     this.setState({
       postHistory: {
-        contract_id: this.state.contract_id,
+        contract_id: this.state.array_contract.id,
         period_name: arrMonth[monthPayday_Limit] + ' ' + yearPayday_Limit,
         kilowatt: this.state.current_reading,
         cost: this.state.amount_payable,
@@ -169,7 +172,7 @@ class Receipt extends Component {
     const { current_reading, previous_reading} = this.state
     this.setState({
       record:{
-        contract_id: this.state.contract_id,
+        contract_id: this.state.array_contract.id,
         date: paydayLimit,
         datetime: paydayLimit+'T12:00:00Z',
         day: weekday,
@@ -186,6 +189,7 @@ class Receipt extends Component {
         rest_day: 0,
         projection: 0,
         status: true,
+        
 
       }
     })
@@ -226,12 +230,11 @@ class Receipt extends Component {
     const ratePeriod = this.getRate(receipt)
     const lastRecord = this.props.record[this.props.record.length - 1]
     const data = {
-      contract_id: this.state.contract_id,
+      contract_id: this.state.array_contract.id,
       lastRecord: lastRecord,
       itemReceipt: receipt,
       type_payment: contract.type_payment,
       current_data: this.state.current_reading,
-      
     }
 
     const record = helperRecord(data)
@@ -239,6 +242,7 @@ class Receipt extends Component {
       record,
       ratePeriod: ratePeriod,
       status: true,
+      
     })
   }
   sendData(contract) {
@@ -255,8 +259,8 @@ class Receipt extends Component {
             resolve(true)
           })
           .then((result)=>{
-            this.props.patchNewReceipt(this.state, receipt[0].id, this.props.screenProps.token, navigation)
-            this.props.putRecord(this.state, this.props.screenProps.token)
+            // this.props.patchNewReceipt(this.state, receipt[0].id, this.props.screenProps.token, navigation)
+            // this.props.putRecord(this.state, this.props.screenProps.token)
           })
         } 
         else {
@@ -520,7 +524,7 @@ function bindAction(dispatch) {
     patchNewReceipt: (data, id, token, navigation) => dispatch(patchNewReceipt(data, id, token, navigation)),
     putRecord: (data, token) => dispatch(putRecord(data, token)),
     postHistory: (list, token) => dispatch(postHistory(list, token)),
-
+    
   };
 }
 const mapStateToProps = state => ({

@@ -20,7 +20,7 @@ import { Select, Option } from 'react-native-select-list';
 import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
-import { patchReceipt, getRatePeriod, postRecord, getRecord } from '../../actions/contracts'
+import { patchReceipt, getRatePeriod, postRecord, getRecord, getHighConsumption } from '../../actions/contracts'
 import { 
   getRangeMonth,
   setRecord,
@@ -75,9 +75,7 @@ class MeasurementSingle extends Component {
     this.contract_id = this.props.navigation.state.params.contract.id
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     this.props.getRecord(this.contract_id)
-
-
-
+    this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region.id, this.props.screenProps.token)
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.record[0]){
@@ -85,7 +83,6 @@ class MeasurementSingle extends Component {
         projected_payment: nextProps.record[0].projected_payment
       })
     }
-
 
     nextProps.screenProps.contracts.map((item, i) => {
       if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){
@@ -165,7 +162,6 @@ class MeasurementSingle extends Component {
   setRecordState(){
          
     const ratePeriod = getDateBetweenPeriods(this.props.navigation.state.params.contract, this.state.itemReceipt, this.props.rate_period)
-    console.log(ratePeriod)
     let contract;
     if(this.props.navigation.state.params){
       contract = this.props.navigation.state.params.contract
@@ -184,6 +180,7 @@ class MeasurementSingle extends Component {
       ratePeriod: ratePeriod,
       amount_payable: 0,
       contract: contract,
+      highConsumption: this.props.highConsumption
     }
     const record = setRecord(data)
     this.setState({
@@ -243,7 +240,9 @@ class MeasurementSingle extends Component {
   }
 
   render(){
+    
     const { navigation } = this.props;
+
     // Contrato que viene desde la pantalla recibos
     const { contract } = this.props.navigation.state.params;
     const rangeDate = getRangeMonth(this.state.type_payment, this.state.itemReceipt.payday_limit)
@@ -363,6 +362,8 @@ function bindAction(dispatch) {
     getRatePeriod: (rate, token) => dispatch(getRatePeriod(rate, token)),
     postRecord: (data, token) => dispatch(postRecord(data, token)),
     getRecord: (id) => dispatch(getRecord(id)),
+    getHighConsumption: (region_id, token) => dispatch(getHighConsumption(region_id, token)),
+
   };
 }
 const mapStateToProps = state => ({
@@ -370,5 +371,7 @@ const mapStateToProps = state => ({
   rate_period: state.list_rate.rate_period,
   contracts: state.list_contracts.contracts,
   record: state.list_records.results,
+  highConsumption: state.list_contracts.highConsumption,
+
 });
 export default connect(mapStateToProps, bindAction)(MeasurementSingle)

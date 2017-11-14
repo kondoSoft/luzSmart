@@ -30,6 +30,10 @@ export type Action =
     | { type: 'EMAIL_VERIFICATION'}
     | { type: 'PRINT_RECORD'}
     | { type: 'RESET_RECORD'}
+    | { type: 'PRINT_REGION'}
+    | { type: 'PRINT_HIGH_CONSUMPTION'}
+
+
     
 export type Dispatch = (action:Action | Array<Action>) => any;
 export type GetState = () => Object;
