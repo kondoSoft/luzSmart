@@ -117,6 +117,7 @@ export function getRate(mun_id, token):Action{
 }
 
 export function postContract(list, rate, token):Action{
+  console.log(list,rate);
   return dispatch => {
     const data = new FormData();
     data.append('name_contract', list.name)
@@ -146,7 +147,9 @@ export function postContract(list, rate, token):Action{
      body: data
     })
     .then(res => {return res.json()})
-    .then(res => {dispatch(successContract(res))})
+    .then(res => {
+      console.log(res);
+      dispatch(successContract(res))})
     .catch(err => console.log(err))
   }
 }

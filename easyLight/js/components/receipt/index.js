@@ -138,7 +138,7 @@ class Receipt extends Component {
     // this.props.getContract(this.props.screenProps.token, this.props.navigation)
     // this.props.navigation.navigate('History')
     })
-   
+
   }
   showAlert(){
     if (Platform.OS === 'ios') {
@@ -162,7 +162,7 @@ class Receipt extends Component {
       );
     }
   }
-  // Record 
+  // Record
   setRecord(){
     //Fecha inicial del recibo
     const paydayLimit = this.state.payday_limit
@@ -189,7 +189,7 @@ class Receipt extends Component {
         rest_day: 0,
         projection: 0,
         status: true,
-        
+
 
       }
     })
@@ -224,7 +224,7 @@ class Receipt extends Component {
     }
     this.setState({
       rate_period_state: kilowatt
-    })  
+    })
   }
   setRecordState(receipt) {
     const ratePeriod = this.getRate(receipt)
@@ -242,7 +242,7 @@ class Receipt extends Component {
       record,
       ratePeriod: ratePeriod,
       status: true,
-      
+
     })
   }
   sendData(contract) {
@@ -259,10 +259,10 @@ class Receipt extends Component {
             resolve(true)
           })
           .then((result)=>{
-            // this.props.patchNewReceipt(this.state, receipt[0].id, this.props.screenProps.token, navigation)
-            // this.props.putRecord(this.state, this.props.screenProps.token)
+            this.props.patchNewReceipt(this.state, receipt[0].id, this.props.screenProps.token, navigation)
+            this.props.putRecord(this.state, this.props.screenProps.token)
           })
-        } 
+        }
         else {
           var RecordPromise = new Promise((resolve, reject) => {
             this.setRecord()
@@ -274,8 +274,8 @@ class Receipt extends Component {
           })
         }
       }
-    ) 
-      
+    )
+
 
       //Condicion para show alert en caso de historial ya registrado.
       this.showAlert();
@@ -524,7 +524,7 @@ function bindAction(dispatch) {
     patchNewReceipt: (data, id, token, navigation) => dispatch(patchNewReceipt(data, id, token, navigation)),
     putRecord: (data, token) => dispatch(putRecord(data, token)),
     postHistory: (list, token) => dispatch(postHistory(list, token)),
-    
+
   };
 }
 const mapStateToProps = state => ({

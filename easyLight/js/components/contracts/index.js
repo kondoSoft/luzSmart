@@ -11,7 +11,7 @@ import { openDrawer } from "../../actions/drawer";
 import { getContract, resetRate, resetMunicipality } from "../../actions/list_states_mx";
 import { resetPicketContract, getRegion } from "../../actions/contracts";
 import { getUser } from '../../actions/user';
-import { 
+import {
   costProject,
   // getDayInDates,
   // getKwHrsTransCurrid
@@ -66,8 +66,8 @@ class Contracts extends Component {
 
     return(
       <Container>
-        <ListSwipeable 
-          handleScroll={this.handleScroll} 
+        <ListSwipeable
+          handleScroll={this.handleScroll}
           itemProps={itemProps}
           contract={ this.props.contracts }
           navigation={ navigation }
@@ -82,6 +82,7 @@ class Contracts extends Component {
 
 class ListSwipeable extends Component {
   navigateTo(route){
+    console.log('navigateTo', route);
     this.props.navigation.navigate(route)
     // if (this.props.navigation.state.routeName === 'DetailContract') {
     //  if(this.props.keyVal === 0){
@@ -101,7 +102,6 @@ class ListSwipeable extends Component {
 
   render(){
     const { navigation, contract } = this.props
-    console.log(contract)
     return(
       <ScrollView scrollEventThrottle={this.props.handleScroll}>
         {contract.map((contract, i )=>
@@ -109,32 +109,33 @@ class ListSwipeable extends Component {
             key={i}
             receipts={contract.receipt}
             rightButtons={[
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={{  height: 60,
                           backgroundColor: 'lightgrey',
                           justifyContent: 'center',
-                          
+
                       }}
                 activeOpacity={0.6}
+                onPress={() => this.navigateTo('EditContracts')}
               >
                 <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%'}} name='md-create' />
               </TouchableOpacity>,
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={{  height: 60,
                           backgroundColor: '#069b1c',
                           justifyContent: 'center',
-                          
+
 
                       }}
                 activeOpacity={0.6}
               >
                 <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%'}} name='ios-book-outline' />
               </TouchableOpacity>,
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={{  height: 60,
                           backgroundColor: 'steelblue',
                           justifyContent: 'center',
-                          
+
                       }}
                 activeOpacity={0.6}
               >
@@ -158,7 +159,7 @@ class ListSwipeable extends Component {
                 <Right style={styles.ItemComponent.alignItem}>{contract.cost}</Right>
               </View>
             </TouchableWithoutFeedback>
-            
+
           </Swipeable>
           )}
         </ScrollView>
