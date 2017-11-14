@@ -64,7 +64,7 @@ class AddContracts extends Component {
         rates: []
     }
   }
- 
+
 
   selectPhotoTapped() {
     const options = {
@@ -206,9 +206,11 @@ class AddContracts extends Component {
   // ******************************************
   componentWillMount(){
 
-    
+    this.setState({
+      user: this.props.user
+    })
     this.createRangeDate()
-    
+
   }
   componentWillReceiveProps(nextProps){
     if (typeof nextProps.mun_rate === 'string') {
@@ -271,7 +273,7 @@ class AddContracts extends Component {
             optionStyle={styles.select__option}
             >{item}</Option>
         })
-    ) 
+    )
     periodItems.unshift(<Option value={null}>Seleccione periodo de verano</Option>)
     var periodSummer = (
       <Select
@@ -486,5 +488,6 @@ const mapStateToProps = state => ({
   list_rate: state.list_rate.list_rate,
   mun_rate: state.list_rate.results,
   token: state.user.token,
+  user: state.user.user,
 })
 export default connect(mapStateToProps, bindAction)(AddContracts);

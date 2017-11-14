@@ -96,7 +96,8 @@ export function getMunicipality(state_id):Action{
       }
     })
     .then(res => {return res.json()})
-    .then(res=> { dispatch(printMunicipality(res)) })
+    .then(res=> {
+      dispatch(printMunicipality(res)) })
     .catch(err => console.log(err))
   }
 }
@@ -127,6 +128,7 @@ export function postContract(list, rate, token):Action{
     data.append('initialDateRange', list.initialDateRange)
     data.append('finalDateRange', list.finalDateRange)
     data.append('type_payment', list.type_payment)
+    data.append('owner', list.user.pk)
     if(list.file != undefined){
       data.append('image',{
         uri: list.file.uri,
@@ -145,8 +147,12 @@ export function postContract(list, rate, token):Action{
      },
      body: data
     })
-    .then(res => {return res.json()})
-    .then(res => {dispatch(successContract(res))})
+    .then(res => {
+      console.log('res1', res.json());
+      return res.json()})
+    .then(res => {
+      console.log('res', res);
+      dispatch(successContract(res))})
     .catch(err => console.log(err))
   }
 }

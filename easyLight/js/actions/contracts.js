@@ -153,6 +153,7 @@ export function patchNewReceipt(data, id, token):Action{
   }
 }
 export function postRecord(list, token):Action{
+  // console.log('postR', list);
   var status;
   if(list.record.status){
     status= true
@@ -188,7 +189,7 @@ export function postRecord(list, token):Action{
       })
     })
     .then(res => {return res.json()})
-    .then(res => {console.log('postRecord',res)})
+    // .then(res => {console.log('postRecord',res)})
     .catch(err => console.log(err))
   }
 }
@@ -281,7 +282,7 @@ export function postHistory(list, token):Action{
       },
       body: JSON.stringify({
         contracts: list.contract_id,
-        // period_name: 
+        // period_name:
         // date: list.payday_limit,
         // datetime: list.record.datetime,
       })
@@ -310,6 +311,7 @@ export function getRegion(token):Action{
 }
 
 export function getHighConsumption(region_id, token): Action{
+  // console.log('region', region_id);
   return dispatch=>{
     return fetch(endPoint+'/high_consumption/?region_id='+ region_id,{
       method: 'GET',
@@ -320,7 +322,9 @@ export function getHighConsumption(region_id, token): Action{
       },
     })
     .then(res => {return res.json()})
-    .then(res => dispatch(printHighConsumption(res)))
+    .then(res => {
+      // console.log(res)
+      dispatch(printHighConsumption(res))})
     .catch(err => console.log(err))
   }
 }

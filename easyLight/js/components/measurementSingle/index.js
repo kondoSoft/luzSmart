@@ -21,10 +21,11 @@ import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
 import { patchReceipt, getRatePeriod, postRecord, getRecord, getHighConsumption } from '../../actions/contracts'
-import { 
+import {
   getRangeMonth,
   setRecord,
   getDateBetweenPeriods,
+  funcHighConsumptionPeriod,
 } from '../../helpers';
 
 
@@ -75,15 +76,15 @@ class MeasurementSingle extends Component {
     this.contract_id = this.props.navigation.state.params.contract.id
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     this.props.getRecord(this.contract_id)
-    this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region.id, this.props.screenProps.token)
+    this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region, this.props.screenProps.token)
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.record[0]){
       this.setState({
-        projected_payment: nextProps.record[0].projected_payment
+        projected_payment: nextProps.record[0].projected_payment,
+
       })
     }
-
     nextProps.screenProps.contracts.map((item, i) => {
       if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){
         arrayContract.push(item)
@@ -130,7 +131,7 @@ class MeasurementSingle extends Component {
               period: this.state.itemReceipt.period,
               amount_payable: this.state.itemReceipt.amount_payable,
             },
-            
+
           })
         }
       }
@@ -160,14 +161,13 @@ class MeasurementSingle extends Component {
   }
   // *******************  Funciones para RECORDS ********************
   setRecordState(){
-         
+
     const ratePeriod = getDateBetweenPeriods(this.props.navigation.state.params.contract, this.state.itemReceipt, this.props.rate_period)
     let contract;
     if(this.props.navigation.state.params){
       contract = this.props.navigation.state.params.contract
     }
     // Obtiene el ultimo dato actualizado
-
     const lastRecord = this.propsNextRecords[this.propsNextRecords.length-1]
     // Se obtiene de nuevo Record
     this.props.getRecord(this.contract_id)
@@ -200,9 +200,15 @@ class MeasurementSingle extends Component {
     this.props.getRatePeriod(this.rate_contract, this.props.token)
   }
 
+  // setDataHighConsumption(){
+  //   funcHighConsumptionPeriod(this.props.highConsumption, this.props.navigation.state.params.contract)
+  // }
+
   sendCurrentData(id){
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading_updated) {
         this.props.patchReceipt(this.state.current_data, this.props.token, id,this.props.navigation)
+        // this.props.getHighConsumption(this.muniRegion.region.id, this.props.screenProps.token)
+
 
         // Se agrega los datos de record en el state
         this.setRecordState()
@@ -211,7 +217,7 @@ class MeasurementSingle extends Component {
         },()=>{
          this.changeCheckedData()
          //Se genera el record con la ultima medicion
-          
+
          this.props.postRecord(this.state, this.props.screenProps.token)
          this.props.getRecord(this.contract_id)
 
@@ -240,9 +246,7 @@ class MeasurementSingle extends Component {
   }
 
   render(){
-    
     const { navigation } = this.props;
-
     // Contrato que viene desde la pantalla recibos
     const { contract } = this.props.navigation.state.params;
     const rangeDate = getRangeMonth(this.state.type_payment, this.state.itemReceipt.payday_limit)
@@ -323,7 +327,7 @@ class MeasurementSingle extends Component {
                       >
                       <Text>Enter</Text>
                     </Button>
-                    
+
                   </View>
                 </View>
               </Image>
