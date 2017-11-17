@@ -271,7 +271,7 @@ class SignIn extends Component {
                   <Image style={{width: 30, height: 30, marginRight: 10}} source={this.state.isValidPassword} />
                 </Item>
                 <Item inlineLabel last style={styles.form__item}>
-                  <Label style={styles.text}>F. nacimiento<Text style={{color: 'red', paddingBottom: 10}}>*</Text>:</Label>
+                  <Label style={{ paddingLeft: 10, marginLeft: (Screen.width === 320)? 20 : 30 , fontSize: (Screen.width === 320) && 15 }}>F. nacimiento<Text style={{color: 'red', paddingBottom: 10}}>*</Text>:</Label>
                   <PickerDate func={this.setBirthDay} />
                   <Image style={{width: 30, height: 30, marginRight: 10}} source={this.state.isValidBDay} />
                 </Item>

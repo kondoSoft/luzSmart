@@ -18,6 +18,7 @@ import {
 import {
   View,
   Platform,
+  Dimensions
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Col, Row, Grid } from 'react-native-easy-grid';
@@ -29,6 +30,7 @@ import FabButton from '../fabButton';
 import { getRatePeriod, postReceipt, getRecord, resetRecord } from '../../actions/contracts';
 import { getContract } from '../../actions/list_states_mx';
 import { getIVA, costProject } from '../../helpers';
+var {height, width} = Dimensions.get('window')
 
 var numContract = [];
 var rateArr = [];
@@ -56,7 +58,7 @@ class DetailContract extends Component {
       previous_reading: '',
       payday_limit: '',
       count_days: (props.contracts.length > 0) && props.contracts[0].type_payment,
-      bill: (props.navigation.state.params) ? props.navigation.state.params.receipt : undefined, 
+      bill: (props.navigation.state.params) ? props.navigation.state.params.receipt : undefined,
       onlyOneBill: (props.navigation.state.params) && props.navigation.state.params.receipt.length,
       contract: '',
 
@@ -66,8 +68,8 @@ class DetailContract extends Component {
     that = this
   }
 
-  static navigationOptions = ({ navigation, screenProps }) => 
-   
+  static navigationOptions = ({ navigation, screenProps }) =>
+
     ({
       headerRight: (navigation.state.params != undefined) && (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract, receipt: navigation.state.params.receipt[0]})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
       headerLeft: <Button transparent onPress={() => that.__proto__.returnScreen()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>
@@ -80,8 +82,8 @@ class DetailContract extends Component {
   componentWillMount() {
     let rate;
     let id;
-    
-    
+
+
     this.setState({
       contract: (this.props.navigation.state.params) && this.props.navigation.state.params.contract,
     },() => {
@@ -103,7 +105,7 @@ class DetailContract extends Component {
     else {
       addMonth = 1
     }
-    if(this.state.bill){ 
+    if(this.state.bill){
       if(this.state.bill.length > 0) {
         this.getStatus();
         //Se obtiene las tarifas
@@ -205,7 +207,7 @@ class DetailContract extends Component {
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
-                    component={<ItemComponent data={item} status={status} ratePeriod={(rate_period) && this.getCost(rate_period)} record={this.props.records[i]} consumoPromedio={costProject} countsReceipts={this.state.onlyOneBill}/>}
+                    component={<ItemComponent data={item} status={status} record={this.props.records[i]} arrRecords={this.props.records} countsReceipts={this.state.onlyOneBill}/>}
                     // component={<ItemComponent data={item} status={status} ratePeriodCost={rate_period} consumoPromedio={costProject}/>}
                     dataAccordionContract={this.state.contract}
                     // dataAccordionContract={this.props.navigation.state.params.contract}
@@ -237,16 +239,19 @@ class ItemComponent extends Component{
 
   componentWillReceiveProps(nextProps){
     if(nextProps.data){
+      this.setState({
+        amount_payable: nextProps.data.amount_payable,
+      })
+    }
+    if(nextProps.record && nextProps.arrRecords ){
 
-      this.setState({
-        amount_payable: nextProps.data.amount_payable, 
-      })
+      if(nextProps.arrRecords.length > 1){
+        this.setState({
+          projected_payment: nextProps.record.projected_payment,
+        })
+      }
     }
-    if(nextProps.record){
-      this.setState({
-        projected_payment: nextProps.record.projected_payment,
-      })
-    }
+
   }
 
   render() {
@@ -264,15 +269,14 @@ class ItemComponent extends Component{
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-           <Text style={styles.listItem__body__text}>{(receipt.status) ? arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()] : arrMonth[finalRange.getMonth()]}</Text>
+           <Text style={styles.listItem__body__text,{ fontSize: 14}}>{(receipt.status) ? arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()] : arrMonth[finalRange.getMonth()]}</Text>
         </Left>
         <Body style={styles.ItemComponent.align}>
 
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment) ? `$ ${parseFloat(this.state.projected_payment).toLocaleString()}` : '$0'}</Text>
-          {/* <Text style={styles.listItem__body__view__text,{}}>{(this.props.countsReceipts <= 2) ? <Text style={styles.listItem__body__text}>{`$`+totalAccount.toLocaleString()}</Text> : (total != undefined) && `$`+total.toLocaleString() }</Text> */}
-          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
+          <Text style={styles.listItem__body__view__text,{fontSize: 14 }}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment > 0) ? `$ ${parseFloat(this.state.projected_payment).toLocaleString()}` : '$0'}</Text>
+          <Text style={styles.listItem__body__view__text,{fontSize: 14 }}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
         </Right>
       </View>
     )

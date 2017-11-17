@@ -47,7 +47,7 @@ export default class PickerDate extends Component {
           dateInput: {
             height: 40,
             alignItems: 'flex-start',
-            paddingLeft: 90,
+            paddingLeft: 80,
             width: '20%',
             borderWidth: 0
           },

@@ -21,12 +21,11 @@ import styles from './styles';
 import AnimatedView from '../animatedView/index';
 import FabButton from '../fabButton';
 import { patchReceipt, getRatePeriod, postRecord, getRecord, getHighConsumption } from '../../actions/contracts'
-import { 
+import {
   getRangeMonth,
   setRecord,
   getDateBetweenPeriods,
 } from '../../helpers';
-
 
 let Screen = Dimensions.get('window')
 
@@ -60,14 +59,25 @@ class MeasurementSingle extends Component {
     this.propsNextRecords;
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
     this.changeCheckedData = this.changeCheckedData.bind(this)
+    this.navigationGoBack = this.navigationGoBack.bind(this)
   }
   static navigationOptions = ({ navigation, screenProps }) => (
   {
-    headerLeft: <Button transparent onPress={() => navigation.goBack()}><Icon active style={{'color': 'white'}} name="arrow-back"/></Button>,
+    headerLeft: <Button transparent onPress={() => navigation.state.params.headerLeft()}><Icon active style={{'color': 'white'}} name="arrow-back"/></Button>,
     headerRight: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
   });
 
+  navigationGoBack(){
+    console.log(this.props);
+    this.props.navigation.goBack()
+  }
+
   componentWillMount () {
+
+    this.props.navigation.setParams({
+      headerLeft: this.navigationGoBack,
+    });
+
     this.setState({
       itemReceipt: this.props.navigation.state.params.receipt,
     })
@@ -75,15 +85,22 @@ class MeasurementSingle extends Component {
     this.contract_id = this.props.navigation.state.params.contract.id
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     this.props.getRecord(this.contract_id)
-    this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region.id, this.props.screenProps.token)
+    this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region, this.props.screenProps.token)
   }
   componentWillReceiveProps(nextProps){
+    console.log('cambio de state', this.state);
     if(nextProps.record[0]){
-      this.setState({
-        projected_payment: nextProps.record[0].projected_payment
-      })
-    }
+      if(nextProps.record.length > 1 && this.state.record.projected_payment === undefined){
+        this.setState({
+          projected_payment: nextProps.record[0].projected_payment,
 
+        })
+      }else{
+        this.setState({
+          projected_payment: this.state.record.projected_payment,
+        })
+      }
+    }
     nextProps.screenProps.contracts.map((item, i) => {
       if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){
         arrayContract.push(item)
@@ -130,7 +147,7 @@ class MeasurementSingle extends Component {
               period: this.state.itemReceipt.period,
               amount_payable: this.state.itemReceipt.amount_payable,
             },
-            
+
           })
         }
       }
@@ -160,14 +177,13 @@ class MeasurementSingle extends Component {
   }
   // *******************  Funciones para RECORDS ********************
   setRecordState(){
-         
+
     const ratePeriod = getDateBetweenPeriods(this.props.navigation.state.params.contract, this.state.itemReceipt, this.props.rate_period)
     let contract;
     if(this.props.navigation.state.params){
       contract = this.props.navigation.state.params.contract
     }
     // Obtiene el ultimo dato actualizado
-
     const lastRecord = this.propsNextRecords[this.propsNextRecords.length-1]
     // Se obtiene de nuevo Record
     this.props.getRecord(this.contract_id)
@@ -203,6 +219,8 @@ class MeasurementSingle extends Component {
   sendCurrentData(id){
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading_updated) {
         this.props.patchReceipt(this.state.current_data, this.props.token, id,this.props.navigation)
+        // this.props.getHighConsumption(this.muniRegion.region.id, this.props.screenProps.token)
+
 
         // Se agrega los datos de record en el state
         this.setRecordState()
@@ -211,7 +229,7 @@ class MeasurementSingle extends Component {
         },()=>{
          this.changeCheckedData()
          //Se genera el record con la ultima medicion
-          
+
          this.props.postRecord(this.state, this.props.screenProps.token)
          this.props.getRecord(this.contract_id)
 
@@ -240,14 +258,12 @@ class MeasurementSingle extends Component {
   }
 
   render(){
-    
     const { navigation } = this.props;
-
     // Contrato que viene desde la pantalla recibos
     const { contract } = this.props.navigation.state.params;
     const rangeDate = getRangeMonth(this.state.type_payment, this.state.itemReceipt.payday_limit)
     // Rango automatico del periodo
-    const TextReceipt = (rangeDate != 'undefined-undefined') && <Text>{rangeDate}</Text>
+    const TextReceipt = (rangeDate != 'undefined-undefined') && <Text style={{ fontSize: 14 }}>{rangeDate}</Text>
     // Obtener Record
     this.getPropsByNextRecords(this.props.record)
     return(
@@ -260,9 +276,9 @@ class MeasurementSingle extends Component {
           <Grid style={{height:Screen.height}}>
             <Row size={4} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz:</Text>
-              <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
-                <Text style={{ fontSize: 14 }}>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
-                <Text >Proyectado</Text>
+              <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%'}}>
+                <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
+                <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}> Proyectado</Text>
               </View>
             </Row>
             <Col size={6} style={styles.grid__col__select}>
@@ -321,9 +337,9 @@ class MeasurementSingle extends Component {
                       style={styles.animatedView__image__view__btn}
                       onPress={() => this.sendCurrentData(this.state.itemReceipt.id)}
                       >
-                      <Text>Enter</Text>
+                      <Text style={{backgroundColor: 'transparent'}}>Enter</Text>
                     </Button>
-                    
+
                   </View>
                 </View>
               </Image>

@@ -20,11 +20,12 @@ export default {
       paddingRight: 30,
     },
     col__form__item:{
-      marginRight: (Platform.OS === 'ios')? 10 : 5,
+      marginRight: (Platform.OS === 'ios')? 9 : 5,
       marginLeft: (Platform.OS === 'ios')? 10 : 5,
-      backgroundColor: 'lightgray',
+      backgroundColor: 'transparent',
       width: '85%',
-      marginBottom: 5,
+      marginBottom: 0,
+      height: 40,
 
     },
     select:{

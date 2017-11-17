@@ -78,8 +78,8 @@ class EditContracts extends Component {
     this.createRateSelect = this.createRateSelect.bind(this)
     that = this
   }
-  static navigationOptions = ({ navigation, screenProps }) => 
-   
+  static navigationOptions = ({ navigation, screenProps }) =>
+
     ({
       headerLeft: <Button transparent onPress={() => that.__proto__.returnScreen()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>
     });
@@ -165,7 +165,7 @@ class EditContracts extends Component {
       )
     }
   }
-  
+
   ejectDelete(id, token){
     this.props.deleteContract(id, token, this.props.navigation)
     // const resetAction = NavigationActions.reset({
@@ -178,7 +178,7 @@ class EditContracts extends Component {
   }
 
   buttonDelete(id, token){
-    
+
     if (Platform.OS === 'ios') {
       AlertIOS.alert(
         'Eliminar Contrato',
@@ -198,8 +198,8 @@ class EditContracts extends Component {
         ],
       )
     }
-    
-    
+
+
   }
   dataValidate(data){
     const {
@@ -297,12 +297,12 @@ class EditContracts extends Component {
   }
   componentWillReceiveProps(nextProps){
     nextProps.municipality_mx.map(item => {
-      if (item.id === this.props.navigation.state.params.municipality) {
+
+      if (item.id === this.props.navigation.state.params.municipality.id) {
         this.setState({municipality: item['name_mun']})
         this.props.getRate(item.id, this.props.token)
       }
     })
-    console.log('nextProps', nextProps)
     if (typeof nextProps.mun_rate === 'string') {
       //array of rates
       const rates = ['TARIFA 1', 'TARIFA 1A', 'TARIFA 1B', 'TARIFA 1C', 'TARIFA 1D', 'TARIFA 1E', 'TARIFA 1F']
@@ -386,7 +386,7 @@ class EditContracts extends Component {
                 >
                 <Text>Actualizar</Text>
               </Button>
-              
+
             </Row>
             <Row size={5} style={[styles.row__bottom,{ paddingBottom: (Platform.OS === 'ios')? 0 : 0}]}>
               <Button

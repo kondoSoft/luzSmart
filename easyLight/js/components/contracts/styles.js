@@ -20,7 +20,8 @@ export default {
     bottom: (Platform.OS === 'ios') ? 40 : 0
   },
   listItem__body__text: {
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
   },
   listItem__body__view: {
     flexDirection: 'row',
@@ -57,7 +58,7 @@ export default {
       height: 60,
       borderBottomWidth: 0.5,
       borderLeftWidth: 0.5,
-      borderColor: 'lightgrey'
+      borderColor: 'transparent'
     },
     align: {
       justifyContent: 'center',
