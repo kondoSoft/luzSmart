@@ -10,8 +10,8 @@ export const GET_CONTRACT = 'GET_CONTRACT'
 export const GET_TIPS = 'GET_TIPS'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
-// const endPoint = 'http://138.68.49.119:8080';
-const endPoint = 'http://127.0.0.1:8000';
+const endPoint = 'http://138.68.49.119:8080';
+// const endPoint = 'http://127.0.0.1:8000';
 
 
 
@@ -96,7 +96,8 @@ export function getMunicipality(state_id):Action{
       }
     })
     .then(res => {return res.json()})
-    .then(res=> { dispatch(printMunicipality(res)) })
+    .then(res=> {
+      dispatch(printMunicipality(res)) })
     .catch(err => console.log(err))
   }
 }
@@ -128,6 +129,8 @@ export function postContract(list, rate, token):Action{
     data.append('initialDateRange', list.initialDateRange)
     data.append('finalDateRange', list.finalDateRange)
     data.append('type_payment', list.type_payment)
+    data.append('high_consumption', list.checkDAC)
+    data.append('owner', list.user.pk)
     if(list.file != undefined){
       data.append('image',{
         uri: list.file.uri,
@@ -146,10 +149,10 @@ export function postContract(list, rate, token):Action{
      },
      body: data
     })
-    .then(res => {return res.json()})
     .then(res => {
-      console.log(res);
-      dispatch(successContract(res))})
+      return res.json()
+    })
+    .then(json => dispatch(successContract(json)))
     .catch(err => console.log(err))
   }
 }

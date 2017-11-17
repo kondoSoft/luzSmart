@@ -25,7 +25,8 @@ import {
   Dimensions,
   ScrollView,
   TextInput,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Select, Option } from 'react-native-select-list';
@@ -59,12 +60,14 @@ class AddContracts extends Component {
         "cost" : 0,
         "checkedMen": false,
         "checkedBi": false,
+        "checkDAC": false,
         "avatarSource" : require('../../../images/Casaplace.png'),
         "file" : null,
-        rates: []
+        rates: [],
+        isLoading: true
     }
   }
- 
+
 
   selectPhotoTapped() {
     const options = {
@@ -203,12 +206,19 @@ class AddContracts extends Component {
       })
     }
   }
+  handleChecked(){
+    this.setState({
+      checkDAC: !this.state.checkDAC
+    })
+  }
   // ******************************************
   componentWillMount(){
 
-    
+    this.setState({
+      user: this.props.user
+    })
     this.createRangeDate()
-    
+
   }
   componentWillReceiveProps(nextProps){
     if (typeof nextProps.mun_rate === 'string') {
@@ -226,7 +236,8 @@ class AddContracts extends Component {
       const selectRates = rate_unique.concat(rate)
 
       this.setState({
-        rates: selectRates
+        rates: selectRates,
+        // isLoading: false,
       })
     }
   }
@@ -271,7 +282,7 @@ class AddContracts extends Component {
             optionStyle={styles.select__option}
             >{item}</Option>
         })
-    ) 
+    )
     periodItems.unshift(<Option value={null}>Seleccione periodo de verano</Option>)
     var periodSummer = (
       <Select
@@ -411,8 +422,8 @@ class AddContracts extends Component {
             <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
             <Col size={29} style={ styles.col__form }>
               <Form>
-                <Item fixedLabel style={styles.col__form__item}>
-                  <Input keyboardType={'numeric'} placeholder={'No. Contrato'} style={{paddingLeft:10,paddingTop:5}} onChange={event => this.handleNumberContract(event)}/>
+                <Item regular style={styles.col__form__item}>
+                  <Input keyboardType={'numeric'} placeholder={'No. Contrato'} style={{paddingLeft:10, height: 40}} onChange={event => this.handleNumberContract(event)}/>
                 </Item>
               { (Platform.OS === 'ios')?
                 <Select
@@ -442,6 +453,14 @@ class AddContracts extends Component {
               </Form>
             </Col>
             {(Platform.OS === 'ios')? <View style={{height:15}}></View> : <View style={{height: 0}}></View>}
+            <Row size={2} style={{ alignItems: 'center', justifyContent: 'center', marginBottom:(Platform.OS === 'ios')? 10 : 0}}>
+              <View style={{flexDirection: 'row'}}>
+                <CheckBox checked={this.state.checkDAC} style={styles.CheckBox} onPress={()=>this.handleChecked()}/>
+                <Body style={{ flex: 0 }}>
+                  <Text>Tarifa DAC</Text>
+                </Body>
+              </View>
+            </Row>
             <Row size={6} style={{ alignItems: 'center', justifyContent: 'center', marginBottom:(Platform.OS === 'ios')? 20 : 0}}>
               <View style={{flexDirection: 'row'}}>
                 <CheckBox checked={this.state.checkedMen} style={styles.CheckBox} onPress={()=>this.handleCheckedMen('mensual')}/>
@@ -467,6 +486,12 @@ class AddContracts extends Component {
             </Row>
           </Grid>
         </ScrollView>
+        {/* {
+          (this.state.isLoading)?
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator />
+          </View> : null
+        } */}
       </Container>
     )
   }
@@ -486,5 +511,6 @@ const mapStateToProps = state => ({
   list_rate: state.list_rate.list_rate,
   mun_rate: state.list_rate.results,
   token: state.user.token,
+  user: state.user.user,
 })
 export default connect(mapStateToProps, bindAction)(AddContracts);

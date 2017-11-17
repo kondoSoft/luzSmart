@@ -31,12 +31,12 @@ const getIVA = total => {
 const costProject = (kilowatt, countKwh) => {
   var consumoTotal = 0;
   if (kilowatt) {
-    kilowatt = kilowatt.filter((item) => { 
-      return (item.cost > 0) 
+    kilowatt = kilowatt.filter((item) => {
+      return (item.cost > 0)
     }).reverse()
     while (countKwh >= 0 && kilowatt.length > 0) {
       let range = kilowatt.pop()
-      let valueKilowatt = range.kilowatt 
+      let valueKilowatt = range.kilowatt
       if (countKwh > valueKilowatt) {
         let consumo = countKwh - valueKilowatt
         countKwh -= valueKilowatt
@@ -54,25 +54,90 @@ const costProject = (kilowatt, countKwh) => {
 
 }
 
-const costProjectDac = (highConsumption, countKwh) =>{
-  console.log('costProjectDac', highConsumption, countKwh)
-}
 
-const funcHighConsumptionPeriod = (highConsumption, contract) => {
-  let currentDate = new Date()
-  let momentCurrentDate = moment(currentDate)
-  let monthCurrentDate = momentCurrentDate.month()
+const funcHighConsumptionPeriod = (highConsumption, contract, projection) => {
+
+  const itemReceipt = contract.receipt[0]
+  const dateItemReceipt = moment(itemReceipt.payday_limit)
+  let typePayment
+
+  if(contract.type_payment === 'Bimestral'){
+    typePayment = 2
+  }else{
+    typePayment = 1
+  }
+  const monthDateItemReceipt = dateItemReceipt.month()+typePayment
+
+  let stringMonthCurrent
   let arrMonth = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
-  let stringMonthCurrent = arrMonth[monthCurrentDate]
   let arrHighConsumption = []
+  const typeSummer = getDateBetween(contract)
+  if(typeSummer === 'mixtoVerano' || typeSummer === 'mixtoNoVerano'){
+    stringMonthCurrent = arrMonth[monthDateItemReceipt-2]
+  }else{
+    stringMonthCurrent = arrMonth[monthDateItemReceipt-1]
+  }
+
   highConsumption.map((item,i)=>{
+
     if(stringMonthCurrent === item.month){
-      arrHighConsumption.push({period_name: item.month, kwhVerano: item.cost_verano, kwhNoVerano: item.cost_no_verano, kwhUniqueRate: item.unique_rate, fixedCharge: item.fixed_charge})
+      arrHighConsumption.push({period_name: item.month, kwhVerano: item.cost_verano, kwhNoVerano: item.cost_no_verano, fixedCharge: item.fixed_charge})
+
     }
   })
-  
-  return arrHighConsumption
+
+  let costProjectDac
+  // variable costo DAC
+  if(typeSummer === 'verano'){
+    costProjectDac = (typePayment * arrHighConsumption[0].fixedCharge) + (arrHighConsumption[0].kwhVerano * projection)
+
+  }else if(typeSummer === 'mixtoVerano'){
+    // Por refactorizar la funcion para el costo proyectado
+    costProjectDac =(typePayment * arrHighConsumption[0].fixedCharge) + (arrHighConsumption[0].kwhVerano * projection)
+  }else if(typeSummer === 'mixtoNoVerano'){
+    // Por refactorizar la funcion para el costo proyectado
+    costProjectDac =(typePayment * arrHighConsumption[0].fixedCharge) + (arrHighConsumption[0].kwhNoVerano * projection)
+  }else{
+    costProjectDac = (typePayment * arrHighConsumption[0].fixedCharge) + (arrHighConsumption[0].kwhNoVerano * projection)
+
+  }
+
+  return costProjectDac
 }
+
+//obtenemos el valor de tipo de verano para DAC
+const getDateBetween = (contract) => {
+  const itemReceipt = contract.receipt[0]
+  const dateLimit = moment(itemReceipt.payday_limit)
+  const typePayment = (contract.type_payment == 'Bimestral') ? 2 : 1;
+    const dateFinal = (dateLimit, typePayment) => {
+      const monthsToAdd = dateLimit.month()+typePayment
+      const finalDate = moment(new Date(dateLimit.year(), monthsToAdd, dateLimit.date()))
+      dateLimit = moment(dateLimit)
+      return { dateInitialReceipt: dateLimit, dateFinalReceipt: finalDate}
+    }
+  // *****************************************************
+  var ratePeriodFinal;
+
+  const initialDatePeriod = moment(contract.initialDateRange)
+  const finalDatePeriod = moment(contract.finalDateRange)
+  const monthFinalDatePeriod = finalDatePeriod.month()
+  const rangeDatePeriod = dateFinal(dateLimit, typePayment)
+  const { dateInitialReceipt, dateFinalReceipt } = rangeDatePeriod
+  let typeSummer
+  if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt > finalDatePeriod ){
+    typeSummer = 'mixtoVerano'
+  }else if(dateInitialReceipt < initialDatePeriod && dateFinalReceipt > initialDatePeriod){
+    typeSummer = 'mixtoNoVerano'
+  }else if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt < finalDatePeriod){
+    typeSummer = 'verano'
+  }else{
+    typeSummer = 'fueraDeVerano'
+  }
+  return typeSummer
+
+}
+
 const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
   const dateLimit = moment(receipt.payday_limit)
   const typePayment = (contract.type_payment == 'Bimestral') ? 2 : 1;
@@ -108,7 +173,6 @@ const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
     var outputPeriod = []
     ratePeriod.map((period, i) => {
       if(typePayment === 2){
-        // console.log('estoy en los dos')
         outputPeriod.push({ period_name: period.period_name, kilowatt: period.kilowatt, cost: period.cost})
       }
       else{
@@ -130,25 +194,22 @@ const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
 
   }
   else if( dateInitialReceipt < finalDatePeriod && dateFinalReceipt < finalDatePeriod){
-    // console.log('estoy en verano')
     var outputPeriod = []
     if(typePayment === 2){
-      
+
       sendPeriod = verano
     }else{
-      sendPeriod = verano 
+      sendPeriod = verano
     }
-    // sendPeriod = outputPeriod
   }
   else{
-    // console.log('estoy en no verano')
 
     if(typePayment === 2){
       sendPeriod = noverano
     }else{
       sendPeriod = noverano
     }
-    
+
   }
 
   return sendPeriod
@@ -157,7 +218,6 @@ const getDateBetweenPeriods = (contract, receipt, ratePeriod) => {
 const getDayInDates = (fechaMinima, fechaMaxima) => {
   let fechaMin = Date.parse(fechaMinima)
   let fechaMax = Date.parse(fechaMaxima)
-  // console.log('fechas', fechaMaxima, fechaMinima)
   let time = fechaMax - fechaMin
   let daysInMiliSeconds = time / 1000
   let daysInSeconds = daysInMiliSeconds / 60
@@ -182,7 +242,7 @@ const getHoursTotals = (timeInitial, timeFinal) => {
   return diffHour
 }
 const getTotalDays = (timeInitial, timeFinal) => {
-  
+
   return getHoursTotals(timeInitial, timeFinal) / 24
 }
 const getFinalDate = (typePayment, paydayLimit) => {
@@ -193,7 +253,7 @@ const getFinalDate = (typePayment, paydayLimit) => {
   let day = paydayLimit.date()
   let newDate = new Date(year, newMonth, day)
   let getDays = getTotalDays(paydayLimit, newDate )
-  
+
   return Math.ceil(getDays)
 }
 
@@ -219,7 +279,7 @@ const getRangeMonth = (typePayment, paydayLimit) => {
   let finalDate = new Date(getYear, getMonthPlus, getDay)
   let momentFinalDate = moment(finalDate)
 
-  let rangeDate =  arrMonth[initialDate.month()] + '-' + arrMonth[momentFinalDate.month()] 
+  let rangeDate =  arrMonth[initialDate.month()] + '-' + arrMonth[momentFinalDate.month()]
 
   return rangeDate
 }
@@ -234,9 +294,9 @@ const setRecord = data => {
   const amount_payable = data.amount_payable
 
   //Fecha de actualizacion de record
-  const date = new Date()    
+  const date = new Date()
   const year = date.getFullYear();
-  const month = date.getMonth()+1; 
+  const month = date.getMonth()+1;
   const day = date.getDate();
   const dateFormat = year + '-' + month + '-' + day
   //Dia de la semana
@@ -266,23 +326,23 @@ const setRecord = data => {
   // Consumo
   const cumulativeConsumption = data.current_data - current_reading
   // promedio Global
-  // console.log('diffDays',diffDays)
   const average = (cumulativeConsumption / diffDays).toFixed(4)
   // Se obtiene el valor proyectado
   const projection = getProjected(cumulativeConsumption, average, restDay)
-  // const highConsumption = funcHighConsumptionPeriod()
-  console.log(data)
+  let projectedPayment;
+  let projectedPaymentIVA
   if(data.contract.high_consumption){
-    const arrHighConsumption = funcHighConsumptionPeriod(data.highConsumption, data.contract)
-    const costProjectByDac = costProjectDac(arrHighConsumption, projection)
-    // console.log('data.dac',costProjectByDac)
+    projectedPayment = funcHighConsumptionPeriod(data.highConsumption, data.contract, projection)
+    projectedPaymentIVA = getIVA(projectedPayment)
+
   }else{
-    const projectedPayment = costProject(data.ratePeriod, projection)
-    const projectedPaymentIVA = getIVA(projectedPayment)
+
+    projectedPayment = costProject(data.ratePeriod, projection)
+    projectedPaymentIVA = getIVA(projectedPayment)
 
   }
   // const projectedPaymentIVA = getIVA(projectedPayment)
-  
+
   // const projectedPayment = 0
   const record = {
     contract_id: data.contract_id,
@@ -296,7 +356,7 @@ const setRecord = data => {
     days_totals: diffDays.toFixed(4),
     daily_consumption: dailyConsumption.toFixed(4),
     cumulative_consumption: cumulativeConsumption,
-    // projected_payment: projectedPaymentIVA,
+    projected_payment: projectedPaymentIVA,
     average_global: average,
     rest_day: restDay,
     projection: projection,

@@ -320,6 +320,7 @@ class Receipt extends Component {
     else {
       contract = navigation.state.params.contract;
     }
+    console.log('this.props.newContract',this.props.newContract);
 
     // if(bill.length >= 0) {
     //   lastBill = bill[bill.length-1]

@@ -82,12 +82,6 @@ class ListItemSwipe extends React.Component {
         if ( x == 0 ){
             this.props.onTap('DetailContract')
         }
-        // if (gesture.dx < -40 && this.props.navigation.state.routeName === 'DetailContract') {
-        //   Animated.spring(
-        //     this.state.pan,
-        //     {toValue:{x:-65,y:0}},
-        //   ).start();
-        // }
         if (gesture.dx < -40) {
           Animated.spring(
             this.state.pan,
@@ -202,6 +196,7 @@ class SwipeAccordion extends Component{
 
     if (this.props.navigation.state.routeName === 'DetailContract') {
      if(this.props.keyVal === 0){
+
        this.props.pickerContract(this.props.dataAccordionContract.name_contract)
        this.props.navigation.navigate('Medicion',{ receipt: this.props.dataAccordion , contract: this.props.dataAccordionContract, index: this.props.index})
      }

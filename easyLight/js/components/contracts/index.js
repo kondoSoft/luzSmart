@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Platform, Image, ScrollView, Dimensions, PanResponder, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
+import { View, Platform, Image, ScrollView, Dimensions, PanResponder, TouchableOpacity, PixelRatio, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
+
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Container, Fab , Content, Body, Left, List, Thumbnail, Text, Title, Button, Icon, Right} from 'native-base';
 import styles from "./styles";
@@ -18,8 +19,8 @@ import {
 } from '../../helpers';
 import Swipeable from 'react-native-swipeable';
 // var gradientImage = require('../../../images/header.png')
-
-
+var {height, width} = Dimensions.get('window')
+var screen = Dimensions.get('window')
 class Contracts extends Component {
   constructor(props) {
     super(props)
@@ -140,7 +141,6 @@ class ListSwipeable extends Component {
                 activeOpacity={0.6}
               >
                 <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%' }} name='ios-information-circle-outline' />
-
               </TouchableOpacity>
             ]}
             onRightButtonsOpenRelease={this.props.itemProps.onOpen}
