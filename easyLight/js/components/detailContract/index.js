@@ -18,6 +18,7 @@ import {
 import {
   View,
   Platform,
+  Dimensions
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Col, Row, Grid } from 'react-native-easy-grid';
@@ -29,6 +30,7 @@ import FabButton from '../fabButton';
 import { getRatePeriod, postReceipt, getRecord, resetRecord } from '../../actions/contracts';
 import { getContract } from '../../actions/list_states_mx';
 import { getIVA, costProject } from '../../helpers';
+var {height, width} = Dimensions.get('window')
 
 var numContract = [];
 var rateArr = [];
@@ -185,7 +187,7 @@ class DetailContract extends Component {
           navigation={navigation}
           onTap={() => {navigation.navigate('Receipt',{ contract: this.state.contract})}}
         >
-          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: 30, color: '#fff'}}>+</Text>
+          <Text style={{ borderRadius: 50, width: 42, height: 42, textAlign: 'center', fontSize: (width ===320 )?20: 30, color: '#fff'}}>+</Text>
         </FabButton>
     // Obtener datos por Periodos
     return(
@@ -267,14 +269,19 @@ class ItemComponent extends Component{
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-           <Text style={styles.listItem__body__text}>{(receipt.status) ? arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()] : arrMonth[finalRange.getMonth()]}</Text>
+           <Text style={styles.listItem__body__text,{ fontSize: (width === 320) && 10}}>{(receipt.status) ? arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()] : arrMonth[finalRange.getMonth()]}</Text>
         </Left>
-        <Body style={styles.ItemComponent.align}>
+        {(width === 320)  ? null
+
+        : <Body style={styles.ItemComponent.align}>
 
         </Body>
+
+        }
+
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment > 0) ? `$ ${parseFloat(this.state.projected_payment).toLocaleString()}` : '$0'}</Text>
-          <Text style={styles.listItem__body__view__text,{}}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
+          <Text style={styles.listItem__body__view__text,{fontSize: (width === 320) && 10 }}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment > 0) ? `$ ${parseFloat(this.state.projected_payment).toLocaleString()}` : '$0'}</Text>
+          <Text style={styles.listItem__body__view__text,{fontSize: (width === 320) && 10 }}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
         </Right>
       </View>
     )

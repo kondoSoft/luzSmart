@@ -196,7 +196,7 @@ class SwipeAccordion extends Component{
 
     if (this.props.navigation.state.routeName === 'DetailContract') {
      if(this.props.keyVal === 0){
-       
+
        this.props.pickerContract(this.props.dataAccordionContract.name_contract)
        this.props.navigation.navigate('Medicion',{ receipt: this.props.dataAccordion , contract: this.props.dataAccordionContract, index: this.props.index})
      }

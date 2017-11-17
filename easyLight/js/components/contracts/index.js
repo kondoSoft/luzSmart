@@ -11,13 +11,13 @@ import { openDrawer } from "../../actions/drawer";
 import { getContract, resetRate, resetMunicipality } from "../../actions/list_states_mx";
 import { resetPicketContract, getRegion } from "../../actions/contracts";
 import { getUser } from '../../actions/user';
-import { 
+import {
   costProject,
   // getDayInDates,
   // getKwHrsTransCurrid
 } from '../../helpers';
 // var gradientImage = require('../../../images/header.png')
-
+var {height, width} = Dimensions.get('window')
 
 class Contracts extends Component {
   constructor(props) {
@@ -40,14 +40,14 @@ class Contracts extends Component {
     const { state } = navigation
     const { contract }= this.state
     var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts" )}}>
-        <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: (Platform.OS === 'ios')? 30 : 33, color: '#fff'}}>+</Text>
+        <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: (Platform.OS === 'ios')? ((width ===320 )?20:30) : 33, color: '#fff'}}>+</Text>
       </FabButton>
 
     return(
       <Container>
         <ParentSwipeContracts
           contract={ this.props.contracts }
-          
+
           navigation={ navigation }
           isPremium={ this.props.profile.premium }
         />
@@ -83,6 +83,7 @@ class ParentSwipeContracts extends Component {
     })
   }
   render(){
+    console.log('width',width);
     const { navigation } = this.props
     const { contract } = this.props
     return(

@@ -1,5 +1,6 @@
 const React = require('react-native');
 const { StyleSheet, Dimensions, Platform } = React;
+var {height, width} = Dimensions.get('window')
 
 export default {
   header:{
@@ -18,7 +19,7 @@ export default {
     color: '#fff',
   },
   list:{
-
+    height: (width === 320)? 50 : 70
   },
   listItem:{
     flex: 1,
@@ -38,17 +39,18 @@ export default {
   listItem__body__text:{
     flex: 1.3,
     padding: 5,
-    marginTop: 20,
+    marginTop: (width === 320)? 0 : 20,
   },
   listItem__body__view:{
     flexDirection: 'column',
     padding: 5,
-    flex: 1,
+    flex: (width === 320) ? 4 : 1,
     alignItems: 'center'
   },
   listItem__body__view__text:{
-    flex: 1,
-    textAlign: 'right',
+    flex:  1,
+    textAlign: (width === 320) ? 'center' : 'right',
+
   },
   ItemComponent:{
     view:{
@@ -56,15 +58,18 @@ export default {
       height: 70,
     },
     align:{
+      flexDirection: (width === 320) && 'row',
+      justifyContent: (width === 320) && 'space-around',
       alignItems: 'center',
+      // flex: (width === 320) && 3,
     },
   },
   fab:{
     backgroundColor: 'steelblue',
     elevation: 10,
-    width: 65,
-    height: 65,
+    width: (width === 320)? 50 : 65,
+    height: (width === 320)? 50 : 65,
     borderRadius: 50,
-    paddingBottom: (Platform.OS === 'ios')? 80 : 0,
+    paddingBottom: (Platform.OS === 'ios')? ((width === 320)? 50 :80) : 0,
   },
 };
