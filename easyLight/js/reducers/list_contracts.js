@@ -38,6 +38,7 @@ export default function(state: State = initialState, action: Action): State {
     }
   }
   if(action.type === SUCCES_CONTRACT){
+    console.log('payload',action.payload);
     return{
       ...state,
       newContract: action.payload

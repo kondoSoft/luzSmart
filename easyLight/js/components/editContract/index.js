@@ -297,7 +297,8 @@ class EditContracts extends Component {
   }
   componentWillReceiveProps(nextProps){
     nextProps.municipality_mx.map(item => {
-      if (item.id === this.props.navigation.state.params.municipality) {
+
+      if (item.id === this.props.navigation.state.params.municipality.id) {
         this.setState({municipality: item['name_mun']})
         this.props.getRate(item.id, this.props.token)
       }

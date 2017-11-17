@@ -25,9 +25,7 @@ import {
   getRangeMonth,
   setRecord,
   getDateBetweenPeriods,
-  funcHighConsumptionPeriod,
 } from '../../helpers';
-
 
 let Screen = Dimensions.get('window')
 
@@ -61,14 +59,25 @@ class MeasurementSingle extends Component {
     this.propsNextRecords;
     this._keyboardDidHide = this._keyboardDidHide.bind(this)
     this.changeCheckedData = this.changeCheckedData.bind(this)
+    this.navigationGoBack = this.navigationGoBack.bind(this)
   }
   static navigationOptions = ({ navigation, screenProps }) => (
   {
-    headerLeft: <Button transparent onPress={() => navigation.goBack()}><Icon active style={{'color': 'white'}} name="arrow-back"/></Button>,
+    headerLeft: <Button transparent onPress={() => navigation.state.params.headerLeft()}><Icon active style={{'color': 'white'}} name="arrow-back"/></Button>,
     headerRight: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
   });
 
+  navigationGoBack(){
+    console.log(this.props);
+    this.props.navigation.goBack()
+  }
+
   componentWillMount () {
+
+    this.props.navigation.setParams({
+      headerLeft: this.navigationGoBack,
+    });
+
     this.setState({
       itemReceipt: this.props.navigation.state.params.receipt,
     })
@@ -79,11 +88,18 @@ class MeasurementSingle extends Component {
     this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region, this.props.screenProps.token)
   }
   componentWillReceiveProps(nextProps){
+    console.log('cambio de state', this.state);
     if(nextProps.record[0]){
-      this.setState({
-        projected_payment: nextProps.record[0].projected_payment,
+      if(nextProps.record.length > 1 && this.state.record.projected_payment === undefined){
+        this.setState({
+          projected_payment: nextProps.record[0].projected_payment,
 
-      })
+        })
+      }else{
+        this.setState({
+          projected_payment: this.state.record.projected_payment,
+        })
+      }
     }
     nextProps.screenProps.contracts.map((item, i) => {
       if(item.receipt.length != 0 || nextProps.screenProps.contracts.length === 1){
@@ -199,10 +215,6 @@ class MeasurementSingle extends Component {
     this.rate_contract = contract.rate
     this.props.getRatePeriod(this.rate_contract, this.props.token)
   }
-
-  // setDataHighConsumption(){
-  //   funcHighConsumptionPeriod(this.props.highConsumption, this.props.navigation.state.params.contract)
-  // }
 
   sendCurrentData(id){
     if (this.state.current_data != '' && this.state.current_data > this.state.itemReceipt.current_reading_updated) {

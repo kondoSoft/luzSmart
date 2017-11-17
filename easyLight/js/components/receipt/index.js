@@ -314,13 +314,13 @@ class Receipt extends Component {
     const { navigation } = this.props;
     // const { bill } = navigation.state.params
     // var lastBill
-    console.log(this.props.newContract,navigation.state);
     if (navigation.state.params === undefined) {
       contract = this.props.newContract;
     }
     else {
       contract = navigation.state.params.contract;
     }
+    console.log('this.props.newContract',this.props.newContract);
 
     // if(bill.length >= 0) {
     //   lastBill = bill[bill.length-1]
