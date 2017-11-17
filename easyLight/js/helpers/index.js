@@ -334,9 +334,9 @@ const setRecord = data => {
   if(data.contract.high_consumption){
     projectedPayment = funcHighConsumptionPeriod(data.highConsumption, data.contract, projection)
     projectedPaymentIVA = getIVA(projectedPayment)
-    console.log('estoy en DAC');
+
   }else{
-    console.log('fuera de DAC');
+
     projectedPayment = costProject(data.ratePeriod, projection)
     projectedPaymentIVA = getIVA(projectedPayment)
 

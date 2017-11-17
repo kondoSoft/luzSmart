@@ -256,7 +256,6 @@ class AddContracts extends Component {
     }
   }
   render(){
-    console.log(this.state.checkDAC);
     const { navigation, states_mx, municipality_mx, mun_rate } = this.props
     optionsStates = this.props.states_mx.map((item,i)=>{
       return (<Option
@@ -424,7 +423,7 @@ class AddContracts extends Component {
             <Col size={29} style={ styles.col__form }>
               <Form>
                 <Item regular style={styles.col__form__item}>
-                  <Input keyboardType={'numeric'} placeholder={'No. Contrato'} style={{paddingLeft:10}} onChange={event => this.handleNumberContract(event)}/>
+                  <Input keyboardType={'numeric'} placeholder={'No. Contrato'} style={{paddingLeft:10, height: 40}} onChange={event => this.handleNumberContract(event)}/>
                 </Item>
               { (Platform.OS === 'ios')?
                 <Select

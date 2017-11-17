@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Platform, Image, ScrollView, Dimensions, PanResponder, TouchableOpacity } from 'react-native';
+import { View, Platform, Image, ScrollView, Dimensions, PanResponder, TouchableOpacity, PixelRatio } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Container, Fab , Content, Body, Left, List, Thumbnail, Text, Title, Button, Icon, Right} from 'native-base';
 import styles from "./styles";
@@ -18,7 +18,7 @@ import {
 } from '../../helpers';
 // var gradientImage = require('../../../images/header.png')
 var {height, width} = Dimensions.get('window')
-
+var screen = Dimensions.get('window')
 class Contracts extends Component {
   constructor(props) {
     super(props)
@@ -40,7 +40,7 @@ class Contracts extends Component {
     const { state } = navigation
     const { contract }= this.state
     var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts" )}}>
-        <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: (Platform.OS === 'ios')? ((width ===320 )?20:30) : 33, color: '#fff'}}>+</Text>
+        <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: (Platform.OS === 'ios')? 30 : 33, color: '#fff'}}>+</Text>
       </FabButton>
 
     return(
@@ -83,7 +83,7 @@ class ParentSwipeContracts extends Component {
     })
   }
   render(){
-    console.log('width',width);
+    console.log('height',height, 'width', width, width * screen.scale, PixelRatio.get())
     const { navigation } = this.props
     const { contract } = this.props
     return(
@@ -114,6 +114,7 @@ class ItemComponent extends Component{
 
   render(){
     const contract = this.props.data
+    console.log(contract);
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
@@ -123,7 +124,7 @@ class ItemComponent extends Component{
           <Text style={styles.listItem__body__text}>{contract.name_contract}</Text>
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text}>{contract.cost}</Text>
+          {/* <Text style={styles.listItem__body__view__text}>{contract.cost}</Text> */}
         </Right>
       </View>
     )

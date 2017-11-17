@@ -263,7 +263,7 @@ class MeasurementSingle extends Component {
     const { contract } = this.props.navigation.state.params;
     const rangeDate = getRangeMonth(this.state.type_payment, this.state.itemReceipt.payday_limit)
     // Rango automatico del periodo
-    const TextReceipt = (rangeDate != 'undefined-undefined') && <Text style={{ fontSize: (Screen.width === 320)? 12 : 14 }}>{rangeDate}</Text>
+    const TextReceipt = (rangeDate != 'undefined-undefined') && <Text style={{ fontSize: 14 }}>{rangeDate}</Text>
     // Obtener Record
     this.getPropsByNextRecords(this.props.record)
     return(
@@ -276,16 +276,16 @@ class MeasurementSingle extends Component {
           <Grid style={{height:Screen.height}}>
             <Row size={4} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz:</Text>
-              <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: (Screen.width === 320) && 'space-between', paddingRight: '10%', flexDirection: (Screen.width === 320) && 'row' }}>
-                <Text style={{ fontSize: (Screen.width === 320)? 12 : 14 }}>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
-                <Text style={{ fontSize: (Screen.width === 320)? 12 : 14 }}> Proyectado</Text>
+              <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%'}}>
+                <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
+                <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}> Proyectado</Text>
               </View>
             </Row>
             <Col size={6} style={styles.grid__col__select}>
               <Row style={styles.grid__col__select__row__top}>
                 <Text style={styles.grid__row__top__view}>Contrato:</Text>
                 <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
-                  <Text style={{ fontSize: (Screen.width === 320)? 12 : 14, flex: 1 }}>#{contract.number_contract}</Text>
+                  <Text style={{ fontSize: 14, flex: 1 }}>#{contract.number_contract}</Text>
                 </View>
               </Row>
               <Row style={styles.grid__col__select__row__bottom}>
@@ -337,7 +337,7 @@ class MeasurementSingle extends Component {
                       style={styles.animatedView__image__view__btn}
                       onPress={() => this.sendCurrentData(this.state.itemReceipt.id)}
                       >
-                      <Text>Enter</Text>
+                      <Text style={{backgroundColor: 'transparent'}}>Enter</Text>
                     </Button>
 
                   </View>

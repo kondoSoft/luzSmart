@@ -6,19 +6,20 @@ let Screen = Dimensions.get('window')
 export default {
   grid__row__top:{
     alignItems: 'center',
-    flex: (Screen.width === 320) ? 3 : 4,
+    flex: 4,
     // paddingLeft: 30,
     backgroundColor: 'lightgray'
   },
   grid__row__top__text:{
     flex: 1,
-    fontSize: (Screen.width === 320)? 12 : 14,
+    fontSize: 14,
     paddingLeft: 15,
+    backgroundColor: 'transparent',
   },
   grid__row__top__view:{
     flex: 1,
-    fontSize: (Screen.width === 320)? 12 : 14,
-
+    fontSize: 14,
+    backgroundColor: 'transparent',
   },
   grid__col__select:{
     // alignItems: 'center',
@@ -29,7 +30,7 @@ export default {
   },
   grid__col__select__row__top:{
     // alignItems: 'center',
-    flex: (Screen.width === 320) ? 1 : 4,
+    flex: 4,
     // paddingBottom: 5,
     // alignItems: 'center'
   },
@@ -59,16 +60,16 @@ export default {
     flex: 1,
   },
   row__bottom__list__listItem:{
-    flex: (Screen.width === 320) ? 1 : 4,
+    flex: 4,
     backgroundColor: 'lightgrey'
   },
   row__bottom__list__listItem__textTop: {
-    flex: (Screen.width === 320) ? 1 : 4,
-    fontSize: (Screen.width === 320)? 12 : 14,
+    flex: 4,
+    fontSize: 14,
   },
   row__bottom__list__listItem__textBottom:{
     // flex: (Screen.width === 320) ? 3 : 4,
-    fontSize: (Screen.width === 320)? 12 : 14,
+    fontSize: 14,
   },
   animatedView__image:{
     width: (Platform.OS === 'android' && Screen.height <= 640)? '65%' : '70%',

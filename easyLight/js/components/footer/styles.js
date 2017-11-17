@@ -8,16 +8,16 @@ export default {
     height: 40,
   },
   footer__icon:{
-    fontSize: (width === 320) && 17,
+    fontSize: 24,
     color: (Platform.OS === 'ios')? 'grey' : '#fff',
   },
   footer__text:{
-    fontSize: 9
+    fontSize: 7
   },
   footer__logo:{
   },
   footer__text__resultados:{
-    fontSize: (width === 320) ? 5 : 7,
+    fontSize: 7,
     width: '130%',
     textAlign: 'center'
   },

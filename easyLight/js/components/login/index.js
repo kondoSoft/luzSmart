@@ -58,7 +58,7 @@ class Login extends Component {
           [
            {text: 'OK'}
           ]
-        )  
+        )
       }else {
         Alert.alert(
           'Activacion de Email',
@@ -146,7 +146,7 @@ class Login extends Component {
                         ema = this.state.email
                         this.setState({
                           isValidEmail: require('../../../images/succes.png'),
-                        }) 
+                        })
                       } else {
                         this.setState({
                           isValidEmail: require('../../../images/Failure.png')
@@ -186,10 +186,10 @@ class Login extends Component {
                     type="submit"
                     style={styles.btn}
                     onPress={()=>{
-                        this.handleContracts()  
+                        this.handleContracts()
                     }}
                   >
-                    <Text>Entrar</Text>
+                    <Text style={{backgroundColor: 'transparent'}}>Entrar</Text>
                   </Button>
                   <Button
                     block
@@ -205,10 +205,10 @@ class Login extends Component {
                   <TouchableOpacity
                     style={styles.link}
                     onPress={() =>{
-                      Linking.openURL('http://127.0.0.1:8000/password_reset/')
+                      Linking.openURL('http://138.68.49.119:8080/password_reset/')
                       // Linking.canOpenURL('http://127.0.0.1:8000/password_reset/')
                     }}>
-                    <Text>Recuperar Contraseña</Text>
+                    <Text style={{backgroundColor: 'transparent'}}>Recuperar Contraseña</Text>
                   </TouchableOpacity>
                 </Col>
               </Row>
