@@ -55,13 +55,16 @@ export default {
   ItemComponent: {
     view: {
       flexDirection: 'row',
-      height: 70,
+      height: 60,
       borderBottomWidth: 0.5,
       borderLeftWidth: 0.5,
       borderColor: 'transparent'
     },
     align: {
-      alignItems: 'center'
+      justifyContent: 'center',
+    },
+    alignItem:{
+      alignItems: 'center',
     }
   }
 }
