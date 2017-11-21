@@ -248,6 +248,7 @@ class Receipt extends Component {
   sendData(contract) {
     const { navigation } = this.props
     const receipt  = contract.receipt
+    
     if (this.dataValidate(this.state)) {
       // se agrega estatus y despues se hace un post
       this.setState({
@@ -320,8 +321,6 @@ class Receipt extends Component {
     else {
       contract = navigation.state.params.contract;
     }
-    console.log('this.props.newContract',this.props.newContract);
-
     // if(bill.length >= 0) {
     //   lastBill = bill[bill.length-1]
     // }

@@ -57,7 +57,7 @@ class EditContracts extends Component {
 
     super(props)
     this.state = {
-        "name" : props.navigation.state.params['name_contract'],
+        "name" : props.navigation.state.params.contract['name_contract'],
         "number_contract" : 0,
         "state" : "",
         "municipality" : "",
@@ -69,7 +69,7 @@ class EditContracts extends Component {
         "cost" : 0,
         "checkedMen": false,
         "checkedBi": false,
-        "avatarSource" : props.navigation.state.params.image? {uri:props.navigation.state.params.image} : require('../../../images/Casaplace.png'),
+        "avatarSource" : props.navigation.state.params.contract.image? {uri:props.navigation.state.params.contract.image} : require('../../../images/Casaplace.png'),
         "file" : null,
         rates: [],
         isLoading: true
@@ -129,7 +129,7 @@ class EditContracts extends Component {
     this.setState({rate:key})
   }
   sendData(){
-    var id = this.props.navigation.state.params.id
+    var id = this.props.navigation.state.params.contract.id
     if (this.dataValidate(this.state)) {
       this.props.updateContract(this.state, this.props.token, id, this.props.navigation)
       if (Platform.OS === 'ios') {
@@ -177,15 +177,15 @@ class EditContracts extends Component {
     // this.props.navigation.dispatch(resetAction)
   }
 
-  buttonDelete(id, token){
-
+  buttonDelete(params, token){
+    console.log(params);
     if (Platform.OS === 'ios') {
       AlertIOS.alert(
         'Eliminar Contrato',
        'Desea eliminar el contrato?',
        [
          {text: 'No' },
-         {text: 'Si', onPress: () => this.ejectDelete(id, token)},
+         {text: 'Si', onPress: () => this.ejectDelete(params.contract.id, token)},
        ],
       );
     }
@@ -268,27 +268,29 @@ class EditContracts extends Component {
 
   // ******************************************
   componentWillMount(){
-    const {params} = this.props.navigation.state
+    const {contract} = this.props.navigation.state.params
     const {states_mx} = this.props
+
     this.setState({
-        state_id:params.state,
-        municipality_id: params.municipality,
-        number_contract:params.number_contract
+        contract_id: contract.id,
+        state_id:contract.state,
+        municipality_id: contract.municipality.id,
+        number_contract:contract.number_contract
     })
 
     states_mx.map((item,i)=>{
-      if (params.state === item.id) {
+      if (contract.state === item.id) {
         this.setState({state:item.state})
         this.props.getMunicipality(item.id)
       }
     })
-    if (params['type_payment'] === 'Bimestral') {
+    if (contract['type_payment'] === 'Bimestral') {
       this.setState({
         checkedBi: true,
         type_payment: 'Bimestral'
       })
     }
-    if (params['type_payment'] === 'Mensual') {
+    if (contract['type_payment'] === 'Mensual') {
       this.setState({
         checkedMen: true,
         type_payment: 'Mensual'
@@ -298,7 +300,7 @@ class EditContracts extends Component {
   componentWillReceiveProps(nextProps){
     nextProps.municipality_mx.map(item => {
 
-      if (item.id === this.props.navigation.state.params.municipality.id) {
+      if (item.id === this.props.navigation.state.params.contract.municipality.id) {
         this.setState({municipality: item['name_mun']})
         this.props.getRate(item.id, this.props.token)
       }
@@ -307,10 +309,10 @@ class EditContracts extends Component {
       //array of rates
       const rates = ['TARIFA 1', 'TARIFA 1A', 'TARIFA 1B', 'TARIFA 1C', 'TARIFA 1D', 'TARIFA 1E', 'TARIFA 1F']
       // put inside of an array the municipality rate
-      const rate_unique = [this.props.navigation.state.params.rate]
+      const rate_unique = [this.props.navigation.state.params.contract.rate]
       //function that return a condiciton => return all rates that are different from the municipality
       const inRates = (rate) => {
-        return rate != this.props.navigation.state.params.rate
+        return rate != this.props.navigation.state.params.contract.rate
       }
       //filter the array of rates => return a new array with all rates except the munucipality rate
       var rate = rates.filter(inRates)
@@ -353,7 +355,7 @@ class EditContracts extends Component {
             <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
             <Col size={ (Platform.OS === 'ios')? 39 : 29 } style={ styles.col__form }>
               <Item fixedLabel style={styles.col__form__item}>
-                <Input value={navigation.state.params['number_contract']} editable={false} keyboardType={'numeric'} style={{paddingLeft:10}}/>
+                <Input value={navigation.state.params.contract['number_contract']} editable={false} keyboardType={'numeric'} style={{paddingLeft:10}}/>
               </Item>
               <Item fixedLabel style={styles.col__form__item}>
                 <Input value={this.state.state} editable={false} keyboardType={'numeric'}  style={{paddingLeft:10}}/>
@@ -392,7 +394,7 @@ class EditContracts extends Component {
               <Button
                 small
                 danger
-                onPress={() => this.buttonDelete(this.props.navigation.state.params.id, this.props.screenProps.token)}
+                onPress={() => this.buttonDelete(this.props.navigation.state.params, this.props.screenProps.token)}
                 >
                 <Text>Eliminar</Text>
               </Button>

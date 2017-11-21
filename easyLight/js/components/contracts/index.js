@@ -82,9 +82,9 @@ class Contracts extends Component {
 }
 
 class ListSwipeable extends Component {
-  navigateTo(route){
-    console.log('navigateTo', route);
-    this.props.navigation.navigate(route)
+  navigateTo(route, contract){
+    // console.log('navigateTo', contract);
+    this.props.navigation.navigate(route, {"contract" : contract})
     // if (this.props.navigation.state.routeName === 'DetailContract') {
     //  if(this.props.keyVal === 0){
     //    this.props.pickerContract(this.props.dataAccordionContract.name_contract)
@@ -117,7 +117,7 @@ class ListSwipeable extends Component {
 
                       }}
                 activeOpacity={0.6}
-                onPress={() => this.navigateTo('EditContracts')}
+                onPress={() => this.navigateTo('EditContracts', contract)}
               >
                 <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%'}} name='md-create' />
               </TouchableOpacity>,
@@ -147,7 +147,7 @@ class ListSwipeable extends Component {
             onRightButtonsCloseRelease={this.props.itemProps.onClose}
             >
             <TouchableWithoutFeedback
-              onPress={() => this.navigateTo('DetailContract')}
+              onPress={() => this.navigateTo('DetailContract', contract)}
             >
               <View style={[styles.ItemComponent.view, {backgroundColor: 'fff'}]}>
                 <Left  style={styles.ItemComponent.alignItem} >

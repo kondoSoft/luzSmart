@@ -172,7 +172,7 @@ const tabTips = StackNavigator(
 const tabMediciones = StackNavigator(
   {
     Mediciones: {
-      screen: Measurements,
+      screen: MeasurementsCopy,
       navigationOptions: ({ navigation }) => ({
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
@@ -249,14 +249,14 @@ const tabNavigation = TabNavigator(
         tabBarIcon:({tintColor}) => <Icon name="ios-calendar-outline" />,
       }
     },
-    Mediciones: {
-      screen: tabMediciones,
-      navigationOptions: {
-        headerLeft: null,
-        tabBarIcon:({tintColor}) => <Icon name="ios-flash-outline" />,
-      }
-
-     },
+    // Mediciones: {
+    //   screen: tabMediciones,
+    //   navigationOptions: {
+    //     headerLeft: null,
+    //     tabBarIcon:({tintColor}) => <Icon name="ios-flash-outline" />,
+    //   }
+    //
+    //  },
     Resultados: { screen: tabResults,
       navigationOptions: {
           headerLeft: null,

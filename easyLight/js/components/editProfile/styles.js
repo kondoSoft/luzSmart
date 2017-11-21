@@ -8,9 +8,9 @@ export default {
      alignItems: 'center',
      borderBottomWidth: 1,
      borderBottomColor: 'lightgray',
-     height: '25%',
-     paddingTop: (Platform.OS === 'ios')? 40 : (Screen.height > 592)? 15  : 5,
-     paddingBottom: (Platform.OS === 'ios')? 40 : (Screen.height > 552)? 10  : 5,
+     // height: '25%',
+     paddingTop: (Platform.OS === 'ios')? 30 : (Screen.height > 592)? 15  : 5,
+     paddingBottom: (Platform.OS === 'ios')? 30 : (Screen.height > 552)? 10  : 5,
   },
   row__top__col__left:{
     paddingLeft: 30
@@ -24,14 +24,10 @@ export default {
   },
   row__botttom: {
     justifyContent: 'space-around',
-    height:'10%',
-    paddingTop: (Platform.OS === 'ios')? 0 : (Screen.height > 592)? 7 : 10,
-    paddingBottom:5,
   },
   row__botttom__btn__Cancel: {
     width: (Platform.OS === 'ios')? 100 : 120,
     justifyContent: 'center',
-    backgroundColor: 'red',
   },
   row__botttom__btn__Success: {
     width: (Platform.OS === 'ios')? 100 : 120,
@@ -39,10 +35,10 @@ export default {
     backgroundColor: '#4ccbe8',
   },
   form__item: {
-     alignItems: 'center',
-     justifyContent: 'center',
-     paddingTop: (Platform.OS === 'ios')? 10 : (Screen.height > 592)? 10  : 5,
-     paddingBottom: (Platform.OS === 'ios')? 10 : (Screen.height > 552)? 10  : 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // paddingTop: (Platform.OS === 'ios')? 10 : (Screen.height > 592)? 10  : 5,
+    paddingBottom: (Platform.OS === 'ios')? 10 : (Screen.height > 552)? 10  : 5,
   },
   form__item__input: {
     height: (Platform.OS === 'ios')? 30 : 40,

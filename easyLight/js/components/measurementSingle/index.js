@@ -49,7 +49,7 @@ class MeasurementSingle extends Component {
       record: {
 
       },
-      type_payment: this.props.navigation.state.params.contract.type_payment,
+      type_payment: (this.props.navigation.state.params) && this.props.navigation.state.params.contract.type_payment,
       projected_payment: 0,
     }
     this.contract_id;
@@ -68,7 +68,6 @@ class MeasurementSingle extends Component {
   });
 
   navigationGoBack(){
-    console.log(this.props);
     this.props.navigation.goBack()
   }
 
@@ -77,10 +76,13 @@ class MeasurementSingle extends Component {
     this.props.navigation.setParams({
       headerLeft: this.navigationGoBack,
     });
+    // Navegacion por parametros
+    if(this.props.navigation.state.params){
+      this.setState({
+        itemReceipt: this.props.navigation.state.params.receipt,
+      })
+    }
 
-    this.setState({
-      itemReceipt: this.props.navigation.state.params.receipt,
-    })
     this.rate_contract = this.props.navigation.state.params.contract.rate
     this.contract_id = this.props.navigation.state.params.contract.id
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
@@ -88,7 +90,6 @@ class MeasurementSingle extends Component {
     this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region, this.props.screenProps.token)
   }
   componentWillReceiveProps(nextProps){
-    console.log('cambio de state', this.state);
     if(nextProps.record[0]){
       if(nextProps.record.length > 1 && this.state.record.projected_payment === undefined){
         this.setState({

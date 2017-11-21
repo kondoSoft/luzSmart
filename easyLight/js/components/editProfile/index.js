@@ -211,7 +211,7 @@ class EditProfile extends Component {
             ref='scroll'
             >
             <Grid style={{flex: 1}}>
-              <Row size={10} style={styles.row__top}>
+              <Row size={1} style={styles.row__top}>
                 <Col style={styles.row__top__col__left}>
                   <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                     <View style={{marginBottom: 0,height: 80,width: '100%',justifyContent:'center'}}>
@@ -221,71 +221,73 @@ class EditProfile extends Component {
                 </Col>
 
               </Row>
-              <Col size={50}>
-                <Form>
-                  <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Nombres:</Label>
-                    <Input
-                      style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
-                      value={first_name}
-                      onChange={event => this.onChangeInputs(event, 'name')}
-                    />
-                  </Item>
-                  <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Apellidos:</Label>
-                    <Input
-                      style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
-                      value={last_name}
-                      onChange={event => this.onChangeInputs(event, 'lastname')}
-                    />
-                  </Item>
-                  <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Email:</Label>
-                    <Input
-                      style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })}
-                      value={email}
-                      onChange={this.onChangeInputs}
-                    />
-                  </Item>
-                  <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Contraseña Actual:</Label>
-                    <Input
-                      style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 90 : 90 })}
-                      value={password.oldPassword}
-                      onChange={e => this.onChangePassword(e ,'old_password')}
-                      secureTextEntry={true}
-                      autoCapitalize={'none'}
-                    />
-                  </Item>
-                  <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Nueva Contraseña:</Label>
-                    <Input
-                      style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 100 : 100 })}
-                      value={password.newPassword1}
-                      onChange={e => this.onChangePassword(e ,'new_password1')}
-                      secureTextEntry={true}
-                      autoCapitalize={'none'}
-                    />
-                  </Item>
-                  <Item inlineLabel last style={styles.form__item}>
-                    <Label style={styles.text}>Confirmar Contraseña:</Label>
-                    <Input
-                      style={styles.form__item__input}
-                      onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 160 : 160 })}
-                      value={password.newPassword2}
-                      onChange={this.onChangePassword}
-                      secureTextEntry={true}
-                      autoCapitalize={'none'}
-                    />
-                  </Item>
-                </Form>
-              </Col>
-              <Row size={10} style={styles.row__botttom}>
+              <Row size={4}>
+                <Col>
+                  <Form>
+                    <Item inlineLabel last style={styles.form__item}>
+                      <Label style={styles.text}>Nombres:</Label>
+                      <Input
+                        style={styles.form__item__input}
+                        onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
+                        value={first_name}
+                        onChange={event => this.onChangeInputs(event, 'name')}
+                      />
+                    </Item>
+                    <Item inlineLabel last style={styles.form__item}>
+                      <Label style={styles.text}>Apellidos:</Label>
+                      <Input
+                        style={styles.form__item__input}
+                        onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 80 })}
+                        value={last_name}
+                        onChange={event => this.onChangeInputs(event, 'lastname')}
+                      />
+                    </Item>
+                    <Item inlineLabel last style={styles.form__item}>
+                      <Label style={styles.text}>Email:</Label>
+                      <Input
+                        style={styles.form__item__input}
+                        onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 80 : 80 })}
+                        value={email}
+                        onChange={this.onChangeInputs}
+                      />
+                    </Item>
+                    <Item inlineLabel last style={styles.form__item}>
+                      <Label style={styles.text}>Contraseña Actual:</Label>
+                      <Input
+                        style={styles.form__item__input}
+                        onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 90 : 90 })}
+                        value={password.oldPassword}
+                        onChange={e => this.onChangePassword(e ,'old_password')}
+                        secureTextEntry={true}
+                        autoCapitalize={'none'}
+                      />
+                    </Item>
+                    <Item inlineLabel last style={styles.form__item}>
+                      <Label style={styles.text}>Nueva Contraseña:</Label>
+                      <Input
+                        style={styles.form__item__input}
+                        onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 100 : 100 })}
+                        value={password.newPassword1}
+                        onChange={e => this.onChangePassword(e ,'new_password1')}
+                        secureTextEntry={true}
+                        autoCapitalize={'none'}
+                      />
+                    </Item>
+                    <Item inlineLabel last style={styles.form__item}>
+                      <Label style={styles.text}>Confirmar Contraseña:</Label>
+                      <Input
+                        style={styles.form__item__input}
+                        onFocus={() => this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 160 : 160 })}
+                        value={password.newPassword2}
+                        onChange={this.onChangePassword}
+                        secureTextEntry={true}
+                        autoCapitalize={'none'}
+                      />
+                    </Item>
+                  </Form>
+                </Col>
+              </Row>
+              <Row size={1} style={styles.row__botttom}>
                 <Button
                   primary
                   style={styles.row__botttom__btn__Cancel}

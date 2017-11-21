@@ -305,7 +305,7 @@ class Measurements extends Component {
               <List style={styles.row__bottom__list}>
                 <ListItem last style={styles.row__bottom__list__listItem}>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Lectura Inicial</Text>
-                  <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.previous_reading}</Text>
+                  <Text style={styles.row__bottom__list__listItem__textBottom}>{console.log('this.state.itemReceipt', this.state.itemReceipt)}{this.state.itemReceipt.previous_reading}</Text>
                 </ListItem>
                 <ListItem last>
                   <Text style={styles.row__bottom__list__listItem__textTop}>Ultima Lectura Diaria</Text>

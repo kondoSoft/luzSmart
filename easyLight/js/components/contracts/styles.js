@@ -40,7 +40,7 @@ export default {
   },
   rowBack: {
     alignItems: 'center',
-    backgroundColor: '#FFF',
+    // backgroundColor: '#FFF',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -48,7 +48,7 @@ export default {
   },
   rowFront: {
     alignItems: 'center',
-    backgroundColor: '#FFF',
+    // backgroundColor: '#FFF',
     justifyContent: 'center',
     height: 50
   },
