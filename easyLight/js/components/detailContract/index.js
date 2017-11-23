@@ -28,6 +28,7 @@ import FabButton from '../fabButton';
 import { getRatePeriod, postReceipt, getRecord, resetRecord } from '../../actions/contracts';
 import { getContract } from '../../actions/list_states_mx';
 var {height, width} = Dimensions.get('window')
+var moment = require('moment');
 
 var rateArr = [];
 var finalRange;
@@ -52,7 +53,7 @@ class DetailContract extends Component {
       contract_id: '',
       previous_reading: '',
       payday_limit: '',
-      count_days: (props.contracts.length > 0) && props.contracts[0].type_payment,
+      count_days: (props.navigation.state.params) ? props.navigation.state.params.contract.type_payment : undefined,
       bill: (props.navigation.state.params) ? props.navigation.state.params.contract.receipt : undefined,
       contract: '',
 
@@ -60,6 +61,7 @@ class DetailContract extends Component {
     this.getStatus = this.getStatus.bind(this);
     this.returnScreen = this.returnScreen.bind(this)
     that = this
+    this.addMonth
   }
 
   static navigationOptions = ({ navigation, screenProps }) =>
@@ -90,12 +92,14 @@ class DetailContract extends Component {
   }
   componentDidMount() {
     // se determina los meses que se agregaran a las fechas determinados por el tipo de pago(Mensual o Bimestral)
-    let addMonth ;
-    if(this.state.count_days == 'Bimestral'){
-      addMonth = 2
-    }
-    else {
-      addMonth = 1
+
+    if(this.state.count_days){
+      if(this.state.count_days == 'Bimestral'){
+        this.addMonth = 2
+      }
+      else {
+        this.addMonth = 1
+      }
     }
     if(this.state.bill){
       if(this.state.bill.length > 0) {
@@ -159,7 +163,7 @@ class DetailContract extends Component {
                     key={i}
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
-                    component={<ItemComponent data={item} status={status} record={this.props.records[i]} arrRecords={this.props.records}/>}
+                    component={<ItemComponent data={item} status={status} record={this.props.records[i]} arrRecords={this.props.records} typePayment={this.addMonth}/>}
                     dataAccordionContract={this.state.contract}
                     // dataAccordionContract={this.props.navigation.state.params.contract}
                     dataAccordion={item}
@@ -215,18 +219,21 @@ class ItemComponent extends Component{
     // Periodo inicial dependiendo la fecha limite de pago, calculando los dias de inicio del recibo
     const initialPeriod = new Date(date.setDate(new Date(date).getDate() - count_days))
     dateMonth = initialPeriod.getMonth()
-    finalRange = new Date(new Date(date).setMonth(date.getMonth()+2))
+    finalRange = new Date(new Date(date).setMonth(date.getMonth()+this.props.typePayment))
+    finalDateProj = moment(finalRange)
+    finalDateProj = finalDateProj.month()
+
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-           <Text style={styles.listItem__body__text,{ fontSize: 14}}>{(receipt.status) ? arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()] : arrMonth[finalRange.getMonth()]}</Text>
+           <Text style={styles.listItem__body__text,{ fontSize: 14}}>{(receipt.status) ? arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()] : arrMonth[finalRange.getMonth()]  + ' - ' + arrMonth[finalDateProj+this.props.typePayment]}</Text>
         </Left>
         <Body style={styles.ItemComponent.align}>
 
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{fontSize: 14 }}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment > 0) ? `$ ${parseFloat(this.state.projected_payment).toLocaleString()}` : '$0'}</Text>
-          <Text style={styles.listItem__body__view__text,{fontSize: 14 }}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
+          <Text style={styles.listItem__body__view__text,{fontSize: 14,marginRight: 20}}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment > 0) ? `$ ${parseFloat(this.props.projected_payment).toFixed(0)}` : '$0'}</Text>
+          <Text style={styles.listItem__body__view__text,{fontSize: 14,marginRight: 20}}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
         </Right>
       </View>
     )

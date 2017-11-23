@@ -277,7 +277,7 @@ class MeasurementSingle extends Component {
             <Row size={4} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz:</Text>
               <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%'}}>
-                <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
+                <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}>{`$${parseFloat(this.state.projected_payment).toFixed(0)}`}</Text>
                 <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}> Proyectado</Text>
               </View>
             </Row>

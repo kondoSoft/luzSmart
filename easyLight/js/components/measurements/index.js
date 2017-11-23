@@ -287,7 +287,7 @@ class Measurements extends Component {
             <Row size={4} style={styles.grid__row__top}>
               <Text style={styles.grid__row__top__text}>Gasto de Luz</Text>
               <View style={styles.grid__row__top__view}>
-                <Text>{`$${parseFloat(this.state.projected_payment).toLocaleString()}`}</Text>
+                <Text>{`$${parseFloat(this.state.projected_payment).toFixed(0)}`}</Text>
                 <Text>Proyectado</Text>
               </View>
             </Row>

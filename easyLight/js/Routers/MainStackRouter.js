@@ -41,7 +41,7 @@ const stackContratos = StackNavigator({
   DetailContract: {
     screen: DetailContract,
     navigationOptions: ({ navigation, props }) => ({
-      title: 'Detalles de Contrato',
+      title: 'Periodos',
       headerTintColor: 'white',
       tabBarVisible: false,
       headerStyle: { backgroundColor : '#00a85b'},

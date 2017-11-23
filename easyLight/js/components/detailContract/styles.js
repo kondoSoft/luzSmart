@@ -52,6 +52,7 @@ export default {
     textAlign: 'right',
     backgroundColor: 'transparent',
 
+
   },
   ItemComponent:{
     view:{
@@ -59,10 +60,7 @@ export default {
       height: 70,
     },
     align:{
-      // flexDirection: (width === 320) && 'row',
-      // justifyContent: (width === 320) && 'space-around',
-      alignItems: 'center',
-      // flex: (width === 320) && 3,
+      alignItems: 'flex-end',
     },
   },
   fab:{
