@@ -52,11 +52,11 @@ class DrawBar extends Component {
           style={[{ zIndex: (this.props.zIndex)? 1000 : 0 , width: Screen.width,flex:(Platform.OS != 'ios')? 0.5 : 0},styles.header]}
           >
             <View style={styles.viewProfile}>
-              <View style={styles.viewThumbnail}>
-                <TouchableOpacity transparent onPress={()=> this.props.navigation.navigate("EditProfile")}>
+              <TouchableOpacity transparent onPress={()=> this.props.navigation.navigate("EditProfile")}>
+                <View style={styles.viewThumbnail}>
                   <Thumbnail style={styles.avatar} source={(this.state.profile.avatar !== null) ? {uri: this.state.profile.avatar} : this.state.avatarSource }/>
-                </TouchableOpacity>
-              </View>
+                </View>
+              </TouchableOpacity>
               <View style={styles.viewName}>
                 <View style={{borderBottomWidth: 1, borderColor: 'white'}}>
                   {(this.props.user !== undefined)&& <Text style={{color: 'white'}}>{this.props.user.first_name + ' ' + this.props.user.last_name}</Text>}

@@ -22,7 +22,7 @@ import {
 import { Col, Row, Grid } from 'react-native-easy-grid';
 // import { Select, Option } from 'react-native-select-list';
 import styles from './styles';
-import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt } from '../../actions/contracts';
+import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt, getHighConsumption } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
 import { putRecord, postHistory } from "../../actions/contracts";
@@ -62,7 +62,7 @@ class Receipt extends Component {
    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
    if (this.props.navigation.state.params !== undefined) {
      this.setState({array_contract: this.props.navigation.state.params.contract})
-     // this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region.id,this.props.screenProps.token)
+     this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region, this.props.screenProps.token)
    }
   }
   componentWillReceiveProps(nextProps){
@@ -169,6 +169,8 @@ class Receipt extends Component {
     //Dia de la semana
     const weekday = getWeekday(paydayLimit)
     // Consumo diario
+
+
     const { current_reading, previous_reading} = this.state
     this.setState({
       record:{
@@ -189,8 +191,8 @@ class Receipt extends Component {
         rest_day: 0,
         projection: 0,
         status: true,
-
-
+        contract: this.state.array_contract,
+        highConsumption: this.props.highConsumption
       }
     })
   }
@@ -229,12 +231,19 @@ class Receipt extends Component {
   setRecordState(receipt) {
     const ratePeriod = this.getRate(receipt)
     const lastRecord = this.props.record[this.props.record.length - 1]
+    let contract;
+    if(this.props.navigation.state.params){
+      contract = this.props.navigation.state.params.contract
+    }
     const data = {
       contract_id: this.state.array_contract.id,
       lastRecord: lastRecord,
       itemReceipt: receipt,
       type_payment: contract.type_payment,
       current_data: this.state.current_reading,
+      projectedPayment: 0,
+      highConsumption: this.props.highConsumption,
+      contract: contract
     }
 
     const record = helperRecord(data)
@@ -248,7 +257,7 @@ class Receipt extends Component {
   sendData(contract) {
     const { navigation } = this.props
     const receipt  = contract.receipt
-    
+
     if (this.dataValidate(this.state)) {
       // se agrega estatus y despues se hace un post
       this.setState({
@@ -524,13 +533,14 @@ function bindAction(dispatch) {
     patchNewReceipt: (data, id, token, navigation) => dispatch(patchNewReceipt(data, id, token, navigation)),
     putRecord: (data, token) => dispatch(putRecord(data, token)),
     postHistory: (list, token) => dispatch(postHistory(list, token)),
-
+    getHighConsumption: (region_id, token) => dispatch(getHighConsumption(region_id, token)),
   };
 }
 const mapStateToProps = state => ({
   newContract: state.list_contracts.newContract,
   rate_period: state.list_rate.rate_period,
   record: state.list_records.results,
+  highConsumption: state.list_contracts.highConsumption,
 });
 
 export default connect(mapStateToProps, bindAction)(Receipt);

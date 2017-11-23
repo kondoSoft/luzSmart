@@ -314,7 +314,7 @@ const setRecord = data => {
   const hoursElapsed = hoursTotals - lastRecord.hours_totals
   // Dias transcurridos
   const diffDays = getDayInDates(paydayLimit, date)
-
+  console.log('diffDays helpers',diffDays);
   // Dias Restantes
   const restDay = totalDays - Math.ceil(diffDays)
   // Dias transcurridos desde el ultimo record
@@ -331,6 +331,9 @@ const setRecord = data => {
   const projection = getProjected(cumulativeConsumption, average, restDay)
   let projectedPayment;
   let projectedPaymentIVA
+  // if(data.projectedPayment === 0){
+  //   console.log('es 0',data.projectedPayment);
+  // }
   if(data.contract.high_consumption){
     projectedPayment = funcHighConsumptionPeriod(data.highConsumption, data.contract, projection)
     projectedPaymentIVA = getIVA(projectedPayment)

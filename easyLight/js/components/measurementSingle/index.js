@@ -72,14 +72,13 @@ class MeasurementSingle extends Component {
   }
 
   componentWillMount () {
-
     this.props.navigation.setParams({
       headerLeft: this.navigationGoBack,
     });
     // Navegacion por parametros
     if(this.props.navigation.state.params){
       this.setState({
-        itemReceipt: this.props.navigation.state.params.receipt,
+        itemReceipt: this.props.navigation.state.params.contract.receipt[0],
       })
     }
 

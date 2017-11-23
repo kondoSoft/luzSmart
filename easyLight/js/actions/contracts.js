@@ -68,6 +68,12 @@ export function resetRecord():Action{
   }
 }
 
+export function printHistory(data):Action{
+  return {
+    type: PRINT_HISTORY,
+    payload: data
+  }
+}
 export function postReceipt(list, token):Action{
 
   return dispatch => {
@@ -126,7 +132,6 @@ export function postProjectReceipt(list, token):Action{
   }
 }
 export function patchNewReceipt(data, id, token):Action{
-
   return dispatch => {
     return fetch(endPoint+'/receipt/'+ id + '/',{
       method: 'PATCH',
@@ -148,7 +153,8 @@ export function patchNewReceipt(data, id, token):Action{
       })
     })
     .then(res => {return res.json()})
-    .then(res => dispatch(postProjectReceipt(res, token)))
+    .then(res => {
+      dispatch(postProjectReceipt(res, token))})
     .catch(err => console.log(err))
   }
 }
@@ -192,8 +198,9 @@ export function postRecord(list, token):Action{
   }
 }
 export function putRecord(list, token):Action{
+  console.log('putRecord', list);
   return dispatch => {
-    return fetch(endPoint+'/records/?contract_id=' + list.contract_id + '&kwh=' + list.current_reading,{
+    return fetch(endPoint+'/records/?contract_id=' + list.array_contract.id + '&kwh=' + list.current_reading,{
       method: 'PUT',
       headers: {
        'Accept': 'application/json',
@@ -207,13 +214,13 @@ export function putRecord(list, token):Action{
         rest_day: list.record.rest_day,
         projected_payment: list.amount_payable,
         amount_payable: list.amount_payable,
-        contracts: list.contract_id,
+        contracts: list.array_contract.id,
         ratePeriod: list.ratePeriod,
         status: list.status
       })
     })
     .then(res => {return res.json()})
-    .then(res => {console.log('res', res)})
+    .then(res => {console.log('res putRecord', res)})
     .catch(err => console.log(err))
   }
 }
@@ -270,6 +277,7 @@ export function getRatePeriod(rate, token):Action{
 }
 
 export function postHistory(list, token):Action{
+  console.log('postHistory',list)
   return dispatch=>{
     return fetch(endPoint+'/history/',{
       method: 'POST',
@@ -281,12 +289,28 @@ export function postHistory(list, token):Action{
       body: JSON.stringify({
         contracts: list.contract_id,
         // period_name:
-        // date: list.payday_limit,
-        // datetime: list.record.datetime,
+        // cost: list.payday_limit,
+        // kilowwatts: list.record.datetime,
       })
     })
     .then(res => {return res.json()})
     .then(res => {console.log(res)})
+    .catch(err => console.log(err))
+  }
+}
+
+export function getHistory(token):Action{
+  return dispatch => {
+    return fetch(endPoint+'/history/',{
+      method: 'GET',
+      headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+       'Authorization': 'Token '+token
+      },
+    })
+    .then(res => {return res.json()})
+    .then(res=> dispatch(printHistory(res)))
     .catch(err => console.log(err))
   }
 }
@@ -309,7 +333,7 @@ export function getRegion(token):Action{
 }
 
 export function getHighConsumption(region_id, token): Action{
-  // console.log('region', region_id);
+
   return dispatch=>{
     return fetch(endPoint+'/high_consumption/?region_id='+ region_id,{
       method: 'GET',
@@ -321,7 +345,7 @@ export function getHighConsumption(region_id, token): Action{
     })
     .then(res => {return res.json()})
     .then(res => {
-      // console.log(res)
+      console.log('printHighConsumption', res)
       dispatch(printHighConsumption(res))})
     .catch(err => console.log(err))
   }

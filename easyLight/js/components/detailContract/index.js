@@ -22,14 +22,11 @@ import {
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-// import Header from '../header/index';
-// import Footer from '../footer/index';
 import styles from './styles';
 import SwipeAccordion from '../listSwipe/swipe';
 import FabButton from '../fabButton';
 import { getRatePeriod, postReceipt, getRecord, resetRecord } from '../../actions/contracts';
 import { getContract } from '../../actions/list_states_mx';
-import { getIVA, costProject } from '../../helpers';
 var {height, width} = Dimensions.get('window')
 
 var rateArr = [];
@@ -68,7 +65,7 @@ class DetailContract extends Component {
   static navigationOptions = ({ navigation, screenProps }) =>
 
     ({
-      // headerRight: (navigation.state.params != undefined) && (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract, receipt: navigation.state.params.receipt[0]})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
+      headerRight: (navigation.state.params) && (navigation.state.params.contract.receipt.length >= 1) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
       headerLeft: <Button transparent onPress={() => that.__proto__.returnScreen()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>
     });
 
@@ -125,38 +122,6 @@ class DetailContract extends Component {
       count_days = 30
     }
   }
-  // funcion para obtener los datos por costos y hacer operaciones logicas
-  getCost(rate_period) {
-    var verano = [];
-    var noverano = [];
-    var kilowatt = [];
-    // empuje de datos en el arreglo de verano y fuera de verano
-    rate_period.map((period, i) => {
-      if(period.period_name === 'Verano') {
-        verano.push(period)
-        }
-      else {
-        noverano.push(period);
-        }
-      });
-      if(this.state.bill != undefined){
-        this.state.bill.map((bill, i)=>{
-          if(this.state.bill[i].period === 'Verano'){
-            kilowatt = verano.map((rate, i)=>{
-              const { kilowatt, cost } = rate;
-              return { kilowatt, cost };
-            });
-          }
-          else {
-            kilowatt = noverano.map((rate, i)=>{
-              const { kilowatt, cost } = rate;
-              return { kilowatt, cost };
-            })
-          }
-        })
-      }
-    return kilowatt;
-  }
 
   render(){
     const { navigation, rate_period, contracts } = this.props;
@@ -168,6 +133,7 @@ class DetailContract extends Component {
         return b.id - a.id
       })
     }
+
     let fab = <FabButton
           navigation={navigation}
           onTap={() => {navigation.navigate('Receipt',{ contract: this.state.contract})}}
@@ -186,6 +152,7 @@ class DetailContract extends Component {
               <List style={styles.list}>
                {(bill) && bill.map((item, i )=>
                   {
+
                   return <SwipeAccordion
                     indexOpen={this.state.key}
                     keyVal={i}
@@ -193,7 +160,6 @@ class DetailContract extends Component {
                     navigation={navigation}
                     style={{backgroundColor: colors[i % colors.length]}}
                     component={<ItemComponent data={item} status={status} record={this.props.records[i]} arrRecords={this.props.records}/>}
-                    // component={<ItemComponent data={item} status={status} ratePeriodCost={rate_period} consumoPromedio={costProject}/>}
                     dataAccordionContract={this.state.contract}
                     // dataAccordionContract={this.props.navigation.state.params.contract}
                     dataAccordion={item}
@@ -219,7 +185,6 @@ class ItemComponent extends Component{
       amount_payable: 0,
       projected_payment: 0,
     }
-    // this.getCost = this.getCost.bind(this)
   }
 
   componentWillReceiveProps(nextProps){
