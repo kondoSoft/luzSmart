@@ -6,12 +6,18 @@ let Screen = Dimensions.get('window')
 export default {
   grid__row__top:{
     alignItems: 'center',
+    justifyContent: 'center',
     flex: 4,
-    // paddingLeft: 30,
-    backgroundColor: 'lightgray'
+
+  },
+  view_right_text:{
+    alignItems: 'flex-end',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    paddingRight: 10,
   },
   grid__row__top__text:{
-    flex: 1,
+    // flex: 1,
     fontSize: 14,
     paddingLeft: 15,
     backgroundColor: 'transparent',
@@ -22,17 +28,12 @@ export default {
     backgroundColor: 'transparent',
   },
   grid__col__select:{
-    // alignItems: 'center',
     paddingLeft: 15,
-    // paddingRight: 5,
-    paddingTop: 5,
-    // paddingBottom: 5,
+    backgroundColor: 'transparent',
+
   },
   grid__col__select__row__top:{
-    // alignItems: 'center',
     flex: 4,
-    // paddingBottom: 5,
-    // alignItems: 'center'
   },
   grid__col__select__row__bottom:{
     alignItems: 'center',
@@ -50,7 +51,7 @@ export default {
     borderLeftWidth: .5,
     borderRightWidth: .5,
     padding: 0,
-    paddingTop:5,
+    // paddingTop:5,
   },
   col__row__select__option:{
     height: 34,
@@ -61,14 +62,10 @@ export default {
   },
   row__bottom__list__listItem:{
     flex: 4,
-    backgroundColor: 'lightgrey'
+
   },
-  row__bottom__list__listItem__textTop: {
-    flex: 4,
-    fontSize: 14,
-  },
+
   row__bottom__list__listItem__textBottom:{
-    // flex: (Screen.width === 320) ? 3 : 4,
     fontSize: 14,
   },
   animatedView__image:{

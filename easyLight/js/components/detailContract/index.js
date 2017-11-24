@@ -214,25 +214,24 @@ class ItemComponent extends Component{
     // Declaracion de KwH proyectado
     const { amount_payable } = this.state
     const arrMonth = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
-    const splitRange = receipt.payday_limit.split('-',)
-    const date = new Date(receipt.payday_limit.replace(/-/g, '\/'))
-    // Periodo inicial dependiendo la fecha limite de pago, calculando los dias de inicio del recibo
-    const initialPeriod = new Date(date.setDate(new Date(date).getDate() - count_days))
-    dateMonth = initialPeriod.getMonth()
-    finalRange = new Date(new Date(date).setMonth(date.getMonth()+this.props.typePayment))
-    finalDateProj = moment(finalRange)
-    finalDateProj = finalDateProj.month()
+
+
+    const date1 = moment(receipt.payday_limit)
+    const date2 = moment(receipt.payday_limit)
+    const initialDate = date1.month()
+    const finalDate = date1.subtract(this.props.typePayment, 'month').month()
+    const finalProj = date2.add(this.props.typePayment, 'month').month()
 
     return(
       <View style={styles.ItemComponent.view}>
         <Left style={styles.ItemComponent.align}>
-           <Text style={styles.listItem__body__text,{ fontSize: 14}}>{(receipt.status) ? arrMonth[dateMonth] + ' - ' + arrMonth[finalRange.getMonth()] : arrMonth[finalRange.getMonth()]  + ' - ' + arrMonth[finalDateProj+this.props.typePayment]}</Text>
+           <Text style={styles.listItem__body__text,{ fontSize: 14}}>{(receipt.status) ? arrMonth[finalDate] + ' - ' + arrMonth[initialDate] : arrMonth[initialDate]  + ' - ' + arrMonth[finalProj]}</Text>
         </Left>
         <Body style={styles.ItemComponent.align}>
 
         </Body>
         <Right style={styles.ItemComponent.align}>
-          <Text style={styles.listItem__body__view__text,{fontSize: 14,marginRight: 20}}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment > 0) ? `$ ${parseFloat(this.props.projected_payment).toFixed(0)}` : '$0'}</Text>
+          <Text style={styles.listItem__body__view__text,{fontSize: 14,marginRight: 20}}>{(receipt.status) ? `$`+ amount_payable : (this.state.projected_payment > 0) ? `$ ${parseFloat(this.state.projected_payment).toFixed(0)}` : '$0'}</Text>
           <Text style={styles.listItem__body__view__text,{fontSize: 14,marginRight: 20}}>{(receipt.status) ? 'Pagado' : 'Proyectado'}</Text>
         </Right>
       </View>

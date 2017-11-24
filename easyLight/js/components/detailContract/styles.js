@@ -19,7 +19,7 @@ export default {
     color: '#fff',
   },
   list:{
-    height: 70
+    height: 50
   },
   listItem:{
     flex: 1,
@@ -56,8 +56,9 @@ export default {
   },
   ItemComponent:{
     view:{
+      flex: 1,
       flexDirection: 'row',
-      height: 70,
+      // height: 50,
     },
     align:{
       alignItems: 'flex-end',

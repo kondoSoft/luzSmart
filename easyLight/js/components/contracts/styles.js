@@ -55,7 +55,7 @@ export default {
   ItemComponent: {
     view: {
       flexDirection: 'row',
-      height: 60,
+      height: 70,
       borderBottomWidth: 0.5,
       borderLeftWidth: 0.5,
       borderColor: 'transparent'

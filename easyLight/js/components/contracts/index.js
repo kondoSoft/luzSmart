@@ -111,7 +111,7 @@ class ListSwipeable extends Component {
             receipts={contract.receipt}
             rightButtons={[
               <TouchableOpacity
-                style={{  height: 60,
+                style={{  height: 70,
                           backgroundColor: 'lightgrey',
                           justifyContent: 'center',
 
@@ -122,7 +122,7 @@ class ListSwipeable extends Component {
                 <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%'}} name='md-create' />
               </TouchableOpacity>,
               <TouchableOpacity
-                style={{  height: 60,
+                style={{  height: 70,
                           backgroundColor: '#069b1c',
                           justifyContent: 'center',
 
@@ -133,7 +133,7 @@ class ListSwipeable extends Component {
                 <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%'}} name='ios-book-outline' />
               </TouchableOpacity>,
               <TouchableOpacity
-                style={{  height: 60,
+                style={{  height: 70,
                           backgroundColor: 'steelblue',
                           justifyContent: 'center',
 
@@ -149,9 +149,12 @@ class ListSwipeable extends Component {
             <TouchableWithoutFeedback
               onPress={() => this.navigateTo('DetailContract', contract)}
             >
-              <View style={[styles.ItemComponent.view, {backgroundColor: 'fff'}]}>
+              <View style={[styles.ItemComponent.view, {backgroundColor: 'fff', borderBottomWidth: 1, borderColor: 'lightgrey'}]}>
                 <Left  style={styles.ItemComponent.alignItem} >
-                  {(contract.image == null)? <Thumbnail source={require('../../../images/Casaplace.png')} /> : <Thumbnail source={{ uri: contract.image }} />}
+                  {(contract.image == null)?
+                  <View style={{height:60 , width: 60, borderRadius: 30, backgroundColor: 'gray'}}>
+                    <Icon style={{ fontSize: 40, color: 'lightgrey', paddingLeft: '7%' }} name='ios-home-outline' />
+                  </View> : <Thumbnail source={{ uri: contract.image }} />}
                 </Left>
                 <Body style={styles.ItemComponent.alignItem}>
                   <Text style={styles.listItem__body__text}>{contract.name_contract}</Text>

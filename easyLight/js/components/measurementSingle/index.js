@@ -274,50 +274,70 @@ class MeasurementSingle extends Component {
           scrollEnabled={this.state.scroll}
           >
           <Grid style={{height:Screen.height}}>
-            <Row size={4} style={styles.grid__row__top}>
-              <Text style={styles.grid__row__top__text}>Gasto de Luz:</Text>
-              <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%'}}>
+            <Row size={4} style={styles.grid__row__top, {backgroundColor: 'transparent', borderBottomWidth: 1, borderColor: 'lightgray'}}>
+              <View style={{ flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',}}>
+                <Text style={styles.grid__row__top__text}>Gasto de Luz:</Text>
+              </View>
+              <View style={styles.view_right_text}>
                 <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}>{`$${parseFloat(this.state.projected_payment).toFixed(0)}`}</Text>
                 <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}> Proyectado</Text>
               </View>
             </Row>
-            <Col size={6} style={styles.grid__col__select}>
-              <Row style={styles.grid__col__select__row__top}>
-                <Text style={styles.grid__row__top__view}>Contrato:</Text>
-                <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
-                  <Text style={{ fontSize: 14, flex: 1 }}>#{contract.number_contract}</Text>
-                </View>
-              </Row>
-              <Row style={styles.grid__col__select__row__bottom}>
-                <Text style={styles.grid__row__top__view}>Periodo:</Text>
-                <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
-                  { TextReceipt }
-                </View>
-              </Row>
-            </Col>
-            <Row size={15}>
-              <List style={styles.row__bottom__list}>
-                <ListItem last style={styles.row__bottom__list__listItem}>
-                  <Text style={styles.row__bottom__list__listItem__textTop}>Lectura Inicial:</Text>
-                  <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
-                    <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.previous_reading}</Text>
-                  </View>
-                </ListItem>
-                <ListItem last>
-                  <Text style={styles.row__bottom__list__listItem__textTop}>Ultima Lectura Diaria</Text>
-                  <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
-                    <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading_updated)}</Text>
-                  </View>
-                </ListItem>
-                <ListItem last style={styles.row__bottom__list__listItem}>
-                  <Text style={styles.row__bottom__list__listItem__textTop}>Consumo en KWh</Text>
-                  <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: '10%' }}>
-                    <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading_updated === undefined)? 0 : this.state.itemReceipt.current_reading_updated - this.state.itemReceipt.previous_reading }</Text>
-                  </View>
-                </ListItem>
-              </List>
+            <Row size={4} style={styles.grid__row__top, {backgroundColor: 'lightgray', borderBottomWidth: 1, borderColor: 'white'}}>
+              <View style={{ flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',}}>
+                <Text style={styles.grid__row__top__text}>Contrato:</Text>
+              </View>
+              <View style={styles.view_right_text}>
+                <Text style={{ fontSize: 14 }}>#{contract.number_contract}</Text>
+              </View>
             </Row>
-            <Row size={25} style={{alignItems: 'center', justifyContent: 'center',paddingTop: (Platform.OS === 'android' && Screen.height <= 640)? 20 : 0}}>
+            <Row size={4} style={styles.grid__row__top, {backgroundColor: 'transparent', borderBottomWidth: 1, borderColor: 'lightgray'}}>
+              <View style={{ flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',}}>
+                <Text style={styles.grid__row__top__text}>Periodo:</Text>
+              </View>
+              <View style={styles.view_right_text}>
+                { TextReceipt }
+              </View>
+            </Row>
+
+
+            <Row size={4} style={styles.row__bottom__list__listItem,{backgroundColor: 'lightgray', borderBottomWidth: 1, borderColor: 'white'}}>
+              <View style={{ flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',}}>
+                <Text style={styles.grid__row__top__text}>Lectura Inicial:</Text>
+              </View>
+              <View style={styles.view_right_text}>
+                <Text style={styles.row__bottom__list__listItem__textBottom}>{this.state.itemReceipt.previous_reading}</Text>
+              </View>
+            </Row>
+            <Row size={4} style={styles.row__bottom__list__listItem, {backgroundColor: 'transparent', borderBottomWidth: 1, borderColor: 'lightgray'}}>
+              <View style={{ flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',}}>
+                <Text style={styles.grid__row__top__text}>Ultima Lectura Diaria</Text>
+              </View>
+              <View style={styles.view_right_text}>
+                <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading_updated)}</Text>
+              </View>
+            </Row>
+            <Row size={4} style={styles.row__bottom__list__listItem, {backgroundColor: 'lightgray', borderBottomWidth: 1, borderColor: 'white'}}>
+              <View style={{ flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',}}>
+                <Text style={styles.grid__row__top__text}>Consumo en KWh</Text>
+              </View>
+              <View style={styles.view_right_text }>
+                <Text style={styles.row__bottom__list__listItem__textBottom}>{(this.state.itemReceipt.current_reading_updated === undefined)? 0 : this.state.itemReceipt.current_reading_updated - this.state.itemReceipt.previous_reading }</Text>
+              </View>
+            </Row>
+            <Row size={24} style={{alignItems: 'center', justifyContent: 'center',paddingTop: (Platform.OS === 'android' && Screen.height <= 640)? 20 : 0}}>
               <Image resizeMode={'stretch'} source={require('../../../images/medidor.png')} style={styles.animatedView__image}>
                 <View style={styles.animatedView__image__view}>
                   <View style={{flexDirection: 'row',height:40,justifyContent:'center', alignItems:'center', marginTop: 65,marginLeft:37}}>
