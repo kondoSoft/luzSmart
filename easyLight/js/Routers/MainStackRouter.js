@@ -113,8 +113,9 @@ const stackDraw = StackNavigator(
 	      title: 'Contactanos',
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
-				headerLeft: null,
+				headerLeft: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
 	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+        tabBarVisible: false,
 	    }),
 	   },
 	  FAQ: {
@@ -123,8 +124,9 @@ const stackDraw = StackNavigator(
 	      title: 'FAQ',
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
-				headerLeft: null,
+        headerLeft: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
 	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+        tabBarVisible: false,
 	    }),
 	  },
 	  Premium: {
@@ -133,8 +135,9 @@ const stackDraw = StackNavigator(
 	      title: 'Premium',
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
-				headerLeft: null,
+        headerLeft: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
 	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+        tabBarVisible: false,
 	    }),
 	  },
     EditProfile: {

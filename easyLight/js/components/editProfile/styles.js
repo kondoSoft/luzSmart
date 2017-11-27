@@ -32,7 +32,7 @@ export default {
   row__botttom__btn__Success: {
     width: (Platform.OS === 'ios')? 100 : 120,
     justifyContent: 'center',
-    backgroundColor: '#4ccbe8',
+    // backgroundColor: '#4ccbe8',
   },
   form__item: {
     alignItems: 'center',

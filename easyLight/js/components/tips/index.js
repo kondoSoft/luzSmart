@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from 'native-base';
-import { Platform, Image } from 'react-native';
+import { Platform, Image, ScrollView } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Swiper from 'react-native-swiper';
 // import Header from '../header/index';
@@ -67,9 +67,12 @@ class Tips extends Component{
                         style={styles.image}
                        />
                     </View>
-                    <View style={styles.swipper__view}>
-                      <Text style={styles.text}>Estamos añadiendo tips para que puedas reducir tu consumo mensual o bimestral.</Text>
-                    </View>
+                    <ScrollView >
+                      <Text style={styles.text}>Estamos añadiendo tips para que puedas reducir tu consumo mensual o bimestral
+                        Estamos añadiendo tips para que puedas reducir tu consumo mensual o bimestral
+                        Estamos añadiendo tips para que puedas reducir tu consumo mensual o bimestral
+                        Estamos añadiendo tips para que puedas reducir tu consumo mensual o bimestral.</Text>
+                    </ScrollView>
                   </Col>)
       }
     }else {
@@ -87,8 +90,12 @@ class Tips extends Component{
     }
     return(
       <Container>
+        <View style={{ backgroundColor: 'white',  paddingTop: 15}}>
+          <Text style={{ fontSize: 30, fontWeight: 'bold', paddingLeft: 10}}>Ahorra más...</Text>
+        </View>
         {/* <Header navigation={ this.props.navigation } title="Tips" /> */}
         <Grid style={{backgroundColor: '#fff'}}>
+
           <Swiper
             style={styles.wrapper}
             showsButtons={true}

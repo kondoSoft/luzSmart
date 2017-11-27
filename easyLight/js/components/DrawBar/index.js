@@ -45,6 +45,14 @@ class DrawBar extends Component {
   }
 
   render() {
+    const placeholderAvatar = (
+      <View style={{ alignItems: 'center'}}>
+        <View style={{height:75 , width: 75, borderRadius: 75 / 2 , backgroundColor: 'lightgray', justifyContent: 'center', alignItems: 'center'}}>
+          <Icon style={{ fontSize: 75, backgroundColor: 'transparent', color: 'white'}} name='ios-person' />
+        </View>
+        <Text style={ {fontSize: 10, color: 'white', paddingTop: 5 }}>Editar</Text>
+      </View>
+    )
     return (
       <Container>
           <Image
@@ -54,14 +62,23 @@ class DrawBar extends Component {
             <View style={styles.viewProfile}>
               <TouchableOpacity transparent onPress={()=> this.props.navigation.navigate("EditProfile")}>
                 <View style={styles.viewThumbnail}>
-                  <Thumbnail style={styles.avatar} source={(this.state.profile.avatar !== null) ? {uri: this.state.profile.avatar} : this.state.avatarSource }/>
+                  {(this.state.profile.avatar !== null) ?
+                    <View style={{ alignItems: 'center'}}>
+                      <Thumbnail style={{height:75 , width: 75, borderRadius: 75 / 2 }} source={{uri: this.state.profile.avatar}}/>
+                      <Text style={ {fontSize: 10, color: 'white', paddingTop: 5 }}>Editar</Text>
+                    </View>
+                    :
+                    placeholderAvatar
+                  }
                 </View>
               </TouchableOpacity>
               <View style={styles.viewName}>
                 <View style={{borderBottomWidth: 1, borderColor: 'white'}}>
                   {(this.props.user !== undefined)&& <Text style={{color: 'white'}}>{this.props.user.first_name + ' ' + this.props.user.last_name}</Text>}
                 </View>
-                <Text style={styles.textName} >{(this.state.profile.premium)? 'PREMIUM' : 'FREE'}</Text>
+                <View >
+                  <Text style={styles.textName} >{(this.state.profile.premium)? 'PREMIUM' : 'FREE'}</Text>
+                </View>
               </View>
             </View>
           </Image>

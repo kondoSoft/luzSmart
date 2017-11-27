@@ -11,7 +11,7 @@ export default {
     justifyContent: 'space-between'
   },
   frontView__Text: {
-    fontSize: 16
+    fontSize: 16,
   },
   backView: {
     height: 460,
@@ -24,6 +24,7 @@ export default {
   backView__Text: {
     color: 'black',
     flex: 1,
-    fontSize: 16
+    fontSize: 14,
+    textAlign: 'justify',
   }
 }

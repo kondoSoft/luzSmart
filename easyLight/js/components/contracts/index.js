@@ -112,7 +112,7 @@ class ListSwipeable extends Component {
             rightButtons={[
               <TouchableOpacity
                 style={{  height: 70,
-                          backgroundColor: 'lightgrey',
+                          backgroundColor: 'grey',
                           justifyContent: 'center',
 
                       }}
@@ -152,9 +152,9 @@ class ListSwipeable extends Component {
               <View style={[styles.ItemComponent.view, {backgroundColor: 'fff', borderBottomWidth: 1, borderColor: 'lightgrey'}]}>
                 <Left  style={styles.ItemComponent.alignItem} >
                   {(contract.image == null)?
-                  <View style={{height:60 , width: 60, borderRadius: 30, backgroundColor: 'gray'}}>
-                    <Icon style={{ fontSize: 40, color: 'lightgrey', paddingLeft: '7%' }} name='ios-home-outline' />
-                  </View> : <Thumbnail source={{ uri: contract.image }} />}
+                  <View style={{height:60 , width: 60, borderRadius: 60 / 2 , backgroundColor: 'lightgray', justifyContent: 'center', alignItems: 'center'}}>
+                    <Icon style={{ fontSize: 40, backgroundColor: 'transparent', color: 'white'}} name='ios-home' />
+                  </View> : <Thumbnail style={{height:60 , width: 60, borderRadius: 60 / 2}} source={{ uri: contract.image }} />}
                 </Left>
                 <Body style={styles.ItemComponent.alignItem}>
                   <Text style={styles.listItem__body__text}>{contract.name_contract}</Text>

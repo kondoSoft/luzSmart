@@ -69,7 +69,7 @@ class EditContracts extends Component {
         "cost" : 0,
         "checkedMen": false,
         "checkedBi": false,
-        "avatarSource" : props.navigation.state.params.contract.image? {uri:props.navigation.state.params.contract.image} : require('../../../images/Casaplace.png'),
+        "avatarSource" : null,
         "file" : null,
         rates: [],
         isLoading: true
@@ -178,7 +178,6 @@ class EditContracts extends Component {
   }
 
   buttonDelete(params, token){
-    console.log(params);
     if (Platform.OS === 'ios') {
       AlertIOS.alert(
         'Eliminar Contrato',
@@ -322,7 +321,8 @@ class EditContracts extends Component {
       this.setState({
         rates: selectRates,
         isLoading: false,
-        rate:nextProps.mun_rate
+        rate:nextProps.mun_rate,
+        avatarSource: nextProps.navigation.state.params.contract.image
       })
     }
   }
@@ -333,15 +333,26 @@ class EditContracts extends Component {
       municipality_mx,
       mun_rate
     } = this.props
+    console.log(this.props.navigation.state.params.contract.image);
+    const placeholderAvatar = (
+      <View style={{ flex: 1, alignItems: 'center'}}>
+        <View style={{height:65 , width: 65, borderRadius: 65 / 2 , backgroundColor: 'lightgray', justifyContent: 'center', alignItems: 'center'}}>
+          <Icon style={{ fontSize: 50, backgroundColor: 'transparent', color: 'white'}} name='ios-home' />
+        </View>
+        <Text style={ {fontSize: 10, color: 'blue', paddingTop: 5 }}>Editar</Text>
+      </View>
+    )
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <ScrollView scrollEnabled={false}>
           <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
-            <Row size={7} style={{ justifyContent: 'center', paddingTop: 10, paddingBottom: 10}}>
+            <Row size={7} style={{ justifyContent: 'center', paddingTop: 25, paddingBottom: 10}}>
               <Left style={{marginLeft:19}}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                   <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                   <Thumbnail source={ (this.state.file != null)? this.state.file : this.state.avatarSource} />
+                    {(this.state.avatarSource != null)?
+                   <Thumbnail style={{height:65 , width: 65, borderRadius: 65 / 2 }} source={{uri: this.state.avatarSource}}  />
+                     : placeholderAvatar}
                   </View>
                 </TouchableOpacity>
               </Left>
@@ -352,16 +363,16 @@ class EditContracts extends Component {
                 {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
               </Right>
             </Row>
-            <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
-            <Col size={ (Platform.OS === 'ios')? 39 : 29 } style={ styles.col__form }>
+            <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%', paddingTop: 30}}></View>
+            <Col size={ (Platform.OS === 'ios')? 35 : 29 } style={ styles.col__form }>
               <Item fixedLabel style={styles.col__form__item}>
-                <Input value={navigation.state.params.contract['number_contract']} editable={false} keyboardType={'numeric'} style={{paddingLeft:10}}/>
+                <Input value={navigation.state.params.contract['number_contract']} editable={false} style={{paddingLeft:10, height: 40 , color: 'grey'}}/>
               </Item>
               <Item fixedLabel style={styles.col__form__item}>
-                <Input value={this.state.state} editable={false} keyboardType={'numeric'}  style={{paddingLeft:10}}/>
+                <Input value={this.state.state} editable={false} style={{paddingLeft:10, height: 40 , color: 'grey'}}/>
               </Item>
               <Item fixedLabel style={styles.col__form__item}>
-                <Input value={this.state.municipality} editable={false} keyboardType={'numeric'} style={{paddingLeft:10}}/>
+                <Input value={this.state.municipality} editable={false} style={{paddingLeft:10,height: 40 , color: 'grey'}}/>
               </Item>
               {this.createRateSelect()}
             </Col>

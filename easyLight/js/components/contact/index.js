@@ -27,29 +27,34 @@ class Contact extends Component{
     super(props);
     this.state = {
       message: '',
-      subjects: ['Asunto','Fallo la app?','Crash en la app?','se a borrado mi recibo?'],
+      subjects: ['Asunto','Problemas con la APP','Orientación para el ahorro de energía','Tarifa DAC','Validación de consumos de energía', 'Análisis de carga', 'Asesoría técnica especializada'],
       subject: '',
       validText: false,
+      subjectID: 0,
     };
   }
   getSubject(subject){
     this.setState({
-      subject: this.state.subjects[subject]
+      subject: this.state.subjects[subject],
+      subjectID: subject
     })
   }
   render(){
+
     return(
       <Container>
-        <ScrollView style={ styles.grid } contentContainerStyle={{flex:1}}>
-          <Row size={20} style={styles.row__top}>
-            <Text style={styles.row__top__text}>Gracias por usar Easy light, tu asistente de confianza.</Text>
-            <Text style={styles.row__top__text}>Tu opinión es muy importante para nosotros</Text>
+        <Grid style={styles.grid}>
+          <Row size={2} style={styles.row__top}>
+
+              <Text style={styles.row__top__text}>Gracias por usar </Text><Text style={{fontSize: 25, fontWeight: 'bold'}}>EasyLight</Text>
+
+            <Text style={styles.row__top__text}>{'\n'} Tu opinión es muy importante para nosotros</Text>
           </Row>
-          <Col size={20} style={styles.col__select}>
+          <Col size={0.8} style={styles.col__select}>
             <Select
-              style={styles.select}
+              selectStyle={styles.select}
               padding={10}
-              listHeight={100}
+              listHeight={300}
               caretSize={0}
               onSelect={(selected)=>{
                 this.getSubject(selected)
@@ -70,7 +75,7 @@ class Contact extends Component{
               }
             </Select>
           </Col>
-          <Col size={60} style={styles.row__bottom}>
+          <Col size={4} style={styles.row__bottom}>
             {/* <Item regular last style={styles.col__bottom__item}>
               <Input />
             </Item> */}
@@ -92,10 +97,10 @@ class Contact extends Component{
               }}
             />
             {
-              (this.state.validText)&&
+
               <View style={styles.col__view__bottom}>
               <Button small primary onPress={()=>{
-                if (this.state.message != '' && this.state.subject != '') {
+                if (this.state.message != '' && this.state.subjectID != 0 ) {
                   this.props.contactMessage(this.state.subject,this.state.message,this.props.user)
                   if (Platform.OS === 'ios') {
                       AlertIOS.alert(
@@ -117,20 +122,20 @@ class Contact extends Component{
                 }else {
                   if (Platform.OS === 'ios') {
                     AlertIOS.alert(
-                      'Verificación de datos',
-                     'El campo mensaje debe contener texto',
+                      'Error',
+                     'Por favor introduzca el asunto y el mensaje correspondiente.',
                      [
-                       {text: 'OK'},
+                       {text: 'Aceptar'},
                      ],
                     )
                   } else {
                     Alert.alert(
-                      'Verificación de datos',
-                     'El campo mensaje debe contener texto',
+                      'Error',
+                     'Por favor introduzca el asunto y el mensaje correspondiente.',
                      [
-                       {text: 'OK'},
+                       {text: 'Aceptar'},
                      ],
-                    ) 
+                    )
                   }
                 }
               }}>
@@ -139,7 +144,7 @@ class Contact extends Component{
             </View>
             }
           </Col>
-        </ScrollView>
+        </Grid>
       </Container>
     )
   }

@@ -16,7 +16,7 @@ class EditProfile extends Component {
     this.state = {
       user: {},
       profile: {},
-      avatarSource: require('../../../images/persona.png'),
+      avatarSource: null,
       file: null,
       password:{
         oldPassword:'',
@@ -46,7 +46,8 @@ class EditProfile extends Component {
     const {
       user, profile
     } = nextProps
-    this.setState({user, profile})
+    console.log('will', profile);
+    this.setState({user, profile, avatarSource: profile.avatar}, ()=> this.forceUpdate())
   }
   selectPhotoTapped() {
     const options = {
@@ -203,6 +204,17 @@ class EditProfile extends Component {
       last_name,
       email
     } = user
+
+    const placeholderAvatar = (
+      <View style={{ flex: 1, alignItems: 'center'}}>
+        <View style={{height:70 , width: 70, borderRadius: 70 / 2 , backgroundColor: 'lightgray', justifyContent: 'center', alignItems: 'center'}}>
+          <Icon style={{ fontSize: 70, backgroundColor: 'transparent', color: 'white'}} name='ios-person' />
+        </View>
+        <Text style={ {fontSize: 10, color: 'blue', paddingTop: 5 }}>Editar</Text>
+
+      </View>
+    )
+
     return(
         <Container style={{height:Screen.height}}>
           <ScrollView
@@ -214,8 +226,15 @@ class EditProfile extends Component {
               <Row size={1} style={styles.row__top}>
                 <Col style={styles.row__top__col__left}>
                   <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                    <View style={{marginBottom: 0,height: 80,width: '100%',justifyContent:'center'}}>
-                     <Thumbnail style={{height: 80, width: 80, borderRadius: 40}} source={ (this.state.file != null)? this.state.file : (this.state.profile.avatar != null) ? {uri: this.state.profile.avatar} : this.state.avatarSource} />
+                    <View style={{marginBottom: 10,height: 80,width: '100%',justifyContent:'center', alignItems: 'flex-start'}}>
+                      {(this.state.avatarSource != null)?
+                        <View style={{ flex: 1, alignItems: 'center'}}>
+                          <Thumbnail style={{height: 70, width: 70, borderRadius: 70 / 2}} source={{ uri: this.state.avatarSource }} />
+                          <Text style={ {fontSize: 10, color: 'blue', paddingTop: 5 }} >Editar</Text>
+                        </View>
+                      :
+                      placeholderAvatar
+                    }
                     </View>
                   </TouchableOpacity>
                 </Col>
@@ -289,14 +308,14 @@ class EditProfile extends Component {
               </Row>
               <Row size={1} style={styles.row__botttom}>
                 <Button
-                  primary
+                  danger
                   style={styles.row__botttom__btn__Cancel}
                   onPress={()=> this.props.navigation.navigate('Contratos')}
                   >
                   <Text>Cancelar</Text>
                 </Button>
                 <Button
-                  primary
+                  success
                   style={styles.row__botttom__btn__Success}
                   onPress={this.sendData}
                   >

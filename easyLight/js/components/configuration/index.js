@@ -11,6 +11,7 @@ import {
   Input,
   Item,
   Button,
+  Content,
 } from 'native-base';
 import {
   Col,
@@ -28,13 +29,13 @@ var products = [
 
 
 class Configuration extends Component {
-  
+
   constructor(props){
     super(props)
     this.state = {
       products : [ ]
 
-      
+
     }
   }
   componentWillMount(){
@@ -50,7 +51,7 @@ class Configuration extends Component {
     console.log('products', products)
     console.log('in', InAppUtils)
 
-    
+
   }
 
   render(){
@@ -58,52 +59,73 @@ class Configuration extends Component {
     return(
       <Container>
         <Grid style={{backgroundColor:'#fff'}}>
-          <Col size={15} style={{paddingLeft:15,paddingRight:15,alignItems:'center',justifyContent:'center'}}>
-            <Text>Quieres pagar menos en tu recibo de luz?</Text>
-            <Text style={{textAlign:'center'}}>
-              Ser Premium te brinda la experiencia óptima para disminiur tus consumos y contribuyendo
-              así con el medio ambiente.
-            </Text>
-          </Col>
-          <Row size={14} style={{alignItems: 'center',justifyContent:'space-around'}}>
-            {
-              this.state.products.map((item, i)=>{
+          <Col>
+          <Col size={1.5}>
+            <Col size={1} style={{paddingLeft:15,paddingRight:15, alignItems:'center',justifyContent:'center'}}>
+              {/* <Text style={{textAlign:'center', fontSize: 14}}>Quieres pagar menos en tu recibo de luz?</Text> */}
+              <Text style={{textAlign:'center', fontSize: 14}}>
+                Ser Premium te brinda la experiencia óptima para disminiur tus consumos.
+              </Text>
+            </Col>
+            <Row size={1} style={{alignItems: 'center',justifyContent:'space-around', margin: 0}}>
+              {
+                this.state.products.map((item, i)=>{
 
-                return (<View key={i} style={{flexDirection:'column',alignItems:'center'}}>
-                  <Text>{item.title}</Text>
-                  <Button style={{
-                    backgroundColor:'#42c2f4',
-                    width: 130,
-                    alignItems:'center',
-                    justifyContent:'center', 
-                    }}
-                    // onPress={() => this.payOneMonth(products)}
-                   >
-                    <Text style={{color:'#fff'}}>{item.priceString}</Text>
-                  </Button>
-                </View>)
-              })
-            }
-          </Row>
-          <Col size={55} style={{alignItems:'center'}}>
-            <Text style={{fontSize:18,height:30}}>Premium</Text>
-            <View style={{flexDirection:'row',padding:3}}>
-              <Thumbnail source={ require('../../../images/almacenamiento.png')} style={{ width: 60,height:60,borderRadius: 30,marginRight:10}} />
-              <Text style={{width:'70%'}}>Asesoria Personalizada: Soporte técnico especializado que te ayudarán a optimizar y ahorrar mucho más.</Text>
-            </View>
-            <View style={{flexDirection:'row',padding:3}}>
-              <Thumbnail source={ require('../../../images/asesoria.png')} style={{ width: 60,height:60,borderRadius: 30,marginRight:10}} />
-              <Text style={{width:'70%'}}>Asesoria Personalizada: Soporte técnico especializado que te ayudarán a optimizar y ahorrar mucho más.</Text>
-            </View>
-            <View style={{flexDirection:'row',padding:3}}>
-              <Thumbnail source={ require('../../../images/contactos.png')} style={{ width: 60,height:60,borderRadius: 30,marginRight:10}} />
-              <Text style={{width:'70%'}}>Asesoria Personalizada: Soporte técnico especializado que te ayudarán a optimizar y ahorrar mucho más.</Text>
-            </View>
-            <View style={{flexDirection:'row',padding:3}}>
-              <Thumbnail source={ require('../../../images/graficas.png')} style={{ width: 60,height:60,borderRadius: 30,marginRight:10}} />
-              <Text style={{width:'70%'}}>Asesoria Personalizada: Soporte técnico especializado que te ayudarán a optimizar y ahorrar mucho más.</Text>
-            </View>
+                  return (<View key={i} style={{flexDirection:'column',alignItems:'center'}}>
+                    <Text>{item.title}</Text>
+                    <Button style={{
+                      backgroundColor:'#42c2f4',
+                      width: 130,
+                      alignItems:'center',
+                      justifyContent:'center',
+                      }}
+                      // onPress={() => this.payOneMonth(products)}
+                     >
+                      <Text style={{color:'#fff'}}>{item.priceString}</Text>
+                    </Button>
+                  </View>)
+                })
+              }
+            </Row>
           </Col>
+          <Col size={2.5} style={{alignItems:'center'}}>
+            <Row size={0.4} style={{ marginTop: 5, alignItems: 'flex-end'}}>
+              <Text style={{fontSize:18}}>Premium</Text>
+            </Row>
+            <Row size={1} style={{alignItems: 'center'}}>
+              <View style={{flex:1, alignItems: 'center'}}>
+                <Icon style={{fontSize: 50,}} name='locate' />
+              </View>
+              <View style={{flex:4, padding: 5, justifyContent: 'flex-start', paddingRight: 20}}>
+                <Text style={{ fontSize: 12, fontWeight: 'bold', textAlign: 'justify' }}>Asesoría Técnica Personal en:</Text><Text style={{fontSize: 11,  textAlign: 'justify'}}>Ahorro de energía, tarifa DAC, validaciones de consumos, análisis de carga y otros (uso de paneles solares, inverter, etc.).</Text>
+              </View>
+            </Row>
+            <Row size={1} style={{alignItems: 'center'}}>
+              <View style={{flex:1, alignItems: 'center'}}>
+                <Icon style={{fontSize: 50,}} name='albums' />
+              </View>
+              <View style={{flex:4, padding: 5, justifyContent: 'flex-start', paddingRight: 20}}>
+                <Text style={{ fontSize: 12, fontWeight: 'bold', textAlign: 'justify' }}>Historial:</Text><Text style={{fontSize: 11, textAlign: 'justify'}}>Conserva todos los datos, registros e información de tu cuenta de contrato de luz.</Text>
+              </View>
+            </Row>
+            <Row size={1} style={{alignItems: 'center'}}>
+              <View style={{flex:1, alignItems: 'center'}}>
+                <Icon style={{ fontSize: 50,}} name='infinite' />
+              </View>
+              <View style={{flex:4, padding: 5, justifyContent: 'flex-start', paddingRight: 20}}>
+                <Text style={{ fontSize: 12, fontWeight: 'bold', textAlign: 'justify' }}>Contratos Ilimitados:</Text><Text style={{fontSize: 11, textAlign: 'justify'}}>Administra múltiples contratos de luz.</Text>
+              </View>
+            </Row>
+            <Row size={1} style={{alignItems: 'center'}}>
+              <View style={{flex:1, alignItems: 'center'}}>
+                <Icon style={{ fontSize: 50,}} name='stats' />
+              </View>
+              <View style={{flex:4, padding: 5, justifyContent: 'flex-start', paddingRight: 20}}>
+                <Text style={{ fontSize: 12, fontWeight: 'bold', textAlign: 'justify' }}>Gráficas y Reportes:</Text><Text style={{fontSize: 11, textAlign: 'justify'}}>Usa gráficas especializadas para tomar el control de tus consumos de luz y ahorrar más.</Text>
+              </View>
+            </Row>
+          </Col>
+        </Col>
         </Grid>
       </Container>
     )

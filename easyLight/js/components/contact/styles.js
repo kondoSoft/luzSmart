@@ -3,10 +3,7 @@ const { StyleSheet, Dimensions, Platform } = React;
 
 export default {
   grid:{
-    marginTop: 0,
-    display:'flex',
-    flexDirection:'column',
-    flex:1,
+    backgroundColor: 'white'
   },
   row__top:{
     flexDirection: 'column',
@@ -43,5 +40,8 @@ export default {
   select__option:{
     height: 31,
     borderBottomWidth: 0
+  },
+  select:{
+    backgroundColor: 'lightgrey',
   }
 }

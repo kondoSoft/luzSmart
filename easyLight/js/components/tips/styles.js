@@ -13,7 +13,7 @@ export default {
    backgroundColor: 'transparent',
    flexDirection: 'row',
    position: 'absolute',
-   top: (Platform.OS === 'ios')? 110: 130,
+   top: (Platform.OS === 'ios')? 140: 130,
    left: 0,
    flex: 1,
    paddingHorizontal: 10,
@@ -39,16 +39,19 @@ export default {
  },
  text: {
    color: 'black',
-   fontSize: 16
+   fontSize: 16,
+   padding: 15,
+   textAlign: 'justify'
  },
  swipper__col__top__image:{
    width: '95%',
-   height: '30%',
-   marginBottom:(Platform.OS === 'ios')? 30 : 80,
+   height: '55%',
+   marginTop: 5,
+   marginBottom:(Platform.OS === 'ios')? 10 : 80,
  },
  swipper__view:{
    // backgroundColor: 'lightgray',
-   height: 200,
+   // height: 200,
    width: '95%',
    padding: 10,
    alignItems: 'center',
