@@ -25,7 +25,7 @@ import styles from './styles';
 import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt, getHighConsumption } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
 import { getContract } from "../../actions/list_states_mx";
-import { putRecord, postHistory } from "../../actions/contracts";
+import { putRecord, postHistory, getHistory } from "../../actions/contracts";
 import { getWeekday, setRecord as helperRecord, funcHighConsumptionPeriod } from "../../helpers"
 var moment = require('moment');
 var contract;
@@ -63,6 +63,8 @@ class Receipt extends Component {
    if (this.props.navigation.state.params !== undefined) {
      this.setState({array_contract: this.props.navigation.state.params.contract})
      this.props.getHighConsumption(this.props.navigation.state.params.contract.municipality.region, this.props.screenProps.token)
+     this.props.getHistory(this.props.navigation.state.params.contract.id, this.props.screenProps.token)
+
    }
   }
   componentWillReceiveProps(nextProps){
@@ -72,7 +74,9 @@ class Receipt extends Component {
 
     this.setState({
       highConsumption: this.props.highConsumption,
+      dataHistory: this.props.dataHistory,
     })
+
   }
   componentWillUnmount () {
     this.keyboardDidHideListener.remove();
@@ -121,22 +125,30 @@ class Receipt extends Component {
       previous_reading_ui: event.nativeEvent.text,
     });
   }
-  sendDataHisoty(){
+  sendDataHisoty(route){
     const arrMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
     const setPayday_limit = moment(this.state.payday_limit)
     const monthPayday_Limit = setPayday_limit.month()
     const yearPayday_Limit = setPayday_limit.year()
+
     this.setState({
       postHistory: {
         contract_id: this.state.array_contract.id,
         period_name: arrMonth[monthPayday_Limit] + ' ' + yearPayday_Limit,
-        kilowatt: this.state.current_reading,
+        kilowatt: this.state.current_reading - this.state.previous_reading,
         cost: this.state.amount_payable,
       }
     }, () => {
+
        this.props.postHistory(this.state.postHistory, this.props.screenProps.token)
-    // this.props.getContract(this.props.screenProps.token, this.props.navigation)
-    // this.props.navigation.navigate('History')
+       this.props.getContract(this.props.screenProps.token, this.props.navigation)
+       if(route === 'History'){
+        this.props.navigation.navigate(route)
+      }else{
+        this.props.navigation.navigate('Contract')
+
+      }
+
     })
 
   }
@@ -147,7 +159,7 @@ class Receipt extends Component {
        'Desea agregar un historial al contrato Mi Casa?',
        [
          {text: 'No', onPress: () => this.props.navigation.navigate('Contracts', this.props.getContract(this.props.screenProps.token, this.props.navigation))},
-         {text: 'Si', onPress: () => this.sendDataHisoty()},
+         {text: 'Si', onPress: () => this.sendDataHisoty('History')},
        ],
       );
     }
@@ -157,7 +169,7 @@ class Receipt extends Component {
         'Desea agregar un historial al contrato Mi Casa?',
         [
           { text: 'No', onPress: () => this.props.navigation.navigate('Contracts', this.props.getContract(this.props.screenProps.token, this.props.navigation)) },
-          { text: 'Si', onPress: () => this.sendDataHisoty() },
+          { text: 'Si', onPress: () => this.sendDataHisoty('History') },
         ],
       );
     }
@@ -288,7 +300,11 @@ class Receipt extends Component {
 
 
       //Condicion para show alert en caso de historial ya registrado.
-      this.showAlert();
+      if(this.state.dataHistory.length == 0){
+        this.showAlert();
+      }else{
+        this.sendDataHisoty()
+      }
     }
     else {
       Alert.alert(
@@ -333,6 +349,7 @@ class Receipt extends Component {
     // if(bill.length >= 0) {
     //   lastBill = bill[bill.length-1]
     // }
+    
     var receiptView = (
       <Container>
         <ScrollView
@@ -533,6 +550,7 @@ function bindAction(dispatch) {
     patchNewReceipt: (data, id, token, navigation) => dispatch(patchNewReceipt(data, id, token, navigation)),
     putRecord: (data, token) => dispatch(putRecord(data, token)),
     postHistory: (list, token) => dispatch(postHistory(list, token)),
+    getHistory: (contract_id, token) => dispatch(getHistory(contract_id, token)),
     getHighConsumption: (region_id, token) => dispatch(getHighConsumption(region_id, token)),
   };
 }
@@ -541,6 +559,7 @@ const mapStateToProps = state => ({
   rate_period: state.list_rate.rate_period,
   record: state.list_records.results,
   highConsumption: state.list_contracts.highConsumption,
+  dataHistory: state.list_records.history,
 });
 
 export default connect(mapStateToProps, bindAction)(Receipt);

@@ -198,7 +198,6 @@ export function postRecord(list, token):Action{
   }
 }
 export function putRecord(list, token):Action{
-  console.log('putRecord', list);
   return dispatch => {
     return fetch(endPoint+'/records/?contract_id=' + list.array_contract.id + '&kwh=' + list.current_reading,{
       method: 'PUT',
@@ -216,7 +215,11 @@ export function putRecord(list, token):Action{
         amount_payable: list.amount_payable,
         contracts: list.array_contract.id,
         ratePeriod: list.ratePeriod,
-        status: list.status
+        status: list.status,
+        total_days: list.record.total_days,
+        high_consumption: list.highConsumption,
+        jsonFuncHigh: list.record.jsonFuncHigh,
+        dac: list.array_contract.high_consumption
       })
     })
     .then(res => {return res.json()})
@@ -277,7 +280,6 @@ export function getRatePeriod(rate, token):Action{
 }
 
 export function postHistory(list, token):Action{
-  console.log('postHistory',list)
   return dispatch=>{
     return fetch(endPoint+'/history/',{
       method: 'POST',
@@ -287,21 +289,20 @@ export function postHistory(list, token):Action{
        'Authorization': 'Token '+token
       },
       body: JSON.stringify({
-        contracts: list.contract_id,
-        // period_name:
-        // cost: list.payday_limit,
-        // kilowwatts: list.record.datetime,
+        contract: list.contract_id,
+        period_name: list.period_name,
+        cost: list.cost,
+        kilowatt: list.kilowatt,
       })
     })
     .then(res => {return res.json()})
-    .then(res => {console.log(res)})
     .catch(err => console.log(err))
   }
 }
 
-export function getHistory(token):Action{
+export function getHistory(contract_id, token):Action{
   return dispatch => {
-    return fetch(endPoint+'/history/',{
+    return fetch(endPoint+'/history/?contract_id=' + contract_id,{
       method: 'GET',
       headers: {
        'Accept': 'application/json',

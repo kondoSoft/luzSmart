@@ -184,7 +184,8 @@ class MeasurementSingle extends Component {
       contract = this.props.navigation.state.params.contract
     }
     // Obtiene el ultimo dato actualizado
-    const lastRecord = this.propsNextRecords[this.propsNextRecords.length-1]
+    const lastRecord = this.propsNextRecords[0]
+
     // Se obtiene de nuevo Record
     this.props.getRecord(this.contract_id)
     const data = {
@@ -199,6 +200,7 @@ class MeasurementSingle extends Component {
       highConsumption: this.props.highConsumption
     }
     const record = setRecord(data)
+
     this.setState({
       record
     })
