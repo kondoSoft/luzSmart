@@ -25,7 +25,7 @@ export default function(state: State = initialState, action: Action): State {
   if ( action.type === PRINT_HISTORY) {
     return {
       ...state,
-      history:[action.payload.results]
+      history: action.payload.results
     }
   }
 	return state;

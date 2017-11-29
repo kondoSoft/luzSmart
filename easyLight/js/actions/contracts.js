@@ -2,8 +2,8 @@ import type { Action } from './types';
 import { getContract } from './list_states_mx';
 
 
-// const endPoint = 'http://138.68.49.119:8080';
-const endPoint = 'http://127.0.0.1:8000';
+const endPoint = 'http://138.68.49.119:8080';
+// const endPoint = 'http://127.0.0.1:8000';
 
 
 export const PRINT_RECORD = 'PRINT_RECORD';
@@ -296,11 +296,13 @@ export function postHistory(list, token):Action{
       })
     })
     .then(res => {return res.json()})
+
     .catch(err => console.log(err))
   }
 }
 
 export function getHistory(contract_id, token):Action{
+  console.log('getHistory', contract_id);
   return dispatch => {
     return fetch(endPoint+'/history/?contract_id=' + contract_id,{
       method: 'GET',
@@ -319,7 +321,7 @@ export function getHistory(contract_id, token):Action{
 export function getRegion(token):Action{
 
   return dispatch=>{
-    return fetch(endPoint+'/region/',{
+    return fetch(endPoint+'/limitByRegion/',{
       method: 'GET',
       headers: {
        'Accept': 'application/json',

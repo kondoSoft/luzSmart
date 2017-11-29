@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   Container,
   Content,
@@ -26,19 +27,21 @@ import ModalWrapper from 'react-native-modal-wrapper';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import styles from './styles';
 import FabButton from '../fabButton/index';
-
+import { getHistory } from "../../actions/contracts";
+import _ from "lodash"
+import { addKilowattHistory, setValueByLimitDAC } from "../../helpersHistory"
 
 let Window = Dimensions.get('window');
 
 class History extends Component{
   constructor(props){
     super(props)
-
     this.openModal = this.openModal.bind(this)
     this.onClose = this.onClose.bind(this)
 
     this.state = {
-      open: false
+      open: false,
+      valueDAC: this.props.navigation.state.params.contract.high_consumption
     }
   }
   openModal(){
@@ -51,8 +54,27 @@ class History extends Component{
       open: !this.state.open
     })
   }
+  static navigationOptions = ({ navigation, screenProps }) => (
+  {
+    headerLeft: <Button transparent onPress={() => navigation.goBack()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>,
+
+  });
+
+  componentWillReceiveProps(nextProps){
+    const valueTotalHistory = addKilowattHistory(nextProps.dataHistory, nextProps)
+
+    this.setState({
+      valueDAC: setValueByLimitDAC(valueTotalHistory, nextProps)
+    })
+
+  }
+
+  componentWillMount(){
+    this.props.getHistory(this.props.navigation.state.params.contract.id, this.props.screenProps.token)
+
+  }
   render(){
-    const { navigation } = this.props
+    const { navigation, dataHistory } = this.props
     return(
       <Container>
         {(Platform.OS === 'ios')? <ModalForm visible={this.state.open} onClose={this.onClose} navigation={this.props.navigation}/> : <ModalAndroid visible={this.state.open} navigation={this.props.navigation} onCancel={this.onClose}/>}
@@ -60,39 +82,25 @@ class History extends Component{
           <Grid>
             <Col>
               <List>
-                <ListItem last style={styles.listItem__gray}>
-                  <Left style={styles.listItem__left}>
-                    <Text>Marzo 17</Text>
-                  </Left>
-                  <Body style={styles.listItem__body}>
-                    <Text>45000 kWh</Text>
-                  </Body>
-                  <Right style={styles.listItem__right}>
-                    <Text>$2,150</Text>
-                  </Right>
-                </ListItem>
-                <ListItem last style={styles.listItem__white}>
-                  <Left style={styles.listItem__left}>
-                    <Text>Abril 17</Text>
-                  </Left>
-                  <Body style={styles.listItem__body}>
-                    <Text>46000 kWh</Text>
-                  </Body>
-                  <Right style={styles.listItem__right}>
-                    <Text>$3,100</Text>
-                  </Right>
-                </ListItem>
-                <ListItem last style={styles.listItem__gray}>
-                  <Left style={styles.listItem__left}>
-                    <Text>Mayo 17</Text>
-                  </Left>
-                  <Body style={styles.listItem__body}>
-                    <Text>30000 kWh</Text>
-                  </Body>
-                  <Right style={styles.listItem__right}>
-                    <Text>$1,150</Text>
-                  </Right>
-                </ListItem>
+                {dataHistory.map((item, i) => {
+                  var color = (i%2 === 0) ? 'white' : 'lightgrey'
+                  return(
+
+                    <ListItem last key={i} style={styles.listItem__gray, {backgroundColor: color}}>
+                      <Left style={styles.listItem__left}>
+                        <Text style={styles.text}>{item.period_name}</Text>
+                      </Left>
+                      <Body style={styles.listItem__body}>
+                        <Text style={styles.text}>{item.kilowatt}<Text style={{fontSize:9}}>kWh</Text></Text>
+                      </Body>
+                      <Right style={styles.listItem__right}>
+                        <Text style={styles.text}>{`$ ${item.cost}`}</Text>
+                      </Right>
+                    </ListItem>
+                  )
+
+                })
+                }
               </List>
               {/* <DatePickerC/> */}
             </Col>
@@ -166,6 +174,7 @@ class ModalForm extends Component {
 
 class ModalAndroid extends Component {
   render(){
+
     return(
       <ModalWrapper
         style={{ width: 300, height: 280, paddingLeft: 24, paddingRight: 24, justifyContent: 'flex-start', paddingTop: 20, alignItems: 'center' }}
@@ -201,5 +210,12 @@ class ModalAndroid extends Component {
     )
   }
 }
+const bindAction = dispatch => ({
+    getHistory: (contract_id, token) => dispatch(getHistory(contract_id, token)),
+})
+const mapStateToProps = state => ({
+  dataHistory: state.list_records.history,
+  limitByRegion: state.list_contracts.limitByRegion,
+})
 
-export default History;
+export default connect(mapStateToProps, bindAction)(History)

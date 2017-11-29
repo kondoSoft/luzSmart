@@ -142,7 +142,7 @@ class Receipt extends Component {
 
        this.props.postHistory(this.state.postHistory, this.props.screenProps.token)
        this.props.getContract(this.props.screenProps.token, this.props.navigation)
-       if(route === 'History'){
+       if(route === 'Historial'){
         this.props.navigation.navigate(route)
       }else{
         this.props.navigation.navigate('Contract')
@@ -159,7 +159,7 @@ class Receipt extends Component {
        'Desea agregar un historial al contrato Mi Casa?',
        [
          {text: 'No', onPress: () => this.props.navigation.navigate('Contracts', this.props.getContract(this.props.screenProps.token, this.props.navigation))},
-         {text: 'Si', onPress: () => this.sendDataHisoty('History')},
+         {text: 'Si', onPress: () => this.sendDataHisoty('Historial')},
        ],
       );
     }
@@ -169,7 +169,7 @@ class Receipt extends Component {
         'Desea agregar un historial al contrato Mi Casa?',
         [
           { text: 'No', onPress: () => this.props.navigation.navigate('Contracts', this.props.getContract(this.props.screenProps.token, this.props.navigation)) },
-          { text: 'Si', onPress: () => this.sendDataHisoty('History') },
+          { text: 'Si', onPress: () => this.sendDataHisoty('Historial') },
         ],
       );
     }
@@ -349,7 +349,7 @@ class Receipt extends Component {
     // if(bill.length >= 0) {
     //   lastBill = bill[bill.length-1]
     // }
-    
+
     var receiptView = (
       <Container>
         <ScrollView

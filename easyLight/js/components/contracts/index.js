@@ -47,7 +47,7 @@ class Contracts extends Component {
     }
   };
   render(){
-    const { navigation, profile } = this.props
+    const { navigation, profile, screenProps } = this.props
     const { state } = navigation
     const { contract, currentlyOpenSwipeable }= this.state
     const itemProps = {
@@ -73,7 +73,7 @@ class Contracts extends Component {
           contract={ this.props.contracts }
           navigation={ navigation }
           isPremium={ this.props.profile.premium }
-
+          token={screenProps.token}
           />
         {(profile.premium == true)? fab : (contract.length === 0)? fab : null}
       </Container>
@@ -82,9 +82,11 @@ class Contracts extends Component {
 }
 
 class ListSwipeable extends Component {
+
   navigateTo(route, contract){
-    // console.log('navigateTo', contract);
-    this.props.navigation.navigate(route, {"contract" : contract})
+      this.props.navigation.navigate(route, {"contract" : contract})
+    }
+
     // if (this.props.navigation.state.routeName === 'DetailContract') {
     //  if(this.props.keyVal === 0){
     //    this.props.pickerContract(this.props.dataAccordionContract.name_contract)
@@ -99,7 +101,6 @@ class ListSwipeable extends Component {
     // else {
     //   this.props.navigation.navigate(route, { receipt: this.props.receipts, index: this.props.index, profile: this.props.profile, contract: this.props.dataAccordionContract})
     // }
-  }
 
   render(){
     const { navigation, contract } = this.props
@@ -129,19 +130,21 @@ class ListSwipeable extends Component {
 
                       }}
                 activeOpacity={0.6}
+                onPress={() => this.navigateTo('Historial', contract)}
+
               >
                 <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%'}} name='ios-book-outline' />
               </TouchableOpacity>,
-              <TouchableOpacity
-                style={{  height: 70,
-                          backgroundColor: 'steelblue',
-                          justifyContent: 'center',
-
-                      }}
-                activeOpacity={0.6}
-              >
-                <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%' }} name='ios-information-circle-outline' />
-              </TouchableOpacity>
+              // <TouchableOpacity
+              //   style={{  height: 70,
+              //             backgroundColor: 'steelblue',
+              //             justifyContent: 'center',
+              //
+              //         }}
+              //   activeOpacity={0.6}
+              // >
+              //   <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%' }} name='ios-information-circle-outline' />
+              // </TouchableOpacity>
             ]}
             onRightButtonsOpenRelease={this.props.itemProps.onOpen}
             onRightButtonsCloseRelease={this.props.itemProps.onClose}
