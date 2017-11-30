@@ -311,7 +311,7 @@ const LoginStack = StackNavigator({
       // headerStyle: { backgroundColor : '#007a52'},
       // headerStyle: { backgroundColor : '#00bf60'},
       headerTintColor: 'white',
-      title: 'Iniciar Sesion',
+      title: 'Iniciar Sesión',
       headerLeft: null,
     }),
   },

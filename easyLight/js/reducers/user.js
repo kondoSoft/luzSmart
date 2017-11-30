@@ -54,9 +54,12 @@ export default function (state:State = initialState, action:Action): State {
   }
   // else if (action.type === REHYDRATE){
   //     var incoming = action.payload
-  //     var profile = action.profile
-  //     console.log('incoming', incoming, 'profile', profile);
-  //     if (incoming.user) return {...state, ...incoming}
+  //
+  //     if (incoming.user) return {
+  //       ...incoming.user,
+  //       data: 'esto retorna rehydrate'
+  //     }
+  //     console.log('state', ...state);
   //     return state
   // }
   return state;

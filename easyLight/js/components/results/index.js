@@ -95,7 +95,7 @@ class Results extends Component {
     const data = results.map((item, i) => {
       const date = new Date(item.date)
       const getWeek = moment(date).week()
-      
+
       return { week: getWeek, item: item}
 
     })
@@ -273,7 +273,7 @@ class Results extends Component {
     if (data.length > 0) {
       temporalYear = data[0].year
       data.map((item, i) => {
-        
+
         if(item.year == temporalYear) {
           temporalArrKw.push({year: item.year, kwh: item.kwh})
           resultYear[temporalYear] = temporalArrKw
@@ -308,7 +308,7 @@ class Results extends Component {
     var temporalArrKw = []
     var resultWeek = {}
     var greatest = 0
-    
+
     const data = results.map((item, i) => {
       const date = new Date(item.date)
       const getWeekYear = moment(date).week()
@@ -329,7 +329,7 @@ class Results extends Component {
         }
       })
     }
-    
+
     const resultWeekFiltered = Object.keys(resultWeek).map(weekKey =>{
       const kwh = this.getGreatest(resultWeek[weekKey])[0]
 
@@ -346,7 +346,7 @@ class Results extends Component {
     })
   }
   render () {
-    
+
     const arrMonthAvg = this.dataGenAvgMonth().map((item,i)=>{
       return item.month
     })
@@ -380,7 +380,7 @@ class Results extends Component {
                             DAC
                           </Text>
                         </CardItem>
-                        <CardItem style={{ backgroundColor: 'transparent' }}> 
+                        <CardItem style={{ backgroundColor: 'transparent' }}>
                           <Text style={{ fontWeight: 'bold', fontSize:30, textAlign: 'center', width: '100%' }}>
                             $5,000
                           </Text>
@@ -392,10 +392,10 @@ class Results extends Component {
                         </CardItem>
                       </Card>
                     </Content>
-                    
+
                   </Col>
-                  <Col size={2} style={{ 
-                    flex: 1, 
+                  <Col size={2} style={{
+                    flex: 1,
                     // backgroundColor: 'blue',
                     // height: '40%',
                     justifyContent: 'center',
@@ -403,9 +403,9 @@ class Results extends Component {
                     }}
                   >
                     <View style={{ flex: 1, paddingLeft: 5, justifyContent: 'center' }}>
-                      
+
                       { (this.state.dataKwh <= 200) ?
-                          <VictoryStack 
+                          <VictoryStack
                             style={{ margin: 0, data: { width: 50 } }}
                             colorScale={["#069b1c", "yellow", "tomato"]}
                             domain={{x: [1, 2], y: [0, 1000]}}
@@ -413,33 +413,33 @@ class Results extends Component {
                             >
                             <VictoryBar data={[{x: "b", y: (this.state.dataKwh)}]}/>
 
-                          </VictoryStack> 
-                          : (this.state.dataKwh > 200 && this.state.dataKwh <= 400) ? 
-                          <VictoryStack 
+                          </VictoryStack>
+                          : (this.state.dataKwh > 200 && this.state.dataKwh <= 400) ?
+                          <VictoryStack
                             style={{ margin: 0, data: { width: 50 } }}
                             colorScale={["#069b1c", "yellow", "tomato"]}
                             domain={{x: [1, 2], y: [0, 1000]}}
                             // animate={{ duration: 1000, easing: 'bounce' }}
                             >
-                            <VictoryBar data={[{x: "b", y: 200}]}/> 
+                            <VictoryBar data={[{x: "b", y: 200}]}/>
                             <VictoryBar data={[{x: "b", y: (this.state.dataKwh-200)}]}/>
 
-                          </VictoryStack> 
-                          : (this.state.dataKwh > 400) &&  
-                          <VictoryStack 
+                          </VictoryStack>
+                          : (this.state.dataKwh > 400) &&
+                          <VictoryStack
                             style={{ margin: 0, data: { width: 50 } }}
                             colorScale={["#069b1c", "yellow", "tomato"]}
                             domain={{x: [1, 2], y: [0, 1000]}}
                             // animate={{ duration: 1000, easing: 'bounce' }}
                             >
-                            <VictoryBar data={[{x: "b", y: 200}]}/> 
+                            <VictoryBar data={[{x: "b", y: 200}]}/>
                             <VictoryBar data={[{x: "b", y: 200}]}/>
                             <VictoryBar data={[{x: "b", y: (this.state.dataKwh-400)}]}/>
 
-                          </VictoryStack> 
+                          </VictoryStack>
 
                         // console.log('1')
-                    
+
 
                         // <View>
                         //   {console.log('2')}
@@ -456,12 +456,12 @@ class Results extends Component {
                         // />
                         // }
                       }
-                       
-                      
+
+
                     </View>
-                  
-                    
-                  </Col>  
+
+
+                  </Col>
                 </View>
                 <View style={{
                   // height: '55%',
@@ -476,7 +476,7 @@ class Results extends Component {
                       <CardItem>
                         <Body>
                           <Text style={{ fontSize:14 }}>
-                             La proyección indica que su proyeccion de "Mi Casa" <Text style={{ fontWeight: 'bold', fontSize:15 }}>se encuenta en tarifa de alto consumo (DAC) </Text>
+                             La proyección indica que su proyeccion de "Mi Casa" <Text style={{ fontWeight: 'bold', fontSize:15 }}>se encuentra en tarifa de alto consumo (DAC) </Text>
                           </Text>
                         </Body>
                       </CardItem>
