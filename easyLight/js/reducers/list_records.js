@@ -1,11 +1,12 @@
 import type { Action } from "../actions/types";
-import { PRINT_RECORD, RESET_RECORD } from "../actions/contracts";
+import { PRINT_RECORD, RESET_RECORD, PRINT_HISTORY } from "../actions/contracts";
 export type State = {
   list: string
 };
 
 const initialState = {
   results: [],
+  history: [],
 };
 
 export default function(state: State = initialState, action: Action): State {
@@ -21,5 +22,11 @@ export default function(state: State = initialState, action: Action): State {
 			results:[]
 		}
 	}
+  if ( action.type === PRINT_HISTORY) {
+    return {
+      ...state,
+      history: action.payload.results
+    }
+  }
 	return state;
 }

@@ -118,6 +118,7 @@ export function getRate(mun_id, token):Action{
 }
 
 export function postContract(list, rate, token):Action{
+
   return dispatch => {
     const data = new FormData();
     data.append('name_contract', list.name)
@@ -170,6 +171,7 @@ export function getContract(token, navigate):Action{
       dispatch(printContract(res))
       if(!token.non_field_errors && navigate.state.routeName != 'Medicion' && navigate.state.routeName != 'Mediciones' && navigate.state.routeName != 'MedicionPeriodo'){
         navigate.navigate('Contratos')
+        console.log('navega');
       }
     })
     .catch(err => console.log(err))
@@ -213,12 +215,13 @@ export function updateContract(data, token, id, navigation) {
   return dispatch => {
     var formData = new FormData();
     formData.append('name_contract', data.name)
+    formData.append('contract_id', data.contract_id)
     formData.append('rate', data.rate)
     formData.append('type_payment', data.type_payment)
     formData.append('municipality', data.municipality_id)
     formData.append('state', data.state_id)
     formData.append('number_contract', data.number_contract)
-    if(data.file != undefined){
+    if(data.file != undefined || data.file != null){
       formData.append('image',{
         uri: data.file.uri,
         type: 'image/png',
@@ -237,7 +240,8 @@ export function updateContract(data, token, id, navigation) {
 
     fetch(endPoint+'/contract/'+id+'/', fetchOptions)
     .then(res => {return res.json()})
-    .then(res => {dispatch(getContract(token, navigation))})
+    .then(res => {
+      dispatch(getContract(token, navigation))})
     .catch(err => console.error(err))
   }
 }

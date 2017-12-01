@@ -102,7 +102,7 @@ const funcHighConsumptionPeriod = (highConsumption, contract, projection) => {
 
   }
 
-  return costProjectDac
+  return {costProjectDac: costProjectDac, arrHighConsumption: arrHighConsumption, typeSummer: typeSummer, typePayment: typePayment}
 }
 
 //obtenemos el valor de tipo de verano para DAC
@@ -314,7 +314,6 @@ const setRecord = data => {
   const hoursElapsed = hoursTotals - lastRecord.hours_totals
   // Dias transcurridos
   const diffDays = getDayInDates(paydayLimit, date)
-
   // Dias Restantes
   const restDay = totalDays - Math.ceil(diffDays)
   // Dias transcurridos desde el ultimo record
@@ -330,9 +329,14 @@ const setRecord = data => {
   // Se obtiene el valor proyectado
   const projection = getProjected(cumulativeConsumption, average, restDay)
   let projectedPayment;
-  let projectedPaymentIVA
+  let projectedPaymentIVA;
+  let jsonFuncHigh;
+  // if(data.projectedPayment === 0){
+  //   console.log('es 0',data.projectedPayment);
+  // }
   if(data.contract.high_consumption){
-    projectedPayment = funcHighConsumptionPeriod(data.highConsumption, data.contract, projection)
+    jsonFuncHigh = funcHighConsumptionPeriod(data.highConsumption, data.contract, projection)
+    projectedPayment = jsonFuncHigh.costProjectDac
     projectedPaymentIVA = getIVA(projectedPayment)
 
   }else{
@@ -359,7 +363,9 @@ const setRecord = data => {
     projected_payment: projectedPaymentIVA,
     average_global: average,
     rest_day: restDay,
+    total_days: totalDays,
     projection: projection,
+    jsonFuncHigh: jsonFuncHigh,
     amount_payable: amount_payable,
   }
   return record

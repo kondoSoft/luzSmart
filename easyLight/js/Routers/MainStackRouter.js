@@ -41,7 +41,7 @@ const stackContratos = StackNavigator({
   DetailContract: {
     screen: DetailContract,
     navigationOptions: ({ navigation, props }) => ({
-      title: 'Detalles de Contrato',
+      title: 'Periodos',
       headerTintColor: 'white',
       tabBarVisible: false,
       headerStyle: { backgroundColor : '#00a85b'},
@@ -53,7 +53,7 @@ const stackContratos = StackNavigator({
       headerTintColor: 'white',
       headerStyle: { backgroundColor : '#00a85b'},
       tabBarVisible: false,
-      title: 'Medicion',
+      title: 'Medición',
       // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
@@ -113,8 +113,9 @@ const stackDraw = StackNavigator(
 	      title: 'Contactanos',
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
-				headerLeft: null,
+				headerLeft: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
 	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+        tabBarVisible: false,
 	    }),
 	   },
 	  FAQ: {
@@ -123,8 +124,9 @@ const stackDraw = StackNavigator(
 	      title: 'FAQ',
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
-				headerLeft: null,
+        headerLeft: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
 	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+        tabBarVisible: false,
 	    }),
 	  },
 	  Premium: {
@@ -133,8 +135,9 @@ const stackDraw = StackNavigator(
 	      title: 'Premium',
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
-				headerLeft: null,
+        headerLeft: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
 	      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+        tabBarVisible: false,
 	    }),
 	  },
     EditProfile: {
@@ -172,7 +175,7 @@ const tabTips = StackNavigator(
 const tabMediciones = StackNavigator(
   {
     Mediciones: {
-      screen: Measurements,
+      screen: MeasurementsCopy,
       navigationOptions: ({ navigation }) => ({
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
@@ -212,7 +215,7 @@ const tabPeriods = StackNavigator(
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
         tabBarVisible: false,
-        title: 'Medicion del Periodo',
+        title: 'Medición del Periodo',
         // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       }),
     },
@@ -249,14 +252,14 @@ const tabNavigation = TabNavigator(
         tabBarIcon:({tintColor}) => <Icon name="ios-calendar-outline" />,
       }
     },
-    Mediciones: {
-      screen: tabMediciones,
-      navigationOptions: {
-        headerLeft: null,
-        tabBarIcon:({tintColor}) => <Icon name="ios-flash-outline" />,
-      }
-
-     },
+    // Mediciones: {
+    //   screen: tabMediciones,
+    //   navigationOptions: {
+    //     headerLeft: null,
+    //     tabBarIcon:({tintColor}) => <Icon name="ios-flash-outline" />,
+    //   }
+    //
+    //  },
     Resultados: { screen: tabResults,
       navigationOptions: {
           headerLeft: null,
@@ -308,7 +311,7 @@ const LoginStack = StackNavigator({
       // headerStyle: { backgroundColor : '#007a52'},
       // headerStyle: { backgroundColor : '#00bf60'},
       headerTintColor: 'white',
-      title: 'Iniciar Sesion',
+      title: 'Iniciar Sesión',
       headerLeft: null,
     }),
   },

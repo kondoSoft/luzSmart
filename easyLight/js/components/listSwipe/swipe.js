@@ -119,7 +119,7 @@ class ListItemSwipe extends React.Component {
     return(
         <Animated.View
          {...this.panResponder.panHandlers}
-          style={[this.state.pan.getLayout(),{backgroundColor: '#fff',height: 70, width: Window.width, position: 'absolute', top: 0, right: 0},this.props.style]}
+          style={[this.state.pan.getLayout(),{backgroundColor: '#fff',height: 50, width: Window.width, position: 'absolute', top: 0, right: 0},this.props.style]}
           onLayout={this.props.onLayout}
           >
           {this.props.component}
@@ -131,7 +131,7 @@ class SwipeAccordion extends Component{
   constructor(props){
     super(props)
     this.state = {
-      animation: new Animated.Value(70),
+      animation: new Animated.Value(50),
       minHeight: 0,
       maxHeight: 0,
       expanded : false,
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
   },
   swipeBack:{
     justifyContent: 'flex-end',
-    height: 70,
+    height: 50,
     flexDirection: 'row',
   },
   swipeBack__left:{

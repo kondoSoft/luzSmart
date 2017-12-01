@@ -61,14 +61,18 @@ class AddContracts extends Component {
         "checkedMen": false,
         "checkedBi": false,
         "checkDAC": false,
-        "avatarSource" : require('../../../images/Casaplace.png'),
         "file" : null,
         rates: [],
         isLoading: true
     }
   }
 
+  static navigationOptions = ({ navigation, screenProps }) => (
+  {
+    // headerRight: (navigation.state.params) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
+    headerLeft: <Button transparent onPress={() => navigation.goBack()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>,
 
+  });
   selectPhotoTapped() {
     const options = {
       quality: 1.0,
@@ -400,6 +404,11 @@ class AddContracts extends Component {
         </View>
       )
     }
+    const placeholderAvatar = (
+      <View style={{height:60 , width: 60, borderRadius: 60 / 2 , backgroundColor: 'lightgray', justifyContent: 'center', alignItems: 'center'}}>
+        <Icon style={{ fontSize: 40, backgroundColor: 'transparent', color: 'white'}} name='ios-home' />
+      </View>
+    )
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <ScrollView scrollEnabled={false}>
@@ -408,7 +417,10 @@ class AddContracts extends Component {
               <Left style={{marginLeft:19}}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                   <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                   <Thumbnail source={ (this.state.file != null)? this.state.file : this.state.avatarSource} />
+                    {(this.state.file != null) ? <Thumbnail source={ this.state.file } />
+                    :
+                    placeholderAvatar
+                    }
                   </View>
                 </TouchableOpacity>
               </Left>

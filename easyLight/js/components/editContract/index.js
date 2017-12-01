@@ -57,7 +57,7 @@ class EditContracts extends Component {
 
     super(props)
     this.state = {
-        "name" : props.navigation.state.params['name_contract'],
+        "name" : props.navigation.state.params.contract['name_contract'],
         "number_contract" : 0,
         "state" : "",
         "municipality" : "",
@@ -69,7 +69,7 @@ class EditContracts extends Component {
         "cost" : 0,
         "checkedMen": false,
         "checkedBi": false,
-        "avatarSource" : props.navigation.state.params.image? {uri:props.navigation.state.params.image} : require('../../../images/Casaplace.png'),
+        "avatarSource" : null,
         "file" : null,
         rates: [],
         isLoading: true
@@ -129,7 +129,7 @@ class EditContracts extends Component {
     this.setState({rate:key})
   }
   sendData(){
-    var id = this.props.navigation.state.params.id
+    var id = this.props.navigation.state.params.contract.id
     if (this.dataValidate(this.state)) {
       this.props.updateContract(this.state, this.props.token, id, this.props.navigation)
       if (Platform.OS === 'ios') {
@@ -177,15 +177,14 @@ class EditContracts extends Component {
     // this.props.navigation.dispatch(resetAction)
   }
 
-  buttonDelete(id, token){
-
+  buttonDelete(params, token){
     if (Platform.OS === 'ios') {
       AlertIOS.alert(
         'Eliminar Contrato',
        'Desea eliminar el contrato?',
        [
          {text: 'No' },
-         {text: 'Si', onPress: () => this.ejectDelete(id, token)},
+         {text: 'Si', onPress: () => this.ejectDelete(params.contract.id, token)},
        ],
       );
     }
@@ -268,27 +267,29 @@ class EditContracts extends Component {
 
   // ******************************************
   componentWillMount(){
-    const {params} = this.props.navigation.state
+    const {contract} = this.props.navigation.state.params
     const {states_mx} = this.props
+
     this.setState({
-        state_id:params.state,
-        municipality_id: params.municipality,
-        number_contract:params.number_contract
+        contract_id: contract.id,
+        state_id:contract.state,
+        municipality_id: contract.municipality.id,
+        number_contract:contract.number_contract
     })
 
     states_mx.map((item,i)=>{
-      if (params.state === item.id) {
+      if (contract.state === item.id) {
         this.setState({state:item.state})
         this.props.getMunicipality(item.id)
       }
     })
-    if (params['type_payment'] === 'Bimestral') {
+    if (contract['type_payment'] === 'Bimestral') {
       this.setState({
         checkedBi: true,
         type_payment: 'Bimestral'
       })
     }
-    if (params['type_payment'] === 'Mensual') {
+    if (contract['type_payment'] === 'Mensual') {
       this.setState({
         checkedMen: true,
         type_payment: 'Mensual'
@@ -298,7 +299,7 @@ class EditContracts extends Component {
   componentWillReceiveProps(nextProps){
     nextProps.municipality_mx.map(item => {
 
-      if (item.id === this.props.navigation.state.params.municipality.id) {
+      if (item.id === this.props.navigation.state.params.contract.municipality.id) {
         this.setState({municipality: item['name_mun']})
         this.props.getRate(item.id, this.props.token)
       }
@@ -307,10 +308,10 @@ class EditContracts extends Component {
       //array of rates
       const rates = ['TARIFA 1', 'TARIFA 1A', 'TARIFA 1B', 'TARIFA 1C', 'TARIFA 1D', 'TARIFA 1E', 'TARIFA 1F']
       // put inside of an array the municipality rate
-      const rate_unique = [this.props.navigation.state.params.rate]
+      const rate_unique = [this.props.navigation.state.params.contract.rate]
       //function that return a condiciton => return all rates that are different from the municipality
       const inRates = (rate) => {
-        return rate != this.props.navigation.state.params.rate
+        return rate != this.props.navigation.state.params.contract.rate
       }
       //filter the array of rates => return a new array with all rates except the munucipality rate
       var rate = rates.filter(inRates)
@@ -320,7 +321,8 @@ class EditContracts extends Component {
       this.setState({
         rates: selectRates,
         isLoading: false,
-        rate:nextProps.mun_rate
+        rate:nextProps.mun_rate,
+        avatarSource: nextProps.navigation.state.params.contract.image
       })
     }
   }
@@ -331,15 +333,26 @@ class EditContracts extends Component {
       municipality_mx,
       mun_rate
     } = this.props
+    console.log(this.props.navigation.state.params.contract.image);
+    const placeholderAvatar = (
+      <View style={{ flex: 1, alignItems: 'center'}}>
+        <View style={{height:65 , width: 65, borderRadius: 65 / 2 , backgroundColor: 'lightgray', justifyContent: 'center', alignItems: 'center'}}>
+          <Icon style={{ fontSize: 50, backgroundColor: 'transparent', color: 'white'}} name='ios-home' />
+        </View>
+        <Text style={ {fontSize: 10, color: 'blue', paddingTop: 5 }}>Editar</Text>
+      </View>
+    )
     return(
       <Container style={{backgroundColor:'#fff'}}>
         <ScrollView scrollEnabled={false}>
           <Grid style={{alignItems: 'center',height: Screen.height / 1.2}}>
-            <Row size={7} style={{ justifyContent: 'center', paddingTop: 10, paddingBottom: 10}}>
+            <Row size={7} style={{ justifyContent: 'center', paddingTop: 25, paddingBottom: 10}}>
               <Left style={{marginLeft:19}}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                   <View style={{marginBottom: 0,height: 65,width: '100%',justifyContent:'center'}}>
-                   <Thumbnail source={ (this.state.file != null)? this.state.file : this.state.avatarSource} />
+                    {(this.state.avatarSource != null)?
+                   <Thumbnail style={{height:65 , width: 65, borderRadius: 65 / 2 }} source={{uri: this.state.avatarSource}}  />
+                     : placeholderAvatar}
                   </View>
                 </TouchableOpacity>
               </Left>
@@ -350,16 +363,16 @@ class EditContracts extends Component {
                 {/* <Icon name="md-create" style={ styles.row__top__col__right__icon }/> */}
               </Right>
             </Row>
-            <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%'}}></View>
-            <Col size={ (Platform.OS === 'ios')? 39 : 29 } style={ styles.col__form }>
+            <View style={{borderBottomWidth: 3, borderColor: 'green', width: '88%', paddingTop: 30}}></View>
+            <Col size={ (Platform.OS === 'ios')? 35 : 29 } style={ styles.col__form }>
               <Item fixedLabel style={styles.col__form__item}>
-                <Input value={navigation.state.params['number_contract']} editable={false} keyboardType={'numeric'} style={{paddingLeft:10}}/>
+                <Input value={navigation.state.params.contract['number_contract']} editable={false} style={{paddingLeft:10, height: 40 , color: 'grey'}}/>
               </Item>
               <Item fixedLabel style={styles.col__form__item}>
-                <Input value={this.state.state} editable={false} keyboardType={'numeric'}  style={{paddingLeft:10}}/>
+                <Input value={this.state.state} editable={false} style={{paddingLeft:10, height: 40 , color: 'grey'}}/>
               </Item>
               <Item fixedLabel style={styles.col__form__item}>
-                <Input value={this.state.municipality} editable={false} keyboardType={'numeric'} style={{paddingLeft:10}}/>
+                <Input value={this.state.municipality} editable={false} style={{paddingLeft:10,height: 40 , color: 'grey'}}/>
               </Item>
               {this.createRateSelect()}
             </Col>
@@ -392,7 +405,7 @@ class EditContracts extends Component {
               <Button
                 small
                 danger
-                onPress={() => this.buttonDelete(this.props.navigation.state.params.id, this.props.screenProps.token)}
+                onPress={() => this.buttonDelete(this.props.navigation.state.params, this.props.screenProps.token)}
                 >
                 <Text>Eliminar</Text>
               </Button>

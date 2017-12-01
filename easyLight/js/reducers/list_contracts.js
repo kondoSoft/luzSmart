@@ -12,7 +12,7 @@ const initialState = {
   tips: [],
   selectedIndex: undefined,
   pickerContract: [],
-  region: [],
+  limitByRegion: [],
   highConsumption: [],
 
 };
@@ -38,7 +38,6 @@ export default function(state: State = initialState, action: Action): State {
     }
   }
   if(action.type === SUCCES_CONTRACT){
-    console.log('payload',action.payload);
     return{
       ...state,
       newContract: action.payload
@@ -65,7 +64,7 @@ export default function(state: State = initialState, action: Action): State {
   if ( action.type === PRINT_REGION){
     return{
       ...state,
-      region: action.payload.results
+      limitByRegion: action.payload.results
     }
   }
   if ( action.type === PRINT_HIGH_CONSUMPTION){

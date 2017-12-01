@@ -14,18 +14,20 @@ export default {
   },
   viewProfile:{
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     flexDirection: 'row',
-    paddingLeft: 40
   },
   viewThumbnail:{
-    flex: 3.4,
+    flex: 1,
+    justifyContent: 'center',
+    marginLeft: 10,
   },
   viewName:{
-    flex: (Platform.OS === 'ios')? 26 : 5,
+    flex: 1,
+    justifyContent: 'center',
+    // backgroundColor: 'green',
+    // flex: (Platform.OS === 'ios')? 5 : 5,
     alignItems: 'center',
-    paddingRight: (Platform.OS === 'ios')? 0 : 70,
+    paddingRight: (Platform.OS === 'ios')? '25%' : 70,
   },
   avatar:{
     height: 100,
@@ -35,6 +37,8 @@ export default {
   },
   textName:{
     color: 'white',
+    textAlign: 'center',
+
   },
 
   list:{

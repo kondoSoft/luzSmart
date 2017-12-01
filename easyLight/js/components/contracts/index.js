@@ -47,7 +47,7 @@ class Contracts extends Component {
     }
   };
   render(){
-    const { navigation, profile } = this.props
+    const { navigation, profile, screenProps } = this.props
     const { state } = navigation
     const { contract, currentlyOpenSwipeable }= this.state
     const itemProps = {
@@ -67,13 +67,13 @@ class Contracts extends Component {
 
     return(
       <Container>
-        <ListSwipeable 
-          handleScroll={this.handleScroll} 
+        <ListSwipeable
+          handleScroll={this.handleScroll}
           itemProps={itemProps}
           contract={ this.props.contracts }
           navigation={ navigation }
           isPremium={ this.props.profile.premium }
-
+          token={screenProps.token}
           />
         {(profile.premium == true)? fab : (contract.length === 0)? fab : null}
       </Container>
@@ -82,8 +82,11 @@ class Contracts extends Component {
 }
 
 class ListSwipeable extends Component {
-  navigateTo(route){
-    this.props.navigation.navigate(route)
+
+  navigateTo(route, contract){
+      this.props.navigation.navigate(route, {"contract" : contract})
+    }
+
     // if (this.props.navigation.state.routeName === 'DetailContract') {
     //  if(this.props.keyVal === 0){
     //    this.props.pickerContract(this.props.dataAccordionContract.name_contract)
@@ -98,7 +101,6 @@ class ListSwipeable extends Component {
     // else {
     //   this.props.navigation.navigate(route, { receipt: this.props.receipts, index: this.props.index, profile: this.props.profile, contract: this.props.dataAccordionContract})
     // }
-  }
 
   render(){
     const { navigation, contract } = this.props
@@ -109,47 +111,53 @@ class ListSwipeable extends Component {
             key={i}
             receipts={contract.receipt}
             rightButtons={[
-              <TouchableOpacity 
-                style={{  height: 60,
-                          backgroundColor: 'lightgrey',
+              <TouchableOpacity
+                style={{  height: 70,
+                          backgroundColor: 'grey',
                           justifyContent: 'center',
-                          
-                      }}
-                activeOpacity={0.6}
-              >
-                <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%'}} name='md-create' />
-              </TouchableOpacity>,
-              <TouchableOpacity 
-                style={{  height: 60,
-                          backgroundColor: '#069b1c',
-                          justifyContent: 'center',
-                          
 
                       }}
                 activeOpacity={0.6}
+                onPress={() => this.navigateTo('EditContracts', contract)}
+              >
+                <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%'}} name='md-create' />
+              </TouchableOpacity>,
+              <TouchableOpacity
+                style={{  height: 70,
+                          backgroundColor: '#069b1c',
+                          justifyContent: 'center',
+
+
+                      }}
+                activeOpacity={0.6}
+                onPress={() => this.navigateTo('Historial', contract)}
+
               >
                 <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%'}} name='ios-book-outline' />
               </TouchableOpacity>,
-              <TouchableOpacity 
-                style={{  height: 60,
-                          backgroundColor: 'steelblue',
-                          justifyContent: 'center',
-                          
-                      }}
-                activeOpacity={0.6}
-              >
-                <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%' }} name='ios-information-circle-outline' />
-              </TouchableOpacity>
+              // <TouchableOpacity
+              //   style={{  height: 70,
+              //             backgroundColor: 'steelblue',
+              //             justifyContent: 'center',
+              //
+              //         }}
+              //   activeOpacity={0.6}
+              // >
+              //   <Icon style={{ fontSize: 35, color: '#fff', paddingLeft: '7%' }} name='ios-information-circle-outline' />
+              // </TouchableOpacity>
             ]}
             onRightButtonsOpenRelease={this.props.itemProps.onOpen}
             onRightButtonsCloseRelease={this.props.itemProps.onClose}
             >
             <TouchableWithoutFeedback
-              onPress={() => this.navigateTo('DetailContract')}
+              onPress={() => this.navigateTo('DetailContract', contract)}
             >
-              <View style={[styles.ItemComponent.view, {backgroundColor: 'fff'}]}>
+              <View style={[styles.ItemComponent.view, {backgroundColor: 'fff', borderBottomWidth: 1, borderColor: 'lightgrey'}]}>
                 <Left  style={styles.ItemComponent.alignItem} >
-                  {(contract.image == null)? <Thumbnail source={require('../../../images/Casaplace.png')} /> : <Thumbnail source={{ uri: contract.image }} />}
+                  {(contract.image == null)?
+                  <View style={{height:60 , width: 60, borderRadius: 60 / 2 , backgroundColor: 'lightgray', justifyContent: 'center', alignItems: 'center'}}>
+                    <Icon style={{ fontSize: 40, backgroundColor: 'transparent', color: 'white'}} name='ios-home' />
+                  </View> : <Thumbnail style={{height:60 , width: 60, borderRadius: 60 / 2}} source={{ uri: contract.image }} />}
                 </Left>
                 <Body style={styles.ItemComponent.alignItem}>
                   <Text style={styles.listItem__body__text}>{contract.name_contract}</Text>
@@ -157,7 +165,7 @@ class ListSwipeable extends Component {
                 <Right style={styles.ItemComponent.alignItem}>{contract.cost}</Right>
               </View>
             </TouchableWithoutFeedback>
-            
+
           </Swipeable>
           )}
         </ScrollView>

@@ -41,6 +41,13 @@ class SignIn extends Component {
     this.validateEmail = this.validateEmail.bind(this)
     this.createdAccountValidation = this.createdAccountValidation.bind(this)
   }
+
+  static navigationOptions = ({ navigation, screenProps }) => (
+  {
+    // headerRight: (navigation.state.params) && <Button transparent onPress={() => navigation.navigate('Medicion', { contract: navigation.state.params.contract})}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-forward"/></Button>,
+    headerLeft: <Button transparent onPress={() => navigation.goBack()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>,
+
+  });
   selectPhotoTapped () {
     const options = {
       quality: 1.0,
@@ -140,6 +147,15 @@ class SignIn extends Component {
   }
   render () {
     const { first_name, last_name, email, password1, password2, avatarSource, birth_date, phone, zip_code } = this.state
+    const placeholderAvatar = (
+      <View style={{ flex: 1, alignItems: 'center'}}>
+        <View style={{height:60 , width: 60, borderRadius: 60 / 2 , backgroundColor: 'lightgray', justifyContent: 'center', alignItems: 'center'}}>
+          <Icon style={{ fontSize: 60, backgroundColor: 'transparent', color: 'white'}} name='ios-person' />
+        </View>
+        <Text>Editar</Text>
+
+      </View>
+    )
     return (
       <Container style={{height: Screen.height}}>
         <ScrollView
@@ -150,8 +166,13 @@ class SignIn extends Component {
             <Row style={styles.row__top}>
               <Col style={styles.row__top__col__left}>
                 <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                  <View style={{marginBottom: 0, height: 65, width: '100%', justifyContent: 'center'}}>
-                    <Thumbnail source={(this.state.file != null) ? this.state.file : this.state.avatarSource} />
+                  <View style={{ height: 65, width: '100%', marginBottom: 5, justifyContent: 'center', alignItems: 'flex-start'}}>
+                    {(this.state.file != null) ?
+                      <Thumbnail source={this.state.file} />
+                      :
+                      placeholderAvatar
+
+                    }
                   </View>
                 </TouchableOpacity>
               </Col>

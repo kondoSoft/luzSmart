@@ -23,7 +23,7 @@ export default class Faq extends Component {
         },
         {
           question: '¿Qué características tiene EASYLIGHT?',
-          answer: '- Administra varios contratos de energía eléctrica.\n\n- Predice tus próximos pagos de luz desde el inicio de tu periodo.\n\n- Cuenta con asistencia personalizada y de orientación:\n  - ¿Por qué estoy pagando alto costo en luz?\n  - ¿Que tengo que hacer para bajar los gastos de energía?\n  - ¿Tengo que invertir mucho dinero para bajar mis gastos de luz?\n  - ¿Cuándo llamar a mi proveedor por defectos en el medidor?\n  - ¿Será que tengo fugas de energía?\n\n- Gráfica tus acciones e incentiva tus logros en el ahorro de energía.\n\n- Cuenta siempre con nuevo tips que promueve aún más el ahorro!'
+          answer: '- Administra varios contratos de energía eléctrica.\n\n- Predice tus próximos pagos de luz desde el inicio de tu periodo.\n\n- Cuenta con asistencia personalizada y de orientación:\n  * ¿Por qué estoy pagando alto costo en luz?\n  * ¿Que tengo que hacer para bajar los gastos de energía?\n  * ¿Tengo que invertir mucho dinero para bajar mis gastos de luz?\n  * ¿Cuándo llamar a mi proveedor por defectos en el medidor?\n  * ¿Será que tengo fugas de energía?\n\n- Gráfica tus acciones e incentiva tus logros en el ahorro de energía.\n\n- Cuenta siempre con nuevo tips que promueve aún más el ahorro!'
         },
         {
           question: '¿Por qué EASYLIGHT?',
@@ -55,11 +55,10 @@ export default class Faq extends Component {
   }
   render () {
     return (
-      <Container style={{backgroundColor: '#fff'}}>
-        <View style={{backgroundColor: 'lightgrey', flex: 0.3, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{fontSize: 15, fontWeight: '600'}}>Selecciona una pregunta especifica de la lista.</Text>
-        </View>
-        <ScrollView scrollEnabled contentContainerStyle={{backgroundColor: '#fff'}}>
+      <Container style={{backgroundColor: '#fff', flex: 1}}>
+        {/* <View style={{backgroundColor: 'lightgrey', flex: 1}}>
+        </View> */}
+        <ScrollView scrollEnabled contentContainerStyle={{backgroundColor: 'white'}}>
           {
             this.state.faqs.map((faq, i) => {
               return (

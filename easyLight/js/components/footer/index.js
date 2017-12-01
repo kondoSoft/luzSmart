@@ -11,7 +11,7 @@ import styles from "./styles";
 
 class FooterGlobal extends Component {
 
-  navigateTo(route){   
+  navigateTo(route){
     this.props.navigation.state.routes.map((item,i)=> {
       if(i != this.props.navigation.state.index){
         if(item.routeName === route){
@@ -28,7 +28,7 @@ class FooterGlobal extends Component {
     return (
       <Footer style={{ height: 50, paddingTop: 8,backgroundColor: (Platform.OS === 'ios')? 'transparent' : '#069b1c'}}>
           <FooterTab style={styles.footer}>
-          
+
             <Button vertical onPress={() => {this.navigateTo("Contratos")}}>
               {/* <Button onPress={() => {this.props.navigation.dispatch(
                 NavigationActions.reset({
@@ -36,12 +36,12 @@ class FooterGlobal extends Component {
                   actions: [NavigationActions.navigate({ routeName: 'Contratos', }),],
                 })
               )}}>*/}
-            
+
               <Icon style={styles.footer__icon} name="home" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text}>Inicio</Text> : <View/> }
             </Button>
-            <Button vertical style={styles.footer__btn__resultados} onPress={() => {this.navigateTo("Periodos")}}> 
-            
+            <Button vertical style={styles.footer__btn__resultados} onPress={() => {this.navigateTo("Periodos")}}>
+
               <Icon style={styles.footer__icon} name="calendar" />
               {(Platform.OS === 'ios')? <Text style={styles.footer__text__resultados}>Periodos</Text> : <View/> }
             </Button>
@@ -64,15 +64,15 @@ class FooterGlobal extends Component {
                        {text: 'OK'},
                      ],
                     )
-                  } 
-                } 
+                  }
+                }
                 else {
                 this.navigateTo("Mediciones")
             }
           }
         }
             >
-              <Thumbnail source={ (Platform.OS === 'ios')? require('../../../images/logogray.png') : require('../../../images/logoeasy.png') } style={styles.footer__logo} />
+              <Thumbnail source={ (Platform.OS === 'ios')? require('../../../images/rayoeasy.png') : require('../../../images/rayoeasy.png') } style={styles.footer__logo} />
             </Button>
             <Button vertical style={styles.footer__btn__resultados} onPress ={() => {this.navigateTo("Resultados")}}>
               <Icon style={styles.footer__icon} active name="trending-up" />

@@ -19,7 +19,7 @@ export default {
     color: '#fff',
   },
   list:{
-    height: 70
+    height: 50
   },
   listItem:{
     flex: 1,
@@ -52,17 +52,16 @@ export default {
     textAlign: 'right',
     backgroundColor: 'transparent',
 
+
   },
   ItemComponent:{
     view:{
+      flex: 1,
       flexDirection: 'row',
-      height: 70,
+      // height: 50,
     },
     align:{
-      // flexDirection: (width === 320) && 'row',
-      // justifyContent: (width === 320) && 'space-around',
-      alignItems: 'center',
-      // flex: (width === 320) && 3,
+      alignItems: 'flex-end',
     },
   },
   fab:{
