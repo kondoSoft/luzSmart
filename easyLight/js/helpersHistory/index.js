@@ -1,21 +1,32 @@
 var moment = require('moment');
 
-const addKilowattHistory = (data, props) => {
-  const { contract } = props.navigation.state.params
+const addKilowattHistory = (data, state, props) => {
+  console.log('stateaad', state);
+  let contract
+  if(props.newContract){
+    contract = props.newContract
+  }else{
+    contract = props.navigation.state.params.contract
+  }
   var arrData = []
   var valueTypePayment
   if (contract.type_payment === 'Bimestral'){
-    valueTypePayment = 6
+    valueTypePayment = 5
   }else{
-    valueTypePayment = 12
+    valueTypePayment = 11
   }
   data.map((item,i)=>{
-    arrData.push(item.cost)
+    arrData.push(parseInt(item.kilowatt))
   })
   arrData = arrData.reverse()
+  var addData
   arrData = _.slice(arrData, [start=0], [end= valueTypePayment])
-
-  var addData = arrData.reduce((a, b)=>{ return a+b})
+  if (arrData.length >= valueTypePayment){
+    addData = arrData.reduce((a, b)=>{ return a+b})
+    addData = addData +  (state.current_reading - state.previous_reading)
+  }else{
+    addData = state.current_reading - state.previous_reading
+  }
 
   return {addData: addData, valueTypePayment: valueTypePayment}
 }

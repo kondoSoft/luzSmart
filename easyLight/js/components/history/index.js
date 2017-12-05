@@ -30,6 +30,8 @@ import FabButton from '../fabButton/index';
 import { getHistory } from "../../actions/contracts";
 import _ from "lodash"
 import { addKilowattHistory, setValueByLimitDAC } from "../../helpersHistory"
+import { NavigationActions } from 'react-navigation'
+import { getContract } from "../../actions/list_states_mx";
 
 let Window = Dimensions.get('window');
 
@@ -41,7 +43,7 @@ class History extends Component{
 
     this.state = {
       open: false,
-      valueDAC: this.props.navigation.state.params.contract.high_consumption
+      valueDAC: (this.props.navigation.state.params) && this.props.navigation.state.params.contract.high_consumption
     }
   }
   openModal(){
@@ -56,21 +58,44 @@ class History extends Component{
   }
   static navigationOptions = ({ navigation, screenProps }) => (
   {
-    headerLeft: <Button transparent onPress={() => navigation.goBack()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>,
+    // headerLeft: <Button transparent onPress={() => navigation.state.params.headerLeft()}><Icon active style={{'color': 'white', fontSize: 35}} name="ios-arrow-back"/></Button>,
+    headerRight: <Button transparent onPress={() => navigation.state.params.headerRight(navigation, screenProps)}><Icon active style={{'color': 'white'}} name="home"/></Button>,
 
   });
 
   componentWillReceiveProps(nextProps){
-    const valueTotalHistory = addKilowattHistory(nextProps.dataHistory, nextProps)
+    // const valueTotalHistory = addKilowattHistory(nextProps.dataHistory, nextProps)
 
-    this.setState({
-      valueDAC: setValueByLimitDAC(valueTotalHistory, nextProps)
-    })
+    // this.props.getHistory(this.props.navigation.state.params.contract.id, this.props.screenProps.token)
+    //
+    // this.setState({
+    //   valueDAC: setValueByLimitDAC(valueTotalHistory, nextProps)
+    // })
+
+
+  }
+  navigationGoHome(navigation, screenProps){
+    navigation.dispatch(
+      NavigationActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: "Contratos" }, navigation.state.params.getContract(screenProps.token, navigation))]
+      })
+    );
 
   }
 
   componentWillMount(){
-    this.props.getHistory(this.props.navigation.state.params.contract.id, this.props.screenProps.token)
+    this.props.navigation.setParams({
+      headerRight: this.navigationGoHome,
+      getContract: this.props.getContract,
+
+    });
+    if(this.props.navigation.state.params){
+      this.props.getHistory(this.props.navigation.state.params.contract.id, this.props.screenProps.token)
+    }else{
+      this.props.getHistory(this.props.navigation.state.params.contract.id, this.props.screenProps.token)
+
+    }
 
   }
   render(){
@@ -210,7 +235,9 @@ class ModalAndroid extends Component {
     )
   }
 }
+
 const bindAction = dispatch => ({
+    getContract: (token, navigation) => dispatch(getContract(token, navigation)),
     getHistory: (contract_id, token) => dispatch(getHistory(contract_id, token)),
 })
 const mapStateToProps = state => ({

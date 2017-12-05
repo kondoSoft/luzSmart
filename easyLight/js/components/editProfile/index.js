@@ -46,7 +46,6 @@ class EditProfile extends Component {
     const {
       user, profile
     } = nextProps
-    console.log('will', profile);
     this.setState({user, profile, avatarSource: profile.avatar}, ()=> this.forceUpdate())
   }
   selectPhotoTapped() {

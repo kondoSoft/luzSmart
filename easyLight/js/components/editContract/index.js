@@ -298,7 +298,6 @@ class EditContracts extends Component {
   }
   componentWillReceiveProps(nextProps){
     nextProps.municipality_mx.map(item => {
-
       if (item.id === this.props.navigation.state.params.contract.municipality.id) {
         this.setState({municipality: item['name_mun']})
         this.props.getRate(item.id, this.props.token)
@@ -333,7 +332,6 @@ class EditContracts extends Component {
       municipality_mx,
       mun_rate
     } = this.props
-    console.log(this.props.navigation.state.params.contract.image);
     const placeholderAvatar = (
       <View style={{ flex: 1, alignItems: 'center'}}>
         <View style={{height:65 , width: 65, borderRadius: 65 / 2 , backgroundColor: 'lightgray', justifyContent: 'center', alignItems: 'center'}}>
