@@ -168,13 +168,13 @@ class EditContracts extends Component {
 
   ejectDelete(id, token){
     this.props.deleteContract(id, token, this.props.navigation)
-    // const resetAction = NavigationActions.reset({
-    //   index: 0,
-    //   actions: [
-    //     NavigationActions.navigate({ routeName: 'Contratos'})
-    //   ]
-    // })
-    // this.props.navigation.dispatch(resetAction)
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Contratos'})
+      ]
+    })
+    this.props.navigation.dispatch(resetAction)
   }
 
   buttonDelete(params, token){

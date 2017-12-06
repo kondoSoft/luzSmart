@@ -334,6 +334,8 @@ const setRecord = data => {
   // if(data.projectedPayment === 0){
   //   console.log('es 0',data.projectedPayment);
   // }
+  console.log('data.contract.high_consumption', data.contract.high_consumption);
+
   if(data.contract.high_consumption){
     jsonFuncHigh = funcHighConsumptionPeriod(data.highConsumption, data.contract, projection)
     projectedPayment = jsonFuncHigh.costProjectDac

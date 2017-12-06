@@ -2,8 +2,8 @@ import type { Action } from './types';
 import { getContract } from './list_states_mx';
 
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 export const PRINT_RECORD = 'PRINT_RECORD';
@@ -198,6 +198,7 @@ export function postRecord(list, token):Action{
   }
 }
 export function putRecord(list, token):Action{
+  console.log('putRecord', list);
   return dispatch => {
     return fetch(endPoint+'/records/?contract_id=' + list.array_contract.id + '&kwh=' + list.current_reading,{
       method: 'PUT',
@@ -296,7 +297,7 @@ export function postHistory(list, token):Action{
       })
     })
     .then(res => {return res.json()})
-
+    .then(res=>{dispatch(getHistory(list.contract_id, token))})
     .catch(err => console.log(err))
   }
 }
@@ -348,7 +349,7 @@ export function getHighConsumption(region_id, token): Action{
     })
     .then(res => {return res.json()})
     .then(res => {
-      console.log('printHighConsumption', res)
+      // console.log('printHighConsumption', res)
       dispatch(printHighConsumption(res))})
     .catch(err => console.log(err))
   }

@@ -10,8 +10,8 @@ export const GET_CONTRACT = 'GET_CONTRACT'
 export const GET_TIPS = 'GET_TIPS'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 
@@ -171,7 +171,6 @@ export function getContract(token, navigate):Action{
       dispatch(printContract(res))
       if(!token.non_field_errors && navigate.state.routeName != 'Medicion' && navigate.state.routeName != 'Mediciones' && navigate.state.routeName != 'MedicionPeriodo' && navigate.state.routeName != 'Historial'){
         navigate.navigate('Contratos')
-        console.log('navega', navigate.state);
       }
     })
     .catch(err => console.log(err))
@@ -188,7 +187,10 @@ export function deleteContract(id, token, navigation):Action{
         'Authorization': 'Token '+ token
       }
     })
-    .then(res => { dispatch(getContract(token, navigation)) })
+    .then(res => {
+      // console.log('delete', res);
+      dispatch(getContract(token, navigation))
+    })
     .catch(err => console.log(err))
   }
 }
@@ -209,7 +211,27 @@ export function getTips(token):Action{
   }
 }
 
+export function updateContractDAC(data, token,id, navigation) {
+  console.log('updateContractDAC', data, id);
+  return dispatch => {
+    return fetch(endPoint +'/contract/'+id+'/', {
+    method:'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + token,
+      },
+      body: JSON.stringify({
+         high_consumption: data,
+         contract_id: id,
+       })
+    })
+    .then(res => {return res.json()})
+    .then(res => {console.log('updateRES', res);})
+    .catch(err => console.error(err))
 
+  }
+}
 
 export function updateContract(data, token, id, navigation) {
   return dispatch => {

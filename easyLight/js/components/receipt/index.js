@@ -24,7 +24,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import styles from './styles';
 import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt, getHighConsumption } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
-import { getContract } from "../../actions/list_states_mx";
+import { getContract, updateContractDAC } from "../../actions/list_states_mx";
 import { putRecord, postHistory, getHistory } from "../../actions/contracts";
 import { getWeekday, setRecord as helperRecord, funcHighConsumptionPeriod } from "../../helpers"
 import { addKilowattHistory, setValueByLimitDAC } from "../../helpersHistory"
@@ -76,7 +76,7 @@ class Receipt extends Component {
   }
   componentWillReceiveProps(nextProps){
     if(this.props.navigation.state.params === undefined){
-      this.setState({array_contract: nextProps.newContract}
+      this.setState({array_contract: nextProps.newContract[0]}
     )
     }
 
@@ -139,15 +139,15 @@ class Receipt extends Component {
     const setPayday_limit = moment(this.state.payday_limit)
     const monthPayday_Limit = setPayday_limit.month()
     const yearPayday_Limit = setPayday_limit.year()
-    console.log('dataHistory', this.props.dataHistory);
-
     const valueTotalHistory = addKilowattHistory(this.props.dataHistory, this.state, this.props)
-    console.log('receipt history',valueTotalHistory);
-    if(this.props.dataHistory.lenght >= valueTotalHistory.valueTypePayment ){
-      console.log("cumple el valor para suma");
+    console.log('valueTotalHistory.valueTypePayment', valueTotalHistory.valueTypePayment);
+
+    if(this.props.dataHistory.length >= valueTotalHistory.valueTypePayment ){
+
       this.setState({
         valueDAC: setValueByLimitDAC(valueTotalHistory, this.props)
-      })
+      }, ()=>{
+        this.props.updateContractDAC(this.state.valueDAC, this.props.screenProps.token, this.state.array_contract.id, this.props.navigation) })
       //aqui va el post
     }
 
@@ -159,15 +159,15 @@ class Receipt extends Component {
         cost: this.state.amount_payable,
       }
     }, () => {
-
        this.props.postHistory(this.state.postHistory, this.props.screenProps.token)
+
        if(route === 'Historial'){
         this.props.navigation.navigate(route, {'contract': this.state.array_contract})
-      }else{
+        }else{
         this.props.getContract(this.props.screenProps.token, this.props.navigation)
         this.props.navigation.navigate('Contract')
 
-      }
+        }
 
     })
 
@@ -358,14 +358,13 @@ class Receipt extends Component {
   render() {
     const { navigation } = this.props;
 
+
     if (navigation.state.params === undefined) {
-      contract = this.props.newContract;
+      contract = this.props.newContract[0];
     }
     else {
       contract = navigation.state.params.contract;
     }
-
-    console.log('valueDAC', this.state.valueDAC);
     var receiptView = (
       <Container>
         <ScrollView
@@ -376,7 +375,7 @@ class Receipt extends Component {
             <Col size={75}>
               <Form style={styles.form}>
                 <Item inlineLabel last style={styles.form__item__title}>
-                  <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
+                  <Label style={styles.form__item__label}>Contrato #{(contract) && contract.number_contract}</Label>
                 </Item>
                 <Item last style={styles.form__item__datepicker}>
                   <ReceiptPickerDate func={this.handlePaydayLimit}/>
@@ -468,7 +467,7 @@ class Receipt extends Component {
               <Col size={65}>
                 <Form style={styles.form}>
                   <Item inlineLabel last style={styles.form__item__title}>
-                    <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
+                    <Label style={styles.form__item__label}>Contrato #{(contract) && contract.number_contract}</Label>
                   </Item>
                   <Item last style={styles.form__item__datepicker}>
                     <ReceiptPickerDate func={this.handlePaydayLimit}/>
@@ -568,6 +567,7 @@ function bindAction(dispatch) {
     postHistory: (list, token) => dispatch(postHistory(list, token)),
     getHistory: (contract_id, token) => dispatch(getHistory(contract_id, token)),
     getHighConsumption: (region_id, token) => dispatch(getHighConsumption(region_id, token)),
+    updateContractDAC: (data, token, id,navigation) => dispatch(updateContractDAC(data, token,id, navigation))
   };
 }
 const mapStateToProps = state => ({

@@ -1,26 +1,28 @@
 var moment = require('moment');
 
 const addKilowattHistory = (data, state, props) => {
-  console.log('stateaad', state);
   let contract
-  if(props.newContract){
+  if(props.newContract.length>0){
+    console.log('aplica');
     contract = props.newContract
   }else{
+    console.log('params');
     contract = props.navigation.state.params.contract
   }
+  console.log('contract', contract);
   var arrData = []
   var valueTypePayment
   if (contract.type_payment === 'Bimestral'){
-    valueTypePayment = 5
+    valueTypePayment = 6
   }else{
-    valueTypePayment = 11
+    valueTypePayment = 12
   }
   data.map((item,i)=>{
     arrData.push(parseInt(item.kilowatt))
   })
   arrData = arrData.reverse()
   var addData
-  arrData = _.slice(arrData, [start=0], [end= valueTypePayment])
+  arrData = _.slice(arrData, [start=0], [end= valueTypePayment-1])
   if (arrData.length >= valueTypePayment){
     addData = arrData.reduce((a, b)=>{ return a+b})
     addData = addData +  (state.current_reading - state.previous_reading)
@@ -40,6 +42,7 @@ const setValueByLimitDAC = (valueTotalHistory, props) =>{
 
   limitByRegion.map((item,i) => {
     if(item.name_rate.toUpperCase() === contract.rate){
+      console.log(item);
       var valueKilowatt = valueTotalHistory.valueTypePayment * item.kilowatt
       if( valueTotalHistory.addData >= valueKilowatt){
         console.log('rebaso Dac', valueKilowatt, valueTotalHistory.addData);

@@ -43,7 +43,8 @@ class History extends Component{
 
     this.state = {
       open: false,
-      valueDAC: (this.props.navigation.state.params) && this.props.navigation.state.params.contract.high_consumption
+      valueDAC: (this.props.navigation.state.params) && this.props.navigation.state.params.contract.high_consumption,
+      // dataHistory: [],
     }
   }
   openModal(){
@@ -67,12 +68,13 @@ class History extends Component{
     // const valueTotalHistory = addKilowattHistory(nextProps.dataHistory, nextProps)
 
     // this.props.getHistory(this.props.navigation.state.params.contract.id, this.props.screenProps.token)
-    //
+    // console.log('nextProps', nextProps);
+    // //
     // this.setState({
+    //   dataHistory: nextProps.dataHistory,
+    // })
     //   valueDAC: setValueByLimitDAC(valueTotalHistory, nextProps)
     // })
-
-
   }
   navigationGoHome(navigation, screenProps){
     navigation.dispatch(
@@ -81,7 +83,7 @@ class History extends Component{
         actions: [NavigationActions.navigate({ routeName: "Contratos" }, navigation.state.params.getContract(screenProps.token, navigation))]
       })
     );
-
+    // navigation.navigate("Contratos")
   }
 
   componentWillMount(){
@@ -92,14 +94,12 @@ class History extends Component{
     });
     if(this.props.navigation.state.params){
       this.props.getHistory(this.props.navigation.state.params.contract.id, this.props.screenProps.token)
-    }else{
-      this.props.getHistory(this.props.navigation.state.params.contract.id, this.props.screenProps.token)
-
     }
 
   }
   render(){
     const { navigation, dataHistory } = this.props
+    console.log(dataHistory);
     return(
       <Container>
         {(Platform.OS === 'ios')? <ModalForm visible={this.state.open} onClose={this.onClose} navigation={this.props.navigation}/> : <ModalAndroid visible={this.state.open} navigation={this.props.navigation} onCancel={this.onClose}/>}
