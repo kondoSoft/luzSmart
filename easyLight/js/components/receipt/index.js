@@ -140,14 +140,14 @@ class Receipt extends Component {
     const monthPayday_Limit = setPayday_limit.month()
     const yearPayday_Limit = setPayday_limit.year()
     const valueTotalHistory = addKilowattHistory(this.props.dataHistory, this.state, this.props)
-    console.log('valueTotalHistory.valueTypePayment', valueTotalHistory.valueTypePayment);
 
     if(this.props.dataHistory.length >= valueTotalHistory.valueTypePayment ){
 
       this.setState({
         valueDAC: setValueByLimitDAC(valueTotalHistory, this.props)
       }, ()=>{
-        this.props.updateContractDAC(this.state.valueDAC, this.props.screenProps.token, this.state.array_contract.id, this.props.navigation) })
+
+        this.props.updateContractDAC(this.state.valueDAC, this.props.screenProps.token, this.state.array_contract, this.props.navigation) })
       //aqui va el post
     }
 
@@ -567,7 +567,7 @@ function bindAction(dispatch) {
     postHistory: (list, token) => dispatch(postHistory(list, token)),
     getHistory: (contract_id, token) => dispatch(getHistory(contract_id, token)),
     getHighConsumption: (region_id, token) => dispatch(getHighConsumption(region_id, token)),
-    updateContractDAC: (data, token, id,navigation) => dispatch(updateContractDAC(data, token,id, navigation))
+    updateContractDAC: (data, token, contract,navigation) => dispatch(updateContractDAC(data, token, contract, navigation))
   };
 }
 const mapStateToProps = state => ({

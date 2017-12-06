@@ -303,7 +303,6 @@ export function postHistory(list, token):Action{
 }
 
 export function getHistory(contract_id, token):Action{
-  console.log('getHistory', contract_id);
   return dispatch => {
     return fetch(endPoint+'/history/?contract_id=' + contract_id,{
       method: 'GET',
@@ -349,7 +348,6 @@ export function getHighConsumption(region_id, token): Action{
     })
     .then(res => {return res.json()})
     .then(res => {
-      // console.log('printHighConsumption', res)
       dispatch(printHighConsumption(res))})
     .catch(err => console.log(err))
   }

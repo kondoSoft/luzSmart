@@ -211,10 +211,9 @@ export function getTips(token):Action{
   }
 }
 
-export function updateContractDAC(data, token,id, navigation) {
-  console.log('updateContractDAC', data, id);
+export function updateContractDAC(data, token, contract, navigation) {
   return dispatch => {
-    return fetch(endPoint +'/contract/'+id+'/', {
+    return fetch(endPoint +'/contract/'+contract.id+'/', {
     method:'PUT',
     headers: {
       'Accept': 'application/json',
@@ -223,7 +222,8 @@ export function updateContractDAC(data, token,id, navigation) {
       },
       body: JSON.stringify({
          high_consumption: data,
-         contract_id: id,
+         contract_id: contract.id,
+         rate: contract.rate,
        })
     })
     .then(res => {return res.json()})

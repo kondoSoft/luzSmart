@@ -56,7 +56,6 @@ const costProject = (kilowatt, countKwh) => {
 
 
 const funcHighConsumptionPeriod = (highConsumption, contract, projection) => {
-
   const itemReceipt = contract.receipt[0]
   const dateItemReceipt = moment(itemReceipt.payday_limit)
   let typePayment
@@ -66,8 +65,8 @@ const funcHighConsumptionPeriod = (highConsumption, contract, projection) => {
   }else{
     typePayment = 1
   }
-  const monthDateItemReceipt = dateItemReceipt.month()+typePayment
-
+  addDateItemReceipt = dateItemReceipt.add(typePayment, 'months')
+  const monthDateItemReceipt = addDateItemReceipt.month()
   let stringMonthCurrent
   let arrMonth = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
   let arrHighConsumption = []
@@ -330,11 +329,7 @@ const setRecord = data => {
   const projection = getProjected(cumulativeConsumption, average, restDay)
   let projectedPayment;
   let projectedPaymentIVA;
-  let jsonFuncHigh;
-  // if(data.projectedPayment === 0){
-  //   console.log('es 0',data.projectedPayment);
-  // }
-  console.log('data.contract.high_consumption', data.contract.high_consumption);
+  let jsonFuncHigh = null;
 
   if(data.contract.high_consumption){
     jsonFuncHigh = funcHighConsumptionPeriod(data.highConsumption, data.contract, projection)
@@ -347,6 +342,7 @@ const setRecord = data => {
     projectedPaymentIVA = getIVA(projectedPayment)
 
   }
+  console.log('jsonFuncHigh', jsonFuncHigh);
   // const projectedPaymentIVA = getIVA(projectedPayment)
 
   // const projectedPayment = 0
