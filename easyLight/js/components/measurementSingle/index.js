@@ -267,6 +267,7 @@ class MeasurementSingle extends Component {
     const TextReceipt = (rangeDate != 'undefined-undefined') && <Text style={{ fontSize: 14 }}>{rangeDate}</Text>
     // Obtener Record
     this.getPropsByNextRecords(this.props.record)
+    console.log('MeasurementSingle', this.state.itemReceipt);
     return(
       <Container style={{backgroundColor: '#fff'}}>
         <ScrollView
@@ -282,7 +283,7 @@ class MeasurementSingle extends Component {
                 <Text style={styles.grid__row__top__text}>Gasto de Luz:</Text>
               </View>
               <View style={styles.view_right_text}>
-                <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}>{`$${parseFloat(this.state.projected_payment).toFixed(0)}`}</Text>
+                <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}>{(this.state.projected_payment) ? `$${parseFloat(this.state.projected_payment).toFixed(0)}` : '$' + 0}</Text>
                 <Text style={{ fontSize: 14, backgroundColor: 'transparent', }}> Proyectado</Text>
               </View>
             </Row>
@@ -358,7 +359,7 @@ class MeasurementSingle extends Component {
                       style={styles.animatedView__image__view__btn}
                       onPress={() => this.sendCurrentData(this.state.itemReceipt.id)}
                       >
-                      <Text style={{backgroundColor: 'transparent'}}>Enter</Text>
+                      <Text style={{backgroundColor: 'transparent'}}>Agregar</Text>
                     </Button>
 
                   </View>
@@ -369,7 +370,7 @@ class MeasurementSingle extends Component {
                <Button
                   transparent
                   small
-                  onPress={() => this.props.navigation.navigate('Resultados')}
+                  onPress={() => this.props.navigation.navigate('Resultados', { itemReceipt: this.state.itemReceipt, projected_payment: this.state.projected_payment})}
                   >
                   <Text>Resultados</Text>
               </Button>

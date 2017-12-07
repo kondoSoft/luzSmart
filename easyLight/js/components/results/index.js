@@ -15,8 +15,6 @@ import {
 } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import styles from './styles'
-// import {random, range} from 'lodash'
-// import Svg from 'react-native-svg'
 import {connect} from 'react-redux'
 import {
   VictoryChart,
@@ -28,7 +26,7 @@ import {
 import Swiper from 'react-native-swiper'
 import { Select, Option } from 'react-native-select-list'
 import { getUser } from '../../actions/user'
-import { getRecord } from '../../actions/contracts'
+import { getRecord, getHistory } from '../../actions/contracts'
 var moment = require('moment');
 // var mom = moment().format();
 var promCost;
@@ -40,9 +38,11 @@ class Results extends Component {
       active: false,
       results: [],
       dataKwh: 100,
+      dataHistory: [],
     }
     this.onSelect = this.onSelect.bind(this)
     this.dataGenDaily = this.dataGenDaily.bind(this)
+    this.createOptionItems = this.createOptionItems.bind(this)
   }
   componentDidMount(){
     // setTimeout(()=>{
@@ -58,10 +58,10 @@ class Results extends Component {
   }
   componentWillReceiveProps (nextProps) {
     const {
-      results
+      results, dataHistory
     } = nextProps
     if (results.length > 0) {
-      this.setState({results})
+      this.setState({results, dataHistory})
     }
   }
   createOptionItems () {
@@ -73,13 +73,16 @@ class Results extends Component {
       return <Option key={i} value={item.id}>{item.name_contract}</Option>
     })
     items.unshift(<Option key={0} value={'nulo'}>Selecione contrato</Option>)
+
     return items
+
   }
   onSelect (value) {
     const {
-      getRecord
+      getRecord, getHistory
     } = this.props
     getRecord(value)
+    getHistory(value, this.props.screenProps.token)
   }
   // Funcion para generar datos de consumo Diario
   dataGenDaily () {
@@ -157,7 +160,6 @@ class Results extends Component {
       const arrMonth = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic',]
       return { mes: arrMonth[monthKey] , kwhMonth: parseInt(kwh.kwh), costAvgMonth: kwh.costAvgMonth}
     })
-
     const dataMonthFilter = resultMonthFiltered.slice(0, 5)
     return dataMonthFilter
   }
@@ -297,6 +299,52 @@ class Results extends Component {
     return resultYearFiltered
 
   }
+
+  // Funcion Grafica daily_consumption
+  dataGenDAC(){
+    const {
+      results, dataHistory
+    } = this.state
+    const {
+      contracts
+    } = this.props.screenProps
+    var arrData = []
+    var addData
+    const contractId = results[0].contracts
+    let contract;
+
+    contracts.map((item, i) => {
+      if(item.id == contractId)
+        contract = item
+    })
+    const typePayment = contract.type_payment
+    var valueTypePayment
+    if (typePayment == 'Bimestral'){
+      valueTypePayment = 6
+    }else{
+      valueTypePayment = 12
+    }
+    dataHistory.map((item) => {
+      arrData.push(parseInt(item.kilowatt))
+    })
+    arrData = _.slice(arrData, [start=0], [end= valueTypePayment-1])
+    if ((arrData.length+1) >= valueTypePayment){
+      addData = arrData.reduce((a, b)=>{ return a+b})
+      addData = addData + parseInt(results[0].projection)
+    }else{
+      addData = parseInt(results[0].projection)
+    }
+
+    var limitKilowatt
+    this.props.limitByRegion.map((item)=>{
+      if(item.name_rate.toUpperCase() === contract.rate){
+        limitKilowatt = valueTypePayment * item.kilowatt
+
+      }
+
+    })
+    return { addData: addData, limitKilowatt: limitKilowatt}
+  }
   // Funcion para generar datos de consumo por Semana
   dataGenWeek () {
     const {
@@ -350,6 +398,9 @@ class Results extends Component {
     const arrMonthAvg = this.dataGenAvgMonth().map((item,i)=>{
       return item.month
     })
+
+    var dataDac = (this.state.results.length>0) && this.dataGenDAC()
+    console.log(dataDac);
     return (
       <Container>
         {/* <Header title='Resultados' navigation={this.props.navigation}/> */}
@@ -359,8 +410,15 @@ class Results extends Component {
               {this.createOptionItems()}
             </Select>
           </Row>
-          <Row style={{flex: 10}}>
-            <Swiper showsButtons>
+          <Row style={{flex: 8}}>
+            <Swiper showsButtons
+              buttonWrapperStyle={{
+               paddingHorizontal: 5
+              }}
+              paginationStyle={{
+                bottom: 75, left: 10, right: 10
+              }}
+              >
               <Col size={1}>
                 {/* <Text style={styles.chartText}>Consumo diario</Text> */}
                <View style={{
@@ -404,17 +462,17 @@ class Results extends Component {
                   >
                     <View style={{ flex: 1, paddingLeft: 5, justifyContent: 'center' }}>
 
-                      { (this.state.dataKwh <= 200) ?
+                      { (dataDac.addData <= 200) ?
                           <VictoryStack
                             style={{ margin: 0, data: { width: 50 } }}
                             colorScale={["#069b1c", "yellow", "tomato"]}
                             domain={{x: [1, 2], y: [0, 1000]}}
                             // animate={{ duration: 1000, easing: 'bounce' }}
                             >
-                            <VictoryBar data={[{x: "b", y: (this.state.dataKwh)}]}/>
+                            <VictoryBar data={[{x: "b", y: (dataDac.addData)}]}/>
 
                           </VictoryStack>
-                          : (this.state.dataKwh > 200 && this.state.dataKwh <= 400) ?
+                          : (dataDac.addData > 200 && dataDac.addData <= 400) ?
                           <VictoryStack
                             style={{ margin: 0, data: { width: 50 } }}
                             colorScale={["#069b1c", "yellow", "tomato"]}
@@ -422,19 +480,19 @@ class Results extends Component {
                             // animate={{ duration: 1000, easing: 'bounce' }}
                             >
                             <VictoryBar data={[{x: "b", y: 200}]}/>
-                            <VictoryBar data={[{x: "b", y: (this.state.dataKwh-200)}]}/>
+                            <VictoryBar data={[{x: "b", y: (dataDac.addData-200)}]}/>
 
                           </VictoryStack>
-                          : (this.state.dataKwh > 400) &&
+                          : (dataDac.addData > dataDac.limitKilowatt) &&
                           <VictoryStack
                             style={{ margin: 0, data: { width: 50 } }}
                             colorScale={["#069b1c", "yellow", "tomato"]}
                             domain={{x: [1, 2], y: [0, 1000]}}
                             // animate={{ duration: 1000, easing: 'bounce' }}
                             >
+                            <VictoryBar data={[{x: "b", y: 0}]}/>
                             <VictoryBar data={[{x: "b", y: 200}]}/>
-                            <VictoryBar data={[{x: "b", y: 200}]}/>
-                            <VictoryBar data={[{x: "b", y: (this.state.dataKwh-400)}]}/>
+                            <VictoryBar data={[{x: "b", y: (dataDac.addData-400)}]}/>
 
                           </VictoryStack>
 
@@ -484,8 +542,10 @@ class Results extends Component {
                   </View>
                 </View>
               </Col>
-              <Col size={100}>
-                <Text style={styles.chartText}>Consumo Semanal</Text>
+              <View style={styles.containerSlide}>
+                <View style={styles.containerTitle}>
+                  <Text style={styles.chartText}>Consumo Semanal</Text>
+                </View>
                 <View style={styles.containerCharts}>
                   <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}}>
                     <VictoryBar
@@ -501,9 +561,11 @@ class Results extends Component {
                     <Text>Exportar CSV</Text>
                   </Button>
                 </View>
-              </Col>
-              <Col size={100}>
-                <Text style={styles.chartText}>Consumo Mensual</Text>
+              </View>
+              <View style={styles.containerSlide}>
+                <View style={styles.containerTitle}>
+                  <Text style={styles.chartText}>Consumo Mensual</Text>
+                </View>
                 <View style={styles.containerCharts}>
                   <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}}>
                     <VictoryBar
@@ -519,8 +581,8 @@ class Results extends Component {
                     <Text>Exportar CSV</Text>
                   </Button>
                 </View>
-              </Col>
-              <Col size={100}>
+              </View>
+              {/* <Col size={100}>
                 <Text style={styles.chartText}>Consumo Anual</Text>
                 <View style={styles.containerCharts}>
                   <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}}>
@@ -537,9 +599,11 @@ class Results extends Component {
                     <Text>Exportar CSV</Text>
                   </Button>
                 </View>
-              </Col>
-              <Col size={100}>
-                <Text style={styles.chartText}>Gasto Promedio por Periodo</Text>
+              </Col> */}
+              <View style={styles.containerSlide}>
+                <View style={styles.containerTitle}>
+                  <Text style={styles.chartText}>Gasto Promedio por Periodo</Text>
+                </View>
                 <View style={styles.containerCharts}>
                   <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domain={{ x: [0, 6], y: [0, 1000] }} domainPadding={{x: 50, y:40}} size={4}>
                     <VictoryGroup >
@@ -569,10 +633,10 @@ class Results extends Component {
                     <Text>Exportar CSV</Text>
                   </Button>
                 </View>
-              </Col>
-              <Col size={100}>
+              </View>
+              {/* <Col size={10}>
                 <Text style={styles.chartText}>Consumo y Ahorro</Text>
-                <View style={styles.containerCharts}>
+                <View style={styles.containerCharts}> */}
                    {/* <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domainPadding={{x: 40}} domain={[0, 6]} >                    <VictoryGroup
                       offset={10}
                     >
@@ -612,34 +676,28 @@ class Results extends Component {
                       />
                     </VictoryGroup>
                   </VictoryChart> */}
-                </View>
+                {/* </View>
                 <View style={styles.containerExportButton}>
                   <Button small primary>
                     <Text>Exportar CSV</Text>
                   </Button>
                 </View>
-              </Col>
+              </Col> */}
             </Swiper>
           </Row>
         </Grid>
         <Fab
           active={this.state.active}
           direction='up'
-          containerStyle={{bottom: 30, right: 10}}
+          containerStyle={{bottom: 10, right: 10}}
           style={{backgroundColor: 'steelblue'}}
           position='bottomRight'
           onPress={() => this.setState({ active: !this.state.active })}
           >
           <Icon name='share' />
-          {/* <Button style={{ backgroundColor: '#34A34F' }}>
-            <Icon name='logo-whatsapp' />
-          </Button> */}
           <Button style={{ backgroundColor: '#3B5998' }}>
             <Icon name='logo-facebook' />
           </Button>
-          {/* <Button disabled style={{ backgroundColor: '#DD5144' }}>
-            <Icon name='mail' />
-          </Button> */}
         </Fab>
       </Container>
     )
@@ -649,12 +707,16 @@ class Results extends Component {
 function bindAction (dispatch) {
   return {
     getUser: token => dispatch(getUser(token)),
-    getRecord: id => dispatch(getRecord(id))
+    getRecord: id => dispatch(getRecord(id)),
+    getHistory: (contract_id, token) => dispatch(getHistory(contract_id, token)),
+
   }
 }
 
 const mapStateToProps = state => ({
-  results: state.list_records.results
+  results: state.list_records.results,
+  dataHistory: state.list_records.history,
+  limitByRegion: state.list_contracts.limitByRegion,
 })
 
 export default connect(mapStateToProps, bindAction)(Results)
