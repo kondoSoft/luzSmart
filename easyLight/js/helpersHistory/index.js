@@ -38,7 +38,7 @@ const setValueByLimitDAC = (valueTotalHistory, props) =>{
 
   limitByRegion.map((item,i) => {
     if(item.name_rate.toUpperCase() === contract.rate){
-      var valueKilowatt = valueTotalHistory.valueTypePayment * item.kilowatt
+      var valueKilowatt = 12 * item.kilowatt
       if( valueTotalHistory.addData >= valueKilowatt){
         valueLimitDAC = true
       }else{

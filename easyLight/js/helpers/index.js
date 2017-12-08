@@ -383,4 +383,5 @@ export {
   setRecord,
   funcHighConsumptionPeriod,
   getDateBetweenPeriods,
+  getDateBetween,
 }

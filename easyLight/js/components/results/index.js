@@ -26,8 +26,11 @@ import {
 import Swiper from 'react-native-swiper'
 import { Select, Option } from 'react-native-select-list'
 import { getUser } from '../../actions/user'
-import { getRecord, getHistory } from '../../actions/contracts'
+import { getRecord, getHistory, getRatePeriod } from '../../actions/contracts'
+import {getLimitChartsDac} from '../../helpersResult'
+import { getDateBetween } from '../../helpers'
 var moment = require('moment');
+
 // var mom = moment().format();
 var promCost;
 
@@ -43,6 +46,7 @@ class Results extends Component {
     this.onSelect = this.onSelect.bind(this)
     this.dataGenDaily = this.dataGenDaily.bind(this)
     this.createOptionItems = this.createOptionItems.bind(this)
+    this.typeSummer
   }
   componentDidMount(){
     // setTimeout(()=>{
@@ -70,7 +74,7 @@ class Results extends Component {
     } = this.props.screenProps
     var items = []
     items = contracts.map((item, i) => {
-      return <Option key={i} value={item.id}>{item.name_contract}</Option>
+      return <Option key={i} value={item.id} >{item.name_contract}</Option>
     })
     items.unshift(<Option key={0} value={'nulo'}>Selecione contrato</Option>)
 
@@ -83,6 +87,18 @@ class Results extends Component {
     } = this.props
     getRecord(value)
     getHistory(value, this.props.screenProps.token)
+    var rate
+    var contract
+    this.props.screenProps.contracts.map((item,i) => {
+      if(value === item.id)
+      contract = item
+      rate = item.rate
+      return rate
+    })
+    this.props.getRatePeriod(rate, this.props.screenProps.token)
+    this.typeSummer = getDateBetween(contract)
+
+
   }
   // Funcion para generar datos de consumo Diario
   dataGenDaily () {
@@ -310,6 +326,7 @@ class Results extends Component {
     } = this.props.screenProps
     var arrData = []
     var addData
+    var average
     const contractId = results[0].contracts
     let contract;
 
@@ -320,30 +337,24 @@ class Results extends Component {
     const typePayment = contract.type_payment
     var valueTypePayment
     if (typePayment == 'Bimestral'){
-      valueTypePayment = 6
+      valueTypePayment = 2
     }else{
-      valueTypePayment = 12
+      valueTypePayment = 1
     }
-    dataHistory.map((item) => {
-      arrData.push(parseInt(item.kilowatt))
-    })
-    arrData = _.slice(arrData, [start=0], [end= valueTypePayment-1])
-    if ((arrData.length+1) >= valueTypePayment){
-      addData = arrData.reduce((a, b)=>{ return a+b})
-      addData = addData + parseInt(results[0].projection)
-    }else{
-      addData = parseInt(results[0].projection)
-    }
+
+    addData = parseInt(results[0].projection)
+    average = parseFloat(results[0].average_global)
+
 
     var limitKilowatt
     this.props.limitByRegion.map((item)=>{
       if(item.name_rate.toUpperCase() === contract.rate){
         limitKilowatt = valueTypePayment * item.kilowatt
-
       }
 
     })
-    return { addData: addData, limitKilowatt: limitKilowatt}
+    var getLimitA = getLimitChartsDac(this.typeSummer, this.props.rate, contract.type_payment)
+    return { addData: addData, limitKilowatt: limitKilowatt, limitA: getLimitA.limitA, average: average}
   }
   // Funcion para generar datos de consumo por Semana
   dataGenWeek () {
@@ -400,7 +411,9 @@ class Results extends Component {
     })
 
     var dataDac = (this.state.results.length>0) && this.dataGenDAC()
-    console.log(dataDac);
+    var averagePeriod = (this.state.results.length>0) && this.dataGenAvgMonth()
+    // var func = (this.state.results.length>0) &&
+
     return (
       <Container>
         {/* <Header title='Resultados' navigation={this.props.navigation}/> */}
@@ -419,18 +432,17 @@ class Results extends Component {
                 bottom: 75, left: 10, right: 10
               }}
               >
-              <Col size={1}>
+              <View style={styles.containerSlide}>
                 {/* <Text style={styles.chartText}>Consumo diario</Text> */}
                <View style={{
                   // height: '55%',
                   flex: 1,
-                  marginTop: 40,
                   // alignItems: 'center',
                   flexDirection: 'row',
                   paddingLeft: 40,
                   paddingRight: 40,
                 }}>
-                 <Col size={70} style={{ flex: 2, flexDirection: 'column', }}>
+                 <View style={{ flex: 2, flexDirection: 'column', }}>
                     <Content >
                       <Card style={{ marginTop: 50, backgroundColor: 'transparent' }}>
                         <CardItem style={{ backgroundColor: 'transparent' }}>
@@ -439,60 +451,62 @@ class Results extends Component {
                           </Text>
                         </CardItem>
                         <CardItem style={{ backgroundColor: 'transparent' }}>
-                          <Text style={{ fontWeight: 'bold', fontSize:30, textAlign: 'center', width: '100%' }}>
-                            $5,000
+                          <Text style={{ fontWeight: 'bold', fontSize:20, textAlign: 'center', width: '100%' }}>
+                            {(dataDac) && `KwH ${dataDac.addData.toLocaleString()}`}
                           </Text>
                         </CardItem>
                         <CardItem style={{ backgroundColor: 'transparent' }}>
-                          <Text style={{ fontSize:20, textAlign: 'center', width: '100%'}}>
-                            4.7 kwh/día
+                          <Text style={{ fontSize:15, textAlign: 'center', width: '100%'}}>
+                          {(dataDac) && `${dataDac.average.toFixed(2)} kwh/día`}
                           </Text>
                         </CardItem>
                       </Card>
                     </Content>
 
-                  </Col>
-                  <Col size={2} style={{
+                  </View>
+                  <View style={{
                     flex: 1,
                     // backgroundColor: 'blue',
                     // height: '40%',
                     justifyContent: 'center',
+                    // alignItems: 'center',
+                    paddingBottom: 25,
 
                     }}
                   >
                     <View style={{ flex: 1, paddingLeft: 5, justifyContent: 'center' }}>
 
-                      { (dataDac.addData <= 200) ?
+                      { (dataDac.addData <= dataDac.limitA ) ?
                           <VictoryStack
                             style={{ margin: 0, data: { width: 50 } }}
                             colorScale={["#069b1c", "yellow", "tomato"]}
-                            domain={{x: [1, 2], y: [0, 1000]}}
+                            domain={{x: [1, 2], y: [0, dataDac.limitKilowatt]}}
                             // animate={{ duration: 1000, easing: 'bounce' }}
                             >
                             <VictoryBar data={[{x: "b", y: (dataDac.addData)}]}/>
 
                           </VictoryStack>
-                          : (dataDac.addData > 200 && dataDac.addData <= 400) ?
+                          : (dataDac.addData > dataDac.limitA && dataDac.addData <= dataDac.limitKilowatt) ?
                           <VictoryStack
                             style={{ margin: 0, data: { width: 50 } }}
                             colorScale={["#069b1c", "yellow", "tomato"]}
-                            domain={{x: [1, 2], y: [0, 1000]}}
+                            domain={{x: [1, 2], y: [0, dataDac.limitKilowatt]}}
                             // animate={{ duration: 1000, easing: 'bounce' }}
                             >
-                            <VictoryBar data={[{x: "b", y: 200}]}/>
-                            <VictoryBar data={[{x: "b", y: (dataDac.addData-200)}]}/>
+                            <VictoryBar data={[{x: "b", y: dataDac.limitA}]}/>
+                            <VictoryBar data={[{x: "b", y: (dataDac.addData-dataDac.limitA)}]}/>
 
                           </VictoryStack>
                           : (dataDac.addData > dataDac.limitKilowatt) &&
                           <VictoryStack
                             style={{ margin: 0, data: { width: 50 } }}
                             colorScale={["#069b1c", "yellow", "tomato"]}
-                            domain={{x: [1, 2], y: [0, 1000]}}
+                            domain={{x: [1, 2], y: [0, dataDac.addData * 2]}}
                             // animate={{ duration: 1000, easing: 'bounce' }}
                             >
-                            <VictoryBar data={[{x: "b", y: 0}]}/>
-                            <VictoryBar data={[{x: "b", y: 200}]}/>
-                            <VictoryBar data={[{x: "b", y: (dataDac.addData-400)}]}/>
+                            <VictoryBar data={[{x: "b", y: dataDac.limitA}]}/>
+                            <VictoryBar data={[{x: "b", y: (dataDac.addData-dataDac.limitA)}]}/>
+                            <VictoryBar data={[{x: "b", y: (dataDac.addData-dataDac.limitKilowatt-dataDac.limitA)}]}/>
 
                           </VictoryStack>
 
@@ -519,7 +533,7 @@ class Results extends Component {
                     </View>
 
 
-                  </Col>
+                  </View>
                 </View>
                 <View style={{
                   // height: '55%',
@@ -541,8 +555,8 @@ class Results extends Component {
                     </Card>
                   </View>
                 </View>
-              </Col>
-              <View style={styles.containerSlide}>
+              </View>
+              {/* <View style={styles.containerSlide}>
                 <View style={styles.containerTitle}>
                   <Text style={styles.chartText}>Consumo Semanal</Text>
                 </View>
@@ -561,7 +575,7 @@ class Results extends Component {
                     <Text>Exportar CSV</Text>
                   </Button>
                 </View>
-              </View>
+              </View> */}
               <View style={styles.containerSlide}>
                 <View style={styles.containerTitle}>
                   <Text style={styles.chartText}>Consumo Mensual</Text>
@@ -605,7 +619,7 @@ class Results extends Component {
                   <Text style={styles.chartText}>Gasto Promedio por Periodo</Text>
                 </View>
                 <View style={styles.containerCharts}>
-                  <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domain={{ x: [0, 6], y: [0, 1000] }} domainPadding={{x: 50, y:40}} size={4}>
+                  <VictoryChart animate={{ duration: 1000, easing: 'bounce' }} domain={{ x: [0, 6], y: [0, (averagePeriod) ? averagePeriod[0].cost : 1000] }} domainPadding={{x: 50, y:40}} size={4}>
                     <VictoryGroup >
                       <VictoryBar
                         style={styles.chartFillColor}
@@ -709,6 +723,7 @@ function bindAction (dispatch) {
     getUser: token => dispatch(getUser(token)),
     getRecord: id => dispatch(getRecord(id)),
     getHistory: (contract_id, token) => dispatch(getHistory(contract_id, token)),
+    getRatePeriod: (rate, token) => dispatch(getRatePeriod(rate,token)),
 
   }
 }
@@ -717,6 +732,7 @@ const mapStateToProps = state => ({
   results: state.list_records.results,
   dataHistory: state.list_records.history,
   limitByRegion: state.list_contracts.limitByRegion,
+  rate: state.list_rate.rate_period,
 })
 
 export default connect(mapStateToProps, bindAction)(Results)
