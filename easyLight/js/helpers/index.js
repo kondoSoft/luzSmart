@@ -342,7 +342,6 @@ const setRecord = data => {
     projectedPaymentIVA = getIVA(projectedPayment)
 
   }
-  console.log('jsonFuncHigh', jsonFuncHigh);
   // const projectedPaymentIVA = getIVA(projectedPayment)
 
   // const projectedPayment = 0
@@ -384,4 +383,5 @@ export {
   setRecord,
   funcHighConsumptionPeriod,
   getDateBetweenPeriods,
+  getDateBetween,
 }
