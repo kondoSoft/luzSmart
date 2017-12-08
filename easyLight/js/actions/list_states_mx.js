@@ -10,8 +10,8 @@ export const GET_CONTRACT = 'GET_CONTRACT'
 export const GET_TIPS = 'GET_TIPS'
 export const SUCCES_CONTRACT = 'SUCCES_CONTRACT'
 
-const endPoint = 'http://138.68.49.119:8080';
-// const endPoint = 'http://127.0.0.1:8000';
+// const endPoint = 'http://138.68.49.119:8080';
+const endPoint = 'http://127.0.0.1:8000';
 
 
 
@@ -171,7 +171,6 @@ export function getContract(token, navigate):Action{
       dispatch(printContract(res))
       if(!token.non_field_errors && navigate.state.routeName != 'Medicion' && navigate.state.routeName != 'Mediciones' && navigate.state.routeName != 'MedicionPeriodo'){
         navigate.navigate('Contratos')
-        console.log('navega');
       }
     })
     .catch(err => console.log(err))
