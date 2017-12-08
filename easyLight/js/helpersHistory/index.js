@@ -1,7 +1,12 @@
 var moment = require('moment');
 
-const addKilowattHistory = (data, props) => {
-  const { contract } = props.navigation.state.params
+const addKilowattHistory = (data, state, props) => {
+  let contract
+  if(props.newContract.length>0){
+    contract = props.newContract
+  }else{
+    contract = props.navigation.state.params.contract
+  }
   var arrData = []
   var valueTypePayment
   if (contract.type_payment === 'Bimestral'){
@@ -10,13 +15,17 @@ const addKilowattHistory = (data, props) => {
     valueTypePayment = 12
   }
   data.map((item,i)=>{
-    arrData.push(item.cost)
+    arrData.push(parseInt(item.kilowatt))
   })
   arrData = arrData.reverse()
-  arrData = _.slice(arrData, [start=0], [end= valueTypePayment])
-
-  var addData = arrData.reduce((a, b)=>{ return a+b})
-
+  var addData
+  arrData = _.slice(arrData, [start=0], [end= valueTypePayment-1])
+  if ((arrData.length+1) >= valueTypePayment){
+    addData = arrData.reduce((a, b)=>{ return a+b})
+    addData = addData +  (state.current_reading - state.previous_reading)
+  }else{
+    addData = state.current_reading - state.previous_reading
+  }
   return {addData: addData, valueTypePayment: valueTypePayment}
 }
 
@@ -31,11 +40,8 @@ const setValueByLimitDAC = (valueTotalHistory, props) =>{
     if(item.name_rate.toUpperCase() === contract.rate){
       var valueKilowatt = valueTotalHistory.valueTypePayment * item.kilowatt
       if( valueTotalHistory.addData >= valueKilowatt){
-        console.log('rebaso Dac', valueKilowatt, valueTotalHistory.addData);
         valueLimitDAC = true
       }else{
-        console.log('no rebaso Dac', valueKilowatt, valueTotalHistory.addData);
-
         valueLimitDAC = false
       }
     }

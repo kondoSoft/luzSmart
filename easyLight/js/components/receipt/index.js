@@ -24,9 +24,11 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import styles from './styles';
 import { postReceipt, postRecord, postProjectReceipt, patchNewReceipt, getHighConsumption } from '../../actions/contracts';
 import ReceiptPickerDate from '../datePicker/receipt';
-import { getContract } from "../../actions/list_states_mx";
+import { getContract, updateContractDAC } from "../../actions/list_states_mx";
 import { putRecord, postHistory, getHistory } from "../../actions/contracts";
 import { getWeekday, setRecord as helperRecord, funcHighConsumptionPeriod } from "../../helpers"
+import { addKilowattHistory, setValueByLimitDAC } from "../../helpersHistory"
+
 var moment = require('moment');
 var contract;
 
@@ -46,10 +48,14 @@ class Receipt extends Component {
         status: false,
         record: {
 
-        }
+        },
+        dataHistory: []
       }
       this._keyboardDidHide = this._keyboardDidHide.bind(this)
       this.handlePaydayLimit = this.handlePaydayLimit.bind(this)
+      this.sendDataHisoty = this.sendDataHisoty.bind(this)
+      this.showAlert = this.showAlert.bind(this)
+
     }
 
   static navigationOptions = ({ navigation, screenProps }) => (
@@ -66,10 +72,12 @@ class Receipt extends Component {
      this.props.getHistory(this.props.navigation.state.params.contract.id, this.props.screenProps.token)
 
    }
+
   }
   componentWillReceiveProps(nextProps){
     if(this.props.navigation.state.params === undefined){
-      this.setState({array_contract: nextProps.newContract})
+      this.setState({array_contract: nextProps.newContract[0]}
+    )
     }
 
     this.setState({
@@ -85,6 +93,7 @@ class Receipt extends Component {
     this.refs['scroll'].scrollTo({y: (Platform.OS === 'ios')? 0 : 0})
   }
   handlePaydayLimit(date){
+    this.props.getHistory(this.state.array_contract.id, this.props.screenProps.token)
     const initialDateRange = new Date(contract.initialDateRange).getTime();
     const finalDateRange = new Date(contract.finalDateRange).getTime();
     const limitReceipt = new Date(date).getTime();
@@ -130,6 +139,17 @@ class Receipt extends Component {
     const setPayday_limit = moment(this.state.payday_limit)
     const monthPayday_Limit = setPayday_limit.month()
     const yearPayday_Limit = setPayday_limit.year()
+    const valueTotalHistory = addKilowattHistory(this.props.dataHistory, this.state, this.props)
+
+    if(this.props.dataHistory.length >= valueTotalHistory.valueTypePayment ){
+
+      this.setState({
+        valueDAC: setValueByLimitDAC(valueTotalHistory, this.props)
+      }, ()=>{
+
+        this.props.updateContractDAC(this.state.valueDAC, this.props.screenProps.token, this.state.array_contract, this.props.navigation) })
+      //aqui va el post
+    }
 
     this.setState({
       postHistory: {
@@ -139,15 +159,15 @@ class Receipt extends Component {
         cost: this.state.amount_payable,
       }
     }, () => {
-
        this.props.postHistory(this.state.postHistory, this.props.screenProps.token)
-       this.props.getContract(this.props.screenProps.token, this.props.navigation)
+
        if(route === 'Historial'){
-        this.props.navigation.navigate(route)
-      }else{
+        this.props.navigation.navigate(route, {'contract': this.state.array_contract})
+        }else{
+        this.props.getContract(this.props.screenProps.token, this.props.navigation)
         this.props.navigation.navigate('Contract')
 
-      }
+        }
 
     })
 
@@ -156,20 +176,20 @@ class Receipt extends Component {
     if (Platform.OS === 'ios') {
       AlertIOS.alert(
         'Contrato',
-       'Desea agregar un historial al contrato Mi Casa?',
+       'Desea agregar un historial al contrato actual?',
        [
          {text: 'No', onPress: () => this.props.navigation.navigate('Contracts', this.props.getContract(this.props.screenProps.token, this.props.navigation))},
-         {text: 'Si', onPress: () => this.sendDataHisoty('Historial')},
+         {text: 'Si', onPress: () => this.sendDataHisoty('Historial')}
        ],
       );
     }
     else {
       Alert.alert(
         'Contrato',
-        'Desea agregar un historial al contrato Mi Casa?',
+        'Desea agregar un historial al contrato actual?',
         [
           { text: 'No', onPress: () => this.props.navigation.navigate('Contracts', this.props.getContract(this.props.screenProps.token, this.props.navigation)) },
-          { text: 'Si', onPress: () => this.sendDataHisoty('Historial') },
+          { text: 'Si', onPress: () => this.sendDataHisoty('Historial')}
         ],
       );
     }
@@ -269,7 +289,6 @@ class Receipt extends Component {
   sendData(contract) {
     const { navigation } = this.props
     const receipt  = contract.receipt
-
     if (this.dataValidate(this.state)) {
       // se agrega estatus y despues se hace un post
       this.setState({
@@ -300,7 +319,7 @@ class Receipt extends Component {
 
 
       //Condicion para show alert en caso de historial ya registrado.
-      if(this.state.dataHistory.length == 0){
+      if(this.props.dataHistory.length == 0){
         this.showAlert();
       }else{
         this.sendDataHisoty()
@@ -338,18 +357,14 @@ class Receipt extends Component {
   }
   render() {
     const { navigation } = this.props;
-    // const { bill } = navigation.state.params
-    // var lastBill
+
+
     if (navigation.state.params === undefined) {
-      contract = this.props.newContract;
+      contract = this.props.newContract[0];
     }
     else {
       contract = navigation.state.params.contract;
     }
-    // if(bill.length >= 0) {
-    //   lastBill = bill[bill.length-1]
-    // }
-
     var receiptView = (
       <Container>
         <ScrollView
@@ -360,7 +375,7 @@ class Receipt extends Component {
             <Col size={75}>
               <Form style={styles.form}>
                 <Item inlineLabel last style={styles.form__item__title}>
-                  <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
+                  <Label style={styles.form__item__label}>Contrato #{(contract) && contract.number_contract}</Label>
                 </Item>
                 <Item last style={styles.form__item__datepicker}>
                   <ReceiptPickerDate func={this.handlePaydayLimit}/>
@@ -452,7 +467,7 @@ class Receipt extends Component {
               <Col size={65}>
                 <Form style={styles.form}>
                   <Item inlineLabel last style={styles.form__item__title}>
-                    <Label style={styles.form__item__label}>Contrato #{contract.number_contract}</Label>
+                    <Label style={styles.form__item__label}>Contrato #{(contract) && contract.number_contract}</Label>
                   </Item>
                   <Item last style={styles.form__item__datepicker}>
                     <ReceiptPickerDate func={this.handlePaydayLimit}/>
@@ -552,6 +567,7 @@ function bindAction(dispatch) {
     postHistory: (list, token) => dispatch(postHistory(list, token)),
     getHistory: (contract_id, token) => dispatch(getHistory(contract_id, token)),
     getHighConsumption: (region_id, token) => dispatch(getHighConsumption(region_id, token)),
+    updateContractDAC: (data, token, contract,navigation) => dispatch(updateContractDAC(data, token, contract, navigation))
   };
 }
 const mapStateToProps = state => ({
@@ -560,6 +576,8 @@ const mapStateToProps = state => ({
   record: state.list_records.results,
   highConsumption: state.list_contracts.highConsumption,
   dataHistory: state.list_records.history,
+  limitByRegion: state.list_contracts.limitByRegion,
+
 });
 
 export default connect(mapStateToProps, bindAction)(Receipt);

@@ -36,6 +36,7 @@ const stackContratos = StackNavigator({
       headerStyle: { backgroundColor : '#00a85b'},
       headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       headerLeft: null,
+      gesturesEnabled: false,
     }),
   },
   DetailContract: {
@@ -45,6 +46,7 @@ const stackContratos = StackNavigator({
       headerTintColor: 'white',
       tabBarVisible: false,
       headerStyle: { backgroundColor : '#00a85b'},
+
     }),
   },
   Medicion: {
@@ -95,8 +97,7 @@ const stackContratos = StackNavigator({
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
         tabBarVisible: false,
-        // headerLeft: null,
-        headerRight: <Button transparent onPress={() => navigation.navigate('Contratos')}><Icon active style={{'color': 'white'}} name="home"/></Button>,
+        headerLeft: null,
       }),
     },
 },
@@ -167,6 +168,7 @@ const tabTips = StackNavigator(
           headerStyle: { backgroundColor : '#00a85b'},
           tabBarIcon: ({tintColor}) => <Icon name="ios-bulb-outline" />,
           title: 'Tips',
+          gesturesEnabled: false,
           headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       }),
     }
@@ -180,6 +182,7 @@ const tabMediciones = StackNavigator(
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
         title: 'Mediciones',
+        gesturesEnabled: false,
         headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       }),
     },
@@ -193,6 +196,7 @@ const tabResults = StackNavigator(
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
         title: 'Resultados',
+        gesturesEnabled: false,
         headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       }),
     },
@@ -206,6 +210,7 @@ const tabPeriods = StackNavigator(
         headerTintColor: 'white',
         headerStyle: { backgroundColor : '#00a85b'},
         title: 'Periodos',
+        gesturesEnabled: false,
         headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
       }),
     },
