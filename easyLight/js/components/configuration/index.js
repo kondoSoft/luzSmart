@@ -22,8 +22,8 @@ import { NativeModules } from 'react-native';
 const { InAppUtils } = NativeModules
 
 var products = [
-   'com.kondosoft.easylight.threemonth',
-   'com.kondosoft.easylight.premium'
+   'com.kondosoft.easylight.anual',
+   'com.kondosoft.easylight.mensual'
 ];
 
 
@@ -33,29 +33,34 @@ class Configuration extends Component {
   constructor(props){
     super(props)
     this.state = {
-      products : [ ]
+      products : [ ],
 
 
     }
   }
   componentWillMount(){
-
     InAppUtils.loadProducts(products, (error, products) => {
       this.setState({
         products
       })
+    })
+  }
+
+  payOneMonth(product) {
+    var productIdentifier = product.identifier;
+    InAppUtils.purchaseProduct(productIdentifier, (error, response) => {
+      console.log(response);
+       if(response && response.productIdentifier) {
+          Alert.alert('Compra Completada', 'Tu ID de transacción es ' + response.transactionIdentifier);
+          //unlock store here.
+       }
     });
   }
 
-  payOneMonth() {
-    console.log('products', products)
-    console.log('in', InAppUtils)
-
-
-  }
-
   render(){
-    console.log(this.state.products)
+    const arrProduct = this.state.products.reverse()
+
+    console.log(this.props);
     return(
       <Container>
         <Grid style={{backgroundColor:'#fff'}}>
@@ -69,7 +74,7 @@ class Configuration extends Component {
             </Col>
             <Row size={1} style={{alignItems: 'center',justifyContent:'space-around', margin: 0}}>
               {
-                this.state.products.map((item, i)=>{
+                arrProduct.map((item, i)=>{
 
                   return (<View key={i} style={{flexDirection:'column',alignItems:'center'}}>
                     <Text>{item.title}</Text>
@@ -79,7 +84,7 @@ class Configuration extends Component {
                       alignItems:'center',
                       justifyContent:'center',
                       }}
-                      // onPress={() => this.payOneMonth(products)}
+                      onPress={() => this.payOneMonth(item)}
                      >
                       <Text style={{color:'#fff'}}>{item.priceString}</Text>
                     </Button>

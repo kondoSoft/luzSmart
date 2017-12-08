@@ -38,9 +38,12 @@ export default function(state: State = initialState, action: Action): State {
     }
   }
   if(action.type === SUCCES_CONTRACT){
+    console.log('action.payload', action.payload);
+    const newContract = []
+    newContract.push(action.payload)
     return{
       ...state,
-      newContract: action.payload
+      newContract,
     }
   }
   if (action.type === GET_TIPS) {

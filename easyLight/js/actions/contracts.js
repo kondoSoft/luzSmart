@@ -198,6 +198,7 @@ export function postRecord(list, token):Action{
   }
 }
 export function putRecord(list, token):Action{
+  console.log('putRecord', list);
   return dispatch => {
     return fetch(endPoint+'/records/?contract_id=' + list.array_contract.id + '&kwh=' + list.current_reading,{
       method: 'PUT',
@@ -296,13 +297,12 @@ export function postHistory(list, token):Action{
       })
     })
     .then(res => {return res.json()})
-
+    .then(res=>{dispatch(getHistory(list.contract_id, token))})
     .catch(err => console.log(err))
   }
 }
 
 export function getHistory(contract_id, token):Action{
-  console.log('getHistory', contract_id);
   return dispatch => {
     return fetch(endPoint+'/history/?contract_id=' + contract_id,{
       method: 'GET',
@@ -348,7 +348,6 @@ export function getHighConsumption(region_id, token): Action{
     })
     .then(res => {return res.json()})
     .then(res => {
-      console.log('printHighConsumption', res)
       dispatch(printHighConsumption(res))})
     .catch(err => console.log(err))
   }

@@ -1,25 +1,20 @@
 export default {
-  row__top: {
-    justifyContent: 'center',
-    paddingTop: 10
-  },
-  row__center: {
-    justifyContent: 'center'
-  },
-  row__bottom: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignSelf: 'center'
-  },
   containerCharts: {
-    height: '55%',
-    justifyContent: 'center'
+    flex: 5,
+    justifyContent: 'center',
+
+  },
+  containerTitle:{
+    flex: 0.1,
   },
   containerExportButton: {
-    alignSelf: 'center'
+    flex: 1.3,
+    justifyContent: 'center',
+    alignItems: 'center',
+
   },
   chartText: {
-    padding: 20,
+    // padding: 20,
     textAlign: 'center',
     fontSize: 23
   },
@@ -34,9 +29,15 @@ export default {
     }
   },
   selectContract: {
-    flex: 0.5,
+    flex: 1,
     justifyContent: 'center',
     margin: 0,
     padding: 0
+  },
+  containerSlide:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+
   }
 }

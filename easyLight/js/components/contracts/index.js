@@ -36,6 +36,7 @@ class Contracts extends Component {
     this.setState({
       contract: this.props.contracts
     })
+    this.props.getUser(this.props.screenProps.token)
   }
 
 
@@ -64,13 +65,13 @@ class Contracts extends Component {
     var fab = <FabButton navigation={this.props.navigation} onTap={()=>{navigation.navigate("AddContracts" )}}>
         <Text style={{ width: (Platform.OS === 'ios')? 42 : 50 , height: (Platform.OS === 'ios')? 42 : 50, textAlign: 'center', fontSize: (Platform.OS === 'ios')? 30 : 33, color: '#fff'}}>+</Text>
       </FabButton>
-
+    const contracts = (profile.premium == true) ? this.props.contracts : this.props.contracts.slice(0,1)
     return(
       <Container>
         <ListSwipeable
           handleScroll={this.handleScroll}
           itemProps={itemProps}
-          contract={ this.props.contracts }
+          contract={ contracts }
           navigation={ navigation }
           isPremium={ this.props.profile.premium }
           token={screenProps.token}

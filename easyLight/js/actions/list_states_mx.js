@@ -169,7 +169,7 @@ export function getContract(token, navigate):Action{
     .then(res => {return res.json()})
     .then(res=> {
       dispatch(printContract(res))
-      if(!token.non_field_errors && navigate.state.routeName != 'Medicion' && navigate.state.routeName != 'Mediciones' && navigate.state.routeName != 'MedicionPeriodo'){
+      if(!token.non_field_errors && navigate.state.routeName != 'Medicion' && navigate.state.routeName != 'Mediciones' && navigate.state.routeName != 'MedicionPeriodo' && navigate.state.routeName != 'Historial'){
         navigate.navigate('Contratos')
       }
     })
@@ -187,7 +187,10 @@ export function deleteContract(id, token, navigation):Action{
         'Authorization': 'Token '+ token
       }
     })
-    .then(res => { dispatch(getContract(token, navigation)) })
+    .then(res => {
+      // console.log('delete', res);
+      dispatch(getContract(token, navigation))
+    })
     .catch(err => console.log(err))
   }
 }
@@ -208,7 +211,27 @@ export function getTips(token):Action{
   }
 }
 
+export function updateContractDAC(data, token, contract, navigation) {
+  return dispatch => {
+    return fetch(endPoint +'/contract/'+contract.id+'/', {
+    method:'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + token,
+      },
+      body: JSON.stringify({
+         high_consumption: data,
+         contract_id: contract.id,
+         rate: contract.rate,
+       })
+    })
+    .then(res => {return res.json()})
+    .then(res => {console.log('updateRES', res);})
+    .catch(err => console.error(err))
 
+  }
+}
 
 export function updateContract(data, token, id, navigation) {
   return dispatch => {
