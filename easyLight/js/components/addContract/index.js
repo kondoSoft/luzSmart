@@ -287,7 +287,7 @@ class AddContracts extends Component {
             >{item}</Option>
         })
     )
-    periodItems.unshift(<Option value={null}>Seleccione periodo de verano</Option>)
+    periodItems.unshift(<Option value={'nulo'}>Seleccione periodo de verano</Option>)
     var periodSummer = (
       <Select
         selectStyle={styles.select}

@@ -96,7 +96,9 @@ class Results extends Component {
       return rate
     })
     this.props.getRatePeriod(rate, this.props.screenProps.token)
-    this.typeSummer = getDateBetween(contract)
+    if(this.typeSummer){
+      this.typeSummer = getDateBetween(contract)
+    }
 
 
   }
