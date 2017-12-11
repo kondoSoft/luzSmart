@@ -148,7 +148,9 @@ const stackDraw = StackNavigator(
       headerStyle: { backgroundColor : '#00a85b'},
       title: 'Editar Perfil',
       headerLeft: null,
-      headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
+      headerRight: null,
+
+      // headerRight: <Button transparent onPress={() => navigation.navigate('DrawerOpen')}><Icon active style={{'color': 'white'}} name="menu"/></Button>,
     }),
   },
 	},
